@@ -6,6 +6,7 @@
 import { initI18n, t, pick } from './i18n.js';
 import { WORKS, TOPICS } from './works.js';
 import { initHeader } from './header.js';
+import { initSmooth } from './smooth.js';
 
 // 三個程式碼檔案（放在最前面：下方的流程一開始就會用到）
 const FILES = { html: 'index.html', css: 'style.css', js: 'script.js' };
@@ -28,6 +29,7 @@ const frame = document.getElementById('previewFrame');
 const src = work ? `works/${work.id}/index.html` : '';
 
 setupWorksNav();
+initSmooth();
 
 if (!work) {
   document.getElementById('main').hidden = true;
@@ -92,6 +94,7 @@ function setupFullscreen() {
   const set = on => {
     panel.classList.toggle('is-full', on);
     document.documentElement.classList.toggle('has-full', on);
+    on ? window.__lenis?.stop() : window.__lenis?.start(); // 全螢幕時後方頁面不捲動
     full.hidden = on;
     exit.hidden = !on;
     (on ? exit : full).focus();
@@ -145,7 +148,8 @@ function setupWorksNav() {
     if (y !== null) list.scrollTop = +y; else nav.querySelector('[aria-current]')?.scrollIntoView({ block: 'nearest' });
   } catch {}
   list.addEventListener('click', e => {
-    if (e.target.closest('a')) try { sessionStorage.setItem('worksNavScroll', list.scrollTop); } catch {}
+    // 從側欄換頁：記住側欄捲動位置，並讓下一頁跳過進場動畫（像在同一頁切換內容）
+    if (e.target.closest('a')) try { sessionStorage.setItem('worksNavScroll', list.scrollTop); sessionStorage.setItem('skipReveal', '1'); } catch {}
   });
   // 初始狀態畫好之後，才恢復側欄的開合動畫
   requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.remove('nav-init', 'nav-preload')));
@@ -417,7 +421,9 @@ function setupToPreview() {
 
 // ── 進場動態 ─────────────────────────────────────
 function reveal() {
-  if (reduceMotion() || !window.gsap || !window.SplitText) return;
+  let fromSidebar = false;
+  try { fromSidebar = sessionStorage.getItem('skipReveal') === '1'; sessionStorage.removeItem('skipReveal'); } catch {}
+  if (fromSidebar || reduceMotion() || !window.gsap || !window.SplitText) return;
   document.fonts.ready.then(() => {
     const split = SplitText.create('#workTitle', { type: 'words', mask: 'words' });
     // 作品頁常常來回切換，進場要短（約 0.6 秒）；預覽和程式碼直接顯示，不等動畫

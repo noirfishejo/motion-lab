@@ -9,7 +9,7 @@
   --surface-2:#1B1E23;
   --line:#23262B;
   --line-strong:#3B3E44;
-  --text:#EDEAE4;
+  --text:#F0F0F0;
   --muted:#8F8C85;
 
   --accent:#1733E5;      /* 填色：按鈕、色塊（上面放白字） */
@@ -20,7 +20,7 @@
   --syn-key:#8C9DFF;
   --syn-str:#9FE3C9;
   --syn-num:#FFC98A;
-  --syn-fn:#EDEAE4;
+  --syn-fn:#F0F0F0;
   --syn-tag:#FF9EA8;
   --syn-attr:#C9B8FF;
   --syn-comment:#7D7A73;
@@ -73,7 +73,7 @@
     --gutter:32px;
     --header-h:64px;
     --section-gap:120px;
-    --grid-gap:20px;
+    --grid-gap:16px;
   }
 }
 
@@ -89,6 +89,6 @@
     --gutter:48px;
     --header-h:72px;
     --section-gap:160px;
-    --grid-gap:24px;
+    --grid-gap:16px;      /* 卡片之間的間距（電腦） */
   }
 }

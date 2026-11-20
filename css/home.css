@@ -60,8 +60,9 @@
 .filters.more-start.more-end{-webkit-mask-image:linear-gradient(90deg,transparent,#000 56px,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(90deg,transparent,#000 56px,#000 calc(100% - 56px),transparent)}
 
 /* 作品格：手機 1 欄、平板以上 2 欄（參考 Koleksiyon 的大圖格） */
-.work-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:calc(var(--grid-gap) * 2) var(--grid-gap)}
+.work-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:calc(var(--grid-gap) * 2.5) var(--grid-gap)}
 @media (min-width:600px){.work-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1680px){.work-grid{grid-template-columns:repeat(3,minmax(0,1fr))}} /* 大螢幕：3 欄，卡片不會大到難以一眼掃過 */
 
 .work-card{display:block;position:relative}
 .thumb{

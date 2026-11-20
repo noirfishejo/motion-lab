@@ -4,6 +4,7 @@
 import { initI18n, t, pick } from './i18n.js';
 import { WORKS, TOPICS } from './works.js';
 import { initHeader } from './header.js';
+import { initSmooth, scrollToY } from './smooth.js';
 
 // 縮圖構圖用的常數（見下方 fitThumb）。要放在所有 await 之前，否則縮圖載入時還讀不到
 const THUMB_VIEW = { w: 960, h: 600 };
@@ -21,6 +22,7 @@ await initI18n();
 initHeader();
 renderFilters();
 renderCards();
+initSmooth();
 if (hasGsap) {
   await document.fonts.ready; // 字體載入後再拆字，位置才會準
   initMotion();
@@ -147,7 +149,7 @@ function applyFilter(topic) {
     const bar = document.querySelector('.filters-bar');
     const headerH = document.querySelector('.site-header').offsetHeight;
     const top = document.getElementById('workGrid').getBoundingClientRect().top + scrollY - headerH - bar.offsetHeight - 16;
-    if (scrollY > top) window.scrollTo(0, top);
+    if (scrollY > top) scrollToY(top, { immediate: true });
     window.ScrollTrigger?.refresh(); // 版面變了，重新計算捲動觸發位置
   };
 

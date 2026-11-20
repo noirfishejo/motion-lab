@@ -2,6 +2,7 @@
 // 共用頁首：捲動後加底線
 // ═══════════════════════════════════════════════
 import { WORKS } from './works.js';
+import { scrollToY } from './smooth.js';
 
 export function initHeader() {
   const header = document.querySelector('.site-header');
@@ -19,6 +20,6 @@ export function initHeader() {
   // 頁尾「回到頂部」
   document.querySelectorAll('[data-to-top]').forEach(a => a.addEventListener('click', e => {
     e.preventDefault();
-    window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    scrollToY(0);
   }));
 }
