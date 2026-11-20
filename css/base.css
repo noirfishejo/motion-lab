@@ -42,7 +42,8 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 .logo{display:flex;align-items:center;gap:10px;font:600 18px/1 var(--font-display);letter-spacing:-.03em;white-space:nowrap}
 .logo-mark{width:14px;height:14px;background:var(--accent);flex:none}
 .logo-text{display:inline-block}
-.header-start{display:flex;align-items:center;gap:8px}
+.header-start,.header-end{display:flex;align-items:center;gap:8px}
+.header-end{margin-right:-6px}
 /* 頁首的小圖示按鈕（作品列表開關）：平常低調，滑過才變亮 */
 .icon-toggle{
   display:grid;place-items:center;width:32px;height:32px;margin-left:-6px;

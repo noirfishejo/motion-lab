@@ -9,6 +9,15 @@
   <!-- 保險：4 秒後還沒開始（例如 GSAP 載不到），就直接顯示 -->
   <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('intro'); setTimeout(() => document.documentElement.classList.remove('intro'), 4000); }</script>
 
+  <!-- 配色：先套用記住的設定（沒有就跟著系統），在畫面出現前完成，避免閃一下 -->
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      var theme = saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&family=Noto+Sans+TC:wght@400;500&display=swap">
@@ -26,6 +35,9 @@
       <a class="logo" href="index.html" data-i18n-attr="aria-label:nav.home">
         <span class="logo-mark" aria-hidden="true"></span><span class="logo-text">Motion Lab</span>
       </a>
+      <div class="header-end">
+        <button class="icon-toggle" type="button" id="themeToggle"><i class="ph-light ph-sun" aria-hidden="true"></i></button>
+      </div>
     </div>
   </header>
 

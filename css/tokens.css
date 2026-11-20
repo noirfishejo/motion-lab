@@ -26,8 +26,13 @@
   --syn-comment:#7D7A73;
   --syn-linenum:#76736C; /* 對比 4.1:1 */
   --syn-error:#FF9A9A;
-  --selection:rgba(110,131,255,.28);
-  --scrim:rgba(11,13,16,.72);       /* 側欄打開時蓋住後方內容 */ /* 選取文字的底色：accent-fg 半透明 */
+  --selection:rgba(110,131,255,.28); /* 選取文字的底色：accent-fg 半透明 */
+  --scrim:rgba(11,13,16,.72);        /* 側欄打開時蓋住後方內容 */
+
+  /* 練習的預覽和縮圖固定用深色底（練習本身是深色設計，亮色模式也不換），
+     這樣縮小後 iframe 的邊緣才看不出來 */
+  --stage:#0B0D10;
+  color-scheme:dark;
 
   /* ── 字體 ── */
   --font-display:"Poppins","Noto Sans TC",sans-serif;
@@ -60,6 +65,33 @@
   --ease-out:cubic-bezier(.16,1,.3,1); /* ≈ GSAP expo.out */
   --dur-fast:.3s;
   --dur:.6s;
+}
+
+/* ═══ 亮色模式：<html data-theme="light">（由 index.html／work.html 開頭的小程式設定，預設跟著系統） ═══
+   對比都檢查過（在 --bg 上）：text 16.7:1、muted 5.6:1、accent 7.3:1、語法色皆 ≥ 4.6:1、行號 3.2:1 */
+:root[data-theme="light"]{
+  --bg:#F5F5F2;
+  --surface:#FFFFFF;
+  --surface-2:#ECECE8;
+  --line:#E0E0DB;
+  --line-strong:#C4C4BE;
+  --text:#141518;
+  --muted:#62625D;
+
+  --accent-fg:#1733E5;   /* 亮底上克萊因藍本身就夠清楚，直接當字和線 */
+
+  --syn-key:#2F45D6;
+  --syn-str:#0B7354;
+  --syn-num:#A34E00;
+  --syn-fn:#141518;
+  --syn-tag:#B4235A;
+  --syn-attr:#6A3FC9;
+  --syn-comment:#6F6F69;
+  --syn-linenum:#8A8A84;
+  --syn-error:#C0262D;
+  --selection:rgba(23,51,229,.16);
+  --scrim:rgba(245,245,242,.78);
+  color-scheme:light;
 }
 
 /* 平板 600–1023px：獨立一套尺寸，不是電腦版直接縮小 */

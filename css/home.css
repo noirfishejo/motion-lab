@@ -67,7 +67,7 @@
 .work-card{display:block;position:relative}
 .thumb{
   position:relative;aspect-ratio:16/10;overflow:hidden;
-  background:var(--bg);border:1px solid var(--line);transition:border-color var(--dur-fast); /* 和作品底色相同，縮小後 iframe 邊緣看不出來 */
+  background:var(--stage);border:1px solid var(--line);transition:border-color var(--dur-fast); /* 和作品底色相同，縮小後 iframe 邊緣看不出來 */
 }
 /* 縮圖是真的 iframe：用 960×600 渲染，再由 home.js 的 fitThumb() 縮放置中（統一構圖），會跟著作品自動更新 */
 .thumb iframe{

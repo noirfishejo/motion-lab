@@ -57,5 +57,7 @@
   "work.listTitle": "所有作品",
   "work.fullscreen": "全螢幕預覽",
   "work.exitFullscreen": "關閉全螢幕",
-  "work.codeHintRemote": "展開後可以直接試改，預覽會即時更新；這裡不能存檔，要保存請在自己的電腦上開啟"
+  "work.codeHintRemote": "展開後可以直接試改，預覽會即時更新；這裡不能存檔，要保存請在自己的電腦上開啟",
+  "theme.toLight": "切換成亮色模式",
+  "theme.toDark": "切換成深色模式"
 }
