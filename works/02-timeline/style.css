@@ -1,0 +1,146 @@
+:root {
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #EDEAE4;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", "Noto Sans TC", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage {
+  width: min(400px, 100% - 32px);
+  padding: 24px 0;
+  display: grid;
+  gap: 28px;
+}
+
+/* ── Onboarding 卡片 ── */
+.device {
+  position: relative;
+  height: 420px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+/* 三個步驟疊在同一個位置，由 timeline 決定誰出現 */
+.step {
+  position: absolute;
+  inset: 0;
+  padding: 40px 32px 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.icon {
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: #fff;
+  font-size: 36px;
+  margin-bottom: auto;
+}
+
+/* 遮罩：外層裁切，內層文字從下方升上來 */
+.mask { overflow: hidden; padding-bottom: 0.1em; }
+.mask span { display: inline-block; }
+
+h2 {
+  font: 500 30px/1.25 "Poppins", "Noto Sans TC", sans-serif;
+  letter-spacing: 0.01em;
+}
+.step p {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* 進度點：目前的步驟會被藍色填滿 */
+.dots {
+  position: absolute;
+  left: 32px;
+  bottom: 32px;
+  display: flex;
+  gap: 6px;
+}
+.dot {
+  width: 28px;
+  height: 4px;
+  background: var(--line-strong);
+  overflow: hidden;
+}
+.dot i {
+  display: block;
+  height: 100%;
+  background: var(--accent-fg);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* ── 時間軸視覺化 ── */
+.ruler-track {
+  position: relative;
+  height: 2px;
+  background: var(--line-strong);
+}
+.playhead {
+  position: absolute;
+  inset: 0;
+  background: var(--accent-fg);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.ruler-labels {
+  position: relative;
+  height: 24px;
+  margin-top: 8px;
+  font: 400 11px/1 "JetBrains Mono", monospace;
+  color: var(--muted);
+}
+.ruler-labels span {
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+}
+/* 刻度線 */
+.ruler-labels span::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -14px;
+  width: 1px;
+  height: 10px;
+  background: var(--muted);
+}
+.ruler-labels span.on { color: var(--accent-fg); }
+.ruler-labels span.end { transform: translateX(-100%); }
+.ruler-labels span.end::before { left: auto; right: 0; }
+
+@media (max-width: 400px) {
+  .device { height: 360px; }
+  .step { padding: 28px 24px 64px; }
+  .dots { left: 24px; bottom: 28px; }
+  h2 { font-size: 26px; }
+}

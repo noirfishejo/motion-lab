@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>08 MotionPath: Add to Cart</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&family=Noto+Sans+TC:wght@400;500&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage" id="stage">
+
+    <!-- 路徑示意：虛線就是方塊會飛的路線（由 script.js 依照位置自動畫出） -->
+    <svg class="guide" aria-hidden="true"><path id="flightPath" /></svg>
+
+    <header class="top">
+      <span class="label">Shop</span>
+      <span class="cart" aria-label="Cart">
+        <i class="ph-light ph-shopping-cart-simple"></i>
+        <span class="badge">0</span>
+      </span>
+    </header>
+
+    <!-- 商品卡（假資料） -->
+    <article class="product">
+      <div class="thumb"><span class="item"></span></div>
+      <div class="info">
+        <h2>Motion Square</h2>
+        <p>NT$ 480</p>
+      </div>
+      <button class="add" type="button"><i class="ph-light ph-plus"></i>Add to cart</button>
+    </article>
+
+    <!-- 會沿著路徑飛的那個方塊（每次點擊都會複製一個新的） -->
+    <span class="flyer" aria-hidden="true"></span>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathPlugin.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

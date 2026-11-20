@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01 Stagger Entrance</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <header class="head">
+      <h1 class="title">Stagger</h1>
+      <p class="hint">6 cards, each entering <b class="gap-value">0.08</b>s after the last</p>
+    </header>
+
+    <!-- 卡片上的「延遲」和底部的時間條會由 script.js 自動填入 -->
+    <ul class="cards">
+      <li class="card"><span class="num">01</span><span class="delay"></span><span class="track"><span class="fill"></span></span></li>
+      <li class="card"><span class="num">02</span><span class="delay"></span><span class="track"><span class="fill"></span></span></li>
+      <li class="card"><span class="num">03</span><span class="delay"></span><span class="track"><span class="fill"></span></span></li>
+      <li class="card"><span class="num">04</span><span class="delay"></span><span class="track"><span class="fill"></span></span></li>
+      <li class="card"><span class="num">05</span><span class="delay"></span><span class="track"><span class="fill"></span></span></li>
+      <li class="card"><span class="num">06</span><span class="delay"></span><span class="track"><span class="fill"></span></span></li>
+    </ul>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

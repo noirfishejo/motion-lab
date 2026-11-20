@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>06 Flip: Expanding Cards</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&family=Noto+Sans+TC:wght@400;500&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <p class="hint">Click a card to expand it, click again to collapse</p>
+
+    <!-- 版面只靠 CSS class 切換；Flip 負責把「切換前→切換後」補成動畫 -->
+    <div class="grid">
+      <button class="card" type="button" aria-expanded="false">
+        <span class="num">01</span>
+        <span class="name">Tween</span>
+        <span class="detail">One animation from A to B. gsap.to(), from() and fromTo() are the building blocks of every motion.</span>
+      </button>
+      <button class="card" type="button" aria-expanded="false">
+        <span class="num">02</span>
+        <span class="name">Timeline</span>
+        <span class="detail">Line up many animations on one timeline and use the position parameter to set order and overlap.</span>
+      </button>
+      <button class="card" type="button" aria-expanded="false">
+        <span class="num">03</span>
+        <span class="name">ScrollTrigger</span>
+        <span class="detail">Drive animation with scroll: trigger, pin, and play forward or in reverse with the scrollbar.</span>
+      </button>
+      <button class="card" type="button" aria-expanded="false">
+        <span class="num">04</span>
+        <span class="name">SVG</span>
+        <span class="detail">Draw lines stroke by stroke with DrawSVG, or morph shapes into each other with MorphSVG.</span>
+      </button>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

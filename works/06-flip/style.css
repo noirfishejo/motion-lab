@@ -1,0 +1,89 @@
+:root {
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #EDEAE4;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  justify-items: center;
+  align-items: start; /* 靠上對齊：卡片展開或收合時，上方的說明文字不會跟著移動 */
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", "Noto Sans TC", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage {
+  width: min(720px, 100% - 32px);
+  padding: clamp(32px, 12vh, 96px) 0 32px;
+  display: grid;
+  gap: 16px;
+}
+.hint { font-size: 14px; color: var(--muted); }
+
+/* ── 狀態 A：2 × 2 格狀 ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.card {
+  position: relative;
+  height: 160px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  overflow: hidden;
+}
+.card:hover { border-color: var(--line-strong); }
+.card:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 3px; }
+
+.num { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--muted); }
+.name { font: 600 24px/1.1 "Poppins", sans-serif; letter-spacing: -0.02em; }
+.detail { display: none; color: rgba(255, 255, 255, 0.85); font-size: 15px; line-height: 1.7; max-width: 40ch; }
+
+/* ── 狀態 B：一張展開在上方，其他縮成一排小卡 ── */
+.grid.has-active { grid-template-columns: repeat(3, 1fr); }
+.card.is-active {
+  order: -1;                 /* 排到最前面 */
+  grid-column: 1 / -1;       /* 佔滿整列 */
+  height: 280px;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.card.is-active .num { color: rgba(255, 255, 255, 0.7); }
+.card.is-active .name { font-size: clamp(32px, 6vw, 48px); }
+.card.is-active .detail { display: block; }
+.has-active .card:not(.is-active) { height: 72px; }
+.has-active .card:not(.is-active) .name { font-size: 16px; }
+
+@media (max-width: 480px) {
+  .card { height: 120px; }
+  .name { font-size: 20px; }
+  .card.is-active { height: 240px; }
+  .grid.has-active { grid-template-columns: repeat(2, 1fr); } /* 手機太窄：小卡改兩欄，名稱才放得下 */
+  .has-active .card:not(.is-active) { height: 64px; padding: 12px; }
+  .has-active .card:not(.is-active) .name { font-size: 14px; }
+}

@@ -1,0 +1,82 @@
+:root {
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #EDEAE4;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 被固定的區塊：剛好一個畫面高，超出左右的內容藏起來 ── */
+.hscroll {
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: minmax(0, 1fr); /* 欄寬固定為畫面寬，不被很寬的 track 撐開 */
+  gap: 24px;
+  padding: 24px 0;
+}
+.hs-head, .bar { margin: 0 24px; }
+.hs-head { display: flex; justify-content: space-between; }
+.tag, .readout { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+
+/* ── 橫向軌道：寬度由面板撐開，比畫面還寬 ── */
+.track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  padding: 0 24px;
+  will-change: transform;
+}
+.panel {
+  width: min(560px, 78vw);
+  height: 100%;
+  min-height: 280px;
+  padding: 32px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-content: start;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.panel-intro { background: var(--accent); border-color: var(--accent); }
+.num { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--muted); }
+h2 {
+  align-self: end;
+  font: 600 clamp(32px, 6vw, 64px)/1.05 "Poppins", sans-serif;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+}
+.panel p { max-width: 32ch; color: var(--muted); font-size: 15px; line-height: 1.5; }
+/* 藍色面板上的字改成半透明白：要寫在 .panel p 後面，順序在前會被蓋掉（灰字放藍底對比不夠） */
+.panel-intro .num, .panel-intro p { color: rgba(255, 255, 255, 0.8); }
+
+/* ── 進度條：藍色長條跟著橫向進度伸長 ── */
+.bar { height: 2px; background: var(--line); }
+.bar i { display: block; height: 100%; background: var(--accent-fg); transform: scaleX(0); transform-origin: left; }
+
+.outro {
+  min-height: 80vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: var(--muted);
+  text-align: center;
+}

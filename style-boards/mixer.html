@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>風格混搭器</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Manrope:wght@400;500;700;800&family=Fira+Code:wght@400;500&family=Martian+Mono:wdth,wght@75..112.5,400..700&family=IBM+Plex+Sans:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..500,0..1,0&display=block">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+
+<style>
+/* ───────── 混搭器外框 ───────── */
+:root{--page-bg:#070707;--page-text:#E6E6E6;--page-muted:#9A9A9A;--page-line:#262626}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scrollbar-width:none}
+html::-webkit-scrollbar{display:none}
+body{background:var(--page-bg);color:var(--page-text);font:400 15px/1.6 "Inter Tight","Noto Sans TC",system-ui,sans-serif;padding:40px 16px 80px}
+.wrap{max-width:1080px;margin:0 auto}
+.page-head .eyebrow{font-size:13px;color:var(--page-muted);letter-spacing:.08em;text-transform:uppercase}
+.page-head h1{font-size:clamp(26px,4vw,40px);font-weight:600;letter-spacing:-.02em;margin:6px 0 8px}
+.page-head p{color:var(--page-muted);max-width:720px}
+.page-head a{color:var(--page-text)}
+
+/* 控制列：固定在上方 */
+.controls{
+  position:sticky;top:0;z-index:10;
+  background:rgba(7,7,7,.94);border-bottom:1px solid var(--page-line);
+  margin:24px -16px 24px;padding:14px 16px;
+  display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))
+}
+.ctl{display:flex;flex-direction:column;gap:6px;border:0}
+.ctl legend{font-size:12px;color:var(--page-muted);margin-bottom:6px}
+.seg{display:flex;gap:4px}
+.seg label{flex:1;position:relative}
+.seg input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.seg span{
+  display:grid;place-items:center;height:34px;border:1px solid var(--page-line);
+  font:500 13px/1 "JetBrains Mono",monospace;color:var(--page-muted);cursor:pointer;transition:all .15s
+}
+.seg input:checked + span{background:var(--page-text);color:#070707;border-color:var(--page-text)}
+.seg input:focus-visible + span{outline:2px solid var(--page-text);outline-offset:2px}
+.seg-name{font-size:12px;color:var(--page-text);min-height:1.4em}
+
+.combo{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+  border:1px solid var(--page-line);padding:12px 14px;margin-bottom:20px
+}
+.combo code{font:400 13px/1.5 "JetBrains Mono",monospace;color:var(--page-text)}
+.combo button{font:500 13px/1 "Inter Tight","Noto Sans TC",sans-serif;height:34px;padding:0 14px;background:var(--page-text);color:#070707;border:0;cursor:pointer}
+.combo button:focus-visible{outline:2px solid var(--page-text);outline-offset:3px}
+
+/* ───────── 風格板（版面固定，只吃 token） ───────── */
+.board{
+  background:var(--bg);color:var(--text);border:1px solid var(--line);
+  border-radius:var(--board-radius,0);padding:32px 28px;
+  font-family:var(--font-body);
+  display:grid;gap:28px 40px;grid-template-columns:minmax(0,1fr);
+  transition:background-color .3s,color .3s
+}
+@media (min-width:860px){.board{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.col{display:flex;flex-direction:column;gap:28px;min-width:0}
+.label{font:500 11px/1.2 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+
+.swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.sw{display:flex;flex-direction:column;gap:6px}
+.sw i{display:block;height:48px;border:1px solid var(--line);border-radius:var(--radius)}
+.sw span{font:400 10px/1.3 var(--font-mono);color:var(--muted)}
+.sw b{font-weight:500;color:var(--text);display:block}
+
+.type .display{
+  font-family:var(--font-display);font-weight:var(--display-weight,600);
+  font-size:var(--display-size,52px);line-height:1;letter-spacing:var(--display-tracking,-.02em);
+  font-variation-settings:var(--display-fvs,normal);font-style:var(--display-style,normal)
+}
+.type .display-zh{font-family:var(--font-display-zh,var(--font-display));font-weight:700;font-size:28px;margin-top:10px;letter-spacing:.02em}
+.type .body{font-size:15px;color:var(--muted);margin-top:12px;max-width:42ch}
+.type .code{margin-top:12px;font:400 13px/1.6 var(--font-mono);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.type .code::-webkit-scrollbar{display:none}
+.code .k{color:var(--syn-key)} .code .s{color:var(--syn-str)} .code .n{color:var(--syn-num)}
+
+.btns{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:500 14px/1 var(--font-btn,var(--font-body));text-transform:var(--btn-case,none);letter-spacing:var(--btn-tracking,0);display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:var(--radius);border:1px solid transparent;cursor:pointer;transition:transform .25s var(--ease),background-color .2s,border-color .2s,box-shadow .2s}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.btn-primary{background:var(--btn-bg,var(--accent));color:var(--accent-ink)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--btn-glow,none)}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--line-strong)}
+.btn-ghost:hover{border-color:var(--text)}
+.btn-icon{width:42px;padding:0;justify-content:center;background:var(--surface);color:var(--text);border-color:var(--line)}
+.btn-icon:hover{border-color:var(--accent);color:var(--accent)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--card-radius,var(--radius));overflow:hidden;transition:border-color .3s}
+.card:hover{border-color:var(--line-strong)}
+.preview{height:170px;display:flex;align-items:flex-end;justify-content:center;gap:10px;padding:24px;background:var(--preview-bg,var(--bg));border-bottom:1px solid var(--line)}
+.preview span{width:24px;border-radius:var(--bar-radius,0);background:var(--bar-bg,var(--accent));height:30%;transition:height .6s var(--ease)}
+.preview span:nth-child(2){transition-delay:.06s;opacity:.85}
+.preview span:nth-child(3){transition-delay:.12s;opacity:.7}
+.preview span:nth-child(4){transition-delay:.18s;opacity:.55}
+.preview span:nth-child(5){transition-delay:.24s;opacity:.4}
+.card:hover .preview span:nth-child(1),.card.play .preview span:nth-child(1){height:90%}
+.card:hover .preview span:nth-child(2),.card.play .preview span:nth-child(2){height:70%}
+.card:hover .preview span:nth-child(3),.card.play .preview span:nth-child(3){height:85%}
+.card:hover .preview span:nth-child(4),.card.play .preview span:nth-child(4){height:55%}
+.card:hover .preview span:nth-child(5),.card.play .preview span:nth-child(5){height:75%}
+.card-body{padding:16px}
+.card-body h3{font:var(--display-weight,600) 19px/1.35 var(--font-display);font-style:var(--display-style,normal);letter-spacing:var(--display-tracking,0)}
+.tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.tag{font:500 11px/1 var(--font-mono);padding:5px 8px;border-radius:var(--tag-radius,var(--radius));border:1px solid var(--line-strong);color:var(--muted)}
+.tag.on{border-color:var(--accent);color:var(--accent)}
+.card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font:400 12px/1 var(--font-mono);color:var(--muted)}
+.card-foot .acts{display:flex;gap:4px}
+.card-foot button{width:32px;height:32px;display:grid;place-items:center;background:none;border:1px solid transparent;border-radius:var(--radius);color:var(--muted);cursor:pointer;font-size:18px}
+.card-foot button:hover{color:var(--text);border-color:var(--line)}
+.card-foot button svg{width:18px;height:18px}
+
+.icons .row{display:flex;gap:8px;flex-wrap:wrap}
+.icons .ic{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line);border-radius:var(--radius);color:var(--text);font-size:22px}
+.btn i,.btn .material-symbols-rounded{font-size:18px}
+.btn svg{width:18px;height:18px}
+.icons .ic svg{width:22px;height:22px;stroke-width:1.5}
+.material-symbols-rounded{font-size:22px;font-variation-settings:'wght' 300,'FILL' 0}
+
+/* ───────── 配色（c-*） ───────── */
+.board[data-c="a"]{--bg:#111111;--surface:#1A1A1A;--line:#2A2A2A;--line-strong:#454545;--text:#EDEDEA;--muted:#8E8E8A;--accent:#EDEDEA;--accent-ink:#111111;--syn-key:#EDEDEA;--syn-str:#A7A7A2;--syn-num:#EDEDEA}
+.board[data-c="b"]{--bg:#0B0D10;--surface:#13161B;--line:#232831;--line-strong:#3A414D;--text:#E8ECF1;--muted:#8B94A3;--accent:#C6F432;--accent-ink:#0B0D10;--syn-key:#C6F432;--syn-str:#7FD4FF;--syn-num:#FF9E7A}
+.board[data-c="c"]{--bg:#15120E;--surface:#1E1A15;--line:#332C24;--line-strong:#4D4337;--text:#F0E7DA;--muted:#A39887;--accent:#E8642C;--accent-ink:#15120E;--syn-key:#E8642C;--syn-str:#C9B48F;--syn-num:#F0E7DA}
+.board[data-c="d"]{--bg:#0A0A14;--surface:#12121F;--line:#24243A;--line-strong:#3A3A5C;--text:#E9E8FF;--muted:#9696B8;--accent:#8B7CFF;--accent-ink:#0A0A14;--syn-key:#B3A9FF;--syn-str:#5CE1E6;--syn-num:#FFB3E6;
+  --btn-bg:linear-gradient(120deg,#8B7CFF,#5CE1E6);--btn-glow:0 8px 28px -6px rgba(139,124,255,.55);
+  --preview-bg:radial-gradient(120% 90% at 50% 120%,rgba(139,124,255,.28),transparent 60%),#0A0A14;
+  --bar-bg:linear-gradient(180deg,#5CE1E6,#8B7CFF)}
+.board[data-c="e"]{--bg:#0E0D0A;--surface:#17150F;--line:#2B2719;--line-strong:#4A4330;--text:#F2E9D0;--muted:#9C927A;--accent:#FFB000;--accent-ink:#0E0D0A;--syn-key:#FFB000;--syn-str:#9FD38A;--syn-num:#F2E9D0}
+
+/* ───────── 字體（f-*） ───────── */
+.board[data-f="a"]{--font-display:"Inter Tight","Noto Sans TC",sans-serif;--font-body:"Inter Tight","Noto Sans TC",sans-serif;--font-mono:"JetBrains Mono",monospace;--display-weight:500;--display-tracking:-.04em;--display-size:56px}
+.board[data-f="b"]{--font-display:"Archivo","Noto Sans TC",sans-serif;--font-body:"Archivo","Noto Sans TC",sans-serif;--font-mono:"IBM Plex Mono",monospace;--display-weight:800;--display-tracking:-.01em;--display-fvs:"wdth" 125;--display-size:50px}
+.board[data-f="c"]{--font-display:"Instrument Serif","Noto Serif TC",serif;--font-display-zh:"Noto Serif TC",serif;--font-body:"Geist","Noto Sans TC",sans-serif;--font-mono:"Geist Mono",monospace;--display-weight:400;--display-tracking:-.01em;--display-style:italic;--display-size:62px}
+.board[data-f="d"]{--font-display:"Manrope","Noto Sans TC",sans-serif;--font-body:"Manrope","Noto Sans TC",sans-serif;--font-mono:"Fira Code",monospace;--display-weight:800;--display-tracking:-.03em;--display-size:54px}
+.board[data-f="e"]{--font-display:"Martian Mono","Noto Sans TC",monospace;--font-body:"IBM Plex Sans","Noto Sans TC",sans-serif;--font-mono:"Martian Mono",monospace;--display-weight:700;--display-tracking:-.04em;--display-fvs:"wdth" 80;--display-size:44px;
+  --font-btn:"Martian Mono",monospace;--btn-case:uppercase;--btn-tracking:.04em}
+.board[data-f="e"] .btn{font-size:12px}
+
+/* ───────── 形狀與動態節奏（s-*）：圓角＋緩動 ───────── */
+.board[data-s="a"]{--radius:0;--card-radius:0;--bar-radius:0;--tag-radius:0;--board-radius:0;--ease:cubic-bezier(.77,0,.18,1)}
+.board[data-s="b"]{--radius:6px;--card-radius:6px;--bar-radius:3px;--tag-radius:999px;--board-radius:0;--ease:cubic-bezier(.16,1,.3,1)}
+.board[data-s="c"]{--radius:2px;--card-radius:2px;--bar-radius:999px 999px 0 0;--tag-radius:2px;--board-radius:0;--ease:cubic-bezier(.65,0,.35,1)}
+.board[data-s="d"]{--radius:12px;--card-radius:18px;--bar-radius:999px;--tag-radius:999px;--board-radius:20px;--ease:cubic-bezier(.34,1.56,.64,1)}
+.board[data-s="e"]{--radius:0;--card-radius:0;--bar-radius:0;--tag-radius:0;--board-radius:0;--ease:steps(6,end)}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:480px){
+  .board{padding:24px 16px}
+  .controls{position:static}
+  .swatches{grid-template-columns:repeat(3,1fr);row-gap:12px}
+  .type .display{font-size:calc(var(--display-size,52px) * .72)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page-head">
+    <div class="eyebrow">Motion Portfolio · Style Mixer · Round 2</div>
+    <h1>風格混搭器</h1>
+    <p>四個項目可以分別選 A～E，下方的板子會即時更新。選好後按「複製組合」貼給我，或直接告訴我組合代碼。
+       「形狀」包含圓角和緩動曲線；按「重播動畫」可以看卡片長條的動態節奏。 ← <a href="./">回到 5 張風格板</a></p>
+  </header>
+
+  <form class="controls" id="controls" aria-label="混搭選項">
+    <fieldset class="ctl" data-key="c"><legend>配色</legend><div class="seg"></div><div class="seg-name"></div></fieldset>
+    <fieldset class="ctl" data-key="f"><legend>字體</legend><div class="seg"></div><div class="seg-name"></div></fieldset>
+    <fieldset class="ctl" data-key="s"><legend>形狀與節奏（圓角＋緩動）</legend><div class="seg"></div><div class="seg-name"></div></fieldset>
+    <fieldset class="ctl" data-key="i"><legend>圖示庫</legend><div class="seg"></div><div class="seg-name"></div></fieldset>
+  </form>
+
+  <div class="combo">
+    <code id="comboText"></code>
+    <button type="button" id="copyBtn">複製組合</button>
+  </div>
+
+  <article class="board" id="board">
+    <div class="col">
+      <section>
+        <div class="label">Color</div>
+        <div class="swatches" id="swatches"></div>
+      </section>
+      <section class="type">
+        <div class="label">Type</div>
+        <div class="display">Motion Lab</div>
+        <div class="display-zh">動態練習所</div>
+        <p class="body">每一個練習都是一層，疊起來才看得見完整的設計語言。</p>
+        <div class="code"><span class="k">gsap</span>.to(<span class="s">".card"</span>, { y: <span class="n">0</span>, stagger: <span class="n">0.08</span> })</div>
+      </section>
+      <section>
+        <div class="label">Buttons</div>
+        <div class="btns">
+          <button class="btn btn-primary" type="button" id="replayBtn"><span data-icon="play"></span><span class="t-play">重播動畫</span></button>
+          <button class="btn btn-ghost" type="button"><span data-icon="code"></span><span class="t-code">看程式碼</span></button>
+          <button class="btn btn-icon" type="button" aria-label="複製"><span data-icon="copy"></span></button>
+        </div>
+      </section>
+    </div>
+    <div class="col">
+      <section>
+        <div class="label">Card</div>
+        <div class="card" id="card">
+          <div class="preview"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="card-body">
+            <h3>Stagger 進場・卡片列表</h3>
+            <div class="tags"><span class="tag on">gsap.from</span><span class="tag">stagger</span><span class="tag">Week 01</span></div>
+            <div class="card-foot"><span>2026.11.19</span>
+              <span class="acts"><button type="button" aria-label="複製程式碼"><span data-icon="copy"></span></button><button type="button" aria-label="開啟"><span data-icon="arrow"></span></button></span></div>
+          </div>
+        </div>
+      </section>
+      <section class="icons">
+        <div class="label">Icons</div>
+        <div class="row">
+          <span class="ic"><span data-icon="code"></span></span><span class="ic"><span data-icon="copy"></span></span>
+          <span class="ic"><span data-icon="play"></span></span><span class="ic"><span data-icon="bookmark"></span></span>
+          <span class="ic"><span data-icon="arrow"></span></span><span class="ic"><span data-icon="sliders"></span></span>
+        </div>
+      </section>
+    </div>
+  </article>
+</div>
+
+<script>
+// ── 各維度的選項名稱 ──
+const OPTIONS = {
+  c: { a:"Monolith 單色", b:"Signal 螢光綠", c:"Editorial 暖橘", d:"Aurora 紫青漸層", e:"Terminal 琥珀" },
+  f: { a:"Inter Tight", b:"Archivo 寬體", c:"Instrument Serif 斜體", d:"Manrope", e:"Martian Mono 等寬" },
+  s: { a:"直角・慢入慢出", b:"小圓角・快出（expo）", c:"微圓角・對稱", d:"大圓角・彈性（back）", e:"直角・逐格（steps）" },
+  i: { a:"Phosphor Light", b:"Tabler", c:"Lucide", d:"Material Symbols", e:"Phosphor Bold" }
+};
+
+// ── 各圖示庫的寫法（語意名稱 → 該庫的圖示） ──
+const ICONS = {
+  a: { lib:"ph", play:"ph-light ph-play", code:"ph-light ph-code", copy:"ph-light ph-copy", bookmark:"ph-light ph-bookmark-simple", arrow:"ph-light ph-arrow-up-right", sliders:"ph-light ph-sliders-horizontal" },
+  b: { lib:"ti", play:"ti ti-player-play", code:"ti ti-code", copy:"ti ti-copy", bookmark:"ti ti-bookmark", arrow:"ti ti-arrow-up-right", sliders:"ti ti-adjustments-horizontal" },
+  c: { lib:"lucide", play:"play", code:"code", copy:"copy", bookmark:"bookmark", arrow:"arrow-up-right", sliders:"sliders-horizontal" },
+  d: { lib:"ms", play:"play_arrow", code:"code", copy:"content_copy", bookmark:"bookmark", arrow:"north_east", sliders:"tune" },
+  e: { lib:"ph", play:"ph-bold ph-play", code:"ph-bold ph-code", copy:"ph-bold ph-copy", bookmark:"ph-bold ph-bookmark-simple", arrow:"ph-bold ph-arrow-up-right", sliders:"ph-bold ph-sliders-horizontal" }
+};
+
+const board = document.getElementById('board');
+const LETTERS = ['a','b','c','d','e'];
+// 預設：全部 B（上一輪的推薦），網址 #c=b&f=a&s=a&i=a 可以直接帶入組合
+const state = { c:'b', f:'b', s:'b', i:'b' };
+new URLSearchParams(location.hash.slice(1)).forEach((v,k)=>{ if(k in state && LETTERS.includes(v)) state[k]=v; });
+
+// 產生 A～E 分段按鈕
+document.querySelectorAll('.ctl').forEach(fs=>{
+  const key = fs.dataset.key, seg = fs.querySelector('.seg');
+  LETTERS.forEach(l=>{
+    seg.insertAdjacentHTML('beforeend',
+      `<label><input type="radio" name="${key}" value="${l}" aria-label="${OPTIONS[key][l]}" ${state[key]===l?'checked':''}><span>${l.toUpperCase()}</span></label>`);
+  });
+});
+
+function renderIcons(){
+  const set = ICONS[state.i];
+  board.querySelectorAll('[data-icon]').forEach(el=>{
+    const name = el.dataset.icon;
+    if (set.lib==='lucide') el.innerHTML = `<i data-lucide="${set[name]}"></i>`;
+    else if (set.lib==='ms') el.innerHTML = `<span class="material-symbols-rounded" aria-hidden="true">${set[name]}</span>`;
+    else el.innerHTML = `<i class="${set[name]}" aria-hidden="true"></i>`;
+    el.style.display='inline-grid'; el.style.placeItems='center';
+  });
+  if (set.lib==='lucide' && window.lucide) lucide.createIcons();
+}
+
+function renderSwatches(){
+  const cs = getComputedStyle(board);
+  const keys = [['bg','--bg'],['surface','--surface'],['line','--line-strong'],['text','--text'],['accent','--accent']];
+  document.getElementById('swatches').innerHTML = keys.map(([n,v])=>{
+    const hex = cs.getPropertyValue(v).trim();
+    return `<div class="sw"><i style="background:${hex}"></i><span><b>${n}</b>${hex}</span></div>`;
+  }).join('');
+}
+
+function render(){
+  Object.entries(state).forEach(([k,v])=>{ if(k!=='i') board.dataset[k]=v; });
+  document.querySelectorAll('.ctl').forEach(fs=>{
+    fs.querySelector('.seg-name').textContent = OPTIONS[fs.dataset.key][state[fs.dataset.key]];
+  });
+  // E 字體用英文大寫按鈕，其他用中文
+  const mono = state.f==='e';
+  board.querySelector('.t-play').textContent = mono ? 'Replay' : '重播動畫';
+  board.querySelector('.t-code').textContent = mono ? 'Source' : '看程式碼';
+  renderIcons(); renderSwatches();
+  document.getElementById('comboText').textContent =
+    `配色 ${state.c.toUpperCase()}・字體 ${state.f.toUpperCase()}・形狀 ${state.s.toUpperCase()}・圖示 ${state.i.toUpperCase()}（${OPTIONS.c[state.c]}／${OPTIONS.f[state.f]}／${OPTIONS.s[state.s]}／${OPTIONS.i[state.i]}）`;
+  history.replaceState(null,'',`#c=${state.c}&f=${state.f}&s=${state.s}&i=${state.i}`);
+}
+
+document.getElementById('controls').addEventListener('change', e=>{
+  state[e.target.name] = e.target.value; render(); replay();
+});
+
+// 重播卡片長條動畫（讓使用者不用 hover 也能比較緩動）
+const card = document.getElementById('card');
+function replay(){ card.classList.remove('play'); void card.offsetWidth; requestAnimationFrame(()=>card.classList.add('play')); setTimeout(()=>card.classList.remove('play'),1400); }
+document.getElementById('replayBtn').addEventListener('click', replay);
+
+document.getElementById('copyBtn').addEventListener('click', async e=>{
+  try { await navigator.clipboard.writeText(document.getElementById('comboText').textContent); e.target.textContent='已複製'; }
+  catch { e.target.textContent='請手動選取文字'; }
+  setTimeout(()=>e.target.textContent='複製組合',1500);
+});
+
+render();
+</script>
+</body>
+</html>

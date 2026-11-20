@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>配色收斂 第 3 輪</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+<style>
+/* ───────── 已定案（本輪固定不變） ─────────
+   背景 #0B0D10・字體 Inter Tight / JetBrains Mono / Noto Sans TC
+   形狀：直角・圖示：Phosphor Light・節奏：expo 快出            */
+:root{
+  --bg:#0B0D10;
+  --font-display:"Inter Tight","Noto Sans TC",sans-serif;
+  --font-body:"Inter Tight","Noto Sans TC",sans-serif;
+  --font-mono:"JetBrains Mono",monospace;
+  --radius:0;
+  --ease-out:cubic-bezier(.16,1,.3,1); /* ≈ GSAP expo.out */
+  --page-muted:#8A8F98;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scrollbar-width:none}
+html::-webkit-scrollbar{display:none}
+body{background:#050608;color:#E6E6E6;font:400 15px/1.6 var(--font-body);padding:48px 16px 80px}
+.page-head{max-width:1400px;margin:0 auto 32px}
+.page-head .eyebrow{font:500 12px/1 var(--font-mono);color:var(--page-muted);letter-spacing:.1em;text-transform:uppercase}
+.page-head h1{font-size:clamp(28px,4vw,44px);font-weight:600;letter-spacing:-.03em;margin:10px 0 12px}
+.page-head p{color:var(--page-muted);max-width:780px}
+.page-head p b{color:#E6E6E6;font-weight:500}
+.fixed{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.fixed span{font:400 12px/1 var(--font-mono);color:#C9CCD2;border:1px solid #23262C;padding:7px 9px}
+
+.grid{max-width:1400px;margin:0 auto;display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}
+
+/* ───────── 單張板子（版面固定，只換顏色 token） ───────── */
+.board{
+  background:var(--bg);color:var(--text);border:1px solid var(--line);
+  padding:28px 22px 22px;display:flex;flex-direction:column;gap:26px;position:relative;min-width:0
+}
+.board.recommended{outline:2px solid var(--accent);outline-offset:-2px}
+.rec{position:absolute;top:0;right:0;font:500 12px/1 var(--font-mono);background:var(--accent);color:var(--accent-ink);padding:8px 10px}
+.label{font:500 11px/1.2 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+
+.b-head{display:flex;gap:12px;align-items:baseline}
+.b-id{font:600 36px/1 var(--font-display);color:var(--accent);letter-spacing:-.04em}
+.b-head h2{font:600 22px/1.25 var(--font-display);letter-spacing:-.02em}
+.b-head .kw{font-size:13px;color:var(--muted);margin-top:2px}
+
+.swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 6px}
+.sw{display:flex;flex-direction:column;gap:6px;min-width:0}
+.sw i{display:block;height:40px;border:1px solid var(--line)}
+.sw span{font:400 10px/1.35 var(--font-mono);color:var(--muted)}
+.sw b{font-weight:500;color:var(--text);display:block}
+
+.display{font:500 48px/1 var(--font-display);letter-spacing:-.045em}
+.display-zh{font:700 26px/1.2 var(--font-display);margin-top:10px;letter-spacing:.02em}
+.body{font-size:15px;color:var(--muted);margin-top:12px}
+.code{margin-top:12px;font:400 12.5px/1.6 var(--font-mono);background:var(--surface);border:1px solid var(--line);padding:10px 12px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.code::-webkit-scrollbar{display:none}
+.code .k{color:var(--syn-key)} .code .s{color:var(--syn-str)} .code .n{color:var(--syn-num)} .code .c{color:var(--muted)}
+
+/* 篩選列（參考 Koleksiyon 的分類列） */
+.filters{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.filters button{
+  font:500 13px/1 var(--font-body);background:none;border:0;color:var(--muted);
+  padding:12px 12px 11px;cursor:pointer;position:relative;transition:color .4s var(--ease-out)
+}
+.filters button::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease-out)}
+.filters button:hover{color:var(--text)}
+.filters button[aria-pressed="true"]{color:var(--text)}
+.filters button[aria-pressed="true"]::after{transform:scaleX(1)}
+.filters button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:500 14px/1 var(--font-body);display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border:1px solid transparent;cursor:pointer;transition:transform .5s var(--ease-out),background-color .3s,border-color .3s,color .3s}
+.btn i{font-size:18px}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{transform:translateY(-3px)}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--line-strong)}
+.btn-ghost:hover{border-color:var(--text)}
+.btn-icon{width:42px;padding:0;justify-content:center;background:var(--surface);color:var(--text);border-color:var(--line)}
+.btn-icon:hover{border-color:var(--accent);color:var(--accent)}
+
+.card{background:var(--surface);border:1px solid var(--line);overflow:hidden;transition:border-color .4s}
+.card:hover{border-color:var(--line-strong)}
+.preview{height:150px;display:flex;align-items:flex-end;justify-content:center;gap:10px;padding:24px;background:var(--bg);border-bottom:1px solid var(--line)}
+.preview span{width:22px;background:var(--accent);height:30%;transition:height .8s var(--ease-out)}
+.preview span:nth-child(2){transition-delay:.05s;opacity:.8}
+.preview span:nth-child(3){transition-delay:.1s;opacity:.62}
+.preview span:nth-child(4){transition-delay:.15s;opacity:.46}
+.preview span:nth-child(5){transition-delay:.2s;opacity:.32}
+.card:hover .preview span:nth-child(1){height:90%}
+.card:hover .preview span:nth-child(2){height:70%}
+.card:hover .preview span:nth-child(3){height:85%}
+.card:hover .preview span:nth-child(4){height:55%}
+.card:hover .preview span:nth-child(5){height:75%}
+.card-body{padding:16px}
+.card-body h3{font:600 18px/1.35 var(--font-display);letter-spacing:-.01em}
+.tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.tag{font:500 11px/1 var(--font-mono);padding:5px 8px;border:1px solid var(--line-strong);color:var(--muted)}
+.tag.on{border-color:var(--accent);color:var(--accent)}
+.card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font:400 12px/1 var(--font-mono);color:var(--muted)}
+.card-foot .acts{display:flex;gap:2px}
+.card-foot button{width:32px;height:32px;display:grid;place-items:center;background:none;border:1px solid transparent;color:var(--muted);cursor:pointer;font-size:18px}
+.card-foot button:hover{color:var(--text);border-color:var(--line)}
+
+/* 對比檢查 */
+.contrast{display:grid;gap:4px;font:400 11px/1.4 var(--font-mono);color:var(--muted)}
+.contrast div{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding-bottom:4px}
+.contrast em{font-style:normal;color:var(--text)}
+.contrast .fail em{color:#FF8A8A}
+
+.notes{border-top:1px solid var(--line);padding-top:14px;font-size:13px;color:var(--muted);display:grid;gap:6px}
+.notes b{color:var(--text);font-weight:500}
+
+/* ───────── 四組配色（bg 固定 #0B0D10） ───────── */
+.board[data-p="1"]{ /* 紙白單色 */
+  --text:#ECE9E2;--muted:#8F8C85;--surface:#14161A;--line:#23262B;--line-strong:#3B3E44;
+  --accent:#ECE9E2;--accent-ink:#0B0D10;--syn-key:#ECE9E2;--syn-str:#ABA79E;--syn-num:#ECE9E2}
+.board[data-p="2"]{ /* 紙白＋朱紅 */
+  --text:#EDEAE4;--muted:#8F8C85;--surface:#14161A;--line:#23262B;--line-strong:#3B3E44;
+  --accent:#FF4D2E;--accent-ink:#0B0D10;--syn-key:#FF6B4F;--syn-str:#CFC6B6;--syn-num:#FFB39F}
+.board[data-p="3"]{ /* 冷白＋鈷藍 */
+  --text:#E6EAF2;--muted:#8A93A3;--surface:#12161D;--line:#212733;--line-strong:#39404D;
+  --accent:#5B8CFF;--accent-ink:#0B0D10;--syn-key:#8FB0FF;--syn-str:#9FE3C9;--syn-num:#FFB86B}
+.board[data-p="4"]{ /* 霧白＋薄荷 */
+  --text:#E4EBE8;--muted:#86948F;--surface:#111719;--line:#202A2A;--line-strong:#36423F;
+  --accent:#5EEAB0;--accent-ink:#0B0D10;--syn-key:#5EEAB0;--syn-str:#A6C8FF;--syn-num:#F7C97E}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:420px){.board{padding:24px 16px 18px}.display{font-size:40px}}
+</style>
+</head>
+<body>
+
+<header class="page-head">
+  <div class="eyebrow">Motion Portfolio · Color · Round 3（收斂）</div>
+  <h1>配色收斂：背景固定 #0B0D10</h1>
+  <p>這一輪<b>只換顏色</b>，其他都已定案。四組都從參考網站延伸：Angela Milosevic 的「暖紙白大字＋黑白」、Koleksiyon 的「分類列＋大圖格」。
+     強調色只出現在<b>選取中、可點擊、正在動</b>的地方（篩選底線、主要按鈕、標籤、動畫長條）。滑鼠移到卡片、按鈕和篩選列上，可以看 expo 快出的節奏。</p>
+  <div class="fixed"><span>bg #0B0D10</span><span>Inter Tight＋JetBrains Mono</span><span>直角</span><span>Phosphor Light</span><span>expo.out</span></div>
+</header>
+
+<main class="grid" id="grid"></main>
+
+<template id="tpl">
+  <article class="board">
+    <header class="b-head"><span class="b-id"></span><div><h2></h2><p class="kw"></p></div></header>
+    <section><div class="label">Color</div><div class="swatches"></div></section>
+    <section>
+      <div class="label">Type</div>
+      <div class="display">Motion Lab</div>
+      <div class="display-zh">動態練習所</div>
+      <p class="body">每一個練習都是一層，疊起來才看得見完整的設計語言。</p>
+      <div class="code"><span class="c">// 卡片依序進場</span><br><span class="k">gsap</span>.from(<span class="s">".card"</span>, { y: <span class="n">40</span>, stagger: <span class="n">0.08</span>, ease: <span class="s">"expo.out"</span> })</div>
+    </section>
+    <section>
+      <div class="label">Filter</div>
+      <nav class="filters" aria-label="依 GSAP 主題篩選">
+        <button type="button" aria-pressed="true">全部</button><button type="button" aria-pressed="false">Tween</button><button type="button" aria-pressed="false">Timeline</button><button type="button" aria-pressed="false">Scroll</button>
+      </nav>
+    </section>
+    <section>
+      <div class="label">Buttons</div>
+      <div class="btns">
+        <button class="btn btn-primary" type="button"><i class="ph-light ph-play"></i>重播動畫</button>
+        <button class="btn btn-ghost" type="button"><i class="ph-light ph-code"></i>看程式碼</button>
+        <button class="btn btn-icon" type="button" aria-label="複製"><i class="ph-light ph-copy"></i></button>
+      </div>
+    </section>
+    <section>
+      <div class="label">Card</div>
+      <div class="card">
+        <div class="preview"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="card-body">
+          <h3>Stagger 進場・卡片列表</h3>
+          <div class="tags"><span class="tag on">gsap.from</span><span class="tag">stagger</span><span class="tag">Week 01</span></div>
+          <div class="card-foot"><span>2026.11.19</span>
+            <span class="acts"><button type="button" aria-label="複製程式碼"><i class="ph-light ph-copy"></i></button><button type="button" aria-label="開啟"><i class="ph-light ph-arrow-up-right"></i></button></span></div>
+        </div>
+      </div>
+    </section>
+    <section><div class="label">Contrast（WCAG AA ≥ 4.5）</div><div class="contrast"></div></section>
+    <footer class="notes"></footer>
+  </article>
+</template>
+
+<script>
+// 四組方案的說明文字（顏色值在 CSS 的 [data-p] 裡）
+const PALETTES = [
+  { id:"1", name:"紙白單色", kw:"最貼近兩個參考網站：只有黑與紙白",
+    fit:"畫面最安靜，讓每個練習的動態本身當主角。", care:"沒有彩色，選取狀態只能靠反白和底線；程式碼高亮層次最少。" },
+  { id:"2", name:"紙白＋朱紅", kw:"暖紙白大字，加一點編輯感的紅", rec:true,
+    fit:"保留參考網站的黑白質感，朱紅只當「訊號」：選取、播放、正在動。紅在深色底上最醒目，也最有個性。", care:"紅色常被理解成錯誤；錯誤訊息要另外用圖示＋文字，不能只靠顏色。" },
+  { id:"3", name:"冷白＋鈷藍", kw:"偏冷的科技感，和藍黑底最協調",
+    fit:"跟 #0B0D10 的冷色底最一致，程式碼高亮最舒服、最像開發工具。", care:"藍色是最常見的介面色，個人辨識度比較低。" },
+  { id:"4", name:"霧白＋薄荷", kw:"清爽、偏實驗室，像終端機成功訊號",
+    fit:"薄荷綠明亮但不刺眼，比上一輪的螢光綠溫和。", care:"和上一輪的 B 方向接近；綠色大面積使用時容易偏廉價。" }
+];
+const SW = [["bg","--bg"],["surface","--surface"],["line","--line-strong"],["muted","--muted"],["text","--text"],["accent","--accent"]];
+
+// WCAG 對比計算
+const lum = hex => { const c=hex.replace('#','').match(/../g).map(x=>{const v=parseInt(x,16)/255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)}); return .2126*c[0]+.7152*c[1]+.0722*c[2]; };
+const ratio = (a,b) => { const [x,y]=[lum(a),lum(b)].sort((m,n)=>n-m); return (x+.05)/(y+.05); };
+
+const grid = document.getElementById('grid'), tpl = document.getElementById('tpl');
+PALETTES.forEach(p=>{
+  const el = tpl.content.firstElementChild.cloneNode(true);
+  el.dataset.p = p.id;
+  if (p.rec){ el.classList.add('recommended'); el.insertAdjacentHTML('afterbegin','<span class="rec">推薦</span>'); }
+  el.querySelector('.b-id').textContent = p.id;
+  el.querySelector('h2').textContent = p.name;
+  el.querySelector('.kw').textContent = p.kw;
+  el.querySelector('.notes').innerHTML = `<span><b>適合：</b>${p.fit}</span><span><b>注意：</b>${p.care}</span>`;
+  grid.appendChild(el);
+
+  const cs = getComputedStyle(el), v = k => cs.getPropertyValue(k).trim().toUpperCase();
+  el.querySelector('.swatches').innerHTML = SW.map(([n,k])=>`<div class="sw"><i style="background:${v(k)}"></i><span><b>${n}</b>${v(k)}</span></div>`).join('');
+  const pairs = [["text / bg",v('--text'),v('--bg')],["muted / bg",v('--muted'),v('--bg')],["muted / surface",v('--muted'),v('--surface')],["accent / bg",v('--accent'),v('--bg')],["按鈕字 / accent",v('--accent-ink'),v('--accent')]];
+  el.querySelector('.contrast').innerHTML = pairs.map(([n,a,b])=>{ const r=ratio(a,b); return `<div class="${r<4.5?'fail':''}"><span>${n}</span><em>${r.toFixed(1)} : 1 ${r>=4.5?'✓':'✗'}</em></div>`; }).join('');
+});
+
+// 篩選列：點擊切換選取（示範底線動態）
+grid.addEventListener('click', e=>{
+  const b = e.target.closest('.filters button'); if(!b) return;
+  b.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed', x===b));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+/* ═══════════════════════════════════════════════
+   首頁
+   預設樣式＝動畫的「最終狀態」，沒有 JS 或開啟減少動態時也看得到全部內容
+   ═══════════════════════════════════════════════ */
+
+/* ── 開場 ── */
+/* 有動態時先隱藏，由 home.js 設好初始狀態後再顯示 */
+.intro .hero-pin{visibility:hidden}
+@media (min-width:600px){.intro .site-header .logo{visibility:hidden}}
+.hero{position:relative}
+.hero-pin{
+  position:relative;min-height:72svh; /* 縮短開場：第一個畫面底部就能看到作品區的開頭 */
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+  padding:calc(var(--header-h) + 32px) var(--gutter) 40px;text-align:center;overflow:hidden;
+}
+/* 「■ Motion Lab」：放大版的頁首 logo，比例和頁首一致（方塊約 0.62em） */
+.hero-lockup{
+  display:flex;align-items:center;gap:.2em;width:fit-content;
+  font:600 var(--fs-hero)/.95 var(--font-display);letter-spacing:-.045em;white-space:nowrap;
+}
+.hero-square{width:.62em;height:.62em;background:var(--accent);flex:none;position:relative;z-index:1}
+.hero-title{display:block}
+/* SplitText 的遮罩會裁掉字母下緣（g、y），往下多留一點空間 */
+.hero-title > div{padding-bottom:.12em;margin-bottom:-.12em}
+.hero-sub{max-width:30ch;color:var(--muted);font-size:clamp(15px,1.5vw,19px);line-height:1.65}
+@media (min-width:600px){
+  .hero-pin{height:72svh;min-height:480px} /* 開場佔畫面約 7 成，下方露出作品區，提示「往下還有東西」 */
+}
+
+/* ── 作品區 ── */
+/* 不透明底色＋疊在開場上面：往下捲時像布幕一樣蓋過固定住的開場 */
+.works{position:relative;z-index:1;background:var(--bg)}
+.works{padding-top:0} /* 開場往上捲時，作品區直接接著出現 */
+.works-head{display:flex;align-items:baseline;gap:16px;margin-bottom:24px}
+.works-head h2{font:500 var(--fs-h2)/1.1 var(--font-display);letter-spacing:-.03em}
+
+/* 篩選列（參考 Koleksiyon 的分類列） */
+/* 捲到頂端時吸附在頁首下方，往下看作品時隨時可以切換分類 */
+.filters-bar{
+  position:sticky;top:var(--header-h);z-index:5;background:var(--bg);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:var(--grid-gap);
+}
+.filters{display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filters button{
+  position:relative;flex:none;height:48px;padding:0 14px;
+  font:400 14px/1 var(--font-body);color:var(--muted);transition:color var(--dur-fast);
+}
+.filters button sup{font:400 10px/1 var(--font-mono);margin-left:3px;color:var(--muted)}
+.filters button::after{
+  content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:2px;background:var(--accent-fg);
+  transform:scaleX(0);transform-origin:left;transition:transform var(--dur) var(--ease-out);
+}
+.filters button:hover,.filters button[aria-pressed="true"]{color:var(--text)}
+.filters button[aria-pressed="true"]::after{transform:scaleX(1)}
+.filters button:focus-visible{outline-offset:-2px}
+/* 手機篩選列放不下時：邊緣漸隱，提示「還可以往旁邊滑」（class 由 home.js 依捲動位置切換） */
+.filters.more-end{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 56px),transparent)}
+.filters.more-start{-webkit-mask-image:linear-gradient(90deg,transparent,#000 56px);mask-image:linear-gradient(90deg,transparent,#000 56px)}
+.filters.more-start.more-end{-webkit-mask-image:linear-gradient(90deg,transparent,#000 56px,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(90deg,transparent,#000 56px,#000 calc(100% - 56px),transparent)}
+
+/* 作品格：手機 1 欄、平板以上 2 欄（參考 Koleksiyon 的大圖格） */
+.work-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:calc(var(--grid-gap) * 2) var(--grid-gap)}
+@media (min-width:600px){.work-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.work-card{display:block;position:relative}
+.thumb{
+  position:relative;aspect-ratio:16/10;overflow:hidden;
+  background:var(--bg);border:1px solid var(--line);transition:border-color var(--dur-fast); /* 和作品底色相同，縮小後 iframe 邊緣看不出來 */
+}
+/* 縮圖是真的 iframe：用 960×600 渲染，再由 home.js 的 fitThumb() 縮放置中（統一構圖），會跟著作品自動更新 */
+.thumb iframe{
+  position:absolute;top:0;left:0;width:960px;height:600px;max-width:none;border:0;
+  transform-origin:0 0;transform:scale(.4);pointer-events:none;
+}
+.thumb-go{
+  position:absolute;right:0;bottom:0;z-index:1;width:48px;height:48px;display:grid;place-items:center;
+  background:var(--accent);color:var(--accent-ink);font-size:20px;
+  transform:translate(100%,100%);transition:transform var(--dur) var(--ease-out);
+}
+.work-card:hover .thumb,.work-card:focus-visible .thumb{border-color:var(--accent-fg)}
+.work-card:hover .thumb-go,.work-card:focus-visible .thumb-go{transform:none}
+.work-card:focus-visible{outline-offset:6px}
+
+.work-meta{display:grid;grid-template-columns:1fr auto;gap:6px 16px;padding-top:16px}
+.work-meta h3{font:500 var(--fs-h3)/1.35 var(--font-display);letter-spacing:-.01em}
+.work-meta .topic{font:400 12px/1.8 var(--font-mono);color:var(--accent-fg);text-align:right;white-space:nowrap}
+.work-meta p{grid-column:1/-1;color:var(--muted);font-size:var(--fs-small);max-width:52ch}
+.work-meta .tags{grid-column:1/-1;margin-top:6px}
+
+.empty{padding:64px 0;color:var(--muted);text-align:center;border-bottom:1px solid var(--line)}

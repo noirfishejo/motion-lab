@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Motion Lab</title>
+  <meta name="description" content="UIUX 設計師的 GSAP 動態練習庫">
+  <!-- 有動態時，先把開場藏起來，等 GSAP 設好初始狀態再顯示（避免一載入就閃出方塊和文字） -->
+  <!-- 保險：4 秒後還沒開始（例如 GSAP 載不到），就直接顯示 -->
+  <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('intro'); setTimeout(() => document.documentElement.classList.remove('intro'), 4000); }</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&family=Noto+Sans+TC:wght@400;500&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="nav.skip"></a>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html" data-i18n-attr="aria-label:nav.home">
+        <span class="logo-mark" aria-hidden="true"></span><span class="logo-text">Motion Lab</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- ── 開場：藍色方塊在中央旋轉放大 → 滑到左邊拉出標題
+             往下捲：方塊和標題一起縮小、飛進左上角，變成頁首的 logo ── -->
+    <section class="hero" id="top">
+      <div class="hero-pin">
+        <h1 class="hero-lockup" aria-label="Motion Lab">
+          <span class="hero-square" aria-hidden="true"></span>
+          <span class="hero-title" aria-hidden="true">Motion Lab</span>
+        </h1>
+        <p class="hero-sub" data-i18n="home.hero.sub"></p>
+      </div>
+    </section>
+
+    <!-- ── 作品 ── -->
+    <section class="works container" id="works" aria-labelledby="works-title">
+      <div class="works-head">
+        <h2 id="works-title" data-i18n="home.works.title"></h2>
+      </div>
+
+      <!-- 外層負責吸附和不透明底色；內層負責橫向捲動和邊緣漸隱（漸隱才不會透出後面的卡片） -->
+      <div class="filters-bar"><nav class="filters" aria-label="" data-i18n-attr="aria-label:home.filter.label"></nav></div>
+
+      <div class="work-grid" id="workGrid"></div>
+      <p class="empty" id="empty" hidden data-i18n="home.works.empty"></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span data-i18n="footer.left"></span>
+      <a href="#top" data-to-top data-i18n="footer.right"></a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script type="module" src="js/home.js"></script>
+</body>
+</html>

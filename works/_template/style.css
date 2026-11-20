@@ -1,0 +1,26 @@
+:root {
+  --bg: #0B0D10;
+  --text: #EDEAE4;
+  --accent: #1733E5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+}
+
+.box {
+  width: 96px;
+  height: 96px;
+  background: var(--accent);
+}

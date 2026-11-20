@@ -1,0 +1,94 @@
+/* ═══════════════════════════════════════════════
+   Design Tokens：全站唯一的數值來源
+   要改顏色、字體、間距，改這裡就會全部同步
+   ═══════════════════════════════════════════════ */
+:root{
+  /* ── 顏色 ── */
+  --bg:#0B0D10;
+  --surface:#14161A;
+  --surface-2:#1B1E23;
+  --line:#23262B;
+  --line-strong:#3B3E44;
+  --text:#EDEAE4;
+  --muted:#8F8C85;
+
+  --accent:#1733E5;      /* 填色：按鈕、色塊（上面放白字） */
+  --accent-ink:#FFFFFF;  /* 放在 accent 上的字 */
+  --accent-fg:#6E83FF;   /* 深色底上的強調字和線（#1733E5 太暗不能當字） */
+
+  /* 程式碼語法色 */
+  --syn-key:#8C9DFF;
+  --syn-str:#9FE3C9;
+  --syn-num:#FFC98A;
+  --syn-fn:#EDEAE4;
+  --syn-tag:#FF9EA8;
+  --syn-attr:#C9B8FF;
+  --syn-comment:#7D7A73;
+  --syn-linenum:#76736C; /* 對比 4.1:1 */
+  --syn-error:#FF9A9A;
+  --selection:rgba(110,131,255,.28);
+  --scrim:rgba(11,13,16,.72);       /* 側欄打開時蓋住後方內容 */ /* 選取文字的底色：accent-fg 半透明 */
+
+  /* ── 字體 ── */
+  --font-display:"Poppins","Noto Sans TC",sans-serif;
+  --font-body:"Inter Tight","Noto Sans TC",sans-serif;
+  --font-mono:"JetBrains Mono","Noto Sans TC",monospace;
+
+  /* 字級（手機基準，平板、電腦在下方覆寫） */
+  --fs-hero:clamp(40px,13vw,88px);
+  --fs-h1:36px;
+  --fs-title:26px;      /* 作品頁標題：比 h1 小，留空間給預覽和程式碼 */
+  --fs-h2:28px;
+  --fs-h3:19px;
+  --fs-body:15px;
+  --fs-small:13px;
+  --fs-label:11px;
+
+  /* ── 間距與版面 ── */
+  --gutter:16px;
+  --max:1440px;
+  --header-h:56px;
+  --section-gap:96px;
+  --grid-gap:16px;
+  --tap:44px;            /* 觸控按鈕的最小尺寸 */
+  --side-w:232px;        /* 作品列表側欄寬度 */
+
+  /* ── 形狀：直角 ── */
+  --radius:0;
+
+  /* ── 動態 ── */
+  --ease-out:cubic-bezier(.16,1,.3,1); /* ≈ GSAP expo.out */
+  --dur-fast:.3s;
+  --dur:.6s;
+}
+
+/* 平板 600–1023px：獨立一套尺寸，不是電腦版直接縮小 */
+@media (min-width:600px){
+  :root{
+    --fs-hero:clamp(88px,13vw,140px);
+    --fs-h1:48px;
+    --fs-title:30px;
+    --fs-h2:34px;
+    --fs-h3:20px;
+    --gutter:32px;
+    --header-h:64px;
+    --section-gap:120px;
+    --grid-gap:20px;
+  }
+}
+
+/* 電腦 ≥1024px */
+@media (min-width:1024px){
+  :root{
+    --fs-hero:clamp(140px,13vw,240px);
+    --fs-h1:64px;
+    --fs-title:36px;
+    --fs-h2:44px;
+    --fs-h3:22px;
+    --fs-body:16px;
+    --gutter:48px;
+    --header-h:72px;
+    --section-gap:160px;
+    --grid-gap:24px;
+  }
+}

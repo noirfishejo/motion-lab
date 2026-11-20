@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>02 Timeline Sequencing</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&family=Noto+Sans+TC:wght@400;500&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+
+    <!-- 手機畫面大小的 Onboarding 卡片：三個步驟疊在同一個位置 -->
+    <section class="device" aria-label="Onboarding example">
+      <article class="step" data-step="1">
+        <span class="icon"><i class="ph-light ph-hand-waving"></i></span>
+        <h2 class="mask"><span>Welcome</span></h2>
+        <p>Set things up in three steps. It takes about a minute.</p>
+      </article>
+      <article class="step" data-step="2">
+        <span class="icon"><i class="ph-light ph-sliders-horizontal"></i></span>
+        <h2 class="mask"><span>Pick your interests</span></h2>
+        <p>Tell us what you like and we will tailor the content.</p>
+      </article>
+      <article class="step" data-step="3">
+        <span class="icon"><i class="ph-light ph-check-circle"></i></span>
+        <h2 class="mask"><span>All set</span></h2>
+        <p>Start exploring what we picked for you.</p>
+      </article>
+
+      <div class="dots" aria-hidden="true">
+        <span class="dot"><i></i></span><span class="dot"><i></i></span><span class="dot"><i></i></span>
+      </div>
+    </section>
+
+    <!-- 時間軸視覺化：藍色播放頭跟著 timeline 的進度走，刻度是 label 的位置 -->
+    <div class="ruler" aria-hidden="true">
+      <div class="ruler-track"><span class="playhead"></span></div>
+      <div class="ruler-labels"></div>
+    </div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

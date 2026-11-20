@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>配色收斂 第 3 輪 B</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+<style>
+/* ───────── 已定案（本輪固定） ─────────
+   背景 #0B0D10・標題 Poppins／內文 Inter Tight／程式碼 JetBrains Mono／中文 Noto Sans TC
+   形狀：直角・圖示：Phosphor Light・節奏：expo 快出                       */
+:root{
+  --bg:#0B0D10;
+  --font-display:"Poppins","Noto Sans TC",sans-serif;
+  --font-body:"Inter Tight","Noto Sans TC",sans-serif;
+  --font-mono:"JetBrains Mono",monospace;
+  --ease-out:cubic-bezier(.16,1,.3,1); /* ≈ GSAP expo.out */
+  --page-muted:#8A8F98;
+}
+/* 中性色兩組：可在頁面上方切換 */
+body[data-n="warm"]{--text:#EDEAE4;--muted:#8F8C85;--surface:#14161A;--line:#23262B;--line-strong:#3B3E44}
+body[data-n="cool"]{--text:#E6EAF2;--muted:#8A93A3;--surface:#12161D;--line:#212733;--line-strong:#39404D}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scrollbar-width:none}
+html::-webkit-scrollbar{display:none}
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background:#050608;color:#E6E6E6;font:400 15px/1.6 var(--font-body);padding:48px 16px 80px}
+.page-head{max-width:1400px;margin:0 auto 28px}
+.page-head .eyebrow{font:500 12px/1 var(--font-mono);color:var(--page-muted);letter-spacing:.1em;text-transform:uppercase}
+.page-head h1{font:600 clamp(26px,4vw,40px)/1.2 var(--font-display);letter-spacing:-.03em;margin:10px 0 12px}
+.page-head p{color:var(--page-muted);max-width:800px}
+.page-head p b{color:#E6E6E6;font-weight:500}
+.toolbar{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:16px}
+.fixed{display:flex;flex-wrap:wrap;gap:6px}
+.fixed span{font:400 12px/1 var(--font-mono);color:#C9CCD2;border:1px solid #23262C;padding:7px 9px}
+.seg{display:flex;align-items:center;gap:0;border:1px solid #2A2D33}
+.seg span{font:400 12px/1 var(--font-mono);color:var(--page-muted);padding:0 10px}
+.seg button{font:500 13px/1 var(--font-body);height:32px;padding:0 12px;background:none;border:0;border-left:1px solid #2A2D33;color:#C9CCD2;cursor:pointer}
+.seg button[aria-pressed="true"]{background:#E6E6E6;color:#0B0D10}
+.seg button:focus-visible{outline:2px solid #E6E6E6;outline-offset:2px}
+
+.grid{max-width:1400px;margin:0 auto;display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}
+
+/* ───────── 單張板子 ───────── */
+.board{background:var(--bg);color:var(--text);border:1px solid var(--line);padding:28px 22px 22px;display:flex;flex-direction:column;gap:26px;position:relative;min-width:0}
+.board.recommended{outline:2px solid var(--accent-fg);outline-offset:-2px}
+.board.baseline{opacity:.92}
+.rec{position:absolute;top:0;right:0;font:500 12px/1 var(--font-mono);background:var(--accent);color:var(--accent-ink);padding:8px 10px}
+.label{font:500 11px/1.2 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+
+.b-head{display:flex;gap:12px;align-items:baseline}
+.b-id{font:700 34px/1 var(--font-display);color:var(--accent-fg);letter-spacing:-.04em}
+.b-head h2{font:600 21px/1.3 var(--font-display);letter-spacing:-.02em}
+.b-head .kw{font-size:13px;color:var(--muted);margin-top:2px}
+
+.swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 6px}
+.sw{display:flex;flex-direction:column;gap:6px;min-width:0}
+.sw i{display:block;height:40px;border:1px solid var(--line)}
+.sw span{font:400 10px/1.35 var(--font-mono);color:var(--muted);min-height:4.05em} /* 3 行高，讓每張板子的版面對齊 */
+.sw b{font-weight:500;color:var(--text);display:block}
+
+.display{font:600 46px/1.05 var(--font-display);letter-spacing:-.035em}
+.display-zh{font:500 26px/1.2 var(--font-display);margin-top:10px;letter-spacing:.02em}
+.body{font-size:15px;color:var(--muted);margin-top:12px}
+.code{margin-top:12px;font:400 12.5px/1.6 var(--font-mono);background:var(--surface);border:1px solid var(--line);padding:10px 12px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.code::-webkit-scrollbar{display:none}
+.code .k{color:var(--syn-key)} .code .s{color:var(--syn-str)} .code .n{color:var(--syn-num)} .code .c{color:var(--muted)}
+
+.filters{display:flex;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.filters button{font:500 13px/1 var(--font-body);background:none;border:0;color:var(--muted);padding:12px 12px 11px;cursor:pointer;position:relative;transition:color .4s var(--ease-out)}
+.filters button::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;background:var(--accent-fg);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease-out)}
+.filters button:hover,.filters button[aria-pressed="true"]{color:var(--text)}
+.filters button[aria-pressed="true"]::after{transform:scaleX(1)}
+.filters button:focus-visible{outline:2px solid var(--accent-fg);outline-offset:-2px}
+
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:400 14px/1 var(--font-body);display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border:1px solid transparent;cursor:pointer;transition:transform .5s var(--ease-out),background-color .3s,border-color .3s,color .3s}
+.btn i{font-size:18px}
+.btn:focus-visible{outline:2px solid var(--accent-fg);outline-offset:3px}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{transform:translateY(-3px)}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--line-strong)}
+.btn-ghost:hover{border-color:var(--text)}
+.btn-icon{width:42px;padding:0;justify-content:center;background:var(--surface);color:var(--text);border-color:var(--line)}
+.btn-icon:hover{border-color:var(--accent-fg);color:var(--accent-fg)}
+
+.card{background:var(--surface);border:1px solid var(--line);overflow:hidden;transition:border-color .4s}
+.card:hover{border-color:var(--line-strong)}
+.preview{height:150px;display:flex;align-items:flex-end;justify-content:center;gap:10px;padding:24px;background:var(--bg);border-bottom:1px solid var(--line)}
+.preview span{width:22px;background:var(--accent);height:30%;transition:height .8s var(--ease-out)}
+.preview span:nth-child(2){transition-delay:.05s;opacity:.8}
+.preview span:nth-child(3){transition-delay:.1s;opacity:.62}
+.preview span:nth-child(4){transition-delay:.15s;opacity:.46}
+.preview span:nth-child(5){transition-delay:.2s;opacity:.32}
+.card:hover .preview span:nth-child(1){height:90%}
+.card:hover .preview span:nth-child(2){height:70%}
+.card:hover .preview span:nth-child(3){height:85%}
+.card:hover .preview span:nth-child(4){height:55%}
+.card:hover .preview span:nth-child(5){height:75%}
+.card-body{padding:16px}
+.card-body h3{font:600 17px/1.4 var(--font-display);letter-spacing:-.01em}
+.tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.tag{font:500 11px/1 var(--font-mono);padding:5px 8px;border:1px solid var(--line-strong);color:var(--muted)}
+.tag.on{border-color:var(--accent-fg);color:var(--accent-fg)}
+.card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font:400 12px/1 var(--font-mono);color:var(--muted)}
+.card-foot .acts{display:flex;gap:2px}
+.card-foot button{width:32px;height:32px;display:grid;place-items:center;background:none;border:1px solid transparent;color:var(--muted);cursor:pointer;font-size:18px}
+.card-foot button:hover{color:var(--text);border-color:var(--line)}
+
+.contrast{display:grid;gap:4px;font:400 11px/1.4 var(--font-mono);color:var(--muted)}
+.contrast div{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding-bottom:4px}
+.contrast em{font-style:normal;color:var(--text);white-space:nowrap}
+.contrast .fail em{color:#FF9A9A}
+
+.notes{border-top:1px solid var(--line);padding-top:14px;font-size:13px;color:var(--muted);display:grid;gap:6px}
+.notes b{color:var(--text);font-weight:500}
+
+/* ───────── 強調色
+   --accent    填色：主要按鈕、動畫長條、徽章
+   --accent-fg 深色底上的「字和線」：篩選底線、標籤、編號、焦點框
+   兩者通常相同；只有填色太暗、在深底上讀不清時才另配一個較亮的同色相 ───────── */
+.board[data-p="blue"]  {--accent:#1733E5;--accent-fg:#6E83FF;--accent-ink:#FFFFFF;--syn-key:#8C9DFF;--syn-str:#9FE3C9;--syn-num:#FFC98A}
+.board[data-p="yellow"]{--accent:#F8F86C;--accent-fg:#F8F86C;--accent-ink:#0B0D10;--syn-key:#F8F86C;--syn-str:#9FD3FF;--syn-num:#FFA3A3}
+.board[data-p="coral"] {--accent:#FF6F72;--accent-fg:#FF6F72;--accent-ink:#0B0D10;--syn-key:#FF8A8C;--syn-str:#D9CDB8;--syn-num:#FFD08A}
+.board[data-p="ref"]   {--accent:#FF4D2E;--accent-fg:#FF4D2E;--accent-ink:#0B0D10;--syn-key:#FF6B4F;--syn-str:#CFC6B6;--syn-num:#FFB39F}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:420px){.board{padding:24px 16px 18px}.display{font-size:38px}}
+</style>
+</head>
+<body data-n="warm">
+
+<header class="page-head">
+  <div class="eyebrow">Motion Portfolio · Color · Round 3B</div>
+  <h1>強調色比較：#1733E5・#F8F86C・#FF6F72</h1>
+  <p>這一輪<b>只換強調色</b>，標題字改成 <b>Poppins</b>。最右邊放上一輪推薦的朱紅當對照。
+     上方可以切換<b>暖色或冷色的中性色</b>（文字、表面、線條），看哪一組和強調色比較搭。</p>
+  <div class="toolbar">
+    <div class="seg" role="group" aria-label="中性色">
+      <span>中性色</span>
+      <button type="button" data-n="warm" aria-pressed="true">暖・紙白</button>
+      <button type="button" data-n="cool" aria-pressed="false">冷・霧白</button>
+    </div>
+    <div class="fixed"><span>bg #0B0D10</span><span>Poppins＋Inter Tight</span><span>直角</span><span>Phosphor Light</span><span>expo.out</span></div>
+  </div>
+</header>
+
+<main class="grid" id="grid"></main>
+
+<template id="tpl">
+  <article class="board">
+    <header class="b-head"><span class="b-id"></span><div><h2></h2><p class="kw"></p></div></header>
+    <section><div class="label">Color</div><div class="swatches"></div></section>
+    <section>
+      <div class="label">Type</div>
+      <div class="display">Motion Lab</div>
+      <div class="display-zh">動態練習所</div>
+      <p class="body">每一個練習都是一層，疊起來才看得見完整的設計語言。</p>
+      <div class="code"><span class="c">// 卡片依序進場</span><br><span class="k">gsap</span>.from(<span class="s">".card"</span>, { y: <span class="n">40</span>, stagger: <span class="n">0.08</span>, ease: <span class="s">"expo.out"</span> })</div>
+    </section>
+    <section>
+      <div class="label">Filter</div>
+      <nav class="filters" aria-label="依 GSAP 主題篩選">
+        <button type="button" aria-pressed="true">全部</button><button type="button" aria-pressed="false">Tween</button><button type="button" aria-pressed="false">Timeline</button><button type="button" aria-pressed="false">Scroll</button>
+      </nav>
+    </section>
+    <section>
+      <div class="label">Buttons</div>
+      <div class="btns">
+        <button class="btn btn-primary" type="button"><i class="ph-light ph-play"></i>重播動畫</button>
+        <button class="btn btn-ghost" type="button"><i class="ph-light ph-code"></i>看程式碼</button>
+        <button class="btn btn-icon" type="button" aria-label="複製"><i class="ph-light ph-copy"></i></button>
+      </div>
+    </section>
+    <section>
+      <div class="label">Card</div>
+      <div class="card">
+        <div class="preview"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="card-body">
+          <h3>Stagger 進場・卡片列表</h3>
+          <div class="tags"><span class="tag on">gsap.from</span><span class="tag">stagger</span><span class="tag">Week 01</span></div>
+          <div class="card-foot"><span>2026.11.19</span>
+            <span class="acts"><button type="button" aria-label="複製程式碼"><i class="ph-light ph-copy"></i></button><button type="button" aria-label="開啟"><i class="ph-light ph-arrow-up-right"></i></button></span></div>
+        </div>
+      </div>
+    </section>
+    <section><div class="label">Contrast（文字 ≥ 4.5／非文字 ≥ 3）</div><div class="contrast"></div></section>
+    <footer class="notes"></footer>
+  </article>
+</template>
+
+<script>
+const PALETTES = [
+  { id:"blue", no:"1", name:"克萊因藍", hex:"#1733E5", kw:"深而飽和的藍，填色很有份量",
+    fit:"當按鈕、色塊等大面積填色時最有質感，配白字對比很高。", care:"這個藍太暗，直接當字或細線放在深色底上看不清楚（約 2.4:1）。所以字和線要另外用較亮的同色系 #6E83FF，等於要管理兩個強調色。" },
+  { id:"yellow", no:"2", name:"檸檬黃", hex:"#F8F86C", kw:"最亮、最搶眼，像螢光筆畫重點",
+    fit:"在深色底上辨識度最高，「正在動」的感覺最強烈。", care:"黃色的亮度接近白色文字，容易跟標題搶視線；大面積使用會刺眼，只能用在小地方。" },
+  { id:"coral", no:"3", name:"珊瑚紅", hex:"#FF6F72", kw:"比朱紅柔和，帶一點粉", rec:true,
+    fit:"對比充足（約 7:1），一個顏色就能同時當填色和文字，最好管理。暖紙白的中性色最搭，保留參考網站的編輯感。", care:"和朱紅一樣，要避免被誤認為錯誤狀態；錯誤訊息需搭配圖示和文字。" },
+  { id:"ref", no:"·", name:"朱紅（對照）", hex:"#FF4D2E", kw:"上一輪推薦，放著比較用", baseline:true,
+    fit:"比珊瑚紅更飽和、更有力。", care:"偏橘，比較銳利。" }
+];
+const SW = [["bg","--bg"],["surface","--surface"],["line","--line-strong"],["muted","--muted"],["text","--text"],["accent","--accent"]];
+
+const lum = hex => { const c=hex.replace('#','').match(/../g).map(x=>{const v=parseInt(x,16)/255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)}); return .2126*c[0]+.7152*c[1]+.0722*c[2]; };
+const ratio = (a,b) => { const [x,y]=[lum(a),lum(b)].sort((m,n)=>n-m); return (x+.05)/(y+.05); };
+
+const grid = document.getElementById('grid'), tpl = document.getElementById('tpl');
+PALETTES.forEach(p=>{
+  const el = tpl.content.firstElementChild.cloneNode(true);
+  el.dataset.p = p.id;
+  if (p.rec){ el.classList.add('recommended'); el.insertAdjacentHTML('afterbegin','<span class="rec">推薦</span>'); }
+  if (p.baseline) el.classList.add('baseline');
+  el.querySelector('.b-id').textContent = p.no;
+  el.querySelector('h2').textContent = `${p.name} ${p.hex}`;
+  el.querySelector('.kw').textContent = p.kw;
+  el.querySelector('.notes').innerHTML = `<span><b>適合：</b>${p.fit}</span><span><b>注意：</b>${p.care}</span>`;
+  grid.appendChild(el);
+});
+
+function paint(){
+  document.querySelectorAll('.board').forEach(el=>{
+    const cs = getComputedStyle(el), v = k => cs.getPropertyValue(k).trim().toUpperCase();
+    // 版面固定 6 格；填色和字線色不同時，accent 那格左右各半顯示
+    const split = v('--accent-fg')!==v('--accent');
+    el.querySelector('.swatches').innerHTML = SW.map(([n,k])=>{
+      if (k==='--accent' && split) return `<div class="sw"><i style="background:linear-gradient(90deg,${v('--accent')} 50%,${v('--accent-fg')} 50%)"></i><span><b>accent／字線</b>${v('--accent')}<br>${v('--accent-fg')}</span></div>`;
+      return `<div class="sw"><i style="background:${v(k)}"></i><span><b>${n}</b>${v(k)}</span></div>`;
+    }).join('');
+    const pairs = [
+      ["text / bg", v('--text'), v('--bg'), 4.5],
+      ["muted / surface", v('--muted'), v('--surface'), 4.5],
+      ["強調字線 / bg", v('--accent-fg'), v('--bg'), 4.5],
+      ["按鈕字 / 填色", v('--accent-ink'), v('--accent'), 4.5],
+      ["填色 / bg（非文字）", v('--accent'), v('--bg'), 3]
+    ];
+    el.querySelector('.contrast').innerHTML = pairs.map(([n,a,b,min])=>{ const r=ratio(a,b); return `<div class="${r<min?'fail':''}"><span>${n}</span><em>${r.toFixed(1)} : 1 ${r>=min?'✓':'✗'}</em></div>`; }).join('');
+  });
+}
+paint();
+
+// 中性色切換
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{
+  document.body.dataset.n = b.dataset.n;
+  document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed', x===b));
+  paint();
+}));
+
+// 篩選列示範
+grid.addEventListener('click', e=>{
+  const b = e.target.closest('.filters button'); if(!b) return;
+  b.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed', x===b));
+});
+</script>
+</body>
+</html>

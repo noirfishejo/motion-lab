@@ -1,0 +1,107 @@
+:root {
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --line: #23262B;
+  --text: #EDEAE4;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", "Noto Sans TC", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 頁首：固定在畫面上方
+   做成「浮起來的一條」，和外面網站的頁首看起來不一樣，放進作品頁預覽時才不會混淆 ── */
+.bar {
+  position: fixed;
+  inset: 12px 12px auto 12px;
+  z-index: 10;
+  height: 52px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 600 18px/1 "Poppins", sans-serif;
+  letter-spacing: -0.03em;
+}
+.mark {
+  width: 14px;
+  height: 14px;
+  background: var(--accent);
+}
+/* 捲動進度：放左下角，避開右側的 markers 標記 */
+.progress {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 10;
+  padding: 8px 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font: 400 12px/1 "JetBrains Mono", monospace;
+  color: var(--accent-fg);
+}
+
+/* 字母遮罩：每個字母外面包一層會裁切的 span（script.js 自動產生） */
+.char-mask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+.char { display: inline-block; }
+
+/* ── 開場 ── */
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+.lockup {
+  display: flex;
+  align-items: center;
+  gap: 0.2em;
+  font: 600 clamp(40px, 10vw, 120px)/1 "Poppins", sans-serif;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+}
+.title { font: inherit; } /* h1 預設會把字放大 2 倍，這裡改成跟著 .lockup */
+.slot {
+  width: 0.62em;
+  height: 0.62em;
+  flex: none;
+  visibility: hidden; /* 看不見，只用來量位置 */
+}
+.hint {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ── 下方內容 ── */
+.content {
+  min-height: 120vh;
+  padding: 64px 24px;
+  max-width: 560px;
+  margin: 0 auto;
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  color: var(--muted);
+  line-height: 1.7;
+}

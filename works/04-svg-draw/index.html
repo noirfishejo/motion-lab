@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>04 SVG Draw: Smiley</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono&family=Noto+Sans+TC:wght@400;500&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+
+    <!-- Phosphor「Smiley」圖示（Regular）的線條版本
+         Phosphor 下載的 SVG 是外框填色（fill），沒辦法描邊；
+         這裡照原本的尺寸改成線條（stroke）：圓 r=96、線寬 16，眼睛、微笑位置都一樣 -->
+    <svg class="smiley" viewBox="0 0 256 256" aria-label="Smiley icon">
+      <!-- 1. 圓：轉 -90° 讓描邊從正上方開始 -->
+      <circle class="face" cx="128" cy="128" r="96" transform="rotate(-90 128 128)" />
+      <!-- 2、3. 眼睛：半徑 6、線寬 12 的圓 = 畫完會變成實心圓點 -->
+      <circle class="eye eye-left"  cx="92"  cy="108" r="6" transform="rotate(-90 92 108)" />
+      <circle class="eye eye-right" cx="164" cy="108" r="6" transform="rotate(-90 164 108)" />
+      <!-- 4. 微笑：從左嘴角畫到右嘴角 -->
+      <path class="smile" d="M88,152 C96.8,167.2 111.4,176 128,176 C144.6,176 159.2,167.2 168,152" />
+    </svg>
+
+    <!-- 步驟：畫到哪一步就亮哪一個；點擊可以從那一步開始播放 -->
+    <ol class="steps">
+      <li><button type="button" data-step="face">Face</button></li>
+      <li><button type="button" data-step="left">Left eye</button></li>
+      <li><button type="button" data-step="right">Right eye</button></li>
+      <li><button type="button" data-step="smile">Smile</button></li>
+    </ol>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

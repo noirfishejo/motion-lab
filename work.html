@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Motion Lab</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&family=Noto+Sans+TC:wght@400;500&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <link rel="stylesheet" href="css/work.css">
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="nav.skip"></a>
+
+  <header class="site-header is-scrolled">
+    <div class="container">
+      <div class="header-start">
+        <!-- 作品列表側欄的開關 -->
+        <button class="icon-toggle" type="button" id="worksNavToggle" aria-expanded="false" aria-controls="worksNav" data-i18n-attr="aria-label:work.list;title:work.list">
+          <i class="ph-light ph-sidebar-simple" aria-hidden="true"></i>
+        </button>
+        <a class="logo" href="index.html" data-i18n-attr="aria-label:nav.home">
+        <span class="logo-mark" aria-hidden="true"></span><span class="logo-text">Motion Lab</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="work container" id="main" tabindex="-1">
+
+    <!-- 標題區 -->
+    <header class="work-head" data-reveal>
+      <h1 id="workTitle"></h1>
+      <div class="work-info">
+        <p id="workSummary"></p>
+        <div class="work-facts">
+          <span class="tag is-accent" id="workTopic"></span>
+          <span class="date" id="workDate"></span>
+        </div>
+        <div class="tags" id="workTags"></div>
+      </div>
+    </header>
+
+    <div class="work-body">
+      <div class="work-main">
+        <!-- 預覽 -->
+        <section class="panel" aria-labelledby="previewLabel" data-reveal>
+          <div class="panel-bar">
+            <span class="label" id="previewLabel" data-i18n="work.preview"></span>
+            <div class="panel-actions">
+              <button class="switch" type="button" role="switch" id="markersSwitch" aria-checked="true" hidden data-i18n-attr="title:work.markersHint">
+                <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+                <span data-i18n="work.markers"></span>
+              </button>
+              <button class="btn btn-ghost btn-sm" type="button" id="replayBtn"><i class="ph-light ph-arrow-counter-clockwise"></i><span data-i18n="work.replay"></span></button>
+              <button class="btn btn-icon btn-sm" type="button" id="fullBtn" data-i18n-attr="aria-label:work.fullscreen;title:work.fullscreen"><i class="ph-light ph-arrows-out"></i></button>
+              <button class="btn btn-primary btn-sm" type="button" id="exitFullBtn" hidden><i class="ph-light ph-x"></i><span data-i18n="work.exitFullscreen"></span></button>
+            </div>
+          </div>
+          <div class="preview-frame" id="previewWrap">
+            <iframe id="previewFrame" title=""></iframe>
+            <!-- 捲動類練習：預設蓋一層，滑鼠滾輪才不會被預覽「吃掉」；點一下才在預覽裡捲動 -->
+            <button class="frame-cover" type="button" id="frameCover" hidden>
+              <span class="frame-cover-chip"><i class="ph-light ph-mouse-scroll" aria-hidden="true"></i><span data-i18n="work.scrollCover"></span></span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 程式碼：預設收合；展開後可直接編輯，預覽即時更新 -->
+        <section class="panel code-panel" data-reveal>
+          <button class="code-toggle" type="button" id="codeToggle" aria-expanded="false" aria-controls="codeBody">
+            <i class="ph-light ph-caret-right toggle-icon" aria-hidden="true"></i>
+            <span class="toggle-title" data-i18n="work.codeToggle"></span>
+            <span class="modified-badge" data-modified-badge hidden data-i18n="work.modified"></span>
+            <span class="toggle-hint" data-i18n="work.codeHint"></span>
+          </button>
+
+          <div class="code-body" id="codeBody" hidden>
+            <div class="panel-bar code-bar">
+              <div class="code-tabs" role="tablist" data-i18n-attr="aria-label:work.codeTabs">
+                <button role="tab" type="button" id="tab-html" aria-controls="editorWrap" aria-selected="false" tabindex="-1" data-lang="html">HTML</button>
+                <button role="tab" type="button" id="tab-css" aria-controls="editorWrap" aria-selected="false" tabindex="-1" data-lang="css">CSS</button>
+                <button role="tab" type="button" id="tab-js" aria-controls="editorWrap" aria-selected="true" data-lang="js">JS</button>
+              </div>
+              <span class="modified-badge" data-modified-badge hidden data-i18n="work.modified"></span>
+              <div class="panel-actions">
+                <button class="btn btn-ghost btn-sm" type="button" id="resetBtn" disabled><i class="ph-light ph-arrow-u-up-left"></i><span data-i18n="work.reset"></span></button>
+                <button class="btn btn-ghost btn-sm" type="button" id="saveBtn" disabled><i class="ph-light ph-floppy-disk"></i><span data-i18n="work.save"></span></button>
+                <button class="btn btn-ghost btn-sm" type="button" id="copyBtn"><i class="ph-light ph-copy"></i><span data-i18n="work.copy"></span></button>
+                <button class="btn btn-primary btn-sm" type="button" id="copyAllBtn"><i class="ph-light ph-file-html"></i><span data-i18n="work.copyAll"></span></button>
+              </div>
+            </div>
+            <!-- 存檔前的確認：列出會被覆寫的檔案 -->
+            <div class="save-confirm" id="saveConfirm" hidden>
+              <p id="saveConfirmText"></p>
+              <div class="panel-actions">
+                <button class="btn btn-primary btn-sm" type="button" id="saveYes"><span data-i18n="work.saveConfirmYes"></span></button>
+                <button class="btn btn-ghost btn-sm" type="button" id="saveNo"><span data-i18n="work.saveConfirmNo"></span></button>
+              </div>
+            </div>
+            <div class="editor-wrap" id="editorWrap" role="tabpanel" aria-labelledby="tab-js"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 筆記 -->
+      <aside class="work-side" data-reveal>
+        <h2 class="label" data-i18n="work.notes"></h2>
+        <ol class="notes" id="notes"></ol>
+      </aside>
+    </div>
+
+    <nav class="pager" id="pager" aria-label=""></nav>
+    <!-- 手機：展開程式碼、預覽捲出畫面時，出現「看預覽」按鈕 -->
+    <button class="btn btn-primary to-preview" type="button" id="toPreview" aria-hidden="true" tabindex="-1"><i class="ph-light ph-eye"></i><span data-i18n="work.toPreview"></span></button>
+    <!-- 給讀屏軟體的狀態訊息（複製、存檔的結果），畫面上看不到 -->
+    <p class="visually-hidden" id="status" role="status" aria-live="polite"></p>
+  </main>
+
+  <!-- 作品列表側欄：電腦寬螢幕（≥1280px）固定在左側、可收合；較窄時覆蓋在畫面上方 -->
+  <aside class="works-nav" id="worksNav" aria-labelledby="worksNavTitle">
+    <h2 class="visually-hidden" id="worksNavTitle" data-i18n="work.listTitle"></h2>
+    <div class="works-nav-list" id="worksNavList"></div>
+  </aside>
+  <div class="works-nav-scrim" id="worksNavScrim" hidden></div>
+
+  <!-- 找不到作品時顯示 -->
+  <main class="not-found container" id="notFound" hidden>
+    <p class="label">404</p>
+    <h1 data-i18n="work.notFound.title"></h1>
+    <p data-i18n="work.notFound.body"></p>
+    <a class="btn btn-primary" href="index.html#works"><i class="ph-light ph-arrow-left"></i><span data-i18n="work.notFound.cta"></span></a>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span data-i18n="footer.left"></span>
+      <a href="#" data-to-top data-i18n="footer.right"></a>
+    </div>
+  </footer>
+
+  <!-- 程式碼編輯器：CodeMirror 5 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script type="module" src="js/work.js"></script>
+</body>
+</html>

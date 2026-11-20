@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>07 Draggable: Bottom Sheet</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&family=Noto+Sans+TC:wght@400;500&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <p class="hint">Drag the handle and release: the sheet snaps to the nearest position</p>
+
+    <!-- 手機畫面 -->
+    <section class="phone" aria-label="Bottom sheet example">
+      <div class="map" aria-hidden="true"></div>
+
+      <!-- 底部抽屜：整個抽屜都可以拖，靠 Draggable 控制 y 位置 -->
+      <div class="sheet">
+        <div class="handle" aria-hidden="true"></div>
+        <div class="sheet-head">
+          <h2>Nearby places</h2>
+          <span class="state">collapsed</span>
+        </div>
+        <!-- 假資料 -->
+        <ul class="list">
+          <li><i class="ph-light ph-coffee"></i><span>Coffee shop</span><small>120 m</small></li>
+          <li><i class="ph-light ph-book-open"></i><span>Bookstore</span><small>350 m</small></li>
+          <li><i class="ph-light ph-tree"></i><span>Park</span><small>600 m</small></li>
+          <li><i class="ph-light ph-train"></i><span>Metro station</span><small>800 m</small></li>
+          <li><i class="ph-light ph-film-strip"></i><span>Cinema</span><small>1.2 km</small></li>
+        </ul>
+      </div>
+    </section>
+
+    <p class="readout">y: <span class="y">0</span>px</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/InertiaPlugin.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

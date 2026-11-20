@@ -1,0 +1,89 @@
+:root {
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --line: #23262B;
+  --text: #EDEAE4;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", "Noto Sans TC", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage {
+  display: grid;
+  justify-items: center;
+  gap: 40px;
+  padding: 32px 16px;
+}
+
+/* ── 圖示：全部用線條（stroke）畫，不用填色 ── */
+.smiley {
+  width: min(280px, 60vw);
+  height: auto;
+  overflow: visible;
+}
+.smiley * {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 16;          /* Phosphor Regular 在 256 格線上的線寬 */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.smiley .eye { stroke-width: 12; } /* 半徑 6 × 2 = 12：畫完剛好填滿成圓點 */
+
+/* ── 步驟說明 ── */
+.steps {
+  list-style: none;
+  display: flex;
+  gap: 8px;
+  counter-reset: step;
+}
+.steps li { counter-increment: step; }
+.steps button {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s, border-color 0.3s, background-color 0.3s;
+}
+.steps button::before {
+  content: counter(step) "  ";
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+}
+.steps button:hover { border-color: var(--accent-fg); color: var(--text); }
+.steps button:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 3px; }
+/* 正在畫的步驟 */
+.steps button.on {
+  color: #fff;
+  border-color: var(--accent);
+  background: var(--accent);
+}
+/* 已經畫完的步驟 */
+.steps button.done {
+  color: var(--text);
+  border-color: var(--accent-fg);
+}
+
+@media (max-width: 400px) {
+  .steps { gap: 6px; }
+  .steps button { padding: 6px 8px; font-size: 13px; }
+}

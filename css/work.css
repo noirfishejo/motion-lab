@@ -1,0 +1,224 @@
+/* ═══════════════════════════════════════════════
+   作品頁：預覽＋程式碼＋筆記（參考 CodePen）
+   ═══════════════════════════════════════════════ */
+.work{padding-top:calc(var(--header-h) + 24px)}
+
+
+/* ── 標題區 ── */
+.work-head{
+  display:grid;grid-template-columns:minmax(0,1fr);gap:16px;
+  padding:8px 0 24px;border-bottom:1px solid var(--line);margin-bottom:24px;
+}
+.work-head h1{font:500 var(--fs-title)/1.15 var(--font-display);letter-spacing:-.02em;max-width:28ch;text-wrap:balance}
+/* SplitText 的遮罩會裁掉字母下緣（Stagger 的 g），往下多留一點空間 */
+.work-head h1 > div{padding-bottom:.14em;margin-bottom:-.14em}
+.work-info{display:grid;gap:12px;align-content:start}
+.work-info p{color:var(--muted);max-width:60ch;font-size:var(--fs-small);line-height:1.7}
+.work-facts{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.work-facts .date{font:400 12px/1 var(--font-mono);color:var(--muted)}
+
+/* ── 主體 ── */
+.work-body{display:grid;grid-template-columns:minmax(0,1fr);gap:32px}
+.work-main{display:grid;gap:32px;min-width:0}
+
+/* ── 面板 ── */
+.panel{border:1px solid var(--line);background:var(--surface);min-width:0}
+.panel-bar{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;
+  padding:8px 8px 8px 16px;border-bottom:1px solid var(--line);min-height:54px;
+}
+.panel-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+.preview-frame{position:relative;aspect-ratio:4/3;background:var(--bg)}
+.preview-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* 程式碼分頁 */
+/* ── 開關（Markers） ── */
+.switch{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 10px;font:400 13px/1 var(--font-mono);color:var(--muted)}
+.switch:hover{color:var(--text)}
+.switch-track{position:relative;width:32px;height:18px;border:1px solid var(--line-strong);background:var(--bg);transition:background-color var(--dur-fast),border-color var(--dur-fast)}
+.switch-thumb{position:absolute;top:2px;left:2px;width:12px;height:12px;background:var(--muted);transition:transform var(--dur) var(--ease-out),background-color var(--dur-fast)}
+.switch[aria-checked="true"]{color:var(--text)}
+.switch[aria-checked="true"] .switch-track{background:var(--accent);border-color:var(--accent)}
+.switch[aria-checked="true"] .switch-thumb{transform:translateX(14px);background:var(--accent-ink)}
+
+/* ── 程式碼面板：可收合 ── */
+.code-toggle{
+  width:100%;display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;
+  padding:16px;text-align:left;transition:background-color var(--dur-fast);
+}
+.code-toggle:hover{background:var(--surface-2)}
+.code-toggle:focus-visible{outline-offset:-2px}
+.toggle-icon{font-size:16px;transition:transform var(--dur) var(--ease-out)}
+.code-toggle[aria-expanded="true"] .toggle-icon{transform:rotate(90deg)}
+.toggle-title{font:500 15px/1.2 var(--font-display)}
+.toggle-hint{font-size:var(--fs-small);color:var(--muted);flex:1 1 220px}
+.modified-badge{font:400 11px/1 var(--font-mono);color:var(--accent-ink);background:var(--accent);padding:4px 6px}
+.code-bar .modified-badge{align-self:center;margin-right:auto}
+@media (max-width:1023px){.code-bar .modified-badge{display:none}} /* 平板、手機的「已修改」顯示在展開列上 */
+.code-body{border-top:1px solid var(--line);overflow:hidden}
+
+/* 分頁列：分頁貼齊上下邊，換行時分頁和按鈕各佔一列 */
+.code-bar{padding:0 8px 0 0;align-items:stretch}
+.code-bar .panel-actions{align-items:center;padding:8px 0}
+@media (max-width:599px){
+  .code-bar{padding:0}
+  .code-bar .code-tabs{flex:1 1 100%;border-bottom:1px solid var(--line)}
+  .code-bar .panel-actions{padding:8px}
+}
+.code-tabs{display:flex}
+.code-tabs button{
+  position:relative;height:53px;padding:0 16px;
+  font:400 13px/1 var(--font-mono);color:var(--muted);transition:color var(--dur-fast);
+}
+.code-tabs button::after{
+  content:"";position:absolute;left:16px;right:16px;bottom:0;height:2px;background:var(--accent-fg);
+  transform:scaleX(0);transform-origin:left;transition:transform var(--dur) var(--ease-out);
+}
+.code-tabs button:hover,.code-tabs button[aria-selected="true"]{color:var(--text)}
+.code-tabs button[aria-selected="true"]::after{transform:scaleX(1)}
+.code-tabs button:focus-visible{outline-offset:-4px}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+/* ── 編輯器（CodeMirror）配色：對應 design token ── */
+.editor-wrap .CodeMirror{
+  height:min(520px,65vh);background:var(--bg);color:var(--syn-fn);
+  font:400 13px/1.75 var(--font-mono);
+}
+.editor-wrap .CodeMirror-gutters{background:var(--bg);border-right:1px solid var(--line)}
+.editor-wrap .CodeMirror-linenumber{color:var(--syn-linenum);padding:0 10px 0 6px}
+.editor-wrap .CodeMirror-cursor{border-left:2px solid var(--accent-fg)}
+.editor-wrap .CodeMirror-selected,.editor-wrap .CodeMirror-focused .CodeMirror-selected{background:var(--selection)}
+.editor-wrap .CodeMirror-activeline-background{background:var(--surface)}
+.editor-wrap .CodeMirror-lines{padding:16px 0}
+.editor-wrap .CodeMirror pre.CodeMirror-line{padding:0 16px;font-variant-ligatures:none} /* 關掉連字：<!-- 和 => 才不會被顯示成箭頭（CodeMirror 預設開著） */
+.editor-wrap .CodeMirror-vscrollbar,.editor-wrap .CodeMirror-hscrollbar{scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent}
+/* 手機、平板：隱藏編輯器捲軸（手指滑動仍可捲） */
+@media (pointer:coarse){
+  .editor-wrap .CodeMirror-vscrollbar,.editor-wrap .CodeMirror-hscrollbar{scrollbar-width:none}
+  .editor-wrap .CodeMirror-vscrollbar::-webkit-scrollbar,.editor-wrap .CodeMirror-hscrollbar::-webkit-scrollbar{display:none}
+}
+.cm-s-default .cm-keyword,.cm-s-default .cm-atom,.cm-s-default .cm-builtin{color:var(--syn-key)}
+.cm-s-default .cm-string,.cm-s-default .cm-string-2{color:var(--syn-str)}
+.cm-s-default .cm-number{color:var(--syn-num)}
+.cm-s-default .cm-comment{color:var(--syn-comment);font-style:italic}
+.cm-s-default .cm-tag,.cm-s-default .cm-qualifier,.cm-s-default .cm-bracket{color:var(--syn-tag)}
+.cm-s-default .cm-attribute,.cm-s-default .cm-property,.cm-s-default .cm-variable-2{color:var(--syn-attr)}
+.cm-s-default .cm-def,.cm-s-default .cm-variable,.cm-s-default .cm-variable-3{color:var(--text)}
+.cm-s-default .cm-operator,.cm-s-default .cm-meta{color:var(--muted)}
+.cm-s-default .cm-error{color:var(--syn-error)}
+.code-error{padding:20px;color:var(--muted)}
+/* 捲軸交會的角落預設是白色，改成背景色 */
+.editor-wrap .CodeMirror-scrollbar-filler,.editor-wrap .CodeMirror-gutter-filler{background:var(--bg)}
+
+/* ── 存檔確認列 ── */
+.save-confirm{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;
+  padding:12px 8px 12px 16px;border-bottom:1px solid var(--line);background:var(--surface-2);
+}
+.save-confirm p{font-size:var(--fs-small);color:var(--text);flex:1 1 260px}
+
+/* ── 預覽更新時：「預覽」標籤短暫變成強調色，表示剛剛套用了修改 ── */
+#previewLabel{transition:color var(--dur) var(--ease-out)}
+#previewLabel.is-fresh{color:var(--accent-fg);transition-duration:.1s}
+
+/* ── 捲動類練習的遮罩：點一下才把滾輪交給預覽 ── */
+.frame-cover{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:16px;cursor:pointer}
+.frame-cover-chip{
+  display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);padding:0 14px;
+  background:var(--surface);border:1px solid var(--line-strong);color:var(--text);font-size:13px;
+  transition:border-color var(--dur-fast),transform var(--dur) var(--ease-out);
+}
+.frame-cover-chip i{font-size:18px}
+.frame-cover:hover .frame-cover-chip{border-color:var(--accent-fg);transform:translateY(-2px)}
+.frame-cover:focus-visible{outline-offset:-4px}
+
+/* ═══ 電腦 ≥1024px：程式碼固定展開，預覽和程式碼左右並排 ═══
+   兩欄等高、一起填滿一個畫面；預覽固定不動，筆記移到下方 */
+@media (min-width:1024px){
+  :root{--stage-h:max(360px,calc(100svh - var(--header-h) - 32px - 56px))} /* 畫面高 − 頁首 − 上下留白 − 面板標題列 */
+  .work-main{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:16px}
+  .work-main > .panel:first-child{position:sticky;top:calc(var(--header-h) + 16px);z-index:2}
+  .code-toggle{display:none}
+  .code-body{border-top:0}
+  .preview-frame{aspect-ratio:auto;height:var(--stage-h)}
+  .editor-wrap .CodeMirror{height:var(--stage-h)}
+  .notes{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));column-gap:32px}
+}
+
+/* ═══ 平板（夠高時）：展開程式碼後，預覽固定在上方約半個畫面 ═══ */
+@media (min-width:600px) and (max-width:1023px) and (min-height:700px){
+  .work-body.is-editing .work-main > .panel:first-child{position:sticky;top:var(--header-h);z-index:2}
+  .work-body.is-editing .preview-frame{aspect-ratio:auto;height:46svh}
+  .work-body.is-editing .editor-wrap .CodeMirror{height:max(240px,calc(54svh - var(--header-h) - 200px))} /* 剩下的高度：減掉預覽、展開列、分頁列和間距 */
+}
+
+/* ═══ 手機（和矮的平板橫放）：預覽保持完整大小，不固定；捲到程式碼時出現「看預覽」按鈕 ═══ */
+@media (max-width:599px){.preview-frame{aspect-ratio:4/5}}
+.to-preview{
+  position:fixed;z-index:40;right:var(--gutter);bottom:calc(16px + env(safe-area-inset-bottom));
+  opacity:0;transform:translateY(24px);pointer-events:none;
+  transition:opacity var(--dur-fast),transform var(--dur) var(--ease-out);
+}
+.to-preview.is-shown{opacity:1;transform:none;pointer-events:auto}
+
+/* ═══ 全螢幕預覽：同一頁裡，預覽面板蓋滿整個視窗 ═══ */
+.work-main > .panel.is-full{position:fixed!important;inset:0!important;z-index:200!important;display:flex;flex-direction:column;border:0} /* !important：蓋過各尺寸的「固定預覽」規則 */
+.panel.is-full .preview-frame{flex:1;height:auto!important;aspect-ratio:auto!important}
+.panel.is-full .panel-bar{padding-top:calc(8px + env(safe-area-inset-top))}
+html.has-full{overflow:hidden} /* 全螢幕時後方頁面不捲動 */
+
+/* ═══ 作品列表側欄 ═══ */
+.works-nav{
+  position:fixed;top:var(--header-h);bottom:0;left:0;z-index:45;width:min(var(--side-w),82vw);
+  display:flex;flex-direction:column;background:var(--bg);border-right:1px solid var(--line);
+  transform:translateX(-100%);visibility:hidden;
+  transition:transform var(--dur) var(--ease-out),visibility 0s linear var(--dur);
+}
+.works-nav.is-open{transform:none;visibility:visible;transition:transform var(--dur) var(--ease-out),visibility 0s}
+/* 參考 shadcn/ui 文件側欄：依主題分組，只列短名稱 */
+.works-nav-list{flex:1;overflow-y:auto;scrollbar-width:none;padding:20px 12px 32px}
+.works-nav-list::-webkit-scrollbar{display:none}
+.works-nav-group + .works-nav-group{margin-top:20px}
+.works-nav-group h3{padding:0 8px 6px;font:400 var(--fs-label)/1.4 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.works-nav-group ul{list-style:none;display:grid;gap:2px}
+.works-nav-group a{
+  display:flex;align-items:center;min-height:32px;padding:4px 8px;
+  font-size:14px;line-height:1.4;color:var(--muted);transition:color var(--dur-fast),background-color var(--dur-fast);
+}
+.works-nav-group a:hover{color:var(--text)}
+.works-nav-group a:focus-visible{outline-offset:-2px}
+.works-nav-group a[aria-current="page"]{color:var(--text);background:var(--surface);font-weight:500}
+@media (pointer:coarse){.works-nav-group a{min-height:var(--tap)}}
+.works-nav-scrim{position:fixed;inset:var(--header-h) 0 0 0;z-index:44;background:var(--scrim)}
+
+/* 寬螢幕：側欄固定在左側，內容往右讓位（不蓋住內容） */
+@media (min-width:1280px){
+  .works-nav-scrim{display:none!important}
+  body{transition:padding-left var(--dur) var(--ease-out)}
+  body.nav-docked{padding-left:var(--side-w)}
+}
+
+/* ── 筆記 ── */
+.work-side .label{margin-bottom:16px}
+.notes{list-style:none;counter-reset:note;display:grid;border-top:1px solid var(--line)}
+.notes li{counter-increment:note;display:grid;gap:8px;padding:16px 0;border-bottom:1px solid var(--line)}
+.notes code{
+  justify-self:start;font:400 12px/1.4 var(--font-mono);color:var(--accent-fg);
+  background:var(--surface);border:1px solid var(--line);padding:4px 8px;
+}
+.notes code::before{content:counter(note,decimal-leading-zero) "  ";color:var(--muted)}
+.notes p{font-size:14px;color:var(--muted);line-height:1.7}
+
+/* ── 上一個／下一個 ── */
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:var(--grid-gap);margin-top:64px}
+.pager:empty{display:none}
+.pager a{display:grid;gap:6px;padding:20px 0;border-top:1px solid var(--line-strong);transition:border-color var(--dur-fast)}
+.pager a:hover{border-top-color:var(--accent-fg)}
+.pager .next{grid-column:2;text-align:right}
+.pager span{font:500 var(--fs-h3)/1.3 var(--font-display)}
+
+/* ── 找不到 ── */
+.not-found{min-height:70vh;display:grid;align-content:center;justify-items:start;gap:16px;padding-top:var(--header-h)}
+.not-found h1{font:500 var(--fs-h1)/1.1 var(--font-display);letter-spacing:-.03em}
+.not-found p:not(.label){color:var(--muted)}

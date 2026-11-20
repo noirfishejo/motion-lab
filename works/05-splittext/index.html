@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>05 SplitText: Three Ways to Split</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&family=Noto+Sans+TC:wght@400;500&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+
+    <!-- 1. 拆成「行」：每一行從遮罩下方升起 -->
+    <section class="block">
+      <span class="tag">type: 'lines'</span>
+      <h1 class="headline">Motion is learned<br>layer by layer.</h1>
+    </section>
+
+    <!-- 2. 拆成「單字」：英文以空格分開，一個字一個字浮現 -->
+    <section class="block">
+      <span class="tag">type: 'words'</span>
+      <p class="sub">Every practice is a small layer of the design language.</p>
+    </section>
+
+    <!-- 3. 拆成「字元」：一個字母一個字母動（中文沒有空格，也要用 chars 才能逐字動） -->
+    <section class="block">
+      <span class="tag">type: 'chars'</span>
+      <p class="letters">Stack the layers and the language appears.</p>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

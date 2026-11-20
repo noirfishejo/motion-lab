@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>10 ScrollTrigger: Horizontal Scroll</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 會被固定（pin）在畫面上的區塊：往下捲時，裡面的 track 往左移 -->
+  <section class="hscroll">
+    <header class="hs-head">
+      <span class="tag">pin + scrub</span>
+      <span class="readout">0%</span>
+    </header>
+
+    <!-- 橫向排成一列的面板（假資料） -->
+    <div class="track">
+      <article class="panel panel-intro">
+        <span class="num">00</span>
+        <h2>Scroll down,<br>move sideways.</h2>
+        <p>↓ Scroll inside the preview</p>
+      </article>
+      <article class="panel">
+        <span class="num">01</span>
+        <h2>Pin</h2>
+        <p>The section sticks to the screen while you scroll.</p>
+      </article>
+      <article class="panel">
+        <span class="num">02</span>
+        <h2>Translate</h2>
+        <p>Vertical scroll distance becomes horizontal movement.</p>
+      </article>
+      <article class="panel">
+        <span class="num">03</span>
+        <h2>Scrub</h2>
+        <p>Scroll back up and everything plays in reverse.</p>
+      </article>
+      <article class="panel">
+        <span class="num">04</span>
+        <h2>Container&shy;Animation</h2>
+        <p>Each panel can trigger its own animation inside the sideways track.</p>
+      </article>
+    </div>
+
+    <!-- 進度條 -->
+    <div class="bar"><i></i></div>
+  </section>
+
+  <!-- 橫向區塊結束後，頁面恢復一般的直向捲動 -->
+  <section class="outro">
+    <p>Back to normal vertical scrolling. Scroll up to go back through the panels.</p>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
