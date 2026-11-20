@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Motion Lab</title>
-  <meta name="description" content="UIUX 設計師的 GSAP 動態練習庫">
+  <meta name="description" content="Motion Lab">
   <!-- 有動態時，先把開場藏起來，等 GSAP 設好初始狀態再顯示（避免一載入就閃出方塊和文字） -->
   <!-- 保險：4 秒後還沒開始（例如 GSAP 載不到），就直接顯示 -->
   <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('intro'); setTimeout(() => document.documentElement.classList.remove('intro'), 4000); }</script>
@@ -36,6 +36,7 @@
         <span class="logo-mark" aria-hidden="true"></span><span class="logo-text">Motion Lab</span>
       </a>
       <div class="header-end">
+        <button class="icon-toggle lang-toggle" type="button" id="langToggle" data-i18n="lang.switch" data-i18n-attr="aria-label:lang.switchLabel;title:lang.switchLabel"></button>
         <button class="icon-toggle" type="button" id="themeToggle"><i class="ph-light ph-sun" aria-hidden="true"></i></button>
       </div>
     </div>

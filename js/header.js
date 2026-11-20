@@ -2,7 +2,7 @@
 // 共用頁首：捲動後加底線
 // ═══════════════════════════════════════════════
 import { WORKS } from './works.js';
-import { t } from './i18n.js';
+import { t, lang, setLang } from './i18n.js';
 import { scrollToY } from './smooth.js';
 
 export function initHeader() {
@@ -19,6 +19,7 @@ export function initHeader() {
   window.addEventListener('scroll', onScroll, { passive: true });
 
   setupTheme();
+  document.getElementById('langToggle')?.addEventListener('click', () => setLang(lang === 'en' ? 'zh-TW' : 'en'));
 
   // 頁尾「回到頂部」
   document.querySelectorAll('[data-to-top]').forEach(a => a.addEventListener('click', e => {

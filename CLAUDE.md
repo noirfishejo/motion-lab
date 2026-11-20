@@ -40,8 +40,9 @@
 - 中文和按鈕文字不要太粗（使用者回饋：太重會糊）。
 
 ## 語言
-- 目前只做繁體中文。
-- 介面文字一律放在 `locales/zh-TW.json`，不寫死在 HTML 裡。之後要切換中英時，只要新增 `locales/en.json`。
+- 繁體中文＋英文。頁首右上角切換（記住設定）；沒設定過就跟著瀏覽器語言；網址加 `?lang=en` 可直接開英文版。
+- 介面文字放在 `locales/zh-TW.json` 和 `locales/en.json`（兩邊的 key 要一致），不寫死在 HTML 裡。
+- 練習資料（`js/works.js`）的 title、short、summary、notes 都寫成 `{ 'zh-TW': '…', en: '…' }`；新增練習時兩種語言都要填。
 
 ## 新增作品
 請照 `新增作品.md` 的步驟：複製 `works/_template`，再在 `js/works.js` 加一筆資料。

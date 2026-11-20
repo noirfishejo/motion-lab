@@ -51,6 +51,7 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 }
 .icon-toggle:hover{color:var(--text);background:var(--surface)}
 .icon-toggle[aria-expanded="true"]{color:var(--text)}
+.lang-toggle{font:400 12px/1 var(--font-mono);letter-spacing:.04em}
 
 /* ── 按鈕 ── */
 .btn{

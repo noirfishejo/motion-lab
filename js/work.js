@@ -3,7 +3,7 @@
 // 預覽＋可編輯的程式碼（改了會即時更新預覽）＋復原＋筆記
 // 原始程式碼直接讀 works/<id>/ 的檔案；按「存回檔案」才會寫回（需用 tools/serve.py 開啟）
 // ═══════════════════════════════════════════════
-import { initI18n, t, pick } from './i18n.js';
+import { initI18n, t, pick, list } from './i18n.js';
 import { WORKS, TOPICS } from './works.js';
 import { initHeader } from './header.js';
 import { initSmooth } from './smooth.js';
@@ -34,7 +34,7 @@ initSmooth();
 if (!work) {
   document.getElementById('main').hidden = true;
   document.getElementById('notFound').hidden = false;
-  document.title = `${t('work.notFound.title')}｜Motion Lab`;
+  document.title = `${t('work.notFound.title')}${t('site.titleSep')}Motion Lab`;
 } else {
   renderInfo();
   renderPager();
@@ -50,19 +50,19 @@ if (!work) {
 // ── 標題、筆記、上一個／下一個 ─────────────────────
 function renderInfo() {
   const title = pick(work.title);
-  document.title = `${title}｜Motion Lab`;
+  document.title = `${title}${t('site.titleSep')}Motion Lab`;
   document.getElementById('workTitle').textContent = title;
   document.getElementById('workSummary').textContent = pick(work.summary);
   document.getElementById('workTopic').textContent = t(`topic.${work.topic}`);
   document.getElementById('workDate').textContent = work.date.replaceAll('-', '.');
   document.getElementById('workTags').innerHTML = work.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
   document.getElementById('notes').innerHTML = (work.notes || []).map(n =>
-    `<li><code>${escapeHtml(n.code)}</code><p>${pick(n.text)}</p></li>`).join('');
+    `<li><code>${escapeHtml(pick(n.code))}</code><p>${pick(n.text)}</p></li>`).join('');
 }
 
 function renderPager() {
   const pager = document.getElementById('pager');
-  pager.setAttribute('aria-label', `${t('work.prev')}／${t('work.next')}`);
+  pager.setAttribute('aria-label', t('work.pagerLabel'));
   const prev = WORKS[index - 1], next = WORKS[index + 1];
   pager.innerHTML =
     (prev ? `<a class="prev" href="work.html?id=${prev.id}"><small class="label">← ${t('work.prev')}</small><span>${pick(prev.title)}</span></a>` : '') +
@@ -312,7 +312,7 @@ function setupSave() {
   const changedFiles = () => Object.keys(FILES).filter(l => docs[l].getValue() !== original[l]);
 
   btn.addEventListener('click', () => {
-    const names = changedFiles().map(l => FILES[l]).join('、');
+    const names = list(changedFiles().map(l => FILES[l]));
     document.getElementById('saveConfirmText').textContent = t('work.saveConfirm', { files: names });
     box.hidden = false;
     document.getElementById('saveYes').focus();
@@ -331,7 +331,7 @@ function setupSave() {
         original[lang] = value.trimEnd(); // 存好的內容成為新的「原始版本」
       }
       flash(t('work.saved'));
-      announce(t('work.savedStatus', { files: changed.map(l => FILES[l]).join('、') }));
+      announce(t('work.savedStatus', { files: list(changed.map(l => FILES[l])) }));
       resetPreview();
     } catch {
       flash(t('work.saveFailed'));
