@@ -123,7 +123,8 @@ function setupWorksNav() {
       </div>`).join('');
 
   const remembered = () => { try { return localStorage.getItem('worksNav') !== 'closed'; } catch { return true; } };
-  const set = (open, { focus = true, save = true } = {}) => {
+  const list = document.getElementById('worksNavList');
+  const set = (open, { focus = true, save = true, init = false } = {}) => {
     nav.classList.toggle('is-open', open);
     toggle.setAttribute('aria-expanded', open);
     const overlay = !wide.matches;
@@ -131,13 +132,23 @@ function setupWorksNav() {
     scrim.hidden = !(open && overlay);
     behind.forEach(el => { if (el) el.inert = open && overlay; }); // 蓋住時，後方內容不能被 Tab 到
     if (save && !overlay) try { localStorage.setItem('worksNav', open ? 'open' : 'closed'); } catch {}
-    if (open) nav.querySelector('[aria-current]')?.scrollIntoView({ block: 'nearest' });
+    if (open && !init) nav.querySelector('[aria-current]')?.scrollIntoView({ block: 'nearest' });
     if (focus && !open) toggle.focus();
     if (focus && open && overlay) nav.querySelector('a')?.focus();
-    setTimeout(() => editor?.refresh(), 650); // 內容變寬變窄後，編輯器重新量尺寸
+    if (!init) setTimeout(() => editor?.refresh(), 650); // 內容變寬變窄後，編輯器重新量尺寸
   };
 
-  set(wide.matches && remembered(), { focus: false, save: false });
+  set(wide.matches && remembered(), { focus: false, save: false, init: true });
+  // 換頁時保留側欄的捲動位置，看起來像同一個側欄（不會跳回最上面）
+  try {
+    const y = sessionStorage.getItem('worksNavScroll');
+    if (y !== null) list.scrollTop = +y; else nav.querySelector('[aria-current]')?.scrollIntoView({ block: 'nearest' });
+  } catch {}
+  list.addEventListener('click', e => {
+    if (e.target.closest('a')) try { sessionStorage.setItem('worksNavScroll', list.scrollTop); } catch {}
+  });
+  // 初始狀態畫好之後，才恢復側欄的開合動畫
+  requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.remove('nav-init', 'nav-preload')));
   wide.addEventListener('change', e => set(e.matches && remembered(), { focus: false, save: false }));
   toggle.addEventListener('click', () => set(!nav.classList.contains('is-open')));
   scrim.addEventListener('click', () => set(false));
@@ -255,10 +266,12 @@ async function loadCode() {
 
   for (const lang of Object.keys(FILES)) docs[lang] = CodeMirror.Doc(original[lang], MODES[lang]);
   editor = CodeMirror(document.getElementById('editorWrap'), {
-    value: docs.js, lineNumbers: true, tabSize: 2, indentUnit: 2,
+    lineNumbers: true, tabSize: 2, indentUnit: 2,
     lineWrapping: false, viewportMargin: 50,
-    screenReaderLabel: t('work.editorLabel', { lang: 'JS' }) // 讀屏軟體會唸出「HTML 程式碼編輯器」
+    screenReaderLabel: t('work.editorLabel', { lang: 'JS' }) // 讀屏軟體會唸出「JS 程式碼編輯器」
   });
+  // 用 swapDoc 放進文件：編輯器才會切換成這個文件的語法模式（直接當 value 傳入會停在 xml 模式，JS 沒有顏色）
+  editor.swapDoc(docs[current]);
 
   // 停止輸入 0.5 秒後更新預覽
   let timer;
@@ -410,7 +423,7 @@ function reveal() {
     // 作品頁常常來回切換，進場要短（約 0.6 秒）；預覽和程式碼直接顯示，不等動畫
     gsap.timeline({ defaults: { ease: 'expo.out' } })
       .from(split.words, { yPercent: 110, duration: 0.6, stagger: 0.03 })
-      .from('.work-info, .work-side', { opacity: 0, y: 12, duration: 0.5 }, 0.1);
+      .from('.work-info, .work-main > .panel, .work-side', { opacity: 0, y: 16, duration: 0.5, stagger: 0.05, clearProps: 'transform,opacity' }, 0.1);
   });
 }
 

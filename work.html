@@ -10,6 +10,12 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&family=Noto+Sans+TC:wght@400;500&display=swap">
   <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 
+  <!-- 換頁時側欄不要重新滑入：在畫面出現前就套用上次的開關狀態，並暫停側欄動畫 -->
+  <script>
+    document.documentElement.classList.add('nav-init');
+    try { if (matchMedia('(min-width: 1280px)').matches && localStorage.getItem('worksNav') !== 'closed') document.documentElement.classList.add('nav-preload'); } catch (e) {}
+  </script>
+
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
@@ -60,7 +66,7 @@
               </button>
               <button class="btn btn-ghost btn-sm" type="button" id="replayBtn"><i class="ph-light ph-arrow-counter-clockwise"></i><span data-i18n="work.replay"></span></button>
               <button class="btn btn-icon btn-sm" type="button" id="fullBtn" data-i18n-attr="aria-label:work.fullscreen;title:work.fullscreen"><i class="ph-light ph-arrows-out"></i></button>
-              <button class="btn btn-primary btn-sm" type="button" id="exitFullBtn" hidden><i class="ph-light ph-x"></i><span data-i18n="work.exitFullscreen"></span></button>
+              <button class="btn btn-icon btn-sm" type="button" id="exitFullBtn" hidden data-i18n-attr="aria-label:work.exitFullscreen;title:work.exitFullscreen"><i class="ph-light ph-arrows-in"></i></button>
             </div>
           </div>
           <div class="preview-frame" id="previewWrap">

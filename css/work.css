@@ -190,13 +190,16 @@ html.has-full{overflow:hidden} /* 全螢幕時後方頁面不捲動 */
 .works-nav-group a:focus-visible{outline-offset:-2px}
 .works-nav-group a[aria-current="page"]{color:var(--text);background:var(--surface);font-weight:500}
 @media (pointer:coarse){.works-nav-group a{min-height:var(--tap)}}
+/* 頁面剛載入：側欄和內容直接到位，不播放滑入 */
+html.nav-init body,html.nav-init .works-nav{transition:none!important}
 .works-nav-scrim{position:fixed;inset:var(--header-h) 0 0 0;z-index:44;background:var(--scrim)}
 
 /* 寬螢幕：側欄固定在左側，內容往右讓位（不蓋住內容） */
 @media (min-width:1280px){
   .works-nav-scrim{display:none!important}
   body{transition:padding-left var(--dur) var(--ease-out)}
-  body.nav-docked{padding-left:var(--side-w)}
+  body.nav-docked,html.nav-preload body{padding-left:var(--side-w)}
+  html.nav-preload .works-nav{transform:none;visibility:visible}
 }
 
 /* ── 筆記 ── */
