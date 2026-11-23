@@ -29,8 +29,7 @@
   --selection:rgba(110,131,255,.28); /* 選取文字的底色：accent-fg 半透明 */
   --scrim:rgba(11,13,16,.72);        /* 側欄打開時蓋住後方內容 */
 
-  /* 練習的預覽和縮圖固定用深色底（練習本身是深色設計，亮色模式也不換），
-     這樣縮小後 iframe 的邊緣才看不出來 */
+  /* 練習預覽和縮圖的底色：和練習本身的 --bg 相同，縮小後 iframe 的邊緣才看不出來 */
   --stage:#0B0D10;
   color-scheme:dark;
 
@@ -91,6 +90,7 @@
   --syn-error:#C0262D;
   --selection:rgba(23,51,229,.16);
   --scrim:rgba(245,245,242,.78);
+  --stage:#F5F5F2;       /* 練習也有亮色版（各練習 style.css 的亮色區塊） */
   color-scheme:light;
 }
 

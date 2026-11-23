@@ -9,6 +9,17 @@
   --accent-fg: #6E83FF;
 }
 
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
