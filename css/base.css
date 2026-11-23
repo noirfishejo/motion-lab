@@ -90,32 +90,73 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 .site-footer a{display:inline-flex;align-items:center;min-height:var(--tap)}
 .site-footer a:hover{color:var(--text)}
 
-/* ── 自訂游標（js/interactions.js）：取代系統游標 ── */
+/* ── 自訂游標（js/interactions.js）：取代系統游標，只有一個方塊 ── */
 html.has-cursor,html.has-cursor *{cursor:none!important}
 /* 預覽、程式碼、輸入框：換回系統游標（打字要看得到文字游標） */
-html.has-cursor.cursor-native .CodeMirror,html.has-cursor.cursor-native .CodeMirror *,
 html.has-cursor input,html.has-cursor textarea,html.has-cursor select,html.has-cursor iframe,
 html.has-cursor .preview-frame,html.has-cursor .preview-frame *{cursor:auto!important}
 html.has-cursor .CodeMirror,html.has-cursor .CodeMirror *{cursor:text!important}
 
-.cursor-dot,.cursor{position:fixed;left:0;top:0;z-index:300;pointer-events:none;opacity:0;transition:opacity .2s}
-.cursor-dot.is-visible,.cursor.is-visible{opacity:1}
-.cursor-dot.is-hidden,.cursor.is-hidden{opacity:0}
-/* 點：8px 品牌方塊，中心就是滑鼠位置 */
-.cursor-dot{width:8px;height:8px;margin:-4px 0 0 -4px;background:var(--accent)}
-:root[data-theme="dark"] .cursor-dot{background:var(--accent-fg)} /* 深色底上 #1733E5 太暗看不清 */
-/* 框：跟在後面的外框 */
 .cursor{
-  display:grid;place-items:center;width:28px;height:28px;margin:-14px 0 0 -14px;
-  border:1px solid var(--line-strong);color:var(--accent-ink);
-  transition:opacity .2s,width .45s var(--ease-out),height .45s var(--ease-out),margin .45s var(--ease-out),background-color .25s,border-color .25s;
+  position:fixed;left:0;top:0;z-index:300;pointer-events:none;
+  display:grid;place-items:center;width:8px;height:8px;margin:-4px 0 0 -4px;
+  background:var(--accent-fg);border:1px solid var(--accent-fg);color:var(--accent-ink);opacity:0;
+  transition:opacity .2s,width .4s var(--ease-out),height .4s var(--ease-out),margin .4s var(--ease-out),background-color .25s,border-color .25s;
 }
+.cursor.is-visible{opacity:1}
+.cursor.is-hidden{opacity:0}
 .cursor i{font-size:20px;opacity:0;transform:scale(.5);transition:opacity .2s,transform .4s var(--ease-out)}
-/* 可以點的東西：外框放大、變成強調色 */
-.cursor.is-link{width:40px;height:40px;margin:-20px 0 0 -20px;border-color:var(--accent-fg)}
+/* 可以點的東西：方塊放大成外框，把目標框起來 */
+.cursor.is-link{width:40px;height:40px;margin:-20px 0 0 -20px;background:transparent}
 /* 作品卡：實心方塊＋眼睛圖示（看作品） */
 .cursor.is-card{width:48px;height:48px;margin:-24px 0 0 -24px;background:var(--accent);border-color:var(--accent)}
 .cursor.is-card i{opacity:1;transform:none;transition-delay:.08s}
+
+/* ── 提示框（data-tip）：取代瀏覽器的 title，樣式跟著本站 ── */
+.tooltip{
+  position:fixed;z-index:310;max-width:240px;padding:8px 10px;
+  background:var(--surface-2);border:1px solid var(--line-strong);color:var(--text);
+  font:400 12px/1.5 var(--font-body);pointer-events:none;
+  opacity:0;transform:translateY(-4px);transition:opacity .15s,transform .3s var(--ease-out);
+}
+.tooltip[data-side="top"]{transform:translateY(4px)}
+.tooltip.is-shown{opacity:1;transform:none}
+.tooltip.is-measuring{visibility:hidden;opacity:0;transition:none}
+
+/* ── 搜尋欄（js/search.js）：藏起瀏覽器自帶的 ✕，換成自己的清除鈕；建議欄 ── */
+input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none;appearance:none;display:none}
+.search-clear{
+  flex:none;display:grid;place-items:center;width:28px;height:28px;margin-right:-4px;
+  color:var(--muted);font-size:14px;transition:color var(--dur-fast),background-color var(--dur-fast);
+}
+.search-clear:hover{color:var(--text);background:var(--surface)}
+.search-clear:focus-visible{outline-offset:-2px}
+@media (pointer:coarse){.search-clear{width:var(--tap);height:var(--tap);margin-right:-10px}}
+
+.suggest{
+  position:absolute;left:0;right:0;top:100%;z-index:20;list-style:none;
+  margin-top:1px;padding:6px 0;background:var(--surface);border:1px solid var(--line-strong);
+}
+.suggest li{display:grid;gap:2px;padding:8px 14px;cursor:pointer}
+.suggest li[aria-selected="true"]{background:var(--surface-2)}
+.suggest-name{font-size:14px;color:var(--text)}
+.suggest-name mark{background:none;color:var(--accent-fg)}
+.suggest-meta{font:400 11px/1.4 var(--font-mono);color:var(--muted)}
+
+/* ── 搜尋找不到的空狀態 ── */
+.empty-state{display:grid;justify-items:center;gap:12px;padding:56px 16px;text-align:center}
+.empty-icon{display:grid;place-items:center;width:64px;height:64px;border:1px solid var(--line-strong);margin-bottom:4px;overflow:hidden}
+.empty-icon i{font-size:28px;color:var(--accent-fg)}
+.empty-title{font:500 var(--fs-h3)/1.4 var(--font-display);color:var(--text);overflow-wrap:anywhere}
+.empty-hint{font-size:var(--fs-small);color:var(--muted)}
+.empty-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:8px}
+.chip{height:32px;padding:0 12px;border:1px solid var(--line-strong);font:400 12px/1 var(--font-mono);color:var(--text);transition:border-color var(--dur-fast),color var(--dur-fast)}
+.chip:hover{border-color:var(--accent-fg);color:var(--accent-fg)}
+@media (pointer:coarse){.chip{height:var(--tap)}}
+.empty-state.is-compact{padding:24px var(--gutter);gap:10px}
+.empty-state.is-compact .empty-icon{width:44px;height:44px}
+.empty-state.is-compact .empty-icon i{font-size:20px}
+.empty-state.is-compact .empty-title{font:400 14px/1.5 var(--font-body)}
 
 /* ── 滑動底線（練習 15 的做法）：首頁篩選列、作品頁的程式碼分頁 ── */
 .slide-line{position:absolute;left:0;bottom:0;width:100px;height:2px;background:var(--accent-fg);transform-origin:0 50%;pointer-events:none}

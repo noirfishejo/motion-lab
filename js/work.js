@@ -7,7 +7,8 @@ import { initI18n, t, pick, list } from './i18n.js';
 import { WORKS, TOPICS, searchText, matches } from './works.js';
 import { initHeader } from './header.js';
 import { initSmooth } from './smooth.js';
-import { initCursor, magnetic, slidingIndicator, toast } from './interactions.js';
+import { initCursor, initTooltips, magnetic, slidingIndicator, toast } from './interactions.js';
+import { addClearButton, renderEmpty, stopEmpty } from './search.js';
 
 // 三個程式碼檔案（放在最前面：下方的流程一開始就會用到）
 const FILES = { html: 'index.html', css: 'style.css', js: 'script.js' };
@@ -33,6 +34,7 @@ const src = work ? `works/${work.id}/index.html` : '';
 setupWorksNav();
 initSmooth();
 initCursor();
+initTooltips();
 magnetic('.site-header .icon-toggle');
 
 if (!work) {
@@ -145,7 +147,14 @@ function setupWorksNav() {
       any ||= groupHit;
     });
     empty.hidden = any;
+    if (any) stopEmpty(empty);
+    else renderEmpty(empty, search.value.trim(), { compact: true, onPick: word => {
+      search.value = word;
+      search.dispatchEvent(new Event('input'));
+      search.focus();
+    } });
   });
+  addClearButton(search, () => search.dispatchEvent(new Event('input')));
   search.addEventListener('keydown', e => { if (e.key === 'Escape' && search.value) { search.value = ''; search.dispatchEvent(new Event('input')); e.stopPropagation(); } });
 
   const remembered = () => { try { return localStorage.getItem('worksNav') !== 'closed'; } catch { return true; } };
@@ -420,7 +429,7 @@ function setupTabs() {
 function labelCopy() {
   const btn = document.getElementById('copyBtn');
   btn.querySelector('span').textContent = t('work.copy', { lang: LANG_NAMES[current] });
-  btn.title = t('work.copyHint', { lang: LANG_NAMES[current] });
+  btn.dataset.tip = t('work.copyHint', { lang: LANG_NAMES[current] });
 }
 
 // ── 複製（複製的是「目前編輯後」的內容） ─────────

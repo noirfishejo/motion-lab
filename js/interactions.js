@@ -12,54 +12,105 @@ const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = () => matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 // ── 自訂游標 ─────────────────────────────────────
-// 取代系統游標（有滑鼠的裝置才啟用；觸控、減少動態時維持系統游標）：
-// · 點：8px 品牌方塊，完全貼著滑鼠，點選才精準
-// · 框：跟在後面、有一點延遲的外框；移到可以點的東西上會放大把它框起來
-// · 移到作品卡上：外框變成實心方塊，裡面是「眼睛」圖示（看作品）
+// 取代系統游標（有滑鼠的裝置才啟用；觸控、減少動態時維持系統游標）。只有一個方塊：
+// · 平常：8px 品牌方塊，用 quickTo 稍微落後滑鼠一點點，移動起來比較滑順
+// · 移到可以點的東西上：方塊放大成外框，把它框起來
+// · 移到作品卡上：變成實心方塊，裡面是「眼睛」圖示（看作品）
 // · 預覽、程式碼、輸入框：換回系統游標（打字需要文字游標；iframe 裡也收不到滑鼠位置）
-const LAG = 0.28; // 外框追上游標要幾秒（越大越「飄」）
+const LAG = 0.16; // 方塊追上滑鼠要幾秒：0 是完全貼著，越大越滑順但越不精準（建議 0.1～0.25）
 
 export function initCursor() {
   if (!window.gsap || reduce() || !finePointer()) return;
-  const dot = document.createElement('div');
-  dot.className = 'cursor-dot';
-  const ring = document.createElement('div');
-  ring.className = 'cursor';
-  ring.innerHTML = '<i class="ph-light ph-eye"></i>';
-  [dot, ring].forEach(el => { el.setAttribute('aria-hidden', 'true'); document.body.append(el); });
+  const el = document.createElement('div');
+  el.className = 'cursor';
+  el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = '<i class="ph-light ph-eye"></i>';
+  document.body.append(el);
   document.documentElement.classList.add('has-cursor'); // CSS：這時才把系統游標藏起來
 
-  const ringX = gsap.quickTo(ring, 'x', { duration: LAG, ease: 'expo.out' });
-  const ringY = gsap.quickTo(ring, 'y', { duration: LAG, ease: 'expo.out' });
+  const moveX = gsap.quickTo(el, 'x', { duration: LAG, ease: 'power3.out' });
+  const moveY = gsap.quickTo(el, 'y', { duration: LAG, ease: 'power3.out' });
   let first = true;
 
   const setState = target => {
     const native = !!target.closest('iframe, .CodeMirror, input, textarea, select, .preview-frame');
     const card = !native && !!target.closest('.work-card');
-    const link = !native && !card && !!target.closest('a, button, [role="tab"], [role="switch"], label, summary');
+    const link = !native && !card && !!target.closest('a, button, [role="tab"], [role="switch"], [role="option"], label, summary');
     document.documentElement.classList.toggle('cursor-native', native);
-    ring.classList.toggle('is-card', card);
-    ring.classList.toggle('is-link', link);
-    dot.classList.toggle('is-hidden', native || card);
-    ring.classList.toggle('is-hidden', native);
+    el.classList.toggle('is-hidden', native);
+    el.classList.toggle('is-card', card);
+    el.classList.toggle('is-link', link);
   };
 
   document.addEventListener('pointermove', e => {
     if (e.pointerType !== 'mouse') return;
-    gsap.set(dot, { x: e.clientX, y: e.clientY }); // 點：立刻跟上
-    if (first) { gsap.set(ring, { x: e.clientX, y: e.clientY }); first = false; }
-    ringX(e.clientX);
-    ringY(e.clientY);
-    dot.classList.add('is-visible');
-    ring.classList.add('is-visible');
+    if (first) { gsap.set(el, { x: e.clientX, y: e.clientY }); first = false; }
+    moveX(e.clientX);
+    moveY(e.clientY);
+    el.classList.add('is-visible');
     setState(e.target);
   }, { passive: true });
   // 游標離開視窗，或移進 iframe（之後就收不到移動事件了）時藏起來
-  document.addEventListener('pointerout', e => {
-    if (!e.relatedTarget || e.relatedTarget.tagName === 'IFRAME') { dot.classList.remove('is-visible'); ring.classList.remove('is-visible'); }
+  document.addEventListener('pointerout', e => { if (!e.relatedTarget || e.relatedTarget.tagName === 'IFRAME') el.classList.remove('is-visible'); });
+  document.addEventListener('pointerdown', () => gsap.to(el, { scale: 0.8, duration: 0.15, ease: 'power2.out' }));
+  document.addEventListener('pointerup', () => gsap.to(el, { scale: 1, duration: 0.5, ease: 'expo.out' }));
+}
+
+// ── 提示框（取代瀏覽器的 title）──────────────────
+// 元素加上 data-tip="說明文字" 就會有：滑鼠停 0.3 秒、或用鍵盤移到上面時，下方淡入一個本站樣式的小框
+// 讀屏軟體透過 aria-describedby 唸出說明；觸控裝置不顯示（沒有「停在上面」這件事）
+let tipEl, tipTarget, tipTimer;
+
+export function initTooltips() {
+  tipEl = document.createElement('div');
+  tipEl.className = 'tooltip';
+  tipEl.id = 'tooltip';
+  tipEl.setAttribute('role', 'tooltip');
+  document.body.append(tipEl);
+
+  document.addEventListener('pointerover', e => {
+    if (e.pointerType !== 'mouse') return;
+    const target = e.target.closest('[data-tip]');
+    if (target === tipTarget) return;
+    hideTip();
+    if (target) tipTimer = setTimeout(() => showTip(target), 300);
   });
-  document.addEventListener('pointerdown', () => gsap.to([dot, ring], { scale: 0.75, duration: 0.15, ease: 'power2.out' }));
-  document.addEventListener('pointerup', () => gsap.to([dot, ring], { scale: 1, duration: 0.5, ease: 'expo.out' }));
+  document.addEventListener('focusin', e => {
+    const target = e.target.closest?.('[data-tip]');
+    if (target && target.matches(':focus-visible')) showTip(target); else hideTip();
+  });
+  document.addEventListener('focusout', hideTip);
+  document.addEventListener('pointerdown', hideTip);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') hideTip(); });
+  window.addEventListener('scroll', hideTip, { passive: true });
+}
+
+function showTip(target) {
+  clearTimeout(tipTimer);
+  if (!target.isConnected || target.hidden || !target.dataset.tip) return;
+  tipTarget = target;
+  tipEl.textContent = target.dataset.tip;
+  target.setAttribute('aria-describedby', 'tooltip');
+  // 位置：目標下方置中；太靠近畫面底部就改放上方；左右不超出畫面
+  const r = target.getBoundingClientRect();
+  tipEl.classList.add('is-measuring');
+  const w = tipEl.offsetWidth, h = tipEl.offsetHeight;
+  tipEl.classList.remove('is-measuring');
+  const gap = 8, edge = 12;
+  const below = r.bottom + gap + h < innerHeight - edge;
+  const left = Math.min(Math.max(r.left + r.width / 2 - w / 2, edge), innerWidth - w - edge);
+  tipEl.style.left = `${left}px`;
+  tipEl.style.top = `${below ? r.bottom + gap : r.top - gap - h}px`;
+  tipEl.dataset.side = below ? 'bottom' : 'top';
+  tipEl.classList.add('is-shown');
+}
+
+function hideTip() {
+  clearTimeout(tipTimer);
+  if (!tipTarget) return;
+  tipTarget.removeAttribute('aria-describedby');
+  tipTarget = null;
+  tipEl.classList.remove('is-shown');
 }
 
 // ── 磁吸按鈕 ─────────────────────────────────────

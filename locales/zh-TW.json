@@ -51,7 +51,6 @@
   "work.list": "作品列表",
   "work.listTitle": "所有作品",
   "work.search": "搜尋作品",
-  "work.searchEmpty": "沒有符合的作品",
   "work.fullscreen": "全螢幕預覽",
   "work.exitFullscreen": "關閉全螢幕",
   "work.codeHintRemote": "展開後可以直接試改，預覽會即時更新；這裡不能存檔，要保存請在自己的電腦上開啟",
@@ -63,5 +62,9 @@
   "lang.switchLabel": "Switch to English",
   "work.copyHint": "只複製目前分頁的 {lang} 程式碼",
   "work.copyAllHint": "把 HTML、CSS、JS 合成一個檔案，貼上存成 .html 就能直接打開",
-  "work.copiedAll": "完整頁面（可存成 .html 直接打開）"
+  "work.copiedAll": "完整頁面（可存成 .html 直接打開）",
+  "search.clear": "清除搜尋",
+  "search.suggestions": "搜尋建議",
+  "search.tryHint": "換個關鍵字試試：",
+  "search.emptyTitle": "找不到「{q}」"
 }

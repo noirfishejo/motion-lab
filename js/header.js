@@ -44,7 +44,7 @@ function setupTheme() {
     btn.querySelector('i').className = `ph-light ${light ? 'ph-moon' : 'ph-sun'}`;
     const label = t(light ? 'theme.toDark' : 'theme.toLight');
     btn.setAttribute('aria-label', label);
-    btn.title = label;
+    btn.dataset.tip = label; // 本站樣式的提示框（js/interactions.js）
   };
   render();
   btn.addEventListener('click', () => {

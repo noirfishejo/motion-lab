@@ -38,7 +38,7 @@
     <div class="container">
       <div class="header-start">
         <!-- 作品列表側欄的開關 -->
-        <button class="icon-toggle" type="button" id="worksNavToggle" aria-expanded="false" aria-controls="worksNav" data-i18n-attr="aria-label:work.list;title:work.list">
+        <button class="icon-toggle" type="button" id="worksNavToggle" aria-expanded="false" aria-controls="worksNav" data-i18n-attr="aria-label:work.list;data-tip:work.list">
           <i class="ph-light ph-sidebar-simple" aria-hidden="true"></i>
         </button>
         <a class="logo" href="index.html" data-i18n-attr="aria-label:nav.home">
@@ -46,7 +46,7 @@
         </a>
       </div>
       <div class="header-end">
-        <button class="icon-toggle lang-toggle" type="button" id="langToggle" data-i18n="lang.switch" data-i18n-attr="aria-label:lang.switchLabel;title:lang.switchLabel"></button>
+        <button class="icon-toggle lang-toggle" type="button" id="langToggle" data-i18n="lang.switch" data-i18n-attr="aria-label:lang.switchLabel;data-tip:lang.switchLabel"></button>
         <button class="icon-toggle" type="button" id="themeToggle"><i class="ph-light ph-sun" aria-hidden="true"></i></button>
       </div>
     </div>
@@ -74,13 +74,13 @@
           <div class="panel-bar">
             <span class="label" id="previewLabel" data-i18n="work.preview"></span>
             <div class="panel-actions">
-              <button class="switch" type="button" role="switch" id="markersSwitch" aria-checked="true" hidden data-i18n-attr="title:work.markersHint">
+              <button class="switch" type="button" role="switch" id="markersSwitch" aria-checked="true" hidden data-i18n-attr="data-tip:work.markersHint">
                 <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
                 <span data-i18n="work.markers"></span>
               </button>
               <button class="btn btn-ghost btn-sm" type="button" id="replayBtn"><i class="ph-light ph-arrow-counter-clockwise"></i><span data-i18n="work.replay"></span></button>
-              <button class="btn btn-icon btn-sm" type="button" id="fullBtn" data-i18n-attr="aria-label:work.fullscreen;title:work.fullscreen"><i class="ph-light ph-arrows-out"></i></button>
-              <button class="btn btn-icon btn-sm" type="button" id="exitFullBtn" hidden data-i18n-attr="aria-label:work.exitFullscreen;title:work.exitFullscreen"><i class="ph-light ph-arrows-in"></i></button>
+              <button class="btn btn-icon btn-sm" type="button" id="fullBtn" data-i18n-attr="aria-label:work.fullscreen;data-tip:work.fullscreen"><i class="ph-light ph-arrows-out"></i></button>
+              <button class="btn btn-icon btn-sm" type="button" id="exitFullBtn" hidden data-i18n-attr="aria-label:work.exitFullscreen;data-tip:work.exitFullscreen"><i class="ph-light ph-arrows-in"></i></button>
             </div>
           </div>
           <div class="preview-frame" id="previewWrap">
@@ -113,7 +113,7 @@
                 <button class="btn btn-ghost btn-sm" type="button" id="resetBtn" disabled><i class="ph-light ph-arrow-u-up-left"></i><span data-i18n="work.reset"></span></button>
                 <button class="btn btn-ghost btn-sm" type="button" id="saveBtn" disabled><i class="ph-light ph-floppy-disk"></i><span data-i18n="work.save"></span></button>
                 <button class="btn btn-ghost btn-sm" type="button" id="copyBtn"><i class="ph-light ph-copy"></i><span></span></button>
-                <button class="btn btn-primary btn-sm" type="button" id="copyAllBtn" data-i18n-attr="title:work.copyAllHint"><i class="ph-light ph-file-html"></i><span data-i18n="work.copyAll"></span></button>
+                <button class="btn btn-primary btn-sm" type="button" id="copyAllBtn" data-i18n-attr="data-tip:work.copyAllHint"><i class="ph-light ph-file-html"></i><span data-i18n="work.copyAll"></span></button>
               </div>
             </div>
             <!-- 存檔前的確認：列出會被覆寫的檔案 -->
@@ -152,7 +152,7 @@
       <input type="search" id="worksSearch" autocomplete="off" data-i18n-attr="aria-label:work.search;placeholder:work.search">
     </div>
     <div class="works-nav-list" id="worksNavList"></div>
-    <p class="works-nav-empty" id="worksNavEmpty" hidden data-i18n="work.searchEmpty"></p>
+    <div class="works-nav-empty" id="worksNavEmpty" hidden></div>
   </aside>
   <div class="works-nav-scrim" id="worksNavScrim" hidden></div>
 

@@ -51,7 +51,6 @@
   "work.list": "Works list",
   "work.listTitle": "All works",
   "work.search": "Search works",
-  "work.searchEmpty": "No matching works",
   "work.fullscreen": "Fullscreen preview",
   "work.exitFullscreen": "Exit fullscreen",
   "work.codeHintRemote": "Expand to try edits — the preview updates live. Saving only works on your own computer.",
@@ -63,5 +62,9 @@
   "lang.switchLabel": "切換成中文",
   "work.copyHint": "Copy only the {lang} code in this tab",
   "work.copyAllHint": "Combine HTML, CSS and JS into one file — paste it into a .html file and open it",
-  "work.copiedAll": "the full page (save it as .html to open)"
+  "work.copiedAll": "the full page (save it as .html to open)",
+  "search.clear": "Clear search",
+  "search.suggestions": "Suggestions",
+  "search.tryHint": "Try another keyword:",
+  "search.emptyTitle": "Nothing matches “{q}”"
 }

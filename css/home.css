@@ -31,7 +31,7 @@
 /* ── 作品區 ── */
 /* 不透明底色＋疊在開場上面：往下捲時像布幕一樣蓋過固定住的開場 */
 .works{position:relative;z-index:1;background:var(--bg)}
-.works{padding-top:0} /* 開場往上捲時，作品區直接接著出現 */
+.works{padding-top:0;min-height:100svh} /* 篩選、搜尋後結果很少時，頁面也夠長，不會被拉回開場區 */ /* 開場往上捲時，作品區直接接著出現 */
 .works-head{display:flex;align-items:baseline;gap:16px;margin-bottom:24px}
 .works-head h2{font:500 var(--fs-h2)/1.1 var(--font-display);letter-spacing:-.03em}
 
@@ -44,7 +44,7 @@
 /* 篩選列＋搜尋：電腦、平板同一列（搜尋靠右）；手機搜尋換到下一列 */
 .filters-bar{display:flex;align-items:stretch}
 .filters-bar .filters{flex:1;min-width:0}
-.search{display:flex;align-items:center;gap:8px;flex:0 0 220px;padding:0 0 0 16px;border-left:1px solid var(--line);transition:border-color var(--dur-fast)}
+.search{position:relative;display:flex;align-items:center;gap:8px;flex:0 0 260px;padding:0 0 0 16px;border-left:1px solid var(--line);transition:border-color var(--dur-fast)}
 .search i{font-size:16px;color:var(--muted)}
 .search input{flex:1;min-width:0;height:48px;border:0;background:transparent;color:var(--text);font:400 14px/1 var(--font-body);outline:none;border-radius:0}
 .search input::placeholder{color:var(--muted)}
@@ -99,4 +99,5 @@
 .work-meta p{grid-column:1/-1;color:var(--muted);font-size:var(--fs-small);max-width:52ch}
 .work-meta .tags{grid-column:1/-1;margin-top:6px}
 
-.empty{padding:64px 0;color:var(--muted);text-align:center;border-bottom:1px solid var(--line)}
+.empty{color:var(--muted);text-align:center;border-bottom:1px solid var(--line)}
+.empty:not(:has(.empty-state)){padding:64px 0}

@@ -5,7 +5,8 @@ import { initI18n, t, pick } from './i18n.js';
 import { WORKS, TOPICS, searchText, matches } from './works.js';
 import { initHeader } from './header.js';
 import { initSmooth, scrollToY } from './smooth.js';
-import { initCursor, magnetic, slidingIndicator } from './interactions.js';
+import { initCursor, initTooltips, magnetic, slidingIndicator } from './interactions.js';
+import { addClearButton, addSuggestions, renderEmpty, stopEmpty } from './search.js';
 
 // 縮圖構圖用的常數（見下方 fitThumb）。要放在所有 await 之前，否則縮圖載入時還讀不到
 const THUMB_VIEW = { w: 960, h: 600 };
@@ -26,6 +27,7 @@ renderFilters();
 renderCards();
 initSmooth();
 initCursor();
+initTooltips();
 magnetic('.site-header .icon-toggle');
 if (hasGsap) {
   await document.fonts.ready; // 字體載入後再拆字，位置才會準
@@ -59,7 +61,9 @@ function renderFilters() {
   let timer;
   const search = document.getElementById('workSearch');
   search.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => applyFilter(), 200); });
-  search.addEventListener('keydown', e => { if (e.key === 'Escape' && search.value) { search.value = ''; applyFilter(); } });
+  search.addEventListener('keydown', e => { if (e.key === 'Escape' && search.value) { search.value = ''; search.dispatchEvent(new Event('input')); } });
+  addClearButton(search, () => search.dispatchEvent(new Event('input')));
+  addSuggestions(search); // 打字時下方出現最符合的作品，選了直接前往
   nav.addEventListener('click', e => {
     const btn = e.target.closest('button');
     if (btn) applyFilter(btn.dataset.topic);
@@ -170,11 +174,20 @@ function applyFilter(topic = currentTopic) {
   const shown = cards.filter(c => c.style.display !== 'none');
   const next = cards.filter(c => (topic === 'all' || c.dataset.topic === topic) && matches(c.dataset.search, query));
   const empty = document.getElementById('empty');
-  empty.textContent = t(query.trim() ? 'work.searchEmpty' : 'home.works.empty');
 
   const swap = () => {
     cards.forEach(c => { c.style.display = next.includes(c) ? '' : 'none'; });
-    document.getElementById('empty').hidden = next.length > 0;
+    empty.hidden = next.length > 0;
+    if (next.length) stopEmpty(empty);
+    else if (query.trim()) {
+      // 找不到：有動畫的空狀態，點建議的關鍵字或「清除搜尋」直接重新篩選
+      renderEmpty(empty, query.trim(), { onPick: word => {
+        const input = document.getElementById('workSearch');
+        input.value = word;
+        input.dispatchEvent(new Event('input'));
+        input.focus();
+      } });
+    } else empty.textContent = t('home.works.empty');
     // 篩選列已經吸附在頁首下方時：捲回作品格開頭，新的一組卡片從第一張開始看
     const bar = document.querySelector('.filters-bar');
     const headerH = document.querySelector('.site-header').offsetHeight;

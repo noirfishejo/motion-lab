@@ -180,8 +180,7 @@ html.has-full{overflow:hidden} /* 全螢幕時後方頁面不捲動 */
   font:400 14px/1 var(--font-body);outline:none;border-radius:0;
 }
 .works-nav-search input::placeholder{color:var(--muted)}
-.works-nav-search input::-webkit-search-cancel-button{filter:grayscale(1)}
-.works-nav-empty{padding:16px var(--gutter);font-size:14px;color:var(--muted)}
+.works-nav-empty{color:var(--muted)}
 @media (pointer:coarse){.works-nav-search input{height:var(--tap);font-size:16px}} /* 16px：iPhone 點進去不會放大畫面 */
 
 /* 參考 shadcn/ui 文件側欄：依主題分組，只列短名稱 */
