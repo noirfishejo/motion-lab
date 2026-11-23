@@ -1,0 +1,54 @@
+{
+  "title": {
+    "zh-TW": "捲動時堆疊卡片依序掉落",
+    "en": "Stacked cards fall away as you scroll"
+  },
+  "short": {
+    "zh-TW": "卡片依序掉落",
+    "en": "Falling stack"
+  },
+  "summary": {
+    "zh-TW": "和「捲動時卡片堆疊」相反：一開始就是一疊卡片，往下捲時畫面先固定住，最上面的卡片一張張往下掉落消失、後面的往前遞補；掉完之後頁面才真的開始捲動。往回捲會再疊回去。",
+    "en": "The reverse of “cards stack as you scroll”: it starts as a stack, the view stays pinned while the top cards fall away one by one and the rest move forward; only then does the page actually scroll. Scroll back to restack them."
+  },
+  "topic": "scroll",
+  "tech": "ScrollTrigger",
+  "tags": [
+    "pin",
+    "scrub",
+    "power2.in"
+  ],
+  "date": "2026-11-23",
+  "markers": true,
+  "thumb": ".deck",
+  "notes": [
+    {
+      "code": "pin: true",
+      "text": {
+        "zh-TW": "把整個區塊固定在畫面上。固定的這段捲動距離拿來播掉落動畫，所以卡片沒掉完之前，頁面看起來不會往下走。",
+        "en": "Pins the whole section. The pinned scroll distance drives the falling animation, so the page doesn’t appear to move until the cards are gone."
+      }
+    },
+    {
+      "code": "end: `+=${innerHeight * PER_CARD * (n - 1)}`",
+      "text": {
+        "zh-TW": "每張卡片分到一段捲動距離（畫面高 × 0.6）。卡片越多，要捲越久才會掉完；寫成函式，視窗大小改變時會重新計算。",
+        "en": "Each card gets a slice of scroll (0.6 × screen height), so more cards mean a longer pin. As a function it recalculates on resize."
+      }
+    },
+    {
+      "code": "ease: 'power2.in'",
+      "text": {
+        "zh-TW": "掉落用「一開始慢、越來越快」的 ease，像受重力影響；後面的卡片往前遞補則用 power2.out，快到位、慢慢停。",
+        "en": "Falling uses an ease that starts slow and speeds up, like gravity; the cards behind move forward with power2.out, arriving quickly and settling."
+      }
+    },
+    {
+      "code": "stacked(n) = { y: -n × 20, scale: 1 - n × 0.06, filter: brightness(…) }",
+      "text": {
+        "zh-TW": "疊起來的樣子寫成一個函式：第幾張就往上錯開多少、縮小多少、暗多少。前面的卡片掉落時，後面的每張都補到「前一格」的位置，看起來就像整疊往前遞補。",
+        "en": "The stacked look is one function: each card sits a bit higher, smaller and darker by its position. When the top card falls, every card behind moves to the slot in front, so the whole pile advances."
+      }
+    }
+  ]
+}

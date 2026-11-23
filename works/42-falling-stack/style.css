@@ -1,0 +1,81 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --surface-2: #1B1E23;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-hover: #2B45F0; /* 實心按鈕滑過 */
+  --accent-fg: #6E83FF;
+  --success: #4CC38A;
+  --warning: #F2B35A;
+  --danger: #FF7A7A;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --surface-2: #ECECE8;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+  --success: #0B7354;
+  --warning: #8A5300;
+  --danger: #C0262D;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; } /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+
+body { display: block; overflow-x: hidden; }
+
+/* 整個區塊佔一個畫面高；捲動時被 ScrollTrigger 固定（pin） */
+.pile { height: 100vh; display: grid; grid-template-rows: auto 1fr; justify-items: center; padding: 24px 16px; overflow: hidden; }
+.pile-head { display: grid; justify-items: center; gap: 8px; }
+.hint { font-size: 14px; color: var(--muted); }
+
+/* 一疊卡片：全部疊在同一個位置；後面的卡片稍微小一點、往上錯開一點，看得出是一疊 */
+/* 寬度也受畫面高度限制：預覽框比較矮時，整疊（含往上錯開的 60px）仍然放得下 */
+.deck { position: relative; align-self: center; width: min(420px, 78vw, (100vh - 200px) * 4 / 3); aspect-ratio: 4 / 3; margin-top: 60px; }
+.drop-card {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+.drop-card i { font-size: clamp(56px, 10vw, 88px); }
+.drop-label { font: 400 12px/1 "JetBrains Mono", monospace; letter-spacing: 0.06em; opacity: 0.8; }
+
+.after { min-height: 60vh; display: grid; place-content: center; justify-items: center; gap: 12px; padding: 24px; text-align: center; }
+.after h2 { font: 500 clamp(32px, 6vw, 56px)/1.1 "Poppins", sans-serif; letter-spacing: -0.03em; }
+.after p { max-width: 36ch; color: var(--muted); }

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>42 ScrollTrigger: Falling Card Stack</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <!-- 一開始就是一疊卡片（假圖片：藍底＋白色圖示）。往下捲時畫面先固定住，最上面的卡片一張張往下掉落消失，
+         全部掉完之後，頁面才真的開始往下捲（和練習 37「捲動時卡片堆疊」相反） -->
+    <section class="pile">
+      <div class="pile-head">
+        <span class="tag">falling stack</span>
+        <p class="hint">↓ Scroll inside the preview</p>
+      </div>
+      <div class="deck">
+      <article class="drop-card" style="--i: 0">
+        <i class="ph-light ph-sun" aria-hidden="true"></i>
+        <span class="drop-label">01 — Morning</span>
+      </article>
+      <article class="drop-card" style="--i: 1">
+        <i class="ph-light ph-mountains" aria-hidden="true"></i>
+        <span class="drop-label">02 — Trail</span>
+      </article>
+      <article class="drop-card" style="--i: 2">
+        <i class="ph-light ph-waves" aria-hidden="true"></i>
+        <span class="drop-label">03 — Coast</span>
+      </article>
+      <article class="drop-card" style="--i: 3">
+        <i class="ph-light ph-moon-stars" aria-hidden="true"></i>
+        <span class="drop-label">04 — Night</span>
+      </article>
+      </div>
+    </section>
+
+    <section class="after">
+      <h2>All gone.</h2>
+      <p>Now the page scrolls normally. Scroll back up to stack them again.</p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
