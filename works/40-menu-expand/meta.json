@@ -20,6 +20,12 @@
   ],
   "date": "2026-11-23",
   "thumb": ".page",
+  "useCases": [
+    "brand",
+    "launch"
+  ],
+  "cost": "medium",
+  "costNote": "layout",
   "notes": [
     {
       "code": {

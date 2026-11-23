@@ -19,6 +19,13 @@
     "role=\"switch\""
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "saas",
+    "app",
+    "trust"
+  ],
+  "cost": "light",
+  "costNote": "transform",
   "notes": [
     {
       "code": "gsap.to(thumb, { x: travel() })",

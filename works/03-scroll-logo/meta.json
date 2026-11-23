@@ -21,6 +21,12 @@
   "date": "2026-11-19",
   "markers": true,
   "thumb": ".lockup",
+  "useCases": [
+    "brand",
+    "launch"
+  ],
+  "cost": "light",
+  "costNote": "scroll",
   "notes": [
     {
       "code": "scrub: 0.5",

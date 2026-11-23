@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>47 Draggable: Swipe to Delete List Item</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <div class="bar">
+      <span class="tag">swipe to delete</span>
+      <button type="button" class="btn btn-outline" id="restore">Restore all</button>
+    </div>
+    <!-- 收件匣（假資料）。往左滑一點：露出刪除按鈕；滑超過一半：直接刪除，下面的項目往上補 -->
+    <ul class="list">
+      <li class="row">
+        <button type="button" class="delete" aria-label="Delete message from Avery Chen"><i class="ph-light ph-trash" aria-hidden="true"></i><span>Delete</span></button>
+        <div class="content" tabindex="0" aria-label="Avery Chen: Lunch on Friday?. Swipe left or press Delete to remove.">
+          <span class="avatar" aria-hidden="true">AC</span>
+          <span class="text"><span class="from">Avery Chen</span><span class="subject">Lunch on Friday?</span></span>
+          <span class="time">9:41</span>
+        </div>
+      </li>
+      <li class="row">
+        <button type="button" class="delete" aria-label="Delete message from Mina Kato"><i class="ph-light ph-trash" aria-hidden="true"></i><span>Delete</span></button>
+        <div class="content" tabindex="0" aria-label="Mina Kato: Updated the brand deck. Swipe left or press Delete to remove.">
+          <span class="avatar" aria-hidden="true">MK</span>
+          <span class="text"><span class="from">Mina Kato</span><span class="subject">Updated the brand deck</span></span>
+          <span class="time">8:15</span>
+        </div>
+      </li>
+      <li class="row">
+        <button type="button" class="delete" aria-label="Delete message from Jon Lee"><i class="ph-light ph-trash" aria-hidden="true"></i><span>Delete</span></button>
+        <div class="content" tabindex="0" aria-label="Jon Lee: Invoice #2048 is ready. Swipe left or press Delete to remove.">
+          <span class="avatar" aria-hidden="true">JL</span>
+          <span class="text"><span class="from">Jon Lee</span><span class="subject">Invoice #2048 is ready</span></span>
+          <span class="time">Mon</span>
+        </div>
+      </li>
+      <li class="row">
+        <button type="button" class="delete" aria-label="Delete message from Sara Ruiz"><i class="ph-light ph-trash" aria-hidden="true"></i><span>Delete</span></button>
+        <div class="content" tabindex="0" aria-label="Sara Ruiz: Photos from the trip. Swipe left or press Delete to remove.">
+          <span class="avatar" aria-hidden="true">SR</span>
+          <span class="text"><span class="from">Sara Ruiz</span><span class="subject">Photos from the trip</span></span>
+          <span class="time">Sun</span>
+        </div>
+      </li>
+    </ul>
+    <p class="empty" hidden>Inbox zero.</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

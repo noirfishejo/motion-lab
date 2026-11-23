@@ -21,6 +21,12 @@
   "date": "2026-11-20",
   "markers": true,
   "thumb": ".hs-head, .panel:nth-child(-n+2)",
+  "useCases": [
+    "brand",
+    "launch"
+  ],
+  "cost": "medium",
+  "costNote": "pin",
   "notes": [
     {
       "code": "x: () => -distance()",
@@ -57,5 +63,6 @@
         "en": "Panels enter sideways, which a normal ScrollTrigger can’t see. containerAnimation tells it to follow the progress of the move animation; start/end use left and right instead."
       }
     }
-  ]
+  ],
+  "featured": true
 }

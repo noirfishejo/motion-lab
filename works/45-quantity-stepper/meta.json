@@ -1,0 +1,59 @@
+{
+  "title": {
+    "zh-TW": "購物車數量增減按鈕",
+    "en": "Cart quantity stepper"
+  },
+  "short": {
+    "zh-TW": "數量增減",
+    "en": "Quantity stepper"
+  },
+  "summary": {
+    "zh-TW": "電商購物車常見的「－ 1 ＋」：數字上下翻動交換、小計金額跟著跑、右上角購物車徽章跳一下；超過庫存時數字框左右搖一下並說明原因，而不是默默停用按鈕。",
+    "en": "The common “– 1 +” in a cart: the number flips, the subtotal counts along, and the cart badge pops. Going past the stock limit shakes the stepper and says why, instead of silently disabling the button."
+  },
+  "topic": "feedback",
+  "tech": "Timeline",
+  "tags": [
+    "keyframes",
+    "yPercent",
+    "overwrite"
+  ],
+  "date": "2026-11-24",
+  "thumb": ".stage",
+  "useCases": [
+    "ecommerce",
+    "app"
+  ],
+  "cost": "light",
+  "costNote": "transform",
+  "notes": [
+    {
+      "code": ".to(old, { yPercent: -100 * dir })",
+      "text": {
+        "zh-TW": "複製一個新的數字放進同一個框，舊的滑出、新的滑進，兩段放在同一個 timeline 的同一時間點。dir 決定方向：加是往上、減是往下，方向和數字變化一致。",
+        "en": "Clone a new number into the same window; the old slides out while the new slides in, at the same point of one timeline. dir sets the direction — up for plus, down for minus."
+      }
+    },
+    {
+      "code": "keyframes: { scale: [1, 1.45, 1] }",
+      "text": {
+        "zh-TW": "陣列寫法的 keyframes：依序經過這幾個值，一個補間就能做「放大再回來」或「左右搖」，不用串好幾段。",
+        "en": "Array keyframes pass through each value in order, so one tween can pop up and back or shake side to side without chaining several."
+      }
+    },
+    {
+      "code": "gsap.to(total, { value })",
+      "text": {
+        "zh-TW": "補間一個普通物件的數字，在 onUpdate 裡寫回畫面，小計就會從舊金額「跑」到新金額。overwrite: true 讓連續點擊時只留最新的一段。",
+        "en": "Tween a number on a plain object and write it back in onUpdate so the subtotal runs to the new amount. overwrite: true keeps only the latest tween when clicking fast."
+      }
+    },
+    {
+      "code": "refuse()",
+      "text": {
+        "zh-TW": "到上限時不停用「＋」：停用的按鈕不會回應，使用者不知道為什麼。改成搖一下數字框（像輸入錯誤）並顯示原因，role=\"status\" 會讓讀屏軟體唸出來。",
+        "en": "At the limit “+” stays enabled — a disabled button gives no reason. Instead the stepper shakes like an input error and shows why; role=\"status\" announces it to screen readers."
+      }
+    }
+  ]
+}

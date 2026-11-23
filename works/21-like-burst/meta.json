@@ -19,6 +19,12 @@
     "aria-pressed"
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "app",
+    "content"
+  ],
+  "cost": "light",
+  "costNote": "particles",
   "notes": [
     {
       "code": "ease: 'back.out(3)'",

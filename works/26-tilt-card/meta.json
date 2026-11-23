@@ -19,6 +19,12 @@
     "translateZ"
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "brand",
+    "ecommerce"
+  ],
+  "cost": "medium",
+  "costNote": "3d",
   "notes": [
     {
       "code": "perspective: 900px",
@@ -51,5 +57,6 @@
         "en": "Only enabled with a mouse. Phones have no “cursor over the card”, so forcing it feels odd."
       }
     }
-  ]
+  ],
+  "featured": true
 }

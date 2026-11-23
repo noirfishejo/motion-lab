@@ -19,6 +19,14 @@
     "pause / resume"
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "saas",
+    "ecommerce",
+    "trust",
+    "app"
+  ],
+  "cost": "medium",
+  "costNote": "layout",
   "notes": [
     {
       "code": "from(wrap, { height: 0 })",

@@ -21,6 +21,12 @@
   "date": "2026-11-23",
   "markers": true,
   "thumb": ".stack-card:first-child",
+  "useCases": [
+    "launch",
+    "brand"
+  ],
+  "cost": "light",
+  "costNote": "scroll",
   "notes": [
     {
       "code": "position: sticky",

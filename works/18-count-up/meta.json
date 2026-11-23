@@ -19,6 +19,12 @@
     "Intl.NumberFormat"
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "saas",
+    "launch"
+  ],
+  "cost": "light",
+  "costNote": "number",
   "notes": [
     {
       "code": "gsap.to(c, { n: to, onUpdate })",

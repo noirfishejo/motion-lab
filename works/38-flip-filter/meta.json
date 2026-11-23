@@ -19,6 +19,13 @@
     "onLeave"
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "ecommerce",
+    "brand",
+    "content"
+  ],
+  "cost": "light",
+  "costNote": "flip",
   "notes": [
     {
       "code": "Flip.getState(tiles)",
@@ -48,5 +55,6 @@
         "en": "Cards are temporarily absolutely positioned during the animation so they don’t push each other while moving in the grid."
       }
     }
-  ]
+  ],
+  "featured": true
 }

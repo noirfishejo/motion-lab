@@ -19,6 +19,12 @@
     "nested"
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "ecommerce",
+    "saas"
+  ],
+  "cost": "light",
+  "costNote": "flip",
   "notes": [
     {
       "code": "MODE = 'fade'",

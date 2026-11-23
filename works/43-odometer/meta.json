@@ -1,0 +1,61 @@
+{
+  "title": {
+    "zh-TW": "數字像滾輪一樣捲動的計數器",
+    "en": "Counter with digits that roll like a wheel"
+  },
+  "short": {
+    "zh-TW": "數字滾輪",
+    "en": "Rolling digits"
+  },
+  "summary": {
+    "zh-TW": "營收、價格、按讚數這類數字改變時，每一位數字像機械計數器一樣上下捲動：個位數先動、越左邊越晚停；數字變大往上捲、變小往下捲。只有真的變了的位數才會動。",
+    "en": "When a revenue, price or like count changes, each digit rolls like a mechanical counter: the ones digit moves first and the leftmost stops last; it rolls up when the number grows and down when it shrinks. Only digits that actually change move."
+  },
+  "topic": "feedback",
+  "tech": "Tween",
+  "tags": [
+    "yPercent",
+    "stagger",
+    "tabular-nums"
+  ],
+  "date": "2026-11-24",
+  "thumb": ".card",
+  "useCases": [
+    "saas",
+    "ecommerce",
+    "launch"
+  ],
+  "cost": "light",
+  "costNote": "transform",
+  "notes": [
+    {
+      "code": ".col { height: 1em; overflow: hidden }",
+      "text": {
+        "zh-TW": "每一位數字是一條 0–9 的直條，外面的框只有一格高，所以只露出一個數字。換數字就是把直條往上或往下移，用 yPercent 移動，不管字多大都算得準。",
+        "en": "Each digit is a 0–9 strip inside a one-cell-tall window, so only one number shows. Changing a digit moves the strip with yPercent, which stays accurate at any font size."
+      }
+    },
+    {
+      "code": "CELLS = 30（三組 0–9）",
+      "text": {
+        "zh-TW": "直條放三組 0–9，平常停在中間那組。8 → 2 往上加時捲到下一組的 2（經過 9、0），往下減就捲到上一組；捲完再用 gsap.set 無聲跳回中間，畫面一樣不會閃。",
+        "en": "The strip holds three sets of 0–9 and rests on the middle one. Going up from 8 to 2 rolls into the next set (through 9 and 0); going down uses the previous set. Afterwards gsap.set snaps back to the middle invisibly."
+      }
+    },
+    {
+      "code": "delay: (digits.length - 1 - k) * STAGGER",
+      "text": {
+        "zh-TW": "個位數先動，越左邊越晚開始、越晚停下，像真的機械計數器。只有變了的位數才補間，沒變的保持不動，眼睛才看得出「哪裡變了」。",
+        "en": "The ones digit starts first and leftward digits start and stop later, like a real counter. Only changed digits animate, so the eye can see what changed."
+      }
+    },
+    {
+      "code": "font-variant-numeric: tabular-nums",
+      "text": {
+        "zh-TW": "讓每個數字一樣寬，捲動時整排數字不會左右抖動。讀屏軟體則讀另一行隱藏的文字（aria-live），不讀那些直條。",
+        "en": "Makes every digit the same width so the row doesn’t jiggle while rolling. Screen readers read a hidden aria-live line instead of the strips."
+      }
+    }
+  ],
+  "thumbEnd": true
+}

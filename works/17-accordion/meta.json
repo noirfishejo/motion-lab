@@ -19,6 +19,14 @@
     "hidden"
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "content",
+    "ecommerce",
+    "trust",
+    "saas"
+  ],
+  "cost": "medium",
+  "costNote": "layout",
   "notes": [
     {
       "code": "height: 'auto'",

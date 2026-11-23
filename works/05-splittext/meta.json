@@ -19,6 +19,13 @@
     "autoSplit"
   ],
   "date": "2026-11-19",
+  "useCases": [
+    "brand",
+    "launch",
+    "content"
+  ],
+  "cost": "medium",
+  "costNote": "text",
   "notes": [
     {
       "code": "type: 'lines'",

@@ -225,6 +225,23 @@ html.nav-init body,html.nav-init .works-nav{transition:none!important}
 .notes code::before{content:counter(note,decimal-leading-zero) "  ";color:var(--muted)}
 .notes p{font-size:14px;color:var(--muted);line-height:1.7}
 
+/* ── 適用情境與效能（收合） ── */
+.more{border-bottom:1px solid var(--line)}
+.more-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0;font-size:14px;color:var(--muted);text-align:left;transition:color var(--dur-fast)}
+.more-toggle:hover{color:var(--text)}
+.more-toggle i{font-size:16px;transition:transform var(--dur) var(--ease-out)}
+.more-toggle[aria-expanded="true"]{color:var(--text)}
+.more-toggle[aria-expanded="true"] i{transform:rotate(180deg)}
+.more-panel{overflow:hidden;display:grid;gap:10px;padding-bottom:20px}
+.more-panel .label{margin:6px 0 0}
+.use-chips{list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.use-chips li{font-size:var(--fs-small);color:var(--text);border:1px solid var(--line-strong);padding:4px 10px}
+.cost{display:flex;align-items:baseline;gap:10px;font-size:14px;color:var(--muted);line-height:1.7}
+.cost-level{flex:none;font:400 12px/1 var(--font-mono);padding:4px 8px;border:1px solid currentColor}
+.cost-level[data-level="light"]{color:var(--success)}
+.cost-level[data-level="medium"]{color:var(--warning)}
+.cost-level[data-level="heavy"]{color:var(--danger)}
+
 /* ── 上一個／下一個 ── */
 .pager{display:grid;grid-template-columns:1fr 1fr;gap:var(--grid-gap);margin-top:64px}
 .pager:empty{display:none}

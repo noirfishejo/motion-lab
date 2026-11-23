@@ -19,6 +19,13 @@
     "aspect-ratio"
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "ecommerce",
+    "content",
+    "brand"
+  ],
+  "cost": "medium",
+  "costNote": "blurOnce",
   "notes": [
     {
       "code": "filter: 'blur(24px)' → 'blur(0px)'",

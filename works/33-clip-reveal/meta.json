@@ -21,6 +21,13 @@
   "date": "2026-11-23",
   "markers": true,
   "thumb": ".intro, .shot:first-of-type",
+  "useCases": [
+    "brand",
+    "launch",
+    "content"
+  ],
+  "cost": "medium",
+  "costNote": "clip",
   "notes": [
     {
       "code": "clipPath: 'inset(50% 0% 50% 0%)'",

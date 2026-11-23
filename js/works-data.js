@@ -23,6 +23,14 @@ export const WORKS = [
       "expo.out"
     ],
     "date": "2026-11-19",
+    "useCases": [
+      "saas",
+      "ecommerce",
+      "content",
+      "app"
+    ],
+    "cost": "light",
+    "costNote": "transform",
     "notes": [
       {
         "code": "gsap.from()",
@@ -76,6 +84,13 @@ export const WORKS = [
       "position"
     ],
     "date": "2026-11-19",
+    "useCases": [
+      "app",
+      "saas",
+      "launch"
+    ],
+    "cost": "light",
+    "costNote": "transform",
     "notes": [
       {
         "code": "gsap.timeline()",
@@ -139,6 +154,12 @@ export const WORKS = [
     "date": "2026-11-19",
     "markers": true,
     "thumb": ".lockup",
+    "useCases": [
+      "brand",
+      "launch"
+    ],
+    "cost": "light",
+    "costNote": "scroll",
     "notes": [
       {
         "code": "scrub: 0.5",
@@ -202,6 +223,13 @@ export const WORKS = [
       "label"
     ],
     "date": "2026-11-19",
+    "useCases": [
+      "brand",
+      "saas",
+      "app"
+    ],
+    "cost": "light",
+    "costNote": "svg",
     "notes": [
       {
         "code": "drawSVG: 0 → '100%'",
@@ -238,7 +266,8 @@ export const WORKS = [
           "en": "Every stroke has a label (bookmark) before it. Clicking a step calls tl.play(label): earlier strokes show as finished and later ones are cleared and redrawn."
         }
       }
-    ]
+    ],
+    "featured": true
   },
   {
     "id": "05-splittext",
@@ -262,6 +291,13 @@ export const WORKS = [
       "autoSplit"
     ],
     "date": "2026-11-19",
+    "useCases": [
+      "brand",
+      "launch",
+      "content"
+    ],
+    "cost": "medium",
+    "costNote": "text",
     "notes": [
       {
         "code": "type: 'lines'",
@@ -322,6 +358,13 @@ export const WORKS = [
       "layout"
     ],
     "date": "2026-11-19",
+    "useCases": [
+      "ecommerce",
+      "saas",
+      "app"
+    ],
+    "cost": "light",
+    "costNote": "flip",
     "notes": [
       {
         "code": "Flip.getState(cards)",
@@ -382,6 +425,12 @@ export const WORKS = [
       "snap"
     ],
     "date": "2026-11-19",
+    "useCases": [
+      "app",
+      "ecommerce"
+    ],
+    "cost": "light",
+    "costNote": "drag",
     "notes": [
       {
         "code": "Draggable.create(sheet, { type: 'y' })",
@@ -442,6 +491,11 @@ export const WORKS = [
       "align"
     ],
     "date": "2026-11-19",
+    "useCases": [
+      "ecommerce"
+    ],
+    "cost": "light",
+    "costNote": "path",
     "notes": [
       {
         "code": "motionPath: { path }",
@@ -502,6 +556,12 @@ export const WORKS = [
       "elastic"
     ],
     "date": "2026-11-20",
+    "useCases": [
+      "brand",
+      "launch"
+    ],
+    "cost": "light",
+    "costNote": "pointer",
     "notes": [
       {
         "code": "gsap.quickTo(el, 'x')",
@@ -571,6 +631,12 @@ export const WORKS = [
     "date": "2026-11-20",
     "markers": true,
     "thumb": ".hs-head, .panel:nth-child(-n+2)",
+    "useCases": [
+      "brand",
+      "launch"
+    ],
+    "cost": "medium",
+    "costNote": "pin",
     "notes": [
       {
         "code": "x: () => -distance()",
@@ -607,7 +673,8 @@ export const WORKS = [
           "en": "Panels enter sideways, which a normal ScrollTrigger can’t see. containerAnimation tells it to follow the progress of the move animation; start/end use left and right instead."
         }
       }
-    ]
+    ],
+    "featured": true
   },
   {
     "id": "11-toggle-switch",
@@ -631,6 +698,13 @@ export const WORKS = [
       "role=\"switch\""
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "app",
+      "trust"
+    ],
+    "cost": "light",
+    "costNote": "transform",
     "notes": [
       {
         "code": "gsap.to(thumb, { x: travel() })",
@@ -691,6 +765,14 @@ export const WORKS = [
       "keyframes"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "ecommerce",
+      "trust",
+      "app"
+    ],
+    "cost": "light",
+    "costNote": "transform",
     "notes": [
       {
         "code": "isUp = focused || value !== ''",
@@ -751,6 +833,13 @@ export const WORKS = [
       "aria-busy"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "ecommerce",
+      "trust"
+    ],
+    "cost": "medium",
+    "costNote": "layout",
     "notes": [
       {
         "code": "await gsap.timeline()",
@@ -811,6 +900,14 @@ export const WORKS = [
       "pause / resume"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "ecommerce",
+      "trust",
+      "app"
+    ],
+    "cost": "medium",
+    "costNote": "layout",
     "notes": [
       {
         "code": "from(wrap, { height: 0 })",
@@ -871,6 +968,13 @@ export const WORKS = [
       "role=\"tablist\""
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "content",
+      "app"
+    ],
+    "cost": "light",
+    "costNote": "transform",
     "notes": [
       {
         "code": "x: tab.offsetLeft, scaleX: w / BASE",
@@ -931,6 +1035,13 @@ export const WORKS = [
       "matchMedia"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "trust",
+      "app"
+    ],
+    "cost": "light",
+    "costNote": "transform",
     "notes": [
       {
         "code": "dialog.showModal()",
@@ -991,6 +1102,14 @@ export const WORKS = [
       "hidden"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "content",
+      "ecommerce",
+      "trust",
+      "saas"
+    ],
+    "cost": "medium",
+    "costNote": "layout",
     "notes": [
       {
         "code": "height: 'auto'",
@@ -1051,6 +1170,12 @@ export const WORKS = [
       "Intl.NumberFormat"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "launch"
+    ],
+    "cost": "light",
+    "costNote": "number",
     "notes": [
       {
         "code": "gsap.to(c, { n: to, onUpdate })",
@@ -1116,6 +1241,12 @@ export const WORKS = [
     "date": "2026-11-23",
     "markers": true,
     "thumb": ".intro, .statement:first-child",
+    "useCases": [
+      "brand",
+      "launch"
+    ],
+    "cost": "heavy",
+    "costNote": "blur",
     "notes": [
       {
         "code": "filter: 'blur(14px)' → 'blur(0px)'",
@@ -1176,6 +1307,14 @@ export const WORKS = [
       "aria-busy"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "content",
+      "app",
+      "ecommerce"
+    ],
+    "cost": "light",
+    "costNote": "loop",
     "notes": [
       {
         "code": {
@@ -1249,6 +1388,12 @@ export const WORKS = [
       "aria-pressed"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "app",
+      "content"
+    ],
+    "cost": "light",
+    "costNote": "particles",
     "notes": [
       {
         "code": "ease: 'back.out(3)'",
@@ -1314,6 +1459,13 @@ export const WORKS = [
     "date": "2026-11-23",
     "markers": true,
     "thumb": ".intro, .feature:first-of-type",
+    "useCases": [
+      "brand",
+      "launch",
+      "content"
+    ],
+    "cost": "light",
+    "costNote": "scroll",
     "notes": [
       {
         "code": "overflow: hidden + height: 140%",
@@ -1375,6 +1527,13 @@ export const WORKS = [
     ],
     "date": "2026-11-23",
     "thumb": ".page",
+    "useCases": [
+      "brand",
+      "content",
+      "app"
+    ],
+    "cost": "medium",
+    "costNote": "clip",
     "notes": [
       {
         "code": "tl.play() / tl.reverse()",
@@ -1435,6 +1594,13 @@ export const WORKS = [
       "transform-origin"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "ecommerce",
+      "trust"
+    ],
+    "cost": "light",
+    "costNote": "transform",
     "notes": [
       {
         "code": "gsap.quickTo(highlight, 'y')",
@@ -1488,6 +1654,13 @@ export const WORKS = [
       "width: max-content"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "brand",
+      "launch",
+      "ecommerce"
+    ],
+    "cost": "light",
+    "costNote": "loop",
     "notes": [
       {
         "code": {
@@ -1544,6 +1717,12 @@ export const WORKS = [
       "translateZ"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "brand",
+      "ecommerce"
+    ],
+    "cost": "medium",
+    "costNote": "3d",
     "notes": [
       {
         "code": "perspective: 900px",
@@ -1576,7 +1755,8 @@ export const WORKS = [
           "en": "Only enabled with a mouse. Phones have no “cursor over the card”, so forcing it feels odd."
         }
       }
-    ]
+    ],
+    "featured": true
   },
   {
     "id": "27-checkbox",
@@ -1600,6 +1780,13 @@ export const WORKS = [
       "sr-only"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "app",
+      "trust"
+    ],
+    "cost": "light",
+    "costNote": "svg",
     "notes": [
       {
         "code": "drawSVG: '0%' → '100%'",
@@ -1653,6 +1840,13 @@ export const WORKS = [
       "aria-live"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "trust",
+      "app"
+    ],
+    "cost": "light",
+    "costNote": "transform",
     "notes": [
       {
         "code": {
@@ -1712,6 +1906,12 @@ export const WORKS = [
       "role=\"radiogroup\""
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "app"
+    ],
+    "cost": "light",
+    "costNote": "transform",
     "notes": [
       {
         "code": "xPercent: index × 100",
@@ -1765,6 +1965,12 @@ export const WORKS = [
       "rotate(-90deg)"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "app"
+    ],
+    "cost": "light",
+    "costNote": "svg",
     "notes": [
       {
         "code": "state = { p: 0 }",
@@ -1821,6 +2027,11 @@ export const WORKS = [
       "aria-describedby"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas"
+    ],
+    "cost": "light",
+    "costNote": "transform",
     "notes": [
       {
         "code": "DELAY = 0.45",
@@ -1880,6 +2091,13 @@ export const WORKS = [
       "aspect-ratio"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "ecommerce",
+      "content",
+      "brand"
+    ],
+    "cost": "medium",
+    "costNote": "blurOnce",
     "notes": [
       {
         "code": "filter: 'blur(24px)' → 'blur(0px)'",
@@ -1935,6 +2153,13 @@ export const WORKS = [
     "date": "2026-11-23",
     "markers": true,
     "thumb": ".intro, .shot:first-of-type",
+    "useCases": [
+      "brand",
+      "launch",
+      "content"
+    ],
+    "cost": "medium",
+    "costNote": "clip",
     "notes": [
       {
         "code": "clipPath: 'inset(50% 0% 50% 0%)'",
@@ -1990,6 +2215,12 @@ export const WORKS = [
     "date": "2026-11-23",
     "markers": true,
     "thumb": ".media, .step:first-child",
+    "useCases": [
+      "launch",
+      "saas"
+    ],
+    "cost": "light",
+    "costNote": "scroll",
     "notes": [
       {
         "code": "position: sticky",
@@ -2043,6 +2274,12 @@ export const WORKS = [
       "nested"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "ecommerce",
+      "saas"
+    ],
+    "cost": "light",
+    "costNote": "flip",
     "notes": [
       {
         "code": "MODE = 'fade'",
@@ -2096,6 +2333,12 @@ export const WORKS = [
       "aria-live"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "saas",
+      "app"
+    ],
+    "cost": "light",
+    "costNote": "drag",
     "notes": [
       {
         "code": "Draggable.create(row, { type: 'y', trigger: handle })",
@@ -2151,6 +2394,12 @@ export const WORKS = [
     "date": "2026-11-23",
     "markers": true,
     "thumb": ".stack-card:first-child",
+    "useCases": [
+      "launch",
+      "brand"
+    ],
+    "cost": "light",
+    "costNote": "scroll",
     "notes": [
       {
         "code": "position: sticky",
@@ -2207,6 +2456,13 @@ export const WORKS = [
       "onLeave"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "ecommerce",
+      "brand",
+      "content"
+    ],
+    "cost": "light",
+    "costNote": "flip",
     "notes": [
       {
         "code": "Flip.getState(tiles)",
@@ -2236,7 +2492,8 @@ export const WORKS = [
           "en": "Cards are temporarily absolutely positioned during the animation so they don’t push each other while moving in the grid."
         }
       }
-    ]
+    ],
+    "featured": true
   },
   {
     "id": "39-range-slider",
@@ -2260,6 +2517,12 @@ export const WORKS = [
       "role=\"slider\""
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "ecommerce",
+      "saas"
+    ],
+    "cost": "light",
+    "costNote": "drag",
     "notes": [
       {
         "code": "Draggable.create(thumb, { type: 'x', bounds: slider })",
@@ -2314,6 +2577,12 @@ export const WORKS = [
     ],
     "date": "2026-11-23",
     "thumb": ".page",
+    "useCases": [
+      "brand",
+      "launch"
+    ],
+    "cost": "medium",
+    "costNote": "layout",
     "notes": [
       {
         "code": {
@@ -2373,6 +2642,11 @@ export const WORKS = [
       "(hover: hover)"
     ],
     "date": "2026-11-23",
+    "useCases": [
+      "brand"
+    ],
+    "cost": "light",
+    "costNote": "pointer",
     "notes": [
       {
         "code": "gsap.quickTo(preview, 'x')",
@@ -2429,6 +2703,12 @@ export const WORKS = [
     "date": "2026-11-23",
     "markers": true,
     "thumb": ".deck",
+    "useCases": [
+      "launch",
+      "brand"
+    ],
+    "cost": "medium",
+    "costNote": "pin",
     "notes": [
       {
         "code": "pin: true",
@@ -2463,6 +2743,313 @@ export const WORKS = [
         "text": {
           "zh-TW": "疊起來的樣子寫成一個函式：第幾張就往上錯開多少、縮小多少、暗多少。前面的卡片掉落時，後面的每張都補到「前一格」的位置，看起來就像整疊往前遞補。",
           "en": "The stacked look is one function: each card sits a bit higher, smaller and darker by its position. When the top card falls, every card behind moves to the slot in front, so the whole pile advances."
+        }
+      }
+    ],
+    "featured": true
+  },
+  {
+    "id": "43-odometer",
+    "title": {
+      "zh-TW": "數字像滾輪一樣捲動的計數器",
+      "en": "Counter with digits that roll like a wheel"
+    },
+    "short": {
+      "zh-TW": "數字滾輪",
+      "en": "Rolling digits"
+    },
+    "summary": {
+      "zh-TW": "營收、價格、按讚數這類數字改變時，每一位數字像機械計數器一樣上下捲動：個位數先動、越左邊越晚停；數字變大往上捲、變小往下捲。只有真的變了的位數才會動。",
+      "en": "When a revenue, price or like count changes, each digit rolls like a mechanical counter: the ones digit moves first and the leftmost stops last; it rolls up when the number grows and down when it shrinks. Only digits that actually change move."
+    },
+    "topic": "feedback",
+    "tech": "Tween",
+    "tags": [
+      "yPercent",
+      "stagger",
+      "tabular-nums"
+    ],
+    "date": "2026-11-24",
+    "thumb": ".card",
+    "useCases": [
+      "saas",
+      "ecommerce",
+      "launch"
+    ],
+    "cost": "light",
+    "costNote": "transform",
+    "notes": [
+      {
+        "code": ".col { height: 1em; overflow: hidden }",
+        "text": {
+          "zh-TW": "每一位數字是一條 0–9 的直條，外面的框只有一格高，所以只露出一個數字。換數字就是把直條往上或往下移，用 yPercent 移動，不管字多大都算得準。",
+          "en": "Each digit is a 0–9 strip inside a one-cell-tall window, so only one number shows. Changing a digit moves the strip with yPercent, which stays accurate at any font size."
+        }
+      },
+      {
+        "code": "CELLS = 30（三組 0–9）",
+        "text": {
+          "zh-TW": "直條放三組 0–9，平常停在中間那組。8 → 2 往上加時捲到下一組的 2（經過 9、0），往下減就捲到上一組；捲完再用 gsap.set 無聲跳回中間，畫面一樣不會閃。",
+          "en": "The strip holds three sets of 0–9 and rests on the middle one. Going up from 8 to 2 rolls into the next set (through 9 and 0); going down uses the previous set. Afterwards gsap.set snaps back to the middle invisibly."
+        }
+      },
+      {
+        "code": "delay: (digits.length - 1 - k) * STAGGER",
+        "text": {
+          "zh-TW": "個位數先動，越左邊越晚開始、越晚停下，像真的機械計數器。只有變了的位數才補間，沒變的保持不動，眼睛才看得出「哪裡變了」。",
+          "en": "The ones digit starts first and leftward digits start and stop later, like a real counter. Only changed digits animate, so the eye can see what changed."
+        }
+      },
+      {
+        "code": "font-variant-numeric: tabular-nums",
+        "text": {
+          "zh-TW": "讓每個數字一樣寬，捲動時整排數字不會左右抖動。讀屏軟體則讀另一行隱藏的文字（aria-live），不讀那些直條。",
+          "en": "Makes every digit the same width so the row doesn’t jiggle while rolling. Screen readers read a hidden aria-live line instead of the strips."
+        }
+      }
+    ],
+    "thumbEnd": true
+  },
+  {
+    "id": "44-drag-carousel",
+    "title": {
+      "zh-TW": "可拖曳、會滑行吸附的圖片輪播",
+      "en": "Image carousel you can drag, fling and snap"
+    },
+    "short": {
+      "zh-TW": "拖曳輪播",
+      "en": "Drag carousel"
+    },
+    "summary": {
+      "zh-TW": "左右拖曳圖片輪播，放開後依照甩動的速度繼續滑行，最後吸附到最近的一張；甩得快可以一次跳過好幾張。拉到頭尾會有阻力。也可以用箭頭按鈕、圓點或鍵盤左右鍵切換。",
+      "en": "Drag the carousel sideways; on release it glides with your fling speed and snaps to the nearest slide — fling hard to skip several. The ends resist. Arrow buttons, dots and the keyboard arrow keys also work."
+    },
+    "topic": "pointer",
+    "tech": "Draggable",
+    "tags": [
+      "InertiaPlugin",
+      "snap",
+      "edgeResistance"
+    ],
+    "date": "2026-11-24",
+    "thumb": ".stage",
+    "useCases": [
+      "ecommerce",
+      "content",
+      "app",
+      "brand"
+    ],
+    "cost": "light",
+    "costNote": "drag",
+    "notes": [
+      {
+        "code": "inertia: true",
+        "text": {
+          "zh-TW": "放開後依照手指或滑鼠甩動的速度繼續滑（需要 InertiaPlugin，3.13 起免費）。沒有慣性的輪播放開就停，會覺得「黏手」。",
+          "en": "After release the track keeps gliding at your fling speed (InertiaPlugin, free since 3.13). Without inertia a carousel stops dead on release and feels sticky."
+        }
+      },
+      {
+        "code": "snap: x => gsap.utils.snap(stops, x)",
+        "text": {
+          "zh-TW": "慣性算出來的落點會被吸到最近的一張。stops 是每一張對齊左邊時 track 的位置；給 snap 一個陣列，它會回傳最接近的值。",
+          "en": "The landing point of the glide snaps to the nearest slide. stops holds the track position for each slide; given an array, snap returns the closest value."
+        }
+      },
+      {
+        "code": "touch-action: pan-y",
+        "text": {
+          "zh-TW": "手機上「上下滑」仍然交給瀏覽器捲動頁面，只有左右滑才是拖曳輪播，不然輪播會擋住整頁的捲動。",
+          "en": "On phones, vertical swipes still scroll the page and only horizontal ones drag the carousel; otherwise the carousel would block page scrolling."
+        }
+      },
+      {
+        "code": "onUpdate: () => drag.update()",
+        "text": {
+          "zh-TW": "用按鈕切換時是 gsap.to 在移動 track，要通知 Draggable 位置變了，下一次拖曳才會從正確的位置開始。",
+          "en": "When buttons move the track with gsap.to, tell Draggable the position changed so the next drag starts from the right place."
+        }
+      }
+    ]
+  },
+  {
+    "id": "45-quantity-stepper",
+    "title": {
+      "zh-TW": "購物車數量增減按鈕",
+      "en": "Cart quantity stepper"
+    },
+    "short": {
+      "zh-TW": "數量增減",
+      "en": "Quantity stepper"
+    },
+    "summary": {
+      "zh-TW": "電商購物車常見的「－ 1 ＋」：數字上下翻動交換、小計金額跟著跑、右上角購物車徽章跳一下；超過庫存時數字框左右搖一下並說明原因，而不是默默停用按鈕。",
+      "en": "The common “– 1 +” in a cart: the number flips, the subtotal counts along, and the cart badge pops. Going past the stock limit shakes the stepper and says why, instead of silently disabling the button."
+    },
+    "topic": "feedback",
+    "tech": "Timeline",
+    "tags": [
+      "keyframes",
+      "yPercent",
+      "overwrite"
+    ],
+    "date": "2026-11-24",
+    "thumb": ".stage",
+    "useCases": [
+      "ecommerce",
+      "app"
+    ],
+    "cost": "light",
+    "costNote": "transform",
+    "notes": [
+      {
+        "code": ".to(old, { yPercent: -100 * dir })",
+        "text": {
+          "zh-TW": "複製一個新的數字放進同一個框，舊的滑出、新的滑進，兩段放在同一個 timeline 的同一時間點。dir 決定方向：加是往上、減是往下，方向和數字變化一致。",
+          "en": "Clone a new number into the same window; the old slides out while the new slides in, at the same point of one timeline. dir sets the direction — up for plus, down for minus."
+        }
+      },
+      {
+        "code": "keyframes: { scale: [1, 1.45, 1] }",
+        "text": {
+          "zh-TW": "陣列寫法的 keyframes：依序經過這幾個值，一個補間就能做「放大再回來」或「左右搖」，不用串好幾段。",
+          "en": "Array keyframes pass through each value in order, so one tween can pop up and back or shake side to side without chaining several."
+        }
+      },
+      {
+        "code": "gsap.to(total, { value })",
+        "text": {
+          "zh-TW": "補間一個普通物件的數字，在 onUpdate 裡寫回畫面，小計就會從舊金額「跑」到新金額。overwrite: true 讓連續點擊時只留最新的一段。",
+          "en": "Tween a number on a plain object and write it back in onUpdate so the subtotal runs to the new amount. overwrite: true keeps only the latest tween when clicking fast."
+        }
+      },
+      {
+        "code": "refuse()",
+        "text": {
+          "zh-TW": "到上限時不停用「＋」：停用的按鈕不會回應，使用者不知道為什麼。改成搖一下數字框（像輸入錯誤）並顯示原因，role=\"status\" 會讓讀屏軟體唸出來。",
+          "en": "At the limit “+” stays enabled — a disabled button gives no reason. Instead the stepper shakes like an input error and shows why; role=\"status\" announces it to screen readers."
+        }
+      }
+    ]
+  },
+  {
+    "id": "46-shared-element",
+    "title": {
+      "zh-TW": "列表縮圖放大成詳細頁",
+      "en": "List thumbnail grows into a detail view"
+    },
+    "short": {
+      "zh-TW": "縮圖放大轉場",
+      "en": "Shared element"
+    },
+    "summary": {
+      "zh-TW": "點列表裡的一張卡片，縮圖本身從原本的位置「長大」成詳細頁的大圖，接著標題和內容依序進場；關閉時大圖縮回原本那張卡片。App Store、相簿、電商商品頁常見的「共用元素轉場」，讓使用者知道新畫面是從哪裡來的。",
+      "en": "Tap a card and its thumbnail grows from where it sits into the detail view’s hero image, then the title and text come in; closing shrinks it back into the same card. The “shared element transition” seen in app stores, photo apps and shops — it shows where the new screen came from."
+    },
+    "topic": "transitions",
+    "tech": "Flip",
+    "tags": [
+      "data-flip-id",
+      "Flip.getState",
+      "targets"
+    ],
+    "date": "2026-11-24",
+    "thumb": ".grid",
+    "useCases": [
+      "ecommerce",
+      "app",
+      "content"
+    ],
+    "cost": "light",
+    "costNote": "flip",
+    "notes": [
+      {
+        "code": "data-flip-id",
+        "text": {
+          "zh-TW": "縮圖和大圖是兩個不同的元素，但給它們同一個 data-flip-id，Flip 就會把它們當成同一個東西：記下縮圖的位置，讓大圖從那裡長出來。和練習 6（同一張卡片換 class）不同，這裡是「兩個畫面之間」的轉場。",
+          "en": "The thumbnail and the hero are different elements, but sharing a data-flip-id makes Flip treat them as one: it records the thumbnail’s box and grows the hero from there. Unlike practice 6 (one card changing class), this transitions between two views."
+        }
+      },
+      {
+        "code": "Flip.from(state, { targets: hero })",
+        "text": {
+          "zh-TW": "state 是從縮圖記下來的，targets 指定要動的是大圖。關閉時反過來：從大圖記下 state，targets 改成縮圖。",
+          "en": "state is captured from the thumbnail and targets says the hero should move. Closing reverses it: capture from the hero, target the thumbnail."
+        }
+      },
+      {
+        "code": "scale: true",
+        "text": {
+          "zh-TW": "用縮放而不是改寬高：裡面的圖示會跟著一起放大縮小，而且只動 transform，比較順。",
+          "en": "Uses scale instead of width/height, so the icon inside grows along with it, and only transforms change — smoother."
+        }
+      },
+      {
+        "code": "focus({ preventScroll: true })",
+        "text": {
+          "zh-TW": "打開時焦點移到關閉按鈕、關閉後回到原本的卡片，鍵盤使用者不會迷路；按 Esc 也能關閉。",
+          "en": "Focus moves to the close button on open and back to the card on close so keyboard users stay oriented; Esc also closes."
+        }
+      }
+    ],
+    "featured": true
+  },
+  {
+    "id": "47-swipe-delete",
+    "title": {
+      "zh-TW": "往左滑刪除列表項目",
+      "en": "Swipe left to delete a list item"
+    },
+    "short": {
+      "zh-TW": "滑動刪除",
+      "en": "Swipe to delete"
+    },
+    "summary": {
+      "zh-TW": "收件匣、待辦清單常見的手勢：往左滑一點露出刪除按鈕並停住；滑超過一半放開就直接刪除，整列滑出去後高度收起來，下面的項目往上補。一次只會打開一列，鍵盤可以按 Delete 刪除。",
+      "en": "A common inbox and to-do gesture: swipe a little to reveal and hold the delete button; swipe past halfway and let go to delete — the row slides out, collapses, and the rows below move up. Only one row opens at a time, and the Delete key works too."
+    },
+    "topic": "pointer",
+    "tech": "Draggable",
+    "tags": [
+      "bounds",
+      "onRelease",
+      "height: 0"
+    ],
+    "date": "2026-11-24",
+    "thumb": ".stage",
+    "useCases": [
+      "app",
+      "saas"
+    ],
+    "cost": "light",
+    "costNote": "drag",
+    "notes": [
+      {
+        "code": "bounds: { minX: -row.offsetWidth, maxX: 0 }",
+        "text": {
+          "zh-TW": "只能往左拖，最多拖一整列寬；往右拖不動。刪除按鈕一直都在項目下面，項目往左移就露出來。",
+          "en": "Drag only leftward, at most one row width. The delete button always sits underneath; moving the row left reveals it."
+        }
+      },
+      {
+        "code": "onRelease → 刪除／打開／收回",
+        "text": {
+          "zh-TW": "放開時依照拖了多遠決定三種結果：超過一半寬就刪除、超過按鈕寬的一半就停在打開的位置、其他就彈回去。拖過「刪除線」時圖示先放大，讓使用者在放開前就知道會發生什麼。",
+          "en": "On release the distance picks one of three outcomes: past half the row deletes, past half the button stays open, otherwise it springs back. The icon grows when you cross the delete line so you know before letting go."
+        }
+      },
+      {
+        "code": ".to(row, { height: 0 })",
+        "text": {
+          "zh-TW": "刪除分兩段：先整列滑出畫面，再把高度收成 0。如果直接 remove()，下面的項目會「瞬間跳上來」，看不出少了哪一列。",
+          "en": "Deleting has two steps: slide the row out, then collapse its height to 0. Removing it outright makes the rows below jump up, hiding which one disappeared."
+        }
+      },
+      {
+        "code": "keydown: 'Delete'",
+        "text": {
+          "zh-TW": "滑動是滑鼠和觸控的捷徑，不是唯一的方法：每列都能用鍵盤選到並按 Delete 刪除，刪除按鈕本身也能用 Tab 選到。",
+          "en": "Swiping is a shortcut, not the only way: every row can be focused and deleted with the Delete key, and the delete button is reachable with Tab."
         }
       }
     ]

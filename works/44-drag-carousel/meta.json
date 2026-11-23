@@ -1,0 +1,61 @@
+{
+  "title": {
+    "zh-TW": "可拖曳、會滑行吸附的圖片輪播",
+    "en": "Image carousel you can drag, fling and snap"
+  },
+  "short": {
+    "zh-TW": "拖曳輪播",
+    "en": "Drag carousel"
+  },
+  "summary": {
+    "zh-TW": "左右拖曳圖片輪播，放開後依照甩動的速度繼續滑行，最後吸附到最近的一張；甩得快可以一次跳過好幾張。拉到頭尾會有阻力。也可以用箭頭按鈕、圓點或鍵盤左右鍵切換。",
+    "en": "Drag the carousel sideways; on release it glides with your fling speed and snaps to the nearest slide — fling hard to skip several. The ends resist. Arrow buttons, dots and the keyboard arrow keys also work."
+  },
+  "topic": "pointer",
+  "tech": "Draggable",
+  "tags": [
+    "InertiaPlugin",
+    "snap",
+    "edgeResistance"
+  ],
+  "date": "2026-11-24",
+  "thumb": ".stage",
+  "useCases": [
+    "ecommerce",
+    "content",
+    "app",
+    "brand"
+  ],
+  "cost": "light",
+  "costNote": "drag",
+  "notes": [
+    {
+      "code": "inertia: true",
+      "text": {
+        "zh-TW": "放開後依照手指或滑鼠甩動的速度繼續滑（需要 InertiaPlugin，3.13 起免費）。沒有慣性的輪播放開就停，會覺得「黏手」。",
+        "en": "After release the track keeps gliding at your fling speed (InertiaPlugin, free since 3.13). Without inertia a carousel stops dead on release and feels sticky."
+      }
+    },
+    {
+      "code": "snap: x => gsap.utils.snap(stops, x)",
+      "text": {
+        "zh-TW": "慣性算出來的落點會被吸到最近的一張。stops 是每一張對齊左邊時 track 的位置；給 snap 一個陣列，它會回傳最接近的值。",
+        "en": "The landing point of the glide snaps to the nearest slide. stops holds the track position for each slide; given an array, snap returns the closest value."
+      }
+    },
+    {
+      "code": "touch-action: pan-y",
+      "text": {
+        "zh-TW": "手機上「上下滑」仍然交給瀏覽器捲動頁面，只有左右滑才是拖曳輪播，不然輪播會擋住整頁的捲動。",
+        "en": "On phones, vertical swipes still scroll the page and only horizontal ones drag the carousel; otherwise the carousel would block page scrolling."
+      }
+    },
+    {
+      "code": "onUpdate: () => drag.update()",
+      "text": {
+        "zh-TW": "用按鈕切換時是 gsap.to 在移動 track，要通知 Draggable 位置變了，下一次拖曳才會從正確的位置開始。",
+        "en": "When buttons move the track with gsap.to, tell Draggable the position changed so the next drag starts from the right place."
+      }
+    }
+  ]
+}

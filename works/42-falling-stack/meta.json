@@ -22,6 +22,12 @@
   "date": "2026-11-23",
   "markers": true,
   "thumb": ".deck",
+  "useCases": [
+    "launch",
+    "brand"
+  ],
+  "cost": "medium",
+  "costNote": "pin",
   "notes": [
     {
       "code": "pin: true",
@@ -58,5 +64,6 @@
         "en": "The stacked look is one function: each card sits a bit higher, smaller and darker by its position. When the top card falls, every card behind moves to the slot in front, so the whole pile advances."
       }
     }
-  ]
+  ],
+  "featured": true
 }

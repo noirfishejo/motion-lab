@@ -21,6 +21,12 @@
   "date": "2026-11-23",
   "markers": true,
   "thumb": ".intro, .statement:first-child",
+  "useCases": [
+    "brand",
+    "launch"
+  ],
+  "cost": "heavy",
+  "costNote": "blur",
   "notes": [
     {
       "code": "filter: 'blur(14px)' → 'blur(0px)'",

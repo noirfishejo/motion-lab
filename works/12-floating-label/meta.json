@@ -19,6 +19,14 @@
     "keyframes"
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "saas",
+    "ecommerce",
+    "trust",
+    "app"
+  ],
+  "cost": "light",
+  "costNote": "transform",
   "notes": [
     {
       "code": "isUp = focused || value !== ''",

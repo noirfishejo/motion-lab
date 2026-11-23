@@ -19,6 +19,12 @@
     "snap"
   ],
   "date": "2026-11-19",
+  "useCases": [
+    "app",
+    "ecommerce"
+  ],
+  "cost": "light",
+  "costNote": "drag",
   "notes": [
     {
       "code": "Draggable.create(sheet, { type: 'y' })",

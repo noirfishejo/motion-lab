@@ -21,6 +21,13 @@
   "date": "2026-11-23",
   "markers": true,
   "thumb": ".intro, .feature:first-of-type",
+  "useCases": [
+    "brand",
+    "launch",
+    "content"
+  ],
+  "cost": "light",
+  "costNote": "scroll",
   "notes": [
     {
       "code": "overflow: hidden + height: 140%",

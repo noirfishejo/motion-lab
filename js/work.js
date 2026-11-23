@@ -64,10 +64,38 @@ function renderInfo() {
   document.getElementById('workTags').innerHTML = [work.tech, ...work.tags].map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
   document.getElementById('notes').innerHTML = (work.notes || []).map(n =>
     `<li><code>${escapeHtml(pick(n.code))}</code><p>${pick(n.text)}</p></li>`).join('');
+  renderMore();
   // 被截掉的長程式碼：加上提示框顯示完整內容
   document.fonts.ready.then(() => document.querySelectorAll('.notes code').forEach(c => {
     if (c.scrollWidth > c.clientWidth + 1) { c.dataset.tip = c.textContent; c.tabIndex = 0; }
   }));
+}
+
+// ── 適用情境與效能成本：非必要資訊，預設收合在重點筆記下面 ──
+function renderMore() {
+  const box = document.getElementById('more');
+  if (!work.useCases?.length && !work.cost) { box.hidden = true; return; }
+  const panel = document.getElementById('morePanel');
+  panel.innerHTML =
+    (work.useCases?.length ? `<h3 class="label">${t('work.useCases')}</h3>
+      <ul class="use-chips">${work.useCases.map(u => `<li>${t(`use.${u}`)}</li>`).join('')}</ul>` : '') +
+    (work.cost ? `<h3 class="label">${t('work.cost')}</h3>
+      <p class="cost"><span class="cost-level" data-level="${work.cost}">${t(`cost.${work.cost}`)}</span><span>${work.costNote ? t(`costNote.${work.costNote}`) : ''}</span></p>` : '');
+
+  const btn = document.getElementById('moreToggle');
+  btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', open);
+    const animate = !reduceMotion() && window.gsap;
+    if (open) {
+      panel.hidden = false;
+      if (animate) gsap.timeline()
+        .fromTo(panel, { height: 0 }, { height: 'auto', duration: 0.5, ease: 'expo.out', clearProps: 'height' })
+        .from(panel.children, { opacity: 0, y: 8, duration: 0.4, stagger: 0.04, ease: 'expo.out', clearProps: 'opacity,transform' }, 0.05);
+    } else if (animate) {
+      gsap.to(panel, { height: 0, duration: 0.35, ease: 'expo.inOut', onComplete: () => { panel.hidden = true; gsap.set(panel, { clearProps: 'height' }); } });
+    } else panel.hidden = true;
+  });
 }
 
 function renderPager() {
@@ -324,20 +352,36 @@ function setupToggle() {
   if (desktop.matches) openNow();
   desktop.addEventListener('change', e => { if (e.matches) openNow(); else editor?.refresh(); });
 
+  const frameWrap = document.getElementById('previewWrap');
   btn.addEventListener('click', () => {
     const open = btn.getAttribute('aria-expanded') !== 'true';
     btn.setAttribute('aria-expanded', open);
-    // 編輯模式：平板的預覽固定在上方；手機捲到程式碼時出現「看預覽」按鈕
+    // 編輯模式：平板的預覽固定在上方、縮成半個畫面；手機捲到程式碼時出現「看預覽」按鈕
+    // 切換 class 前後各量一次預覽的高度，再補間過去：預覽會跟著程式碼一起伸縮，不會一下子跳成另一個大小
+    const before = frameWrap.getBoundingClientRect().height; // 動畫中途再按：從目前畫面上的高度接著動
+    if (window.gsap) gsap.killTweensOf([frameWrap, body, ...body.children]); // 上一次展開／收合還沒播完就停掉，避免兩段搶同一個高度
+    frameWrap.style.height = '';                              // 拿掉上一段留下的高度，才量得到新的目標高度
     workBody.classList.toggle('is-editing', open);
+    const after = frameWrap.offsetHeight;
+    if (animate() && before !== after) {
+      gsap.fromTo(frameWrap, { height: before }, { height: after, duration: 0.6, ease: 'expo.out', clearProps: 'height' });
+    }
     if (open) {
       body.hidden = false;
       editor?.refresh(); // 隱藏時建立的編輯器，展開後要重新量尺寸
-      if (animate()) gsap.fromTo(body, { height: 0 }, { height: 'auto', duration: 0.5, ease: 'expo.out', onComplete: () => editor?.refresh() });
+      if (animate()) {
+        gsap.timeline({ onComplete: () => editor?.refresh() })
+          .fromTo(body, { height: 0 }, { height: 'auto', duration: 0.6, ease: 'expo.out', clearProps: 'height' })
+          // 分頁列和編輯器跟在後面依序浮上來（和練習 17 手風琴的內容進場相同）
+          .from(body.children, { opacity: 0, y: 12, duration: 0.5, stagger: 0.06, ease: 'expo.out', clearProps: 'opacity,transform' }, 0.08);
+      }
     } else if (!animate()) {
       body.hidden = true;
       document.getElementById('saveConfirm').hidden = true;
     } else {
-      gsap.to(body, { height: 0, duration: 0.3, ease: 'expo.in', onComplete: () => { body.hidden = true; gsap.set(body, { clearProps: 'height' }); } });
+      gsap.timeline({ onComplete: () => { body.hidden = true; gsap.set([body, ...body.children], { clearProps: 'all' }); } })
+        .to(body.children, { opacity: 0, duration: 0.15, ease: 'power1.out' })
+        .to(body, { height: 0, duration: 0.4, ease: 'expo.inOut' }, 0.05);
     }
   });
 }

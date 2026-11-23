@@ -7,7 +7,7 @@
 /* 有動態時先隱藏，由 home.js 設好初始狀態後再顯示 */
 .intro .hero-pin{visibility:hidden}
 /* 開場播完之前，畫面上只留開場本身：頁首的 logo 和按鈕、作品區、頁尾都先藏起來（播完由 home.js 移除 intro） */
-.intro .site-header .logo,.intro .site-header .header-end,.intro .works,.intro .site-footer{visibility:hidden}
+.intro .site-header .logo,.intro .site-header .header-end,.intro .works,.intro .featured,.intro .site-footer{visibility:hidden}
 .hero{position:relative}
 .hero-pin{
   position:relative;min-height:72svh; /* 縮短開場：第一個畫面底部就能看到作品區的開頭 */
@@ -137,3 +137,15 @@
 
 .empty{color:var(--muted);text-align:center;border-bottom:1px solid var(--line)}
 .empty:not(:has(.empty-state)){padding:64px 0}
+
+/* ── 精選（練習 50 個以上才出現）：比作品格小一號的三欄，只放縮圖、名稱和 GSAP 功能 ── */
+.featured{position:relative;z-index:1;background:var(--bg);padding-bottom:var(--section-gap)} /* 和作品區一樣不透明、疊在開場上面 */
+.featured h2{font:500 var(--fs-h2)/1.1 var(--font-display);letter-spacing:-.03em;margin-bottom:24px}
+.featured-list{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--grid-gap)}
+@media (min-width:834px){.featured-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.featured-card{display:grid;grid-template-columns:1fr auto;gap:10px 12px;align-items:start}
+.featured-card .thumb{grid-column:1/-1;aspect-ratio:16/10;overflow:hidden;border:1px solid var(--line);transition:border-color var(--dur-fast)}
+.featured-card .thumb-img{width:100%;height:100%;object-fit:cover;display:block}
+.featured-card:hover .thumb{border-color:var(--accent-fg)}
+.featured-name{font:500 15px/1.35 var(--font-display)}
+.featured-card .topic{font:400 12px/1.6 var(--font-mono);color:var(--accent-fg)}

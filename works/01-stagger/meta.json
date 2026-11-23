@@ -19,6 +19,14 @@
     "expo.out"
   ],
   "date": "2026-11-19",
+  "useCases": [
+    "saas",
+    "ecommerce",
+    "content",
+    "app"
+  ],
+  "cost": "light",
+  "costNote": "transform",
   "notes": [
     {
       "code": "gsap.from()",

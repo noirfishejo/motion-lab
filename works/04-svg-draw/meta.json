@@ -19,6 +19,13 @@
     "label"
   ],
   "date": "2026-11-19",
+  "useCases": [
+    "brand",
+    "saas",
+    "app"
+  ],
+  "cost": "light",
+  "costNote": "svg",
   "notes": [
     {
       "code": "drawSVG: 0 → '100%'",
@@ -55,5 +62,6 @@
         "en": "Every stroke has a label (bookmark) before it. Clicking a step calls tl.play(label): earlier strokes show as finished and later ones are cleared and redrawn."
       }
     }
-  ]
+  ],
+  "featured": true
 }

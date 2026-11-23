@@ -19,6 +19,13 @@
     "position"
   ],
   "date": "2026-11-19",
+  "useCases": [
+    "app",
+    "saas",
+    "launch"
+  ],
+  "cost": "light",
+  "costNote": "transform",
   "notes": [
     {
       "code": "gsap.timeline()",

@@ -19,6 +19,13 @@
     "role=\"tablist\""
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "saas",
+    "content",
+    "app"
+  ],
+  "cost": "light",
+  "costNote": "transform",
   "notes": [
     {
       "code": "x: tab.offsetLeft, scaleX: w / BASE",

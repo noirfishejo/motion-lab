@@ -19,6 +19,14 @@
     "aria-busy"
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "saas",
+    "content",
+    "app",
+    "ecommerce"
+  ],
+  "cost": "light",
+  "costNote": "loop",
   "notes": [
     {
       "code": {

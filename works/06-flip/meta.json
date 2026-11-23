@@ -19,6 +19,13 @@
     "layout"
   ],
   "date": "2026-11-19",
+  "useCases": [
+    "ecommerce",
+    "saas",
+    "app"
+  ],
+  "cost": "light",
+  "costNote": "flip",
   "notes": [
     {
       "code": "Flip.getState(cards)",

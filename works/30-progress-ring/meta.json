@@ -19,6 +19,12 @@
     "rotate(-90deg)"
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "saas",
+    "app"
+  ],
+  "cost": "light",
+  "costNote": "svg",
   "notes": [
     {
       "code": "state = { p: 0 }",

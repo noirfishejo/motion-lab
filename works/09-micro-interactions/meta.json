@@ -19,6 +19,12 @@
     "elastic"
   ],
   "date": "2026-11-20",
+  "useCases": [
+    "brand",
+    "launch"
+  ],
+  "cost": "light",
+  "costNote": "pointer",
   "notes": [
     {
       "code": "gsap.quickTo(el, 'x')",

@@ -19,6 +19,12 @@
     "role=\"slider\""
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "ecommerce",
+    "saas"
+  ],
+  "cost": "light",
+  "costNote": "drag",
   "notes": [
     {
       "code": "Draggable.create(thumb, { type: 'x', bounds: slider })",

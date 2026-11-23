@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <title>Share image</title>
   <!-- 分享預覽圖（貼網址到 LINE、Facebook、Slack 時顯示的圖片）
-       用 Chrome 截成 1200×630 的 og.png（見 tools/make_og.sh），網站本身不會用到這一頁 -->
+       用 Chrome 截成 1200×630 的 og.png（中文）和 og-en.png（英文），執行 python3 tools/make_og.py；網站本身不會用到這一頁
+       網址參數：?lang=en 英文版、&n=47 練習數量 -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter+Tight:wght@400&family=JetBrains+Mono&family=Noto+Sans+TC:wght@400&display=swap">
   <style>
     html, body { margin: 0; }
@@ -22,8 +23,18 @@
   </style>
 </head>
 <body>
-  <div class="top"><span>GSAP · 32 PRACTICES</span><span>ZH / EN</span></div>
+  <div class="top"><span id="count">GSAP PRACTICES</span><span id="langs">ZH / EN</span></div>
   <div class="lockup"><span class="square"></span>Motion Lab</div>
-  <div class="sub"><span>介面動態練習庫</span><i></i><span>UI motion practice library</span></div>
+  <div class="sub" id="sub"><span>介面動態練習庫</span><i></i><span>UI motion practice library</span></div>
+  <script>
+    const q = new URLSearchParams(location.search);
+    if (q.get('n')) document.getElementById('count').textContent = `GSAP · ${q.get('n')} PRACTICES`;
+    // 英文版：只放英文，不出現中文
+    if (q.get('lang') === 'en') {
+      document.documentElement.lang = 'en';
+      document.getElementById('langs').textContent = 'EN / ZH';
+      document.getElementById('sub').innerHTML = '<span>UI motion practice library</span><i></i><span>Preview · edit · copy</span>';
+    }
+  </script>
 </body>
 </html>

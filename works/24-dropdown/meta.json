@@ -19,6 +19,13 @@
     "transform-origin"
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "saas",
+    "ecommerce",
+    "trust"
+  ],
+  "cost": "light",
+  "costNote": "transform",
   "notes": [
     {
       "code": "gsap.quickTo(highlight, 'y')",

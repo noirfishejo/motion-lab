@@ -1,0 +1,61 @@
+{
+  "title": {
+    "zh-TW": "列表縮圖放大成詳細頁",
+    "en": "List thumbnail grows into a detail view"
+  },
+  "short": {
+    "zh-TW": "縮圖放大轉場",
+    "en": "Shared element"
+  },
+  "summary": {
+    "zh-TW": "點列表裡的一張卡片，縮圖本身從原本的位置「長大」成詳細頁的大圖，接著標題和內容依序進場；關閉時大圖縮回原本那張卡片。App Store、相簿、電商商品頁常見的「共用元素轉場」，讓使用者知道新畫面是從哪裡來的。",
+    "en": "Tap a card and its thumbnail grows from where it sits into the detail view’s hero image, then the title and text come in; closing shrinks it back into the same card. The “shared element transition” seen in app stores, photo apps and shops — it shows where the new screen came from."
+  },
+  "topic": "transitions",
+  "tech": "Flip",
+  "tags": [
+    "data-flip-id",
+    "Flip.getState",
+    "targets"
+  ],
+  "date": "2026-11-24",
+  "thumb": ".grid",
+  "useCases": [
+    "ecommerce",
+    "app",
+    "content"
+  ],
+  "cost": "light",
+  "costNote": "flip",
+  "notes": [
+    {
+      "code": "data-flip-id",
+      "text": {
+        "zh-TW": "縮圖和大圖是兩個不同的元素，但給它們同一個 data-flip-id，Flip 就會把它們當成同一個東西：記下縮圖的位置，讓大圖從那裡長出來。和練習 6（同一張卡片換 class）不同，這裡是「兩個畫面之間」的轉場。",
+        "en": "The thumbnail and the hero are different elements, but sharing a data-flip-id makes Flip treat them as one: it records the thumbnail’s box and grows the hero from there. Unlike practice 6 (one card changing class), this transitions between two views."
+      }
+    },
+    {
+      "code": "Flip.from(state, { targets: hero })",
+      "text": {
+        "zh-TW": "state 是從縮圖記下來的，targets 指定要動的是大圖。關閉時反過來：從大圖記下 state，targets 改成縮圖。",
+        "en": "state is captured from the thumbnail and targets says the hero should move. Closing reverses it: capture from the hero, target the thumbnail."
+      }
+    },
+    {
+      "code": "scale: true",
+      "text": {
+        "zh-TW": "用縮放而不是改寬高：裡面的圖示會跟著一起放大縮小，而且只動 transform，比較順。",
+        "en": "Uses scale instead of width/height, so the icon inside grows along with it, and only transforms change — smoother."
+      }
+    },
+    {
+      "code": "focus({ preventScroll: true })",
+      "text": {
+        "zh-TW": "打開時焦點移到關閉按鈕、關閉後回到原本的卡片，鍵盤使用者不會迷路；按 Esc 也能關閉。",
+        "en": "Focus moves to the close button on open and back to the card on close so keyboard users stay oriented; Esc also closes."
+      }
+    }
+  ],
+  "featured": true
+}

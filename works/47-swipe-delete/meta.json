@@ -1,0 +1,59 @@
+{
+  "title": {
+    "zh-TW": "往左滑刪除列表項目",
+    "en": "Swipe left to delete a list item"
+  },
+  "short": {
+    "zh-TW": "滑動刪除",
+    "en": "Swipe to delete"
+  },
+  "summary": {
+    "zh-TW": "收件匣、待辦清單常見的手勢：往左滑一點露出刪除按鈕並停住；滑超過一半放開就直接刪除，整列滑出去後高度收起來，下面的項目往上補。一次只會打開一列，鍵盤可以按 Delete 刪除。",
+    "en": "A common inbox and to-do gesture: swipe a little to reveal and hold the delete button; swipe past halfway and let go to delete — the row slides out, collapses, and the rows below move up. Only one row opens at a time, and the Delete key works too."
+  },
+  "topic": "pointer",
+  "tech": "Draggable",
+  "tags": [
+    "bounds",
+    "onRelease",
+    "height: 0"
+  ],
+  "date": "2026-11-24",
+  "thumb": ".stage",
+  "useCases": [
+    "app",
+    "saas"
+  ],
+  "cost": "light",
+  "costNote": "drag",
+  "notes": [
+    {
+      "code": "bounds: { minX: -row.offsetWidth, maxX: 0 }",
+      "text": {
+        "zh-TW": "只能往左拖，最多拖一整列寬；往右拖不動。刪除按鈕一直都在項目下面，項目往左移就露出來。",
+        "en": "Drag only leftward, at most one row width. The delete button always sits underneath; moving the row left reveals it."
+      }
+    },
+    {
+      "code": "onRelease → 刪除／打開／收回",
+      "text": {
+        "zh-TW": "放開時依照拖了多遠決定三種結果：超過一半寬就刪除、超過按鈕寬的一半就停在打開的位置、其他就彈回去。拖過「刪除線」時圖示先放大，讓使用者在放開前就知道會發生什麼。",
+        "en": "On release the distance picks one of three outcomes: past half the row deletes, past half the button stays open, otherwise it springs back. The icon grows when you cross the delete line so you know before letting go."
+      }
+    },
+    {
+      "code": ".to(row, { height: 0 })",
+      "text": {
+        "zh-TW": "刪除分兩段：先整列滑出畫面，再把高度收成 0。如果直接 remove()，下面的項目會「瞬間跳上來」，看不出少了哪一列。",
+        "en": "Deleting has two steps: slide the row out, then collapse its height to 0. Removing it outright makes the rows below jump up, hiding which one disappeared."
+      }
+    },
+    {
+      "code": "keydown: 'Delete'",
+      "text": {
+        "zh-TW": "滑動是滑鼠和觸控的捷徑，不是唯一的方法：每列都能用鍵盤選到並按 Delete 刪除，刪除按鈕本身也能用 Tab 選到。",
+        "en": "Swiping is a shortcut, not the only way: every row can be focused and deleted with the Delete key, and the delete button is reachable with Tab."
+      }
+    }
+  ]
+}

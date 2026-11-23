@@ -17,6 +17,11 @@
   --accent-ink:#FFFFFF;  /* 放在 accent 上的字 */
   --accent-fg:#6E83FF;   /* 深色底上的強調字和線（#1733E5 太暗不能當字） */
 
+  /* 狀態色：只用在小面積的字和外框（例如效能成本的「輕／中／重」），和練習裡的同一組 */
+  --success:#4CC38A;
+  --warning:#F2B35A;
+  --danger:#FF7A7A;
+
   /* 程式碼語法色 */
   --syn-key:#8C9DFF;
   --syn-str:#9FE3C9;
@@ -79,6 +84,10 @@
   --muted:#62625D;
 
   --accent-fg:#1733E5;   /* 亮底上克萊因藍本身就夠清楚，直接當字和線 */
+
+  --success:#0B7354;
+  --warning:#8A5300;
+  --danger:#C0262D;
 
   --syn-key:#2F45D6;
   --syn-str:#0B7354;

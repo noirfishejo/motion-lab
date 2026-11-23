@@ -22,6 +22,8 @@ const SORTS = ['newest', 'oldest', 'name', 'tech'];
 const hasGsap = !!(window.gsap && window.ScrollTrigger && window.SplitText);
 if (hasGsap) gsap.registerPlugin(ScrollTrigger, SplitText);
 
+const FEATURED_MIN = 50; // 練習滿這個數量，首頁才出現「精選」（見 renderFeatured）
+
 // 重新整理時不要停在上次的捲動位置，開場才會從頭播放
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 if (!location.hash) window.scrollTo(0, 0);
@@ -38,6 +40,7 @@ const resumeY = (() => {
 await initI18n();
 initHeader();
 renderFilters();
+renderFeatured();
 renderCards();
 setupRefine();
 initSmooth();
@@ -133,6 +136,25 @@ function fitThumb(thumb) {
 function thumbSrc(id) {
   const theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
   return `works/${id}/thumb-${theme}.jpg`;
+}
+
+// ── 精選 ───────────────────────────────────────
+// 練習少的時候直接看全部就好；到 FEATURED_MIN 個以上，新訪客才需要先看幾個代表作
+// 要放哪幾個：在練習的 meta.json 加 "featured": true（建議 6 個，最多顯示 6 個）
+// 門檻 FEATURED_MIN 定義在檔案最上面（模組裡的 const 要在使用前宣告）
+function renderFeatured() {
+  const picks = WORKS.filter(w => w.featured).slice(0, 6);
+  const section = document.getElementById('featured');
+  const forced = new URLSearchParams(location.search).has('featured'); // ?featured：練習還不到 50 個時先預覽版面
+  if ((WORKS.length < FEATURED_MIN && !forced) || !picks.length) return;
+  section.hidden = false;
+  document.getElementById('featuredList').innerHTML = picks.map(w => `
+    <li><a class="featured-card" href="work.html?id=${w.id}">
+      <span class="thumb"><img class="thumb-img" src="${thumbSrc(w.id)}" alt="" width="1200" height="750" loading="lazy" decoding="async"></span>
+      <span class="featured-name">${pick(w.title)}</span>
+      <span class="topic">${w.tech}</span>
+    </a></li>`).join('');
+  document.addEventListener('themechange', () => section.querySelectorAll('.thumb-img').forEach((img, i) => { img.src = thumbSrc(picks[i].id); }));
 }
 
 function renderCards() {
@@ -368,6 +390,10 @@ function initMotion() {
     if (restShown) return;
     restShown = true;
     // 先把要進場的元素設成起點，再拿掉 intro class，才不會閃一下
+    if (!document.getElementById('featured').hidden) gsap.from('.featured h2, .featured li', {
+      opacity: 0, y: 40, duration: 1.2, stagger: 0.06, ease: 'expo.out',
+      scrollTrigger: { trigger: '.featured', start: 'top bottom', once: true }
+    });
     gsap.from('.works-head, .filters-bar', {
       opacity: 0, y: 40, duration: 1.2, stagger: 0.08, ease: 'expo.out',
       scrollTrigger: { trigger: '.works', start: 'top bottom', once: true }

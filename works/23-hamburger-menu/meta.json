@@ -20,6 +20,13 @@
   ],
   "date": "2026-11-23",
   "thumb": ".page",
+  "useCases": [
+    "brand",
+    "content",
+    "app"
+  ],
+  "cost": "medium",
+  "costNote": "clip",
   "notes": [
     {
       "code": "tl.play() / tl.reverse()",

@@ -21,6 +21,12 @@
   "date": "2026-11-23",
   "markers": true,
   "thumb": ".media, .step:first-child",
+  "useCases": [
+    "launch",
+    "saas"
+  ],
+  "cost": "light",
+  "costNote": "scroll",
   "notes": [
     {
       "code": "position: sticky",

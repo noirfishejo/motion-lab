@@ -19,6 +19,13 @@
     "width: max-content"
   ],
   "date": "2026-11-23",
+  "useCases": [
+    "brand",
+    "launch",
+    "ecommerce"
+  ],
+  "cost": "light",
+  "costNote": "loop",
   "notes": [
     {
       "code": {
