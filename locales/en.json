@@ -1,10 +1,10 @@
 {
   "site.title": "Motion Lab",
-  "site.description": "A GSAP motion practice library by a UI/UX designer",
+  "site.description": "A GSAP UI motion practice library by a UI/UX designer",
   "nav.home": "Motion Lab home",
   "footer.left": "© 2026 Motion Lab · Practising motion design with GSAP",
   "footer.right": "Back to top ↑",
-  "home.hero.sub": "Motion practice library",
+  "home.hero.sub": "UI motion practice library",
   "home.works.title": "Works",
   "home.works.empty": "No practices in this topic yet.",
   "home.filter.label": "Filter by topic",

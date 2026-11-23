@@ -1,10 +1,10 @@
 {
   "site.title": "Motion Lab",
-  "site.description": "UIUX 設計師的 GSAP 動態練習庫",
+  "site.description": "UIUX 設計師的 GSAP 介面動態練習庫",
   "nav.home": "Motion Lab 首頁",
   "footer.left": "© 2026 Motion Lab・用 GSAP 練習動態設計",
   "footer.right": "回到頂部 ↑",
-  "home.hero.sub": "動態練習庫",
+  "home.hero.sub": "介面動態練習庫",
   "home.works.title": "作品",
   "home.works.empty": "這個分類還沒有練習。",
   "home.filter.label": "依主題篩選",
