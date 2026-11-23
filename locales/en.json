@@ -69,5 +69,12 @@
   "search.clear": "Clear search",
   "search.suggestions": "Suggestions",
   "search.tryHint": "Try another keyword:",
-  "search.emptyTitle": "Nothing matches “{q}”"
+  "search.emptyTitle": "Nothing matches “{q}”",
+  "tech.label": "GSAP feature",
+  "sort.label": "Sort",
+  "sort.newest": "Newest",
+  "sort.oldest": "Oldest",
+  "sort.name": "Name",
+  "sort.tech": "GSAP feature",
+  "tech.clear": "Clear the {tech} filter"
 }

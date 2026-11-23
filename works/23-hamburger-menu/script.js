@@ -43,11 +43,4 @@ burger.addEventListener('click', () => setOpen(burger.getAttribute('aria-expande
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') setOpen(false); });
 menu.addEventListener('click', e => { if (e.target.closest('a')) { e.preventDefault(); setOpen(false); } }); // 示範用：點選項就關閉
 
-// ── 自動示範一次：只播漢堡變 ×、再變回來（不打開選單，避免把焦點移進預覽） ──
-if (!reduce) {
-  gsap.timeline({ delay: 0.8 })
-    .to(lineTop, { y: 7, rotation: 45, duration: 0.4, ease: 'expo.inOut' }, 0)
-    .to(lineBottom, { y: -7, rotation: -45, duration: 0.4, ease: 'expo.inOut' }, 0)
-    .to(lineMid, { scaleX: 0, opacity: 0, duration: 0.2 }, 0)
-    .to([lineTop, lineBottom, lineMid], { y: 0, rotation: 0, scaleX: 1, opacity: 1, duration: 0.4, ease: 'expo.inOut' }, 1.2);
-}
+// （沒有自動示範：載入時自己變 × 又變回來，看起來像滑鼠碰到就有反應，容易誤會）

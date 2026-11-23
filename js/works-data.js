@@ -2301,8 +2301,8 @@ export const WORKS = [
       "en": "Expanding menu"
     },
     "summary": {
-      "zh-TW": "參考 patricktischendorf.de：右上角的「Menu ＋」按鈕本身往左下撐開成導覽面板，按鈕文字像滾輪一樣換成「Close」、＋ 轉成 ×，連結一個一個升起，後方變暗。",
-      "en": "Inspired by patricktischendorf.de: the “Menu +” button at the top right grows down and left into the navigation panel, its label rolls to “Close”, + turns into ×, links rise one by one and the page behind dims."
+      "zh-TW": "右上角的「Menu ＋」按鈕本身往左下撐開成導覽面板，按鈕文字像滾輪一樣換成「Close」、＋ 轉成 ×，連結一個一個升起，後方變暗。",
+      "en": "The “Menu +” button at the top right grows down and left into the navigation panel, its label rolls to “Close”, + turns into ×, links rise one by one and the page behind dims."
     },
     "topic": "overlays",
     "tech": "Timeline",

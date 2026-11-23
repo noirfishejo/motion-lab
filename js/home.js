@@ -12,6 +12,11 @@ import { addClearButton, addSuggestions, renderEmpty, stopEmpty } from './search
 const THUMB_VIEW = { w: 960, h: 600 };
 const FIT_W = 0.82, FIT_H = 0.72;
 let moveFilterLine = () => {}; // 篩選列的滑動底線（renderFilters 建立）
+// 篩選與排序的狀態（放在最上面：檔案一載入就會用到）
+let currentTopic = 'all';
+let currentTech = null;   // null = 不限 GSAP 功能
+let currentSort = 'newest';
+const SORTS = ['newest', 'oldest', 'name', 'tech'];
 
 // GSAP 從 CDN 載入；載入失敗時內容照樣顯示，只是沒有動畫
 const hasGsap = !!(window.gsap && window.ScrollTrigger && window.SplitText);
@@ -25,6 +30,7 @@ await initI18n();
 initHeader();
 renderFilters();
 renderCards();
+setupRefine();
 initSmooth();
 initCursor();
 initTooltips();
@@ -121,7 +127,7 @@ function renderCards() {
   // 縮圖平常是靜態圖片（tools/make_thumbs.py 產生）；滑鼠移上去才載入真的練習播放
   // → 首頁不用同時跑 30 幾個網頁，捲動和記憶體都輕很多
   grid.innerHTML = WORKS.map((w, i) => `
-    <a class="work-card" href="work.html?id=${w.id}" data-topic="${w.topic}" data-search="${searchText(w, t(`topic.${w.topic}`)).replace(/"/g, '&quot;')}" aria-labelledby="card-${w.id}" aria-describedby="card-${w.id}-sum">
+    <a class="work-card" href="work.html?id=${w.id}" data-id="${w.id}" data-topic="${w.topic}" data-tech="${w.tech}" data-search="${searchText(w, t(`topic.${w.topic}`)).replace(/"/g, '&quot;')}" aria-labelledby="card-${w.id}" aria-describedby="card-${w.id}-sum">
       <div class="thumb" data-id="${w.id}"${w.thumb ? ` data-fit="${w.thumb}"` : ''}>
         <img class="thumb-img" src="${thumbSrc(w.id)}" alt="" width="1200" height="750" loading="${i < 4 ? 'eager' : 'lazy'}" decoding="async">
         <span class="thumb-go" aria-hidden="true"><i class="ph-light ph-arrow-up-right"></i></span>
@@ -187,8 +193,103 @@ function renderCards() {
 // （之前用 Flip 只會「移動」卡片；還沒捲進畫面的卡片是透明的，篩選後就看不到。
 //   現在每次篩選都重新播一次進場動畫，所有分類都一定會出現卡片）
 let filterTl;
-// 分類和搜尋一起決定要顯示哪些卡片
-let currentTopic = 'all';
+// 分類、GSAP 功能、搜尋一起決定要顯示哪些卡片；排序決定順序
+
+// 依排序方式比較兩個作品（同分時用編號，順序才固定）
+function compare(a, b) {
+  const byId = a.id.localeCompare(b.id);
+  if (currentSort === 'oldest') return a.date.localeCompare(b.date) || byId;
+  if (currentSort === 'name') return pick(a.short).localeCompare(pick(b.short), document.documentElement.lang) || byId;
+  if (currentSort === 'tech') return a.tech.localeCompare(b.tech) || byId;
+  return b.date.localeCompare(a.date) || -byId; // newest：日期新的在前，同一天的編號大的在前
+}
+
+// ── GSAP 功能快速篩選＋排序 ───────────────────────
+function setupRefine() {
+  // GSAP 功能：依出現次數排，次數一樣依名稱
+  const counts = {};
+  WORKS.forEach(w => { counts[w.tech] = (counts[w.tech] || 0) + 1; });
+  const techs = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b));
+  const chips = document.getElementById('techChips');
+  chips.innerHTML = techs.map(tech => `<button type="button" class="chip" data-tech="${tech}" aria-pressed="false">${tech}<sup>${counts[tech]}</sup></button>`).join('');
+  chips.addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    currentTech = currentTech === chip.dataset.tech ? null : chip.dataset.tech; // 再按一次選中的 = 取消
+    chips.querySelectorAll('.chip').forEach(c => {
+      const on = c.dataset.tech === currentTech;
+      c.setAttribute('aria-pressed', on);
+      if (on) c.dataset.tip = t('tech.clear', { tech: c.dataset.tech }); else delete c.dataset.tip;
+    });
+    applyFilter();
+  });
+
+  // 排序：記住上次的選擇
+  try { if (SORTS.includes(localStorage.getItem('sort'))) currentSort = localStorage.getItem('sort'); } catch {}
+  const btn = document.getElementById('sortBtn');
+  const list = document.getElementById('sortList');
+  const value = document.getElementById('sortValue');
+  list.innerHTML = '<li class="sort-hl" role="presentation" aria-hidden="true"></li>' +
+    SORTS.map(k => `<li role="option" id="sort-${k}" data-sort="${k}" aria-selected="${k === currentSort}">${t(`sort.${k}`)}</li>`).join('');
+  const opts = [...list.querySelectorAll('[role="option"]')];
+  const hl = list.querySelector('.sort-hl');
+  let active = 0;
+  value.textContent = t(`sort.${currentSort}`);
+
+  // 滑動高亮：整個清單只有一塊，移到哪個選項就滑過去（同練習 24）
+  const setActive = (i, instant) => {
+    active = i;
+    list.setAttribute('aria-activedescendant', opts[i].id);
+    const to = { y: opts[i].offsetTop, opacity: 1 };
+    if (instant || !hasGsap || reduceMotion()) { hasGsap ? gsap.set(hl, to) : Object.assign(hl.style, { transform: `translateY(${to.y}px)`, opacity: 1 }); }
+    else gsap.to(hl, { ...to, duration: 0.3, ease: 'expo.out', overwrite: true });
+  };
+  const open = () => {
+    list.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    setActive(SORTS.indexOf(currentSort), true);
+    list.focus({ preventScroll: true });
+    if (hasGsap && !reduceMotion()) gsap.fromTo(list, { opacity: 0, y: -6 }, { opacity: 1, y: 0, duration: 0.3, ease: 'expo.out' });
+  };
+  const close = (focusBtn = true) => {
+    if (list.hidden) return;
+    list.hidden = true;
+    btn.setAttribute('aria-expanded', 'false');
+    if (focusBtn) btn.focus({ preventScroll: true });
+  };
+  const choose = i => {
+    currentSort = SORTS[i];
+    try { localStorage.setItem('sort', currentSort); } catch {}
+    opts.forEach((o, n) => o.setAttribute('aria-selected', n === i));
+    value.textContent = t(`sort.${currentSort}`);
+    close();
+    applyFilter();
+  };
+  btn.addEventListener('click', () => (list.hidden ? open() : close()));
+  opts.forEach((o, i) => {
+    o.addEventListener('pointerenter', () => setActive(i));
+    o.addEventListener('click', () => choose(i));
+  });
+  list.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActive((active + 1) % opts.length); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActive((active - 1 + opts.length) % opts.length); }
+    else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(active); }
+    else if (e.key === 'Escape' || e.key === 'Tab') close(e.key === 'Escape');
+  });
+  document.addEventListener('pointerdown', e => { if (!e.target.closest('.sort')) close(false); });
+
+  // 一開始就照記住的排序排好（不播動畫）
+  const grid = document.getElementById('workGrid');
+  sortCards(grid);
+}
+
+// 依目前的排序重新排列卡片（直接移動 DOM 順序）
+function sortCards(grid = document.getElementById('workGrid')) {
+  const byId = Object.fromEntries(WORKS.map(w => [w.id, w]));
+  [...grid.children]
+    .sort((a, b) => compare(byId[a.dataset.id], byId[b.dataset.id]))
+    .forEach(card => grid.append(card));
+}
 function applyFilter(topic = currentTopic) {
   currentTopic = topic;
   document.querySelectorAll('.filters button').forEach(b => b.setAttribute('aria-pressed', b.dataset.topic === topic));
@@ -196,10 +297,13 @@ function applyFilter(topic = currentTopic) {
   const query = document.getElementById('workSearch').value;
   const cards = [...document.querySelectorAll('.work-card')];
   const shown = cards.filter(c => c.style.display !== 'none');
-  const next = cards.filter(c => (topic === 'all' || c.dataset.topic === topic) && matches(c.dataset.search, query));
+  const next = cards.filter(c => (topic === 'all' || c.dataset.topic === topic)
+    && (!currentTech || c.dataset.tech === currentTech)
+    && matches(c.dataset.search, query));
   const empty = document.getElementById('empty');
 
   const swap = () => {
+    sortCards();
     cards.forEach(c => { c.style.display = next.includes(c) ? '' : 'none'; });
     empty.hidden = next.length > 0;
     if (next.length) stopEmpty(empty);
@@ -227,7 +331,10 @@ function applyFilter(topic = currentTopic) {
   filterTl = gsap.timeline()
     .to(shown, { opacity: 0, y: -16, duration: 0.25, stagger: 0.03, ease: 'power2.in' })
     .add(swap)
-    .fromTo(next, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'expo.out' });
+    .add(() => {
+      const ordered = [...document.querySelectorAll('.work-card')].filter(c => next.includes(c)); // 排序後的順序
+      gsap.fromTo(ordered, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'expo.out' });
+    });
 }
 
 function reduceMotion() {

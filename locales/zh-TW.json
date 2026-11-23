@@ -69,5 +69,12 @@
   "search.clear": "清除搜尋",
   "search.suggestions": "搜尋建議",
   "search.tryHint": "換個關鍵字試試：",
-  "search.emptyTitle": "找不到「{q}」"
+  "search.emptyTitle": "找不到「{q}」",
+  "tech.label": "GSAP 功能",
+  "sort.label": "排序",
+  "sort.newest": "最新",
+  "sort.oldest": "最早",
+  "sort.name": "名稱",
+  "sort.tech": "GSAP 功能",
+  "tech.clear": "取消 {tech} 篩選"
 }

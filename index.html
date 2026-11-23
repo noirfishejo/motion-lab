@@ -80,6 +80,20 @@
         </label>
       </div>
 
+      <!-- 第二排：依 GSAP 功能快速篩選（和分類、搜尋一起作用）＋排序 -->
+      <div class="refine">
+        <div class="tech-filter" role="group" data-i18n-attr="aria-label:tech.label">
+          <span class="tech-label" data-i18n="tech.label"></span>
+          <div class="tech-chips" id="techChips"></div>
+        </div>
+        <div class="sort">
+          <button class="sort-btn" type="button" id="sortBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="sortList">
+            <span data-i18n="sort.label"></span><span class="sort-value" id="sortValue"></span><i class="ph-light ph-caret-down" aria-hidden="true"></i>
+          </button>
+          <ul class="sort-list" id="sortList" role="listbox" tabindex="-1" data-i18n-attr="aria-label:sort.label" hidden></ul>
+        </div>
+      </div>
+
       <div class="work-grid" id="workGrid"></div>
       <div class="empty" id="empty" hidden></div>
     </section>

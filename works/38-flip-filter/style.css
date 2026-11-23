@@ -42,7 +42,7 @@ html::-webkit-scrollbar { display: none; }
 body {
   min-height: 100vh;
   display: grid;
-  place-items: center;
+  place-items: start center;  /* 靠上對齊：篩選後內容變矮時，上方的標籤不會跟著移動 */
   background: var(--bg);
   color: var(--text);
   font-family: "Inter Tight", sans-serif;
@@ -50,7 +50,7 @@ body {
 }
 .tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
 
-.stage { width: min(760px, 100%); padding: 32px 16px; display: grid; gap: 16px; }
+.stage { width: min(760px, 100%); padding: 10vh 16px 32px; display: grid; gap: 16px; align-content: start; }
 .filters { display: flex; flex-wrap: wrap; gap: 6px; }
 .filters button { height: 36px; padding: 0 14px; border: 1px solid var(--line-strong); background: transparent; color: var(--text); font: 400 13px/1 "Inter Tight", sans-serif; cursor: pointer; }
 .filters button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
