@@ -1,0 +1,88 @@
+:root {
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage { width: min(420px, 100%); padding: 32px 16px; }
+
+.settings { border: 1px solid var(--line); background: var(--surface); }
+.settings-title {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  font: 400 12px/1 "JetBrains Mono", monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+}
+.row + .row { border-top: 1px solid var(--line); }
+.row-text { display: grid; gap: 4px; }
+.row-label { font-size: 15px; font-weight: 500; }
+.row-hint { font-size: 13px; color: var(--muted); }
+
+/* ── 開關 ──
+   軌道 52×28（含 1px 邊框），滑塊 22×22，左右各留 3px → 滑塊要移動 52 − 2 − 3 × 2 − 22 = 22px（script.js 會自己量） */
+.switch {
+  position: relative;
+  flex: none;
+  width: 52px;
+  height: 28px;
+  padding: 3px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg);
+  cursor: pointer;
+  /* 顏色交給 CSS 過渡；位置和形變交給 GSAP（切換亮暗模式時顏色才會跟著變） */
+  transition: background-color 0.3s, border-color 0.3s;
+}
+.switch[aria-checked="true"] { background: var(--accent); border-color: var(--accent); }
+.switch:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 3px; }
+
+.thumb {
+  display: block;
+  width: 22px;
+  height: 22px;
+  background: var(--muted);
+  transition: background-color 0.3s;
+  will-change: transform;
+}
+.switch[aria-checked="true"] .thumb { background: #fff; }

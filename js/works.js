@@ -168,6 +168,22 @@ export const WORKS = [
       { code: 'end: `+=${distance() * SPEED}`', text: { 'zh-TW': '要往下捲多遠才走完。SPEED 改成 2，就要捲兩倍遠，橫向移動感覺比較慢、比較穩。', en: 'How far you need to scroll to finish. Set SPEED to 2 and it takes twice the scroll, so the sideways motion feels slower and steadier.' } },
       { code: 'containerAnimation: move', text: { 'zh-TW': '面板是橫向移進畫面的，一般的 ScrollTrigger 看不到。用 containerAnimation 告訴它「看 move 這段動畫的進度」，start／end 也改用 left、right。', en: 'Panels enter sideways, which a normal ScrollTrigger can’t see. containerAnimation tells it to follow the progress of the move animation; start/end use left and right instead.' } }
     ]
+  },
+  {
+    id: '11-toggle-switch',
+    title: { 'zh-TW': 'Tween 開關・設定頁的 Switch', en: 'Toggle switch · Settings page' },
+    short: { 'zh-TW': 'Switch 開關', en: 'Toggle switch' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '設定頁最常見的開關：點擊時滑塊滑到另一邊，途中被拉長再縮回，按住時滑塊先稍微變寬。顏色交給 CSS，位置和形變交給 GSAP。', en: 'The most common control on a settings page: on click the thumb slides across, stretching on the way and settling back; pressing widens it slightly first. CSS handles colour, GSAP handles position and shape.' },
+    topic: 'tween',
+    tags: ['gsap.to', 'overwrite', 'role="switch"'],
+    date: '2026-11-23',
+    notes: [
+      { code: "gsap.to(thumb, { x: travel() })", text: { 'zh-TW': '滑塊只用 x（transform）移動，不改 left 或 margin，動畫才會順。移動距離用量的：軌道內寬 − 滑塊寬，改 CSS 尺寸也不用改程式。', en: 'The thumb moves with x (a transform), not left or margin, so it stays smooth. The distance is measured — track inner width minus thumb width — so changing the CSS size needs no code change.' } },
+      { code: 'overwrite: true', text: { 'zh-TW': '連續快速點擊時，先停掉上一段還沒跑完的動畫，從目前的位置接著走，不會卡住或跳回起點。', en: 'When clicked rapidly, it stops the unfinished animation and continues from the current position instead of stuttering or jumping back.' } },
+      { code: 'STRETCH = 1.4', text: { 'zh-TW': '移動途中把滑塊拉長 1.4 倍再縮回，從「出發的那一側」拉長（transformOrigin），看起來像往前衝。改成 1 就是單純的滑動。', en: 'Stretches the thumb 1.4× mid-move and settles back, anchored on the side it leaves from (transformOrigin), so it seems to lunge forward. Set it to 1 for a plain slide.' } },
+      { code: 'transition: background-color', text: { 'zh-TW': '軌道顏色用 CSS 過渡，不用 GSAP：GSAP 會把顏色寫死在 style 上，切換亮暗模式時就不會跟著變。', en: 'Track colour uses a CSS transition rather than GSAP: GSAP would bake the colour into the style attribute, so it wouldn’t follow light/dark changes.' } },
+      { code: 'role="switch" aria-checked', text: { 'zh-TW': '用 button 加上 role="switch"，鍵盤的 Enter、空白鍵都能切換，讀屏軟體會唸出「開關，開啟」。', en: 'A button with role="switch" toggles with Enter or Space, and screen readers announce “switch, on”.' } }
+    ]
   }
 ];
 

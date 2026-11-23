@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>11 Tween: Toggle Switch</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+
+    <!-- 設定清單（假資料）：每一列是「文字＋開關」 -->
+    <section class="settings" aria-labelledby="settings-title">
+      <h1 class="settings-title" id="settings-title">Connections</h1>
+
+      <div class="row">
+        <div class="row-text">
+          <span class="row-label" id="wifi-label">Wi-Fi</span>
+          <span class="row-hint" data-on="Connected to Studio" data-off="Off">Connected to Studio</span>
+        </div>
+        <!-- role="switch" + aria-checked：讀屏軟體會唸出「開關，開啟」 -->
+        <button class="switch" type="button" role="switch" aria-checked="true" aria-labelledby="wifi-label">
+          <span class="thumb"></span>
+        </button>
+      </div>
+
+      <div class="row">
+        <div class="row-text">
+          <span class="row-label" id="bt-label">Bluetooth</span>
+          <span class="row-hint" data-on="2 devices nearby" data-off="Off">Off</span>
+        </div>
+        <button class="switch" type="button" role="switch" aria-checked="false" aria-labelledby="bt-label">
+          <span class="thumb"></span>
+        </button>
+      </div>
+
+      <div class="row">
+        <div class="row-text">
+          <span class="row-label" id="air-label">Airplane mode</span>
+          <span class="row-hint" data-on="All radios off" data-off="Off">Off</span>
+        </div>
+        <button class="switch" type="button" role="switch" aria-checked="false" aria-labelledby="air-label">
+          <span class="thumb"></span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
