@@ -1,0 +1,125 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+  --success: #4CC38A;
+  --danger: #FF7A7A;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+  --success: #0B7354;
+  --danger: #C0262D;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage { width: min(520px, 100%); padding: 32px 16px; }
+
+.controls { display: grid; gap: 16px; padding: 24px; background: var(--surface); border: 1px solid var(--line); }
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+.hint { font-size: 14px; line-height: 1.5; color: var(--muted); }
+.buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text);
+  font: 400 14px/1 "Inter Tight", sans-serif;
+  cursor: pointer;
+}
+.btn i { font-size: 18px; }
+.btn:hover { border-color: var(--text); }
+.btn:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 3px; }
+
+/* ── 通知 ── */
+.toasts {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 10;
+  width: min(360px, calc(100vw - 32px));
+  list-style: none;
+  display: flex;
+  flex-direction: column;   /* 新的通知加在最下面，舊的被往上推 */
+}
+@media (max-width: 480px) { .toasts { right: 50%; transform: translateX(50%); } }
+
+/* 外層負責「高度」（讓其他通知滑動讓位），內層負責外觀和進出場 */
+.toast-wrap { overflow: hidden; }
+.toast-wrap + .toast-wrap .toast { margin-top: 8px; }
+
+.toast {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: 12px;
+  padding: 14px 8px 16px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  overflow: hidden;
+}
+.toast-icon { font-size: 20px; margin-top: 1px; }
+.toast[data-type="success"] .toast-icon { color: var(--success); }
+.toast[data-type="error"] .toast-icon { color: var(--danger); }
+.toast[data-type="info"] .toast-icon { color: var(--accent-fg); }
+.toast-title { font-size: 14px; font-weight: 500; }
+.toast-text { margin-top: 2px; font-size: 13px; line-height: 1.45; color: var(--muted); }
+.toast-close {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-top: -6px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+}
+.toast-close:hover { color: var(--text); }
+.toast-close:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: -2px; }
+
+/* 剩餘時間：底部的細線慢慢縮短，滑鼠移上去會暫停 */
+.toast-timer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--line-strong);
+  transform-origin: 0 50%;
+}

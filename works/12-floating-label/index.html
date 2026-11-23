@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>12 Tween: Floating Label Input</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+
+    <!-- 註冊表單（假資料）：標籤一開始躺在輸入框裡，點進去或有內容時浮到上方 -->
+    <form class="form" novalidate>
+      <h1 class="form-title">Create account</h1>
+
+      <div class="field">
+        <!-- placeholder=" "（一個空白）：CSS 可以用 :placeholder-shown 判斷「是不是空的」 -->
+        <input class="input" id="name" name="name" type="text" autocomplete="name" placeholder=" ">
+        <label class="label" for="name">Full name</label>
+        <span class="line" aria-hidden="true"></span>
+      </div>
+
+      <div class="field">
+        <input class="input" id="email" name="email" type="email" autocomplete="email" placeholder=" " aria-describedby="email-error">
+        <label class="label" for="email">Email</label>
+        <span class="line" aria-hidden="true"></span>
+        <p class="error" id="email-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <input class="input" id="password" name="password" type="password" autocomplete="new-password" placeholder=" ">
+        <label class="label" for="password">Password</label>
+        <span class="line" aria-hidden="true"></span>
+      </div>
+    </form>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

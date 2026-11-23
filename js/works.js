@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════
 // 作品清單：新增練習時，在陣列最後加一筆
 // id 要和 works/ 底下的資料夾名稱完全相同
-// topic 可用：tween、timeline、scroll、svg、plugins
+// topic 可用：tween、timeline、scroll、svg、plugins、ui（介面元件）
 // 文字欄位都寫成 { 'zh-TW': '…', en: '…' }；少了 en 會自動顯示中文
 // ═══════════════════════════════════════════════
 export const WORKS = [
@@ -174,7 +174,7 @@ export const WORKS = [
     title: { 'zh-TW': 'Tween 開關・設定頁的 Switch', en: 'Toggle switch · Settings page' },
     short: { 'zh-TW': 'Switch 開關', en: 'Toggle switch' }, // 側欄用的短名稱
     summary: { 'zh-TW': '設定頁最常見的開關：點擊時滑塊滑到另一邊，途中被拉長再縮回，按住時滑塊先稍微變寬。顏色交給 CSS，位置和形變交給 GSAP。', en: 'The most common control on a settings page: on click the thumb slides across, stretching on the way and settling back; pressing widens it slightly first. CSS handles colour, GSAP handles position and shape.' },
-    topic: 'tween',
+    topic: 'ui',
     tags: ['gsap.to', 'overwrite', 'role="switch"'],
     date: '2026-11-23',
     notes: [
@@ -184,7 +184,55 @@ export const WORKS = [
       { code: 'transition: background-color', text: { 'zh-TW': '軌道顏色用 CSS 過渡，不用 GSAP：GSAP 會把顏色寫死在 style 上，切換亮暗模式時就不會跟著變。', en: 'Track colour uses a CSS transition rather than GSAP: GSAP would bake the colour into the style attribute, so it wouldn’t follow light/dark changes.' } },
       { code: 'role="switch" aria-checked', text: { 'zh-TW': '用 button 加上 role="switch"，鍵盤的 Enter、空白鍵都能切換，讀屏軟體會唸出「開關，開啟」。', en: 'A button with role="switch" toggles with Enter or Space, and screen readers announce “switch, on”.' } }
     ]
+  },
+  {
+    id: '12-floating-label',
+    title: { 'zh-TW': '浮動標籤輸入框・註冊表單', en: 'Floating label input · Sign-up form' },
+    short: { 'zh-TW': '浮動標籤', en: 'Floating label' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '標籤一開始躺在輸入框裡，點進去或有內容時縮小浮到上方，底線從左邊畫出來。Email 格式不對時，欄位會輕輕搖一下並顯示錯誤。', en: 'The label starts inside the field and floats up, shrinking, when you focus or type; an underline draws in from the left. An invalid email gives the field a small shake and shows an error.' },
+    topic: 'ui',
+    tags: ['gsap.to', 'focus / blur', 'keyframes'],
+    date: '2026-11-23',
+    notes: [
+      { code: "isUp = focused || value !== ''", text: { 'zh-TW': '標籤浮起的條件只有兩個：正在輸入，或已經有內容。離開欄位但有填字時，標籤要留在上方，不然會蓋住文字。', en: 'The label floats for only two reasons: the field is focused, or it has a value. If you leave a filled field the label must stay up, or it would cover the text.' } },
+      { code: 'y: LIFT, scale: SCALE', text: { 'zh-TW': '只用位移和縮放（transform），不改 top 或 font-size，動畫才順。transformOrigin 設在左邊，縮小時才會貼齊輸入框的左緣。', en: 'Only translate and scale (transforms), never top or font-size, so it stays smooth. transformOrigin sits on the left so the shrunken label stays aligned to the field’s left edge.' } },
+      { code: "transformOrigin: focused ? '0%' : '100%'", text: { 'zh-TW': '底線進場從左邊畫出來，離場往右收掉，方向一致看起來比較順。', en: 'The underline draws in from the left and exits to the right, so the motion reads in one direction.' } },
+      { code: "addEventListener('input', update)", text: { 'zh-TW': '除了 focus／blur，也聽 input 事件：瀏覽器自動填入帳號密碼時不會觸發 focus，沒聽 input 標籤就會和文字疊在一起。', en: 'Besides focus/blur it listens to input: browser autofill doesn’t fire focus, and without input the label would overlap the filled text.' } },
+      { code: 'keyframes: { x: [-6, 6, -4, 4, 0] }', text: { 'zh-TW': '錯誤時左右搖晃，幅度越來越小。搖晃要短（0.4 秒）而且小（6px 以內），太大會像在責備使用者。', en: 'A shake that gets smaller each time. Keep it short (0.4s) and small (within 6px) — bigger feels like scolding the user.' } }
+    ]
+  },
+  {
+    id: '13-submit-states',
+    title: { 'zh-TW': '送出按鈕狀態・載入、成功、失敗', en: 'Submit button states · Loading, success, error' },
+    short: { 'zh-TW': '送出按鈕狀態', en: 'Submit states' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '按下送出後，按鈕縮成方塊、裡面的小方塊開始轉；成功時撐回原本寬度並打勾，失敗時變紅並左右搖晃。勾選下方的選項就能試失敗的情況。', en: 'Pressing Send shrinks the button into a square with a small spinning square inside; on success it widens back with a check, on failure it turns red and shakes. Tick the option below to try a failure.' },
+    topic: 'ui',
+    tags: ['gsap.timeline', 'async / await', 'aria-busy'],
+    date: '2026-11-23',
+    notes: [
+      { code: 'await gsap.timeline()', text: { 'zh-TW': 'GSAP 的動畫可以用 await 等它播完。流程就能照順序寫：先縮成方塊 → 等送出結果 → 再播成功或失敗，不用一層一層包 callback。', en: 'GSAP animations can be awaited. The flow reads top to bottom — shrink to a square, wait for the result, then play success or failure — without nested callbacks.' } },
+      { code: "width: SQUARE → fullWidth", text: { 'zh-TW': '寬度動畫會觸發重新排版，但只影響這一顆按鈕，可以接受。原本的寬度先量好存起來，變回來時才知道要回到多寬。', en: 'Animating width triggers layout, but only for this one button, which is fine. The original width is measured once so it knows how wide to return.' } },
+      { code: "rotation: '+=360', repeat: -1", text: { 'zh-TW': '載入中的小方塊無限旋轉，ease 用 none 才會等速轉。結束時要 kill() 停掉，不然會在背景一直轉。', en: 'The loading square spins forever; ease none keeps the speed constant. kill() it when done, or it keeps spinning in the background.' } },
+      { code: "aria-busy='true'", text: { 'zh-TW': '送出中再點不會重複送出（防止重複下單），讀屏軟體也會知道按鈕正在忙。結果用 role="status" 的文字唸出來。', en: 'While busy, extra clicks are ignored (no double submissions) and screen readers know the button is busy. The result is announced through a role="status" element.' } },
+      { code: "classList.toggle('is-fail')", text: { 'zh-TW': '失敗的紅色交給 CSS 過渡，GSAP 只管大小和位置。這樣亮暗模式切換時顏色也會正確。', en: 'The red failure colour is a CSS transition; GSAP only handles size and position, so colours stay correct across light and dark mode.' } }
+    ]
+  },
+  {
+    id: '14-toast',
+    title: { 'zh-TW': 'Toast 通知・堆疊與自動消失', en: 'Toast notifications · Stack and auto-dismiss' },
+    short: { 'zh-TW': 'Toast 通知', en: 'Toast' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '從右下角滑入的通知：新的會把舊的往上推，底部的細線顯示剩餘時間，時間到自動消失；滑鼠移上去會暫停。最多同時顯示三則。', en: 'Notifications that slide in at the bottom right: new ones push older ones up, a thin line shows the time left, and they leave on their own — hovering pauses them. Up to three at once.' },
+    topic: 'ui',
+    tags: ['gsap.timeline', 'height: 0', 'pause / resume'],
+    date: '2026-11-23',
+    notes: [
+      { code: 'from(wrap, { height: 0 })', text: { 'zh-TW': '通知外面多包一層，只動這層的高度。新通知撐開時，上面的通知會平順地被推上去，不會突然跳動。', en: 'Each toast has an outer wrapper whose height animates. As a new one opens up, the ones above are pushed smoothly instead of jumping.' } },
+      { code: 'timer.pause() / resume()', text: { 'zh-TW': '倒數本身就是一段 tween（細線從滿縮到 0），onComplete 時收掉通知。滑鼠移上去或鍵盤焦點在裡面時暫停，讓人有時間看完。', en: 'The countdown is itself a tween (the line shrinks to 0) that dismisses the toast on complete. It pauses on hover or keyboard focus so people have time to read.' } },
+      { code: 'x: 48 → height: 0', text: { 'zh-TW': '離場分兩步：先往右滑出淡出，再把高度收成 0。如果直接移除元素，下面的通知會瞬間跳上來。', en: 'Leaving takes two steps: slide out and fade to the right, then collapse the height to 0. Removing the element directly would make the others jump.' } },
+      { code: 'MAX = 3', text: { 'zh-TW': '同時太多通知會蓋住畫面。超過上限就先收掉最舊的一則。', en: 'Too many toasts at once cover the page. Over the limit, the oldest one is dismissed first.' } },
+      { code: 'role="status" aria-live="polite"', text: { 'zh-TW': '讀屏軟體會在使用者停下來時唸出新通知，不會打斷正在唸的內容。錯誤要立刻提醒的話可以改用 role="alert"。', en: 'Screen readers announce new toasts when the user pauses, without interrupting. For errors that need immediate attention, use role="alert" instead.' } }
+    ]
   }
 ];
 
-export const TOPICS = ['tween', 'timeline', 'scroll', 'svg', 'plugins'];
+export const TOPICS = ['tween', 'timeline', 'scroll', 'svg', 'plugins', 'ui'];

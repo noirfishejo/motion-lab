@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>14 Timeline: Toast Notifications</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <section class="controls">
+      <span class="tag">toast</span>
+      <p class="hint">Trigger a few in a row — they stack, pause on hover, and leave on their own.</p>
+      <div class="buttons">
+        <button class="btn" type="button" data-type="success"><i class="ph-light ph-check-circle"></i>Saved</button>
+        <button class="btn" type="button" data-type="error"><i class="ph-light ph-warning-circle"></i>Error</button>
+        <button class="btn" type="button" data-type="info"><i class="ph-light ph-info"></i>Info</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- 通知會疊在這裡（右下角；手機在下方置中）。role="status"：讀屏軟體會唸出新的通知 -->
+  <ol class="toasts" role="status" aria-live="polite"></ol>
+
+  <!-- 通知的樣板：script.js 每次複製一份來用 -->
+  <template id="toast-template">
+    <li class="toast-wrap">
+      <div class="toast">
+        <i class="toast-icon ph-light"></i>
+        <div class="toast-body">
+          <p class="toast-title"></p>
+          <p class="toast-text"></p>
+        </div>
+        <button class="toast-close" type="button" aria-label="Dismiss"><i class="ph-light ph-x"></i></button>
+        <span class="toast-timer" aria-hidden="true"></span>
+      </div>
+    </li>
+  </template>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
