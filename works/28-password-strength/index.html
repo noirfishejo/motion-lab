@@ -24,12 +24,13 @@
       <div class="meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
       <p class="strength" id="strength" aria-live="polite">Start typing</p>
 
-      <!-- 規則清單：符合時打勾 -->
-      <ul class="rules" id="rules">
-        <li data-rule="length"><span class="mark"><i class="ph-light ph-check"></i></span>At least 8 characters</li>
-        <li data-rule="case"><span class="mark"><i class="ph-light ph-check"></i></span>Upper and lower case</li>
-        <li data-rule="number"><span class="mark"><i class="ph-light ph-check"></i></span>A number</li>
-        <li data-rule="symbol"><span class="mark"><i class="ph-light ph-check"></i></span>A symbol</li>
+      <!-- 規則清單：純粹顯示狀態（不能點），所以不用方框和勾勾；符合時小方塊變綠、文字變亮 -->
+      <p class="rules-title" id="rules-title">Your password needs</p>
+      <ul class="rules" id="rules" aria-labelledby="rules-title">
+        <li data-rule="length"><span class="bullet" aria-hidden="true"></span><span class="rule-text">At least 8 characters</span><span class="sr-only state">Not met</span></li>
+        <li data-rule="case"><span class="bullet" aria-hidden="true"></span><span class="rule-text">Upper and lower case</span><span class="sr-only state">Not met</span></li>
+        <li data-rule="number"><span class="bullet" aria-hidden="true"></span><span class="rule-text">A number</span><span class="sr-only state">Not met</span></li>
+        <li data-rule="symbol"><span class="bullet" aria-hidden="true"></span><span class="rule-text">A symbol</span><span class="sr-only state">Not met</span></li>
       </ul>
     </section>
   </main>

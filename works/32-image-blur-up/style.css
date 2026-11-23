@@ -53,8 +53,8 @@ body {
 .photo { display: grid; gap: 8px; }
 .photo figcaption { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--muted); }
 /* 圖片框：固定比例，載入前後大小都不變（版面不會跳） */
-.art { aspect-ratio: 4 / 5; overflow: hidden; background-color: var(--surface); }
-/* 假圖片：漸層＋幾何圖形 */
-.art-1 { background-image: radial-gradient(circle at 30% 35%, #FFD27A 0 18%, transparent 19%), linear-gradient(180deg, #6E83FF, #1733E5); }
-.art-2 { background-image: radial-gradient(circle at 70% 30%, #FFFFFF 0 14%, transparent 15%), linear-gradient(160deg, #4CC38A 0 50%, #1733E5 50%); }
-.art-3 { background-image: radial-gradient(circle at 60% 40%, #F0F0F0 0 10%, transparent 11%), linear-gradient(200deg, #0B0D10, #1733E5 70%, #6E83FF); }
+.art { aspect-ratio: 4 / 5; overflow: hidden; background: var(--accent); } /* 底色和圖片相同：模糊時邊緣不會透出白邊 */
+/* 假圖片：和網站一致的克萊因藍底，中間一個白色 Phosphor 圖示
+   模糊和放大做在裡面這層（.art-img），外框 .art 負責裁掉模糊外溢的邊緣 */
+.art-img { width: 100%; height: 100%; display: grid; place-items: center; background: var(--accent); color: #fff; }
+.art-img i { font-size: clamp(56px, 10vw, 88px); }

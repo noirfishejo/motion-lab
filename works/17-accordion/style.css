@@ -31,14 +31,14 @@ html::-webkit-scrollbar { display: none; }
 body {
   min-height: 100vh;
   display: grid;
-  place-items: center;
+  place-items: start center;  /* 靠上對齊（不是垂直置中）：內容變高時只往下長 */
   background: var(--bg);
   color: var(--text);
   font-family: "Inter Tight", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-.stage { width: min(560px, 100%); padding: 32px 16px; }
+.stage { width: min(560px, 100%); padding: 12vh 16px 32px; } /* 固定離頂端的距離：展開收合時卡片上緣不會跟著跳 */
 
 .faq { background: var(--surface); border: 1px solid var(--line); }
 .faq-title {

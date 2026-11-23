@@ -137,16 +137,20 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
   position:absolute;left:0;right:0;top:100%;z-index:20;list-style:none;
   margin-top:1px;padding:6px 0;background:var(--surface);border:1px solid var(--line-strong);
 }
-.suggest li{display:grid;gap:2px;padding:8px 14px;cursor:pointer}
-.suggest li[aria-selected="true"]{background:var(--surface-2)}
+.suggest li[role="option"]{position:relative;z-index:1;display:grid;gap:2px;padding:8px 14px;cursor:pointer}
+/* 滑動的高亮底色（js/search.js）：整個建議欄只有一塊 */
+.suggest-hl{position:absolute;left:0;right:0;top:0;height:40px;background:var(--surface-2);opacity:0;pointer-events:none}
+.suggest{overflow:hidden}
+.suggest-name,.suggest-meta{transition:transform .35s var(--ease-out)}
+.suggest li.is-active .suggest-name,.suggest li.is-active .suggest-meta{transform:translateX(4px)}
 .suggest-name{font-size:14px;color:var(--text)}
 .suggest-name mark{background:none;color:var(--accent-fg)}
 .suggest-meta{font:400 11px/1.4 var(--font-mono);color:var(--muted)}
 
 /* ── 搜尋找不到的空狀態 ── */
 .empty-state{display:grid;justify-items:center;gap:12px;padding:56px 16px;text-align:center}
-.empty-icon{display:grid;place-items:center;width:64px;height:64px;border:1px solid var(--line-strong);margin-bottom:4px;overflow:hidden}
-.empty-icon i{font-size:28px;color:var(--line-strong)} /* 和外框同色 */
+.empty-icon{display:grid;place-items:center;width:64px;height:64px;border:1px solid var(--muted);color:var(--muted);margin-bottom:4px;overflow:hidden} /* 外框和放大鏡同一個顏色（--muted 會跟著亮暗模式變） */
+.empty-icon i{font-size:28px;color:inherit}
 .empty-title{font:500 var(--fs-h3)/1.4 var(--font-display);color:var(--text);overflow-wrap:anywhere}
 .empty-hint{font-size:var(--fs-small);color:var(--muted)}
 .empty-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:8px}

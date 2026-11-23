@@ -7,17 +7,18 @@
   <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
   <title>32 Tween: Blur-up Image Loading</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="stage">
     <span class="tag">blur-up loading</span>
-    <!-- 圖片載入（假圖片：用色塊和圖形代替照片）
+    <!-- 圖片載入（假圖片：克萊因藍底＋白色圖示代替照片，三張只靠圖示區分）
          一開始顯示很小、很模糊的預覽圖，真的圖片載入完成後，由模糊漸漸變清楚 -->
     <div class="gallery">
-      <figure class="photo" data-load="0.9"><div class="art art-1"></div><figcaption>Morning</figcaption></figure>
-      <figure class="photo" data-load="1.6"><div class="art art-2"></div><figcaption>Noon</figcaption></figure>
-      <figure class="photo" data-load="2.3"><div class="art art-3"></div><figcaption>Night</figcaption></figure>
+      <figure class="photo" data-load="0.9"><div class="art"><div class="art-img"><i class="ph-light ph-sun"></i></div></div><figcaption>Morning</figcaption></figure>
+      <figure class="photo" data-load="1.6"><div class="art"><div class="art-img"><i class="ph-light ph-mountains"></i></div></div><figcaption>Noon</figcaption></figure>
+      <figure class="photo" data-load="2.3"><div class="art"><div class="art-img"><i class="ph-light ph-moon-stars"></i></div></div><figcaption>Night</figcaption></figure>
     </div>
   </main>
 

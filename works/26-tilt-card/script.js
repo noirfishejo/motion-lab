@@ -14,17 +14,29 @@ if (!reduce && window.matchMedia('(hover: hover)').matches) {
   const glX = gsap.quickTo(glare, 'xPercent', { duration: FOLLOW, ease: 'power3.out' });
   const glY = gsap.quickTo(glare, 'yPercent', { duration: FOLLOW, ease: 'power3.out' });
 
-  card.addEventListener('pointermove', e => {
+  // 滑鼠在卡片上的位置換算成 -0.5 ～ 0.5（正中間是 0）
+  const point = e => {
     const r = card.getBoundingClientRect();
-    // 滑鼠在卡片上的位置換算成 -0.5 ～ 0.5（正中間是 0）
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
+    return { px: (e.clientX - r.left) / r.width - 0.5, py: (e.clientY - r.top) / r.height - 0.5 };
+  };
+  // 光斑是卡片的 2 倍大（inset: -50%），所以移動「卡片寬度 × px」= 自己寬度的 px × 50%
+  const GLARE = 50;
+
+  card.addEventListener('pointermove', e => {
+    const { px, py } = point(e);
     rotY(px * MAX_TILT * 2);     // 左右移動 → 繞 Y 軸轉
     rotX(-py * MAX_TILT * 2);    // 上下移動 → 繞 X 軸轉（加負號：滑鼠在上面時，卡片上緣往後倒）
-    glX(px * 40);
-    glY(py * 40);
+    glX(px * GLARE);
+    glY(py * GLARE);
   });
-  card.addEventListener('pointerenter', () => gsap.to(glare, { opacity: 1, duration: 0.4 }));
+  card.addEventListener('pointerenter', e => {
+    // 一進來就把光斑放在游標的位置（quickTo 第二個值是起點：起點＝終點就是直接跳過去），再淡入
+    // 不這樣做的話，光斑會從上一次的位置（通常是正中央）滑過來
+    const { px, py } = point(e);
+    glX(px * GLARE, px * GLARE);
+    glY(py * GLARE, py * GLARE);
+    gsap.to(glare, { opacity: 1, duration: 0.4 });
+  });
   card.addEventListener('pointerleave', () => {
     // 離開：慢慢回正
     gsap.to(card, { rotationX: 0, rotationY: 0, duration: 1, ease: 'expo.out' });

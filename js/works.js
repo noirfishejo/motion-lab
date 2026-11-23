@@ -473,15 +473,15 @@ export const WORKS = [
     id: '28-password-strength',
     title: { 'zh-TW': '密碼強度條', en: 'Password strength meter' },
     short: { 'zh-TW': '密碼強度', en: 'Password strength' }, // 側欄用的短名稱
-    summary: { 'zh-TW': '輸入密碼時，四格強度條從左到右一格一格填滿，顏色從紅、橘、藍到綠；下方規則符合時打勾彈一下。可以顯示或隱藏密碼。', en: 'As you type, the four-segment meter fills left to right and shifts from red through amber and blue to green; each rule ticks with a small pop when met. The password can be shown or hidden.' },
+    summary: { 'zh-TW': '輸入密碼時，四格強度條一次只動一格：變強時從左往右一格填滿才換下一格，變弱時從右往左清空；顏色從紅、橘、藍到綠。下方的條件符合時小方塊變綠（只是顯示狀態，不是按鈕）。', en: 'As you type, the four-segment meter moves one segment at a time — each fills completely before the next starts, and weaker passwords empty from the right — shifting from red through amber and blue to green. Met requirements turn their bullet green (status only, not a control).' },
     topic: 'components',
     tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
-    tags: ['stagger', 'CSS 變數', 'aria-live'],
+    tags: ['timeline', 'CSS 變數', 'aria-live'],
     date: '2026-11-23',
     notes: [
-      { code: '\'--on\': i => (i < level ? 1 : 0)', text: { 'zh-TW': '四格都用同一個補間，值用函式算：前 level 格是 1、後面是 0。加上 stagger，就會一格一格依序填滿或清空。', en: 'All four segments share one tween with a function value — 1 for the first level segments, 0 after. With stagger they fill or empty one by one.' } },
+      { code: { 'zh-TW': 'barsTl.to(bars[i], …)（一格接一格）', en: 'barsTl.to(bars[i], …) (one at a time)' }, text: { 'zh-TW': '強度條用時間軸把每一格排成「前一格填滿、下一格才開始」，不用 stagger（stagger 會讓好幾格同時在長）。變弱時先從最右邊清空。', en: 'A timeline queues the segments so each starts only after the previous is full — not stagger, which overlaps them. Weaker passwords empty from the right first.' } },
       { code: '--level-color', text: { 'zh-TW': '強度的顏色寫成 CSS 變數放在卡片上，強度條和文字一起換色；亮暗模式各自有對應的顏色。', en: 'The strength colour is a CSS variable on the card, so the bar and label change together, with matching colours in light and dark mode.' } },
-      { code: 'back.out(3)', text: { 'zh-TW': '剛符合的那條規則，打勾的方塊彈一下，讓人注意到「這條過了」。已經符合的不會重複彈。', en: 'A newly met rule pops its tick so people notice it passed. Rules already met don’t pop again.' } },
+      { code: { 'zh-TW': '項目符號，不是勾選框', en: 'Bullets, not checkboxes' }, text: { 'zh-TW': '條件清單只是顯示狀態，不能點，所以不用方框和勾勾（看起來像可以勾選）。改成小方塊項目符號，符合時變綠並輕輕放大一下。', en: 'The requirement list only shows status and can’t be clicked, so boxes and ticks (which look tickable) are replaced by small bullets that turn green with a gentle pop.' } },
       { code: 'aria-live="polite"', text: { 'zh-TW': '強度文字（Weak、Strong）放在 aria-live 區塊，讀屏使用者打字時也會聽到強度變化。', en: 'The strength label sits in an aria-live region, so screen-reader users hear it change as they type.' } }
     ]  },
   {

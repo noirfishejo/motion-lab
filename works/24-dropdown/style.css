@@ -95,5 +95,9 @@ body {
   cursor: pointer;
 }
 .options li[aria-selected="true"] { color: var(--accent-fg); }
+/* 每個選項的滑過變化：文字變亮、往右挪一點（底色交給會滑動的 .highlight） */
+.opt-text { color: var(--muted); transition: color 0.2s, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+.options li.is-active .opt-text { color: var(--text); transform: translateX(4px); }
+.options li[aria-selected="true"] .opt-text { color: var(--accent-fg); }
 .options li[aria-selected="true"]::after { content: ""; margin-left: auto; width: 6px; height: 6px; background: var(--accent-fg); }
 .highlight { position: absolute; left: 6px; right: 6px; top: 6px; height: 40px; background: var(--surface-2); opacity: 0; pointer-events: none; }

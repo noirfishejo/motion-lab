@@ -56,11 +56,25 @@ export function addSuggestions(input) {
     active = -1;
   };
 
+  // 選項（不含滑動的高亮底色那一格）
+  const opts = () => [...list.querySelectorAll('[role="option"]')];
+  // 高亮底色只有一塊，移到哪個選項就滑過去（練習 24 下拉選單的做法）
+  const slide = (li, instant) => {
+    const hl = list.querySelector('.suggest-hl');
+    if (!hl) return;
+    if (!li) { if (window.gsap) gsap.to(hl, { opacity: 0, duration: 0.15 }); else hl.style.opacity = 0; return; }
+    const to = { y: li.offsetTop, height: li.offsetHeight, opacity: 1 };
+    if (instant || !animate()) (window.gsap ? gsap.set(hl, to) : Object.assign(hl.style, { transform: `translateY(${to.y}px)`, height: `${to.height}px`, opacity: 1 }));
+    else gsap.to(hl, { ...to, duration: 0.3, ease: 'expo.out', overwrite: true });
+  };
+
   const setActive = i => {
+    const wasHidden = active < 0;
     active = i;
-    [...list.children].forEach((li, n) => li.setAttribute('aria-selected', n === i));
-    if (i >= 0) input.setAttribute('aria-activedescendant', list.children[i].id);
+    opts().forEach((li, n) => { li.setAttribute('aria-selected', n === i); li.classList.toggle('is-active', n === i); });
+    if (i >= 0) input.setAttribute('aria-activedescendant', opts()[i].id);
     else input.removeAttribute('aria-activedescendant');
+    slide(opts()[i], wasHidden); // 第一次出現：直接放在那一格；之後：滑過去
   };
 
   const render = () => {
@@ -73,7 +87,7 @@ export function addSuggestions(input) {
       .slice(0, MAX_SUGGEST)
       .map(r => r.w);
     if (!items.length) { close(); return; }
-    list.innerHTML = items.map((w, i) => `
+    list.innerHTML = '<li class="suggest-hl" role="presentation" aria-hidden="true"></li>' + items.map((w, i) => `
       <li role="option" id="${list.id}-${i}" aria-selected="false" data-id="${w.id}">
         <span class="suggest-name">${highlight(pick(w.short), q)}</span>
         <span class="suggest-meta">${t(`topic.${w.topic}`)} · ${w.tech}</span>
@@ -81,7 +95,7 @@ export function addSuggestions(input) {
     list.hidden = false;
     input.setAttribute('aria-expanded', 'true');
     setActive(-1);
-    if (animate()) gsap.from(list.children, { y: -4, opacity: 0, duration: 0.3, stagger: 0.03, ease: 'expo.out' });
+    if (animate()) gsap.from(opts(), { y: -4, opacity: 0, duration: 0.3, stagger: 0.03, ease: 'expo.out' });
   };
 
   const go = i => { location.href = `work.html?id=${items[i].id}`; };
@@ -97,12 +111,12 @@ export function addSuggestions(input) {
   });
   // pointerdown（不是 click）：在輸入框失去焦點、建議欄被關掉之前就先處理
   list.addEventListener('pointerdown', e => {
-    const li = e.target.closest('li');
-    if (li) { e.preventDefault(); go([...list.children].indexOf(li)); }
+    const li = e.target.closest('[role="option"]');
+    if (li) { e.preventDefault(); go(opts().indexOf(li)); }
   });
   list.addEventListener('pointermove', e => {
-    const li = e.target.closest('li');
-    if (li) setActive([...list.children].indexOf(li));
+    const li = e.target.closest('[role="option"]');
+    if (li && opts().indexOf(li) !== active) setActive(opts().indexOf(li));
   });
   input.addEventListener('blur', close);
   return close;

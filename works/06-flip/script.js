@@ -23,17 +23,20 @@ function toggle(card) {
 
   if (reduce) return;
 
+  // 展開的那張：文字先藏起來，卡片變大時才不會看到字跟著被拉扯
+  const texts = card.querySelectorAll('.num, .name, .detail');
+  if (opening) gsap.set(texts, { opacity: 0 });
+
   // ③ Flip 把每張卡片「從切換前的位置」動畫到「切換後的位置」
   Flip.from(state, {
     duration: DURATION,
     ease: 'expo.inOut',
     absolute: true, // 動畫期間暫時改成絕對定位，卡片不會互相推擠
+    // ④ 卡片完全放大之後，文字才由上而下依序浮出來
+    onComplete: () => {
+      if (opening) gsap.fromTo(texts, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: 'expo.out' });
+    }
   });
-
-  // 展開時，說明文字晚一點淡入
-  if (opening) {
-    gsap.from(card.querySelector('.detail'), { opacity: 0, y: 12, duration: 0.6, delay: DURATION * 0.6, ease: 'expo.out' });
-  }
 }
 
 cards.forEach(card => card.addEventListener('click', () => toggle(card)));

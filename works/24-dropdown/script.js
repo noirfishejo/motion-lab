@@ -16,6 +16,7 @@ const moveY = gsap.quickTo(highlight, 'y', { duration: reduce ? 0 : FOLLOW, ease
 function setActive(i, instant = false) {
   active = i;
   list.setAttribute('aria-activedescendant', options[i].id);
+  options.forEach((o, n) => o.classList.toggle('is-active', n === i)); // 文字的滑過變化（CSS）
   const y = options[i].offsetTop - options[0].offsetTop;
   if (instant) moveY(y, y); else moveY(y); // quickTo 第二個值是起點：起點＝終點就是直接跳過去
   gsap.to(highlight, { opacity: 1, duration: 0.2 });
@@ -47,7 +48,7 @@ function close(focusTrigger = true) {
 
 function choose(i) {
   options.forEach((o, n) => o.setAttribute('aria-selected', n === i));
-  value.textContent = options[i].textContent;
+  value.textContent = options[i].textContent.trim();
   close();
 }
 

@@ -20,6 +20,20 @@ const bars = [...document.querySelectorAll('.meter i')];
 const label = document.getElementById('strength');
 const card = document.querySelector('.card');
 let shown = -1;
+let barsTl;   // 強度條的動畫
+
+// 強度條：一次只動一格，前一格「完全填滿」才開始下一格（不會有好幾格同時在長的狀態）
+// 變強：從左往右一格一格填；變弱：從右往左一格一格清空
+const STEP = 0.16; // 每一格花幾秒
+function fillBars(level) {
+  barsTl?.kill();
+  if (reduce) { bars.forEach((b, i) => b.style.setProperty('--on', i < level ? 1 : 0)); return; }
+  const now = bars.map(b => parseFloat(b.style.getPropertyValue('--on') || 0));
+  barsTl = gsap.timeline();
+  // 先清空多出來的（從最右邊開始），再填不足的（從最左邊開始）
+  for (let i = bars.length - 1; i >= level; i--) if (now[i] > 0) barsTl.to(bars[i], { '--on': 0, duration: STEP, ease: 'power2.in' });
+  for (let i = 0; i < level; i++) if (now[i] < 1) barsTl.to(bars[i], { '--on': 1, duration: STEP, ease: 'power2.out' });
+}
 
 function update() {
   const v = input.value;
@@ -27,10 +41,12 @@ function update() {
   document.querySelectorAll('.rules li').forEach(li => {
     const ok = RULES[li.dataset.rule](v);
     if (ok && !li.classList.contains('ok') && !reduce) {
-      // 剛符合的那一條：打勾的小方塊彈一下
-      gsap.fromTo(li.querySelector('.mark'), { scale: 0.4 }, { scale: 1, duration: 0.5, ease: 'back.out(3)' });
+      // 剛符合的那一條：小方塊放大再縮回、文字往右輕推一下（只是提示，不是按鈕）
+      gsap.fromTo(li.querySelector('.bullet'), { scale: 2.2 }, { scale: 1, duration: 0.5, ease: 'expo.out' });
+      gsap.fromTo(li.querySelector('.rule-text'), { x: 4 }, { x: 0, duration: 0.5, ease: 'expo.out' });
     }
     li.classList.toggle('ok', ok);
+    li.querySelector('.state').textContent = ok ? 'Met' : 'Not met'; // 讀屏軟體：唸出符合／不符合
     if (ok) level++;
   });
   if (!v) level = 0;
@@ -40,13 +56,7 @@ function update() {
 
   card.style.setProperty('--level-color', LEVELS[level].color); // 顏色交給 CSS 變數，亮暗模式都正確
   label.textContent = LEVELS[level].text;
-  // 強度條：前 level 格填滿、後面清空；stagger 讓它從左到右一格一格填（清空時從右到左）
-  gsap.to(bars, {
-    '--on': i => (i < level ? 1 : 0),
-    duration: reduce ? 0 : 0.4,
-    ease: 'expo.out',
-    stagger: { each: reduce ? 0 : 0.06, from: 'start' }
-  });
+  fillBars(level);
   if (!reduce) gsap.fromTo(label, { y: 4, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: 'expo.out' });
 }
 

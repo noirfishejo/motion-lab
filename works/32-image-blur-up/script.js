@@ -5,7 +5,7 @@ const REVEAL = 0.9;    // 從模糊變清楚要幾秒
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 document.querySelectorAll('.photo').forEach(photo => {
-  const art = photo.querySelector('.art');
+  const art = photo.querySelector('.art-img'); // 動的是裡面的圖，外框負責裁切
   // ① 還在載入：很模糊、稍微放大（放大是為了藏住模糊造成的邊緣淡出）、有點透明
   gsap.set(art, { filter: `blur(${BLUR}px)`, scale: 1.15, opacity: 0.7 });
 

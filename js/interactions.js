@@ -60,6 +60,9 @@ export function initCursor() {
 // 元素加上 data-tip="說明文字" 就會有：滑鼠停 0.3 秒、或用鍵盤移到上面時，下方淡入一個本站樣式的小框
 // 讀屏軟體透過 aria-describedby 唸出說明；觸控裝置不顯示（沒有「停在上面」這件事）
 let tipEl, tipTarget, tipTimer;
+let tipHiddenAt = -Infinity;
+const TIP_DELAY = 450; // 第一次要停多久才出現（毫秒）：滑過去不會一直閃
+const TIP_WARM = 400;  // 提示框剛消失的這段時間內，移到別的按鈕會立刻出現（練習 31 的「暖機」）
 
 export function initTooltips() {
   tipEl = document.createElement('div');
@@ -72,8 +75,10 @@ export function initTooltips() {
     if (e.pointerType !== 'mouse') return;
     const target = e.target.closest('[data-tip]');
     if (target === tipTarget) return;
+    const warm = tipTarget || performance.now() - tipHiddenAt < TIP_WARM; // 正在看提示，或剛看完
+    if (target && warm) { showTip(target); return; } // 直接換到新的按鈕（提示框滑過去）
     hideTip();
-    if (target) tipTimer = setTimeout(() => showTip(target), 300);
+    if (target) tipTimer = setTimeout(() => showTip(target), TIP_DELAY);
   });
   document.addEventListener('focusin', e => {
     const target = e.target.closest?.('[data-tip]');
@@ -88,6 +93,8 @@ export function initTooltips() {
 function showTip(target) {
   clearTimeout(tipTimer);
   if (!target.isConnected || target.hidden || !target.dataset.tip) return;
+  const from = tipTarget && tipEl.classList.contains('is-shown') ? { left: tipEl.style.left, top: tipEl.style.top } : null;
+  tipTarget?.removeAttribute('aria-describedby');
   tipTarget = target;
   tipEl.textContent = target.dataset.tip;
   target.setAttribute('aria-describedby', 'tooltip');
@@ -99,9 +106,16 @@ function showTip(target) {
   const gap = 8, edge = 12;
   const below = r.bottom + gap + h < innerHeight - edge;
   const left = Math.min(Math.max(r.left + r.width / 2 - w / 2, edge), innerWidth - w - edge);
-  tipEl.style.left = `${left}px`;
-  tipEl.style.top = `${below ? r.bottom + gap : r.top - gap - h}px`;
+  const top = below ? r.bottom + gap : r.top - gap - h;
   tipEl.dataset.side = below ? 'bottom' : 'top';
+  if (from && window.gsap && !reduce()) {
+    // 已經有提示框：從原本的位置滑到新按鈕（不淡出再淡入，比較不閃）
+    gsap.fromTo(tipEl, { left: from.left, top: from.top }, { left, top, duration: 0.25, ease: 'expo.out', overwrite: true });
+  } else {
+    window.gsap?.killTweensOf(tipEl);
+    tipEl.style.left = `${left}px`;
+    tipEl.style.top = `${top}px`;
+  }
   tipEl.classList.add('is-shown');
 }
 
@@ -110,6 +124,7 @@ function hideTip() {
   if (!tipTarget) return;
   tipTarget.removeAttribute('aria-describedby');
   tipTarget = null;
+  tipHiddenAt = performance.now();
   tipEl.classList.remove('is-shown');
 }
 
