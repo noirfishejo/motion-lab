@@ -6,8 +6,8 @@
   <title>Motion Lab</title>
   <meta name="description" content="Motion Lab">
   <!-- 有動態時，先把開場藏起來，等 GSAP 設好初始狀態再顯示（避免一載入就閃出方塊和文字） -->
-  <!-- 保險：4 秒後還沒開始（例如 GSAP 載不到），就直接顯示 -->
-  <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('intro'); setTimeout(() => document.documentElement.classList.remove('intro'), 4000); }</script>
+  <!-- 保險：6 秒後還沒播完（例如 GSAP 載不到），就直接顯示 -->
+  <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('intro'); setTimeout(() => document.documentElement.classList.remove('intro'), 6000); }</script>
 
   <!-- 配色：先套用記住的設定（沒有就跟著系統），在畫面出現前完成，避免閃一下 -->
   <script>

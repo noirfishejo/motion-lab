@@ -110,12 +110,24 @@ function renderCards() {
       </div>
     </a>`).join('');
 
+  // 縮圖只播放畫面上看得到的：捲出畫面就暫停練習裡的 GSAP，捲回來再繼續（省電、捲動比較順）
+  const setPlaying = (thumb, on) => {
+    thumb.dataset.playing = on;
+    try {
+      const timeline = thumb.querySelector('iframe').contentWindow.gsap?.globalTimeline;
+      if (timeline) on ? timeline.resume() : timeline.pause();
+    } catch {}
+  };
+  const io = new IntersectionObserver(entries => entries.forEach(e => setPlaying(e.target, e.isIntersecting)), { rootMargin: '80px 0px' });
+
   // 縮圖統一構圖：找出作品的主要內容，縮放並置中到同一個安全框裡
   const ro = new ResizeObserver(entries => entries.forEach(({ target }) => fitThumb(target)));
   grid.querySelectorAll('.thumb').forEach(el => {
     ro.observe(el);
+    io.observe(el);
     const frame = el.querySelector('iframe');
     frame.addEventListener('load', () => {
+      setPlaying(el, el.dataset.playing !== 'false'); // 載入（或滑鼠移入重播）時，套用目前是否在畫面上
       fitThumb(el);
       frame.contentDocument?.fonts?.ready.then(() => fitThumb(el)); // 字體載入後尺寸會變，再算一次
     });
@@ -175,6 +187,27 @@ function initMotion() {
   let intro;      // 開場動畫（自動播放的那段）
   let titleChars; // 標題拆開後的字母
 
+  // 開場播完（或使用者一開始就往下捲）之後，才顯示頁首按鈕、作品區、頁尾
+  let restShown = false;
+  const showRest = () => {
+    if (restShown) return;
+    restShown = true;
+    // 先把要進場的元素設成起點，再拿掉 intro class，才不會閃一下
+    gsap.from('.works-head, .filters-bar', {
+      opacity: 0, y: 40, duration: 1.2, stagger: 0.08, ease: 'expo.out',
+      scrollTrigger: { trigger: '.works', start: 'top bottom', once: true }
+    });
+    gsap.set('.work-card', { opacity: 0, y: 56 });
+    ScrollTrigger.batch('.work-card', {
+      start: 'top 90%',
+      once: true,
+      onEnter: batch => gsap.to(batch, { opacity: 1, y: 0, duration: 1.2, stagger: 0.08, ease: 'expo.out' })
+    });
+    gsap.from('.site-header .header-end', { opacity: 0, duration: 0.6, ease: 'power1.out' });
+    if (innerWidth < 600) gsap.from('.site-header .logo', { opacity: 0, duration: 0.6, ease: 'power1.out' });
+    document.documentElement.classList.remove('intro');
+  };
+
   // ① 所有尺寸：開場（自動播放，約 2.5 秒）
   mm.add('(prefers-reduced-motion: no-preference)', () => {
     const split = SplitText.create(title, { type: 'chars', mask: 'chars' });
@@ -192,7 +225,11 @@ function initMotion() {
       .to(square, { scale: 1.8, rotation: 0, duration: 1.1 })                 // 在中央旋轉放大
       .to(square, { scale: 1, x: 0, duration: 1.1, ease: 'expo.inOut' })      // 滑回標題左邊
       .to(split.chars, { yPercent: 0, duration: 1.2, stagger: 0.035 }, '-=0.45') // 把字一個一個「拉」出來
-      .from('.hero-sub', { opacity: 0, y: 16, duration: 1, stagger: 0.1 }, '<0.3');
+      .from('.hero-sub', { opacity: 0, y: 16, duration: 0.8 }, '-=0.6')            // 副標題在字快拉完時出現
+      .add(showRest, '-=0.3');                                                   // 開場收尾時，其他內容才出現
+
+    // 從作品頁回到 #works：不等開場，直接顯示
+    if (location.hash) intro.progress(1);
 
     return () => split.revert();
   });
@@ -251,19 +288,4 @@ function initMotion() {
     return () => logoText.revert();
   });
 
-  // ③ 作品區的進場：要在 ② 的「固定開場」之後才建立，觸發位置才會算進固定的那段距離
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
-    // 作品區：標題和篩選列捲到畫面內才出現
-    gsap.from('.works-head, .filters-bar', {
-      opacity: 0, y: 40, duration: 1.2, stagger: 0.08, ease: 'expo.out',
-      scrollTrigger: { trigger: '.works', start: 'top bottom', once: true } // 一露出畫面就出現（開場縮短後，第一個畫面就看得到）
-    });
-    // 作品卡片：捲到畫面內時依序進場
-    gsap.set('.work-card', { opacity: 0, y: 56 });
-    ScrollTrigger.batch('.work-card', {
-      start: 'top 90%',
-      once: true,
-      onEnter: batch => gsap.to(batch, { opacity: 1, y: 0, duration: 1.2, stagger: 0.08, ease: 'expo.out' })
-    });
-  });
 }

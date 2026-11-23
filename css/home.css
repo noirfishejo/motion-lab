@@ -6,7 +6,8 @@
 /* ── 開場 ── */
 /* 有動態時先隱藏，由 home.js 設好初始狀態後再顯示 */
 .intro .hero-pin{visibility:hidden}
-@media (min-width:600px){.intro .site-header .logo{visibility:hidden}}
+/* 開場播完之前，畫面上只留開場本身：頁首的 logo 和按鈕、作品區、頁尾都先藏起來（播完由 home.js 移除 intro） */
+.intro .site-header .logo,.intro .site-header .header-end,.intro .works,.intro .site-footer{visibility:hidden}
 .hero{position:relative}
 .hero-pin{
   position:relative;min-height:72svh; /* 縮短開場：第一個畫面底部就能看到作品區的開頭 */
