@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>17 Tween: Accordion</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+
+    <!-- 常見問題（假資料）：點標題展開答案，再點一次收合 -->
+    <section class="faq" aria-labelledby="faq-title">
+      <h1 class="faq-title" id="faq-title">FAQ</h1>
+
+      <div class="item">
+        <h2><button class="trigger" type="button" aria-expanded="false" aria-controls="a1" id="q1">
+          <span>Can I change my plan later?</span><span class="icon" aria-hidden="true"></span>
+        </button></h2>
+        <div class="answer" id="a1" role="region" aria-labelledby="q1" hidden>
+          <p>Yes. Upgrade or downgrade any time from Settings — the price difference is prorated to the day.</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <h2><button class="trigger" type="button" aria-expanded="false" aria-controls="a2" id="q2">
+          <span>Do you offer a student discount?</span><span class="icon" aria-hidden="true"></span>
+        </button></h2>
+        <div class="answer" id="a2" role="region" aria-labelledby="q2" hidden>
+          <p>Students and teachers get 50% off every paid plan. Verify with a school email address to apply it.</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <h2><button class="trigger" type="button" aria-expanded="false" aria-controls="a3" id="q3">
+          <span>What happens to my files if I cancel?</span><span class="icon" aria-hidden="true"></span>
+        </button></h2>
+        <div class="answer" id="a3" role="region" aria-labelledby="q3" hidden>
+          <p>Your files stay read-only for 90 days, so you can export everything. After that they are deleted for good.</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <h2><button class="trigger" type="button" aria-expanded="false" aria-controls="a4" id="q4">
+          <span>Is my data encrypted?</span><span class="icon" aria-hidden="true"></span>
+        </button></h2>
+        <div class="answer" id="a4" role="region" aria-labelledby="q4" hidden>
+          <p>Yes — in transit and at rest.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

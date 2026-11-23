@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>16 Timeline: Modal and Bottom Sheet</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <!-- 專案設定（假資料）：按「Delete project」打開確認彈窗 -->
+    <section class="card">
+      <span class="tag">modal / sheet</span>
+      <div class="project">
+        <span class="project-name">Spring campaign</span>
+        <span class="project-meta">12 files · edited 2 hours ago</span>
+      </div>
+      <button class="btn btn-danger" type="button" id="openBtn"><i class="ph-light ph-trash"></i>Delete project</button>
+      <p class="hint">Wide screens get a centred modal; narrow screens get a bottom sheet. Same component.</p>
+    </section>
+  </main>
+
+  <!-- 用原生的 <dialog>：showModal() 會自動把焦點關在彈窗裡、Esc 可以關閉、後面的內容不能點 -->
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title" aria-describedby="dialog-text">
+    <div class="scrim" data-close></div>
+    <div class="sheet">
+      <span class="grip" aria-hidden="true"></span>
+      <h2 class="dialog-title" id="dialog-title">Delete “Spring campaign”?</h2>
+      <p class="dialog-text" id="dialog-text">All 12 files will be removed. This can’t be undone.</p>
+      <div class="actions">
+        <button class="btn" type="button" data-close>Cancel</button>
+        <button class="btn btn-danger" type="button" data-close>Delete</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

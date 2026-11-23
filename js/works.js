@@ -251,6 +251,57 @@ export const WORKS = [
       { code: 'MAX = 3', text: { 'zh-TW': '同時太多通知會蓋住畫面。超過上限就先收掉最舊的一則。', en: 'Too many toasts at once cover the page. Over the limit, the oldest one is dismissed first.' } },
       { code: 'role="status" aria-live="polite"', text: { 'zh-TW': '讀屏軟體會在使用者停下來時唸出新通知，不會打斷正在唸的內容。錯誤要立刻提醒的話可以改用 role="alert"。', en: 'Screen readers announce new toasts when the user pauses, without interrupting. For errors that need immediate attention, use role="alert" instead.' } }
     ]
+  },
+  {
+    id: '15-tabs',
+    title: { 'zh-TW': '分頁切換的底線滑動', en: 'Tabs with a sliding underline' },
+    short: { 'zh-TW': '分頁 Tabs', en: 'Tabs' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '帳號設定頁的四個分頁：點分頁時，底線滑到它下方並變成它的寬度，內容往分頁移動的方向滑進來。方向鍵也能切換。', en: 'Four tabs on an account page: the underline slides under the chosen tab and matches its width, and the content slides in from the direction you moved. Arrow keys work too.' },
+    topic: 'components',
+    tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['gsap.to', 'scaleX', 'role="tablist"'],
+    date: '2026-11-23',
+    notes: [
+      { code: 'x: tab.offsetLeft, scaleX: w / BASE', text: { 'zh-TW': '整排分頁只有一條底線。量出被選中分頁的位置和寬度，用 x 移過去、用 scaleX 縮放成同樣寬。只動 transform，比直接改 width、left 順。', en: 'There is just one underline. It measures the chosen tab’s position and width, moves with x and stretches with scaleX. Only transforms change, which is smoother than animating width or left.' } },
+      { code: "transform-origin: 0 50%", text: { 'zh-TW': 'scaleX 從左邊為基準縮放，x 才會剛好對齊分頁的左緣。少了這行，底線會從中間往兩邊縮放而錯位。', en: 'scaleX grows from the left edge so x lines up with the tab’s left side. Without it the line scales from its centre and drifts.' } },
+      { code: 'dir = next > current ? 1 : -1', text: { 'zh-TW': '往右邊的分頁切換時內容從右邊滑進來，往左就從左邊。方向和底線一致，空間感比單純淡入淡出清楚。', en: 'Moving to a tab on the right brings content in from the right, and vice versa. Matching the underline’s direction gives a clearer sense of space than a plain fade.' } },
+      { code: "overwrite: true", text: { 'zh-TW': '快速連點不同分頁時，先停掉上一段還沒跑完的動畫，從目前的位置直接滑向新的分頁。', en: 'When tabs are clicked quickly, the unfinished animation is stopped and the line slides from where it is toward the new tab.' } },
+      { code: 'ArrowLeft / ArrowRight', text: { 'zh-TW': '照 WAI-ARIA 的分頁規範：Tab 鍵只會進到選中的分頁，用方向鍵切換其他分頁，Home／End 跳到頭尾。', en: 'Following the WAI-ARIA tabs pattern: Tab only reaches the selected tab, arrow keys move between tabs, and Home/End jump to the ends.' } }
+    ]
+  },
+  {
+    id: '16-modal-sheet',
+    title: { 'zh-TW': '確認彈窗（手機變底部抽屜）', en: 'Confirm modal that becomes a bottom sheet' },
+    short: { 'zh-TW': '彈窗 Modal', en: 'Modal / sheet' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '按「Delete project」打開確認彈窗：背景變暗，電腦版從下方稍微浮起、手機版從畫面底部整個滑上來。同一個元件依螢幕寬度切換，Esc、點背景都能關閉。', en: 'Delete project opens a confirmation: the background dims, and the dialog rises slightly on desktop or slides up from the bottom on phones. One component switches by screen width; Esc or clicking outside closes it.' },
+    topic: 'components',
+    tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['<dialog>', 'showModal', 'matchMedia'],
+    date: '2026-11-23',
+    notes: [
+      { code: 'dialog.showModal()', text: { 'zh-TW': '用原生的 <dialog>：焦點自動關在彈窗裡、後面的內容不能點、Esc 可以關閉、關閉後焦點回到原本的按鈕。這些無障礙細節自己做很容易漏。', en: 'The native <dialog> traps focus, blocks the page behind, closes on Esc and returns focus to the button afterwards — accessibility details that are easy to miss when hand-rolled.' } },
+      { code: "addEventListener('cancel', preventDefault)", text: { 'zh-TW': '按 Esc 時瀏覽器會「立刻」關掉彈窗，關閉動畫就看不到了。先攔下來，播完動畫再 close()。', en: 'Esc closes the dialog instantly, skipping the exit animation. Intercept it, play the animation, then call close().' } },
+      { code: '::backdrop → .scrim', text: { 'zh-TW': '瀏覽器內建的 ::backdrop 沒辦法用 GSAP 控制，所以設成透明，改用一個自己的 .scrim 圖層做淡入淡出。', en: 'The built-in ::backdrop can’t be animated by GSAP, so it’s made transparent and a separate .scrim layer handles the fade.' } },
+      { code: 'yPercent: 100 vs y: 24, scale: 0.96', text: { 'zh-TW': '同一段程式，依 matchMedia 決定起點：手機從底部整個滑上來（底部抽屜），電腦從稍微下面、稍微小一點浮上來（置中彈窗）。', en: 'The same code picks its start state with matchMedia: phones slide the whole sheet up from the bottom; desktops rise a little from slightly below and slightly smaller.' } },
+      { code: 'CLOSE < OPEN', text: { 'zh-TW': '關閉（0.3 秒）比打開（0.5 秒）快。使用者已經做完決定，收起來要俐落，不要讓人等。', en: 'Closing (0.3s) is faster than opening (0.5s). The user has already decided — get out of the way quickly.' } }
+    ]
+  },
+  {
+    id: '17-accordion',
+    title: { 'zh-TW': '常見問題手風琴', en: 'FAQ accordion' },
+    short: { 'zh-TW': '手風琴', en: 'Accordion' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '點問題展開答案、再點一次收合：高度從 0 長到內容的實際高度，「＋」轉成「－」，答案文字輕輕往下浮出。預設一次只開一個。', en: 'Click a question to open its answer and again to close: the height grows from 0 to the real content height, “+” turns into “−”, and the answer text drifts in. One open at a time by default.' },
+    topic: 'components',
+    tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ["height: 'auto'", 'aria-expanded', 'hidden'],
+    date: '2026-11-23',
+    notes: [
+      { code: "height: 'auto'", text: { 'zh-TW': 'CSS 沒辦法從 0 過渡到 auto，但 GSAP 可以：它會先量出內容的實際高度再動畫過去。答案多長都不用自己算。', en: 'CSS can’t transition from 0 to auto, but GSAP can: it measures the real content height first. Answers can be any length.' } },
+      { code: 'ONLY_ONE = true', text: { 'zh-TW': '一次只開一個，頁面比較不會忽長忽短。如果使用者常常需要比對兩個答案，改成 false 讓它們可以同時打開。', en: 'One at a time keeps the page from growing and shrinking a lot. If people often compare answers, set it to false so several can be open.' } },
+      { code: 'answer.hidden = true', text: { 'zh-TW': '收合動畫播完後加上 hidden，讀屏軟體和 Tab 鍵才不會跑進看不到的答案裡。打開前先拿掉 hidden，才量得到高度。', en: 'After closing, hidden is added so screen readers and the Tab key skip the invisible answer. It’s removed before opening so the height can be measured.' } },
+      { code: 'rotate(90deg) → 0', text: { 'zh-TW': '「＋」是兩條線，展開時直的那條轉 90° 疊到橫的上面變成「－」。這個用 CSS transition 就夠了，不需要 GSAP。', en: 'The “+” is two lines; opening rotates the vertical one 90° onto the horizontal one to make “−”. A CSS transition is enough here — no GSAP needed.' } },
+      { code: '<h2><button aria-expanded>', text: { 'zh-TW': '標題外面包 h2、裡面是 button：讀屏使用者可以用標題快速跳到每個問題，按鈕會唸出「已展開／已收合」。', en: 'A button inside an h2: screen-reader users can jump between questions by heading, and the button announces expanded or collapsed.' } }
+    ]
   }
 ];
 

@@ -1,0 +1,88 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage { width: min(560px, 100%); padding: 32px 16px; }
+
+.faq { background: var(--surface); border: 1px solid var(--line); }
+.faq-title {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  font: 400 12px/1 "JetBrains Mono", monospace;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.item + .item { border-top: 1px solid var(--line); }
+.item h2 { font: inherit; }
+
+.trigger {
+  width: 100%;
+  min-height: 60px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: 500 15px/1.4 "Inter Tight", sans-serif;
+  text-align: left;
+  cursor: pointer;
+}
+.trigger:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: -2px; }
+
+/* 「＋」圖示：兩條線，展開時直的那條轉 90° 疊到橫的上面，變成「－」 */
+.icon { position: relative; flex: none; width: 14px; height: 14px; }
+.icon::before, .icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6.5px;
+  width: 14px;
+  height: 1px;
+  background: currentColor;
+}
+.icon::after { transform: rotate(90deg); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.trigger[aria-expanded="true"] .icon::after { transform: rotate(0deg); }
+.trigger[aria-expanded="true"] { color: var(--accent-fg); }
+
+/* 答案：外層負責高度（從 0 長到內容的高度），裡面的段落負責淡入 */
+.answer { overflow: hidden; }
+.answer p { padding: 0 20px 20px; max-width: 52ch; font-size: 14px; line-height: 1.65; color: var(--muted); }

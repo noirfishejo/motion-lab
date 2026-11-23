@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>15 Tween: Sliding Tab Indicator</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+
+    <!-- 帳號設定頁的分頁（假資料）：底線會滑到被選中的分頁下方 -->
+    <section class="card">
+      <div class="tabs" role="tablist" aria-label="Account">
+        <button class="tab" type="button" role="tab" id="tab-overview" aria-controls="panel" aria-selected="true">Overview</button>
+        <button class="tab" type="button" role="tab" id="tab-activity" aria-controls="panel" aria-selected="false" tabindex="-1">Activity</button>
+        <button class="tab" type="button" role="tab" id="tab-settings" aria-controls="panel" aria-selected="false" tabindex="-1">Settings</button>
+        <button class="tab" type="button" role="tab" id="tab-billing" aria-controls="panel" aria-selected="false" tabindex="-1">Billing and invoices</button>
+        <!-- 會滑動的底線：只有一條，用 x 和 scaleX 移到被選中的分頁下方 -->
+        <span class="indicator" aria-hidden="true"></span>
+      </div>
+
+      <div class="panel" id="panel" role="tabpanel" aria-labelledby="tab-overview" tabindex="0">
+        <h2 class="panel-title"></h2>
+        <p class="panel-text"></p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
