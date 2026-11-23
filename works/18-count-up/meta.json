@@ -1,0 +1,62 @@
+{
+  "title": {
+    "zh-TW": "儀表板數字跳動計數",
+    "en": "Dashboard count-up numbers"
+  },
+  "short": {
+    "zh-TW": "數字計數",
+    "en": "Count-up"
+  },
+  "summary": {
+    "zh-TW": "三個統計數字從 0 跳到目標值，一開始很快、最後慢慢停在正確的數字。按 Refresh 換成新數字時，會從目前的值跳過去，不會每次都從 0 開始。",
+    "en": "Three stats count up from 0 — fast at first, settling on the exact value. Refresh jumps from the current value to new numbers instead of restarting at 0."
+  },
+  "topic": "feedback",
+  "tech": "Tween",
+  "tags": [
+    "gsap.to(object)",
+    "onUpdate",
+    "Intl.NumberFormat"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "gsap.to(c, { n: to, onUpdate })",
+      "text": {
+        "zh-TW": "GSAP 不只能動畫元素，也能動畫一個普通物件的數字。改 c.n，再在 onUpdate 裡把它格式化成文字寫回畫面。",
+        "en": "GSAP can tween a plain object’s number, not just elements. It changes c.n, and onUpdate formats it back into the text on screen."
+      }
+    },
+    {
+      "code": "Intl.NumberFormat",
+      "text": {
+        "zh-TW": "千分位、貨幣符號、小數位數交給瀏覽器內建的格式化，換語言或幣別時只要改設定，不用自己拼字串。",
+        "en": "Thousands separators, currency symbols and decimals come from the built-in formatter; switching locale or currency is a setting, not string building."
+      }
+    },
+    {
+      "code": "font-variant-numeric: tabular-nums",
+      "text": {
+        "zh-TW": "等寬數字：跳動時每個數字一樣寬，整串數字不會左右抖動。所有會變動的數字（計時、價格）都建議加。",
+        "en": "Tabular figures keep every digit the same width so the number doesn’t wobble while counting. Use it for any changing number — timers, prices."
+      }
+    },
+    {
+      "code": "ease: 'expo.out'",
+      "text": {
+        "zh-TW": "大部分時間花在最後幾個數字，眼睛來得及讀到結果。用 none（等速）會一直快速閃動到最後一刻才停。",
+        "en": "Most of the time is spent on the last digits so the eye can catch the result. Linear (none) flickers fast right up to the final frame."
+      }
+    },
+    {
+      "code": {
+        "zh-TW": "c.n（記住目前的值）",
+        "en": "c.n (remembers the current value)"
+      },
+      "text": {
+        "zh-TW": "每個數字記住目前顯示的值，Refresh 時從這裡跳到新值。配上 overwrite: true，連按也不會跳回 0。",
+        "en": "Each counter remembers its current value and refreshes from there. With overwrite: true, repeated clicks never snap back to 0."
+      }
+    }
+  ]
+}

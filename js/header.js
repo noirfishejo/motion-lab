@@ -36,6 +36,7 @@ function setupTheme() {
   const root = document.documentElement;
   const render = () => {
     const light = root.dataset.theme === 'light';
+    document.dispatchEvent(new Event('themechange')); // 首頁縮圖會換成對應配色的圖片
     // 預覽和縮圖裡的練習也跟著換（練習載入時自己會讀一次，這裡處理「切換的當下」）
     document.querySelectorAll('iframe').forEach(f => {
       try { f.contentDocument.documentElement.dataset.theme = root.dataset.theme; } catch {}

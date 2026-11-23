@@ -1,0 +1,59 @@
+{
+  "title": {
+    "zh-TW": "設定頁開關",
+    "en": "Settings toggle switch"
+  },
+  "short": {
+    "zh-TW": "開關 Switch",
+    "en": "Toggle switch"
+  },
+  "summary": {
+    "zh-TW": "設定頁最常見的開關：點擊時滑塊滑到另一邊，途中被拉長再縮回，按住時滑塊先稍微變寬。顏色交給 CSS，位置和形變交給 GSAP。",
+    "en": "The most common control on a settings page: on click the thumb slides across, stretching on the way and settling back; pressing widens it slightly first. CSS handles colour, GSAP handles position and shape."
+  },
+  "topic": "forms",
+  "tech": "Tween",
+  "tags": [
+    "gsap.to",
+    "overwrite",
+    "role=\"switch\""
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "gsap.to(thumb, { x: travel() })",
+      "text": {
+        "zh-TW": "滑塊只用 x（transform）移動，不改 left 或 margin，動畫才會順。移動距離用量的：軌道內寬 − 滑塊寬，改 CSS 尺寸也不用改程式。",
+        "en": "The thumb moves with x (a transform), not left or margin, so it stays smooth. The distance is measured — track inner width minus thumb width — so changing the CSS size needs no code change."
+      }
+    },
+    {
+      "code": "overwrite: true",
+      "text": {
+        "zh-TW": "連續快速點擊時，先停掉上一段還沒跑完的動畫，從目前的位置接著走，不會卡住或跳回起點。",
+        "en": "When clicked rapidly, it stops the unfinished animation and continues from the current position instead of stuttering or jumping back."
+      }
+    },
+    {
+      "code": "STRETCH = 1.4",
+      "text": {
+        "zh-TW": "移動途中把滑塊拉長 1.4 倍再縮回，從「出發的那一側」拉長（transformOrigin），看起來像往前衝。改成 1 就是單純的滑動。",
+        "en": "Stretches the thumb 1.4× mid-move and settles back, anchored on the side it leaves from (transformOrigin), so it seems to lunge forward. Set it to 1 for a plain slide."
+      }
+    },
+    {
+      "code": "transition: background-color",
+      "text": {
+        "zh-TW": "軌道顏色用 CSS 過渡，不用 GSAP：GSAP 會把顏色寫死在 style 上，切換亮暗模式時就不會跟著變。",
+        "en": "Track colour uses a CSS transition rather than GSAP: GSAP would bake the colour into the style attribute, so it wouldn’t follow light/dark changes."
+      }
+    },
+    {
+      "code": "role=\"switch\" aria-checked",
+      "text": {
+        "zh-TW": "用 button 加上 role=\"switch\"，鍵盤的 Enter、空白鍵都能切換，讀屏軟體會唸出「開關，開啟」。",
+        "en": "A button with role=\"switch\" toggles with Enter or Space, and screen readers announce “switch, on”."
+      }
+    }
+  ]
+}

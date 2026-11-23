@@ -1,0 +1,62 @@
+{
+  "title": {
+    "zh-TW": "按讚愛心與粒子",
+    "en": "Like button with particle burst"
+  },
+  "short": {
+    "zh-TW": "按讚愛心",
+    "en": "Like burst"
+  },
+  "summary": {
+    "zh-TW": "按下愛心：空心縮掉、實心彈出，外框方塊擴散、十顆小方塊往四周噴開，按讚數往上滾一格。在圖片上點兩下也能按讚，中間會跳出大愛心。取消按讚則安靜地縮回去。",
+    "en": "Tap the heart: the outline shrinks away, the filled heart pops in, a square ring expands and ten tiny squares burst outward while the count rolls up. Double-click the photo to like with a big centre heart. Unliking quietly shrinks back."
+  },
+  "topic": "feedback",
+  "tech": "Timeline",
+  "tags": [
+    "back.out",
+    "gsap.utils.random",
+    "aria-pressed"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "ease: 'back.out(3)'",
+      "text": {
+        "zh-TW": "先放大超過一點再回到原尺寸，像被按下去又彈回來。括號裡的數字越大，「超過」的幅度越大。",
+        "en": "Overshoots slightly before settling, like a press that springs back. The bigger the number, the bigger the overshoot."
+      }
+    },
+    {
+      "code": "angle = i / PARTICLES × 2π",
+      "text": {
+        "zh-TW": "粒子沿著圓周平均分佈，再加一點隨機的角度和距離（gsap.utils.random），看起來自然而不是死板的放射狀。",
+        "en": "Particles are spread evenly around a circle, then nudged with random angle and distance (gsap.utils.random) so the burst looks natural rather than rigid."
+      }
+    },
+    {
+      "code": "onComplete: () => p.remove()",
+      "text": {
+        "zh-TW": "每次按讚都會新增粒子，飛完一定要移除，不然連按很多次頁面上會堆滿看不見的元素。",
+        "en": "New particles are created on every like, so remove them when they finish — otherwise repeated taps pile up invisible elements."
+      }
+    },
+    {
+      "code": {
+        "zh-TW": "取消不噴粒子",
+        "en": "No burst on unlike"
+      },
+      "text": {
+        "zh-TW": "慶祝只給「按讚」。取消時安靜地縮回空心，動態的情緒要和動作的意義一致。",
+        "en": "Celebrate only the like. Unliking quietly shrinks back — the motion’s mood should match the meaning of the action."
+      }
+    },
+    {
+      "code": "aria-pressed='true'",
+      "text": {
+        "zh-TW": "按讚按鈕是「切換」的按鈕，用 aria-pressed 讓讀屏軟體唸出「已按下／未按下」。點兩下圖片只是捷徑，鍵盤使用者用按鈕就好。",
+        "en": "A like button is a toggle; aria-pressed lets screen readers announce pressed or not. Double-clicking the photo is a shortcut — keyboard users use the button."
+      }
+    }
+  ]
+}

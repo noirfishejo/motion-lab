@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Thumbnail capture</title>
+  <!-- 截縮圖專用的頁面（tools/make_thumbs.py 用 Chrome 打開並截圖），網站本身不會用到
+       網址：tools/capture.html?id=01-stagger&theme=dark
+       · 練習用 1200×750 渲染，再用和首頁一樣的方式「找出主要內容、縮放置中」（統一構圖）
+       · 練習裡的小程式會讀這一頁的 data-theme，所以縮圖也分深色／亮色兩張 -->
+  <script>
+    const params = new URLSearchParams(location.search);
+    document.documentElement.dataset.theme = params.get('theme') === 'light' ? 'light' : 'dark';
+  </script>
+  <style>
+    html, body { margin: 0; overflow: hidden; }
+    body { width: 1200px; height: 750px; background: #0B0D10; }
+    html[data-theme="light"] body { background: #F5F5F2; }
+    .frame { position: relative; width: 1200px; height: 750px; overflow: hidden; }
+    iframe { position: absolute; left: 0; top: 0; width: 960px; height: 600px; border: 0; transform-origin: 0 0; }
+  </style>
+</head>
+<body>
+  <div class="frame"><iframe id="f"></iframe></div>
+  <script type="module">
+    // 和首頁 home.js 的 fitThumb 相同的構圖規則：主要內容縮放到 82% 寬 × 72% 高的安全框裡、置中，最多放大 2 倍
+    const VIEW = { w: 960, h: 600 }, FIT_W = 0.82, FIT_H = 0.72;
+    const W = 1200, H = 750;
+    const id = params.get('id');
+    const frame = document.getElementById('f');
+    const meta = await (await fetch(`../works/${id}/meta.json`)).json();
+
+    function fit() {
+      const base = W / VIEW.w;
+      let k = base, tx = 0, ty = 0;
+      const doc = frame.contentDocument, win = frame.contentWindow;
+      const els = meta.thumb ? doc.querySelectorAll(meta.thumb) : (doc.querySelector('main') || doc.body).children;
+      let l = Infinity, t = Infinity, r = -Infinity, b = -Infinity;
+      for (const el of els) {
+        const cs = win.getComputedStyle(el);
+        if (cs.display === 'none' || cs.position === 'absolute' || cs.position === 'fixed') continue;
+        const rc = el.getBoundingClientRect();
+        if (!rc.width || !rc.height) continue;
+        l = Math.min(l, rc.left); t = Math.min(t, rc.top); r = Math.max(r, rc.right); b = Math.max(b, rc.bottom);
+      }
+      if (r > l && b > t) {
+        k = Math.min(W * FIT_W / (r - l), H * FIT_H / (b - t), base * 2);
+        tx = W / 2 - (l + r) / 2 * k;
+        ty = H / 2 - (t + b) / 2 * k;
+      }
+      frame.style.transform = `translate(${tx}px, ${ty}px) scale(${k})`;
+    }
+
+    frame.addEventListener('load', () => {
+      fit();
+      frame.contentDocument.fonts.ready.then(fit);
+      // 等練習的自動示範播完再截圖（make_thumbs.py 用 virtual-time-budget 控制時間）
+      setTimeout(fit, 3500);
+    });
+    frame.src = `../works/${id}/index.html`;
+  </script>
+</body>
+</html>

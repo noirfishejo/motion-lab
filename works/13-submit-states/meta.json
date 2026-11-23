@@ -1,0 +1,59 @@
+{
+  "title": {
+    "zh-TW": "送出按鈕的載入與結果",
+    "en": "Submit button: loading and result"
+  },
+  "short": {
+    "zh-TW": "送出按鈕狀態",
+    "en": "Submit states"
+  },
+  "summary": {
+    "zh-TW": "按下送出後，按鈕縮成方塊、裡面的小方塊開始轉；成功時撐回原本寬度並打勾，失敗時變紅並左右搖晃。勾選下方的選項就能試失敗的情況。",
+    "en": "Pressing Send shrinks the button into a square with a small spinning square inside; on success it widens back with a check, on failure it turns red and shakes. Tick the option below to try a failure."
+  },
+  "topic": "forms",
+  "tech": "Timeline",
+  "tags": [
+    "gsap.timeline",
+    "async / await",
+    "aria-busy"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "await gsap.timeline()",
+      "text": {
+        "zh-TW": "GSAP 的動畫可以用 await 等它播完。流程就能照順序寫：先縮成方塊 → 等送出結果 → 再播成功或失敗，不用一層一層包 callback。",
+        "en": "GSAP animations can be awaited. The flow reads top to bottom — shrink to a square, wait for the result, then play success or failure — without nested callbacks."
+      }
+    },
+    {
+      "code": "width: SQUARE → fullWidth",
+      "text": {
+        "zh-TW": "寬度動畫會觸發重新排版，但只影響這一顆按鈕，可以接受。原本的寬度先量好存起來，變回來時才知道要回到多寬。",
+        "en": "Animating width triggers layout, but only for this one button, which is fine. The original width is measured once so it knows how wide to return."
+      }
+    },
+    {
+      "code": "rotation: '+=360', repeat: -1",
+      "text": {
+        "zh-TW": "載入中的小方塊無限旋轉，ease 用 none 才會等速轉。結束時要 kill() 停掉，不然會在背景一直轉。",
+        "en": "The loading square spins forever; ease none keeps the speed constant. kill() it when done, or it keeps spinning in the background."
+      }
+    },
+    {
+      "code": "aria-busy='true'",
+      "text": {
+        "zh-TW": "送出中再點不會重複送出（防止重複下單），讀屏軟體也會知道按鈕正在忙。結果用 role=\"status\" 的文字唸出來。",
+        "en": "While busy, extra clicks are ignored (no double submissions) and screen readers know the button is busy. The result is announced through a role=\"status\" element."
+      }
+    },
+    {
+      "code": "classList.toggle('is-fail')",
+      "text": {
+        "zh-TW": "失敗的紅色交給 CSS 過渡，GSAP 只管大小和位置。這樣亮暗模式切換時顏色也會正確。",
+        "en": "The red failure colour is a CSS transition; GSAP only handles size and position, so colours stay correct across light and dark mode."
+      }
+    }
+  ]
+}

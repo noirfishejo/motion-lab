@@ -1,0 +1,29 @@
+{
+  "title": {
+    "zh-TW": "練習名稱・情境",
+    "en": "Practice name · context"
+  },
+  "short": {
+    "zh-TW": "短名稱",
+    "en": "Short name"
+  },
+  "summary": {
+    "zh-TW": "一句話說明這個練習在做什麼。",
+    "en": "One sentence about what this practice does."
+  },
+  "topic": "feedback",
+  "tech": "Tween",
+  "tags": [
+    "gsap.to"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "gsap.to()",
+      "text": {
+        "zh-TW": "這行程式在做什麼、為什麼這樣寫。",
+        "en": "What this line does and why."
+      }
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "title": {
+    "zh-TW": "確認彈窗（手機變底部抽屜）",
+    "en": "Confirm modal that becomes a bottom sheet"
+  },
+  "short": {
+    "zh-TW": "彈窗 Modal",
+    "en": "Modal / sheet"
+  },
+  "summary": {
+    "zh-TW": "按「Delete project」打開確認彈窗：背景變暗，電腦版從下方稍微浮起、手機版從畫面底部整個滑上來。同一個元件依螢幕寬度切換，Esc、點背景都能關閉。",
+    "en": "Delete project opens a confirmation: the background dims, and the dialog rises slightly on desktop or slides up from the bottom on phones. One component switches by screen width; Esc or clicking outside closes it."
+  },
+  "topic": "overlays",
+  "tech": "Timeline",
+  "tags": [
+    "<dialog>",
+    "showModal",
+    "matchMedia"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "dialog.showModal()",
+      "text": {
+        "zh-TW": "用原生的 <dialog>：焦點自動關在彈窗裡、後面的內容不能點、Esc 可以關閉、關閉後焦點回到原本的按鈕。這些無障礙細節自己做很容易漏。",
+        "en": "The native <dialog> traps focus, blocks the page behind, closes on Esc and returns focus to the button afterwards — accessibility details that are easy to miss when hand-rolled."
+      }
+    },
+    {
+      "code": "addEventListener('cancel', preventDefault)",
+      "text": {
+        "zh-TW": "按 Esc 時瀏覽器會「立刻」關掉彈窗，關閉動畫就看不到了。先攔下來，播完動畫再 close()。",
+        "en": "Esc closes the dialog instantly, skipping the exit animation. Intercept it, play the animation, then call close()."
+      }
+    },
+    {
+      "code": "::backdrop → .scrim",
+      "text": {
+        "zh-TW": "瀏覽器內建的 ::backdrop 沒辦法用 GSAP 控制，所以設成透明，改用一個自己的 .scrim 圖層做淡入淡出。",
+        "en": "The built-in ::backdrop can’t be animated by GSAP, so it’s made transparent and a separate .scrim layer handles the fade."
+      }
+    },
+    {
+      "code": "yPercent: 100 vs y: 24, scale: 0.96",
+      "text": {
+        "zh-TW": "同一段程式，依 matchMedia 決定起點：手機從底部整個滑上來（底部抽屜），電腦從稍微下面、稍微小一點浮上來（置中彈窗）。",
+        "en": "The same code picks its start state with matchMedia: phones slide the whole sheet up from the bottom; desktops rise a little from slightly below and slightly smaller."
+      }
+    },
+    {
+      "code": "CLOSE < OPEN",
+      "text": {
+        "zh-TW": "關閉（0.3 秒）比打開（0.5 秒）快。使用者已經做完決定，收起來要俐落，不要讓人等。",
+        "en": "Closing (0.3s) is faster than opening (0.5s). The user has already decided — get out of the way quickly."
+      }
+    }
+  ]
+}

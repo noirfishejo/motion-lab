@@ -1,0 +1,61 @@
+{
+  "title": {
+    "zh-TW": "捲動時大字從模糊變清楚",
+    "en": "Large text sharpens from blur on scroll"
+  },
+  "short": {
+    "zh-TW": "模糊變清楚",
+    "en": "Blur reveal"
+  },
+  "summary": {
+    "zh-TW": "參考 santalarch 的大字敘事：每一行捲進畫面時，從模糊、半透明、偏下的位置，跟著捲動慢慢變清楚、到位。往回捲會再變模糊。",
+    "en": "Big-type storytelling inspired by santalarch: each line starts blurred, faint and slightly low, and sharpens into place as you scroll. Scrolling back blurs it again."
+  },
+  "topic": "scroll",
+  "tech": "ScrollTrigger",
+  "tags": [
+    "SplitText",
+    "filter: blur",
+    "scrub"
+  ],
+  "date": "2026-11-23",
+  "markers": true,
+  "thumb": ".intro, .statement:first-child",
+  "notes": [
+    {
+      "code": "filter: 'blur(14px)' → 'blur(0px)'",
+      "text": {
+        "zh-TW": "GSAP 可以直接補間 CSS filter。模糊很吃效能，所以只用在少量的大字上，不要整頁每個元素都加。",
+        "en": "GSAP can tween CSS filter directly. Blur is expensive, so keep it to a few large lines rather than every element on the page."
+      }
+    },
+    {
+      "code": "SplitText { type: 'lines' }",
+      "text": {
+        "zh-TW": "拆成畫面上實際的一行一行，每行各自變清楚，比整段一起變清楚更有節奏。autoSplit 讓視窗變寬變窄時重新拆行。",
+        "en": "Splits into the actual on-screen lines so each one sharpens in turn — more rhythm than the whole paragraph at once. autoSplit re-splits on resize."
+      }
+    },
+    {
+      "code": "start: 'top 85%', end: 'bottom 55%'",
+      "text": {
+        "zh-TW": "文字頂端到畫面下方 85% 開始，底端到畫面中間偏下時全部清楚。也就是讀者讀到那裡的時候，字剛好清楚。",
+        "en": "Starts when the top reaches 85% down the screen and is fully sharp when the bottom reaches 55% — right where the reader’s eyes are."
+      }
+    },
+    {
+      "code": "ease: 'none' + scrub",
+      "text": {
+        "zh-TW": "跟著捲動的動畫用等速，捲多少就清楚多少；scrub: 0.8 讓它稍微落後捲動一點，比較滑順。",
+        "en": "Scroll-linked animation stays linear — sharpness follows scroll exactly; scrub: 0.8 trails slightly behind for smoothness."
+      }
+    },
+    {
+      "code": "stagger: 0.15",
+      "text": {
+        "zh-TW": "同一段裡，下一行比上一行晚一點清楚，閱讀方向和動畫方向一致。",
+        "en": "Within a paragraph each line sharpens a little after the one above, matching the reading direction."
+      }
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "title": {
+    "zh-TW": "分頁切換的底線滑動",
+    "en": "Tabs with a sliding underline"
+  },
+  "short": {
+    "zh-TW": "分頁 Tabs",
+    "en": "Tabs"
+  },
+  "summary": {
+    "zh-TW": "帳號設定頁的四個分頁：點分頁時，底線滑到它下方並變成它的寬度，內容往分頁移動的方向滑進來。方向鍵也能切換。",
+    "en": "Four tabs on an account page: the underline slides under the chosen tab and matches its width, and the content slides in from the direction you moved. Arrow keys work too."
+  },
+  "topic": "overlays",
+  "tech": "Tween",
+  "tags": [
+    "gsap.to",
+    "scaleX",
+    "role=\"tablist\""
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "x: tab.offsetLeft, scaleX: w / BASE",
+      "text": {
+        "zh-TW": "整排分頁只有一條底線。量出被選中分頁的位置和寬度，用 x 移過去、用 scaleX 縮放成同樣寬。只動 transform，比直接改 width、left 順。",
+        "en": "There is just one underline. It measures the chosen tab’s position and width, moves with x and stretches with scaleX. Only transforms change, which is smoother than animating width or left."
+      }
+    },
+    {
+      "code": "transform-origin: 0 50%",
+      "text": {
+        "zh-TW": "scaleX 從左邊為基準縮放，x 才會剛好對齊分頁的左緣。少了這行，底線會從中間往兩邊縮放而錯位。",
+        "en": "scaleX grows from the left edge so x lines up with the tab’s left side. Without it the line scales from its centre and drifts."
+      }
+    },
+    {
+      "code": "dir = next > current ? 1 : -1",
+      "text": {
+        "zh-TW": "往右邊的分頁切換時內容從右邊滑進來，往左就從左邊。方向和底線一致，空間感比單純淡入淡出清楚。",
+        "en": "Moving to a tab on the right brings content in from the right, and vice versa. Matching the underline’s direction gives a clearer sense of space than a plain fade."
+      }
+    },
+    {
+      "code": "overwrite: true",
+      "text": {
+        "zh-TW": "快速連點不同分頁時，先停掉上一段還沒跑完的動畫，從目前的位置直接滑向新的分頁。",
+        "en": "When tabs are clicked quickly, the unfinished animation is stopped and the line slides from where it is toward the new tab."
+      }
+    },
+    {
+      "code": "ArrowLeft / ArrowRight",
+      "text": {
+        "zh-TW": "照 WAI-ARIA 的分頁規範：Tab 鍵只會進到選中的分頁，用方向鍵切換其他分頁，Home／End 跳到頭尾。",
+        "en": "Following the WAI-ARIA tabs pattern: Tab only reaches the selected tab, arrow keys move between tabs, and Home/End jump to the ends."
+      }
+    }
+  ]
+}

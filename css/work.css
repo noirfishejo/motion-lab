@@ -73,7 +73,6 @@
 }
 .code-tabs button:hover,.code-tabs button[aria-selected="true"]{color:var(--text)}
 .code-tabs button:focus-visible{outline-offset:-4px}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
 
 /* ── 編輯器（CodeMirror）配色：對應 design token ── */
 .editor-wrap .CodeMirror{
@@ -125,7 +124,7 @@
   transition:border-color var(--dur-fast),transform var(--dur) var(--ease-out);
 }
 .frame-cover-chip i{font-size:18px}
-.frame-cover:hover .frame-cover-chip{border-color:var(--accent-fg);transform:translateY(-2px)}
+.frame-cover:hover .frame-cover-chip{border-color:var(--text)} /* 外框按鈕的滑過規則 */
 .frame-cover:focus-visible{outline-offset:-4px}
 
 /* ═══ 電腦 ≥1024px：程式碼固定展開，預覽和程式碼左右並排 ═══

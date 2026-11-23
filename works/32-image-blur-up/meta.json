@@ -1,0 +1,52 @@
+{
+  "title": {
+    "zh-TW": "圖片載入從模糊變清楚",
+    "en": "Blur-up image loading"
+  },
+  "short": {
+    "zh-TW": "圖片模糊載入",
+    "en": "Blur-up loading"
+  },
+  "summary": {
+    "zh-TW": "圖片還在載入時先顯示很模糊的預覽，載入完成後由模糊漸漸變清楚。每張圖載入時間不同，所以會一張一張清楚起來；圖片框大小固定，版面不會跳。",
+    "en": "While images load, a very blurred preview shows; once loaded, each sharpens into focus. Load times differ, so they clear one by one, and the fixed frames keep the layout still."
+  },
+  "topic": "feedback",
+  "tech": "Tween",
+  "tags": [
+    "filter: blur",
+    "scale",
+    "aspect-ratio"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "filter: 'blur(24px)' → 'blur(0px)'",
+      "text": {
+        "zh-TW": "預覽圖先模糊，載入完成後補間到 0。真實做法是先放一張很小的低解析度圖，img 的 load 事件觸發時再換成清楚的。",
+        "en": "The preview starts blurred and tweens to 0 on load. In practice you show a tiny low-res image first and swap on the img load event."
+      }
+    },
+    {
+      "code": "scale: 1.15 → 1",
+      "text": {
+        "zh-TW": "模糊會讓邊緣變淡、露出底色，稍微放大可以把淡掉的邊緣藏到框外面，清楚時再縮回原尺寸。",
+        "en": "Blur fades the edges and reveals the background; scaling up slightly hides those edges outside the frame until it sharpens."
+      }
+    },
+    {
+      "code": "aspect-ratio: 4 / 5",
+      "text": {
+        "zh-TW": "圖片框先決定比例，載入前後大小都一樣，下面的內容不會因為圖片載入而被推動。",
+        "en": "The frame’s ratio is fixed up front, so its size never changes and content below isn’t pushed when images load."
+      }
+    },
+    {
+      "code": "delayedCall(data-load)",
+      "text": {
+        "zh-TW": "示範用：每張圖片的「載入時間」寫在 HTML 上，所以會一張一張變清楚。真實情況直接聽 load 事件。",
+        "en": "For the demo each image’s “load time” lives in the HTML, so they clear one at a time. In production, listen for the load event."
+      }
+    }
+  ]
+}

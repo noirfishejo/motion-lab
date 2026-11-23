@@ -1,0 +1,59 @@
+{
+  "title": {
+    "zh-TW": "圖示描邊動畫",
+    "en": "Icon line drawing"
+  },
+  "short": {
+    "zh-TW": "圖示描邊",
+    "en": "Icon drawing"
+  },
+  "summary": {
+    "zh-TW": "把 Phosphor 的 Smiley 圖示一筆一筆畫出來：圓 → 左眼 → 右眼 → 微笑。下方的步驟會跟著目前畫到的那一筆亮起來，點任何一步都能從那一步重新播放。",
+    "en": "Draws Phosphor’s Smiley icon stroke by stroke: circle → left eye → right eye → smile. The step list below lights up with the stroke being drawn, and clicking any step replays from there."
+  },
+  "topic": "graphics",
+  "tech": "DrawSVG",
+  "tags": [
+    "DrawSVGPlugin",
+    "stroke",
+    "label"
+  ],
+  "date": "2026-11-19",
+  "notes": [
+    {
+      "code": "drawSVG: 0 → '100%'",
+      "text": {
+        "zh-TW": "DrawSVG 控制線條「畫出來多少」。0 是還沒畫，100% 是整條畫完；也可以寫 '20% 80%' 只顯示中間一段。",
+        "en": "DrawSVG controls how much of a stroke is drawn. 0 is nothing, 100% is the full line; '20% 80%' shows only the middle part."
+      }
+    },
+    {
+      "code": "fill → stroke",
+      "text": {
+        "zh-TW": "Phosphor 和多數圖示庫下載的 SVG 是「外框填色」，沒有線條可以描。要做描邊動畫，得用線條（stroke）版本：Figma 裡可以取消 Outline stroke 再匯出，或像這裡照原尺寸改寫成 circle 和 path。",
+        "en": "SVGs downloaded from Phosphor and most icon sets are filled outlines with no stroke to draw. For a drawing animation you need the stroke version: turn off Outline stroke in Figma before exporting, or rewrite it as circle and path at the original size like here."
+      }
+    },
+    {
+      "code": "rotate(-90 128 128)",
+      "text": {
+        "zh-TW": "圓的描邊預設從 3 點鐘方向開始。轉 -90° 就會從正上方（12 點鐘）開始畫，看起來比較自然。",
+        "en": "A circle’s stroke starts at 3 o’clock by default. Rotating it -90° starts the drawing at 12 o’clock, which looks more natural."
+      }
+    },
+    {
+      "code": "r=\"6\" stroke-width=\"12\"",
+      "text": {
+        "zh-TW": "眼睛是實心圓點：用半徑 6、線寬 12 的線條畫一圈，線條剛好填滿整個圓，看起來就像「點」被畫出來。",
+        "en": "The eyes are solid dots: a circle with radius 6 and stroke width 12 fills itself completely, so it looks like a dot being drawn."
+      }
+    },
+    {
+      "code": "tl.play('left')",
+      "text": {
+        "zh-TW": "每一筆前面都放了 label（書籤）。點下方的步驟按鈕，就用 tl.play(label) 從那一步開始播：前面的筆畫會直接顯示成畫好，後面的會清空重畫。",
+        "en": "Every stroke has a label (bookmark) before it. Clicking a step calls tl.play(label): earlier strokes show as finished and later ones are cleared and redrawn."
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "title": {
+    "zh-TW": "卡片列表依序進場",
+    "en": "Card list staggered entrance"
+  },
+  "short": {
+    "zh-TW": "卡片依序進場",
+    "en": "Staggered cards"
+  },
+  "summary": {
+    "zh-TW": "6 張卡片依序浮現。每張卡片上寫著自己的延遲時間，底部的時間條顯示播放進度，一眼就看得出 stagger 在做什麼。",
+    "en": "Six cards fade up one after another. Each card shows its own delay and the bar at the bottom shows playback progress, so you can see exactly what stagger does."
+  },
+  "topic": "transitions",
+  "tech": "Stagger",
+  "tags": [
+    "gsap.from",
+    "stagger",
+    "expo.out"
+  ],
+  "date": "2026-11-19",
+  "notes": [
+    {
+      "code": "gsap.from()",
+      "text": {
+        "zh-TW": "從「指定的狀態」動畫回到元素原本的樣子。適合進場：寫出「從哪裡來」就好。",
+        "en": "Animates from the state you specify back to the element’s natural state. Perfect for entrances: just describe where it comes from."
+      }
+    },
+    {
+      "code": "STAGGER = 0.08",
+      "text": {
+        "zh-TW": "每張卡片之間差 0.08 秒。改成 0.3 會像一張一張排隊；改成 0 就是全部同時出現。展開下方程式碼的 JS 分頁，就可以直接改改看。",
+        "en": "Each card starts 0.08s after the previous one. Try 0.3 and they queue up one by one; 0 makes them all appear at once. Open the JS tab below to edit it live."
+      }
+    },
+    {
+      "code": "y: 48, opacity: 0",
+      "text": {
+        "zh-TW": "起點：往下 48px、透明。位移太大會顯得拖沓，40～60px 比較俐落。",
+        "en": "Start point: 48px lower and transparent. Too much travel feels sluggish — 40–60px stays crisp."
+      }
+    },
+    {
+      "code": "ease: 'expo.out'",
+      "text": {
+        "zh-TW": "一開始很快、最後慢慢停下，是本站統一的動態節奏。時間條用 none（等速），才看得出真實的時間長度。",
+        "en": "Fast at first, then settles slowly — the house motion rhythm of this site. The progress bar uses none (linear) so you see the real duration."
+      }
+    }
+  ]
+}

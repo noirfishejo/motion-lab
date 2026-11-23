@@ -1,0 +1,64 @@
+{
+  "title": {
+    "zh-TW": "捲動時 Logo 飛進頁首",
+    "en": "Logo flies into the header on scroll"
+  },
+  "short": {
+    "zh-TW": "Logo 飛進頁首",
+    "en": "Logo to header"
+  },
+  "summary": {
+    "zh-TW": "首頁開場的簡化教學版：往下捲時，標題字母往上移出，方塊轉半圈飛進頁首，接著頁首文字逐字出現。在預覽畫面裡捲動就能看到。",
+    "en": "A simplified version of the home page intro: as you scroll, the title letters slide up, the square spins half a turn into the header, then the header text appears letter by letter. Scroll inside the preview to see it."
+  },
+  "topic": "scroll",
+  "tech": "ScrollTrigger",
+  "tags": [
+    "ScrollTrigger",
+    "scrub",
+    "markers"
+  ],
+  "date": "2026-11-19",
+  "markers": true,
+  "thumb": ".lockup",
+  "notes": [
+    {
+      "code": "scrub: 0.5",
+      "text": {
+        "zh-TW": "讓動畫進度跟著捲軸走：往下捲前進、往上捲倒放。數字是「跟手的延遲」，0.5 會有一點滑順的拖尾；true 是完全貼著捲動。",
+        "en": "Ties animation progress to the scrollbar: scroll down to play, up to reverse. The number is the catch-up delay — 0.5 adds a smooth trail; true sticks exactly to the scroll."
+      }
+    },
+    {
+      "code": "start: 'top top'",
+      "text": {
+        "zh-TW": "前面是「觸發元素的哪裡」，後面是「畫面的哪裡」。這裡是 hero 的頂端碰到畫面頂端時開始。",
+        "en": "The first word is the point on the trigger element, the second is the point on the screen. Here it starts when the top of the hero meets the top of the screen."
+      }
+    },
+    {
+      "code": "end: `+=${DISTANCE}`",
+      "text": {
+        "zh-TW": "從開始的位置再往下捲 300px 時結束。距離越長，同樣的動畫播得越慢。",
+        "en": "Ends after scrolling another 300px from the start. The longer the distance, the slower the same animation plays."
+      }
+    },
+    {
+      "code": "markers: SHOW_MARKERS",
+      "text": {
+        "zh-TW": "在畫面右側顯示 start／end 標記，方便確認觸發範圍。用預覽上方的 Markers 開關切換；上線前記得關掉。",
+        "en": "Shows start/end markers on the right so you can check the trigger range. Toggle them with the Markers switch above the preview — turn them off before shipping."
+      }
+    },
+    {
+      "code": {
+        "zh-TW": "反過來想",
+        "en": "Think backwards"
+      },
+      "text": {
+        "zh-TW": "方塊本來就放在頁首（終點），先用 gsap.set 把它放大、移到開場的位置（起點），捲動時再讓它回家。因為頁首固定在畫面上，方塊抵達後就不會跟著頁面往上跑。",
+        "en": "The square actually lives in the header (the end point). gsap.set first enlarges it and moves it to the intro position (the start), and scrolling brings it home. Because the header is fixed, the square stays put once it arrives."
+      }
+    }
+  ]
+}

@@ -6,6 +6,7 @@
 為了安全，只接受這台電腦自己（127.0.0.1）送來的請求，而且只能寫 works/ 底下既有練習的三個檔案。
 """
 import http.server, socketserver, os, re, sys
+import build_works  # 把各練習的 meta.json 合成 js/works-data.js
 
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 5173
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -13,6 +14,12 @@ os.chdir(ROOT)
 WRITABLE = re.compile(r'^/works/([0-9][A-Za-z0-9-]*)/(index\.html|style\.css|script\.js)$')
 
 class Handler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        # 要讀作品資料時：有 meta.json 改過就先重新合成（改完 meta.json 重新整理網頁就會看到）
+        if self.path.split('?')[0] == '/js/works-data.js' and build_works.needs_build():
+            build_works.build()
+        return super().do_GET()
+
     def end_headers(self):
         self.send_header('Cache-Control', 'no-store')
         super().end_headers()
@@ -43,6 +50,7 @@ def lan_ip():
     except OSError:
         return None
 
+build_works.build()  # 啟動時先合成一次
 socketserver.TCPServer.allow_reuse_address = True
 with socketserver.TCPServer(('', PORT), Handler) as httpd:
     print(f'Motion Lab 預覽：http://localhost:{PORT}　（關掉這個視窗就會停止）')

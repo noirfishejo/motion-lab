@@ -1,0 +1,55 @@
+{
+  "title": {
+    "zh-TW": "上傳進度環",
+    "en": "Upload progress ring"
+  },
+  "short": {
+    "zh-TW": "進度環",
+    "en": "Progress ring"
+  },
+  "summary": {
+    "zh-TW": "按 Upload：進度環和長條一起前進，速度忽快忽慢像真的網路；完成時百分比淡出，環變綠、打勾彈出來。",
+    "en": "Press Upload: the ring and bar advance together at an uneven, realistic pace; on completion the percentage fades, the ring turns green and a tick pops in."
+  },
+  "topic": "feedback",
+  "tech": "DrawSVG",
+  "tags": [
+    "DrawSVGPlugin",
+    "onUpdate",
+    "rotate(-90deg)"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "state = { p: 0 }",
+      "text": {
+        "zh-TW": "進度只存在一個數字裡，環、長條、百分比文字都在 onUpdate 裡依這個數字重畫，三者永遠同步。",
+        "en": "Progress lives in one number; the ring, bar and percentage all redraw from it in onUpdate, so they always agree."
+      }
+    },
+    {
+      "code": "drawSVG: `${p * 100}%`",
+      "text": {
+        "zh-TW": "用 DrawSVG 把圓圈畫出百分比那麼長。SVG 轉 -90°，進度才會從 12 點鐘方向開始。",
+        "en": "DrawSVG draws the circle to the percentage. The SVG is rotated -90° so progress starts at 12 o’clock."
+      }
+    },
+    {
+      "code": {
+        "zh-TW": "STEPS（不等速）",
+        "en": "STEPS (uneven pace)"
+      },
+      "text": {
+        "zh-TW": "假的上傳分好幾段、每段速度不同，看起來比一路等速更真實；真實情況是依伺服器回報的進度更新 p。",
+        "en": "The fake upload runs in uneven steps, which looks more real than a constant speed; in production, p follows the server’s reported progress."
+      }
+    },
+    {
+      "code": "classList.add('is-done')",
+      "text": {
+        "zh-TW": "完成時的綠色交給 CSS class，GSAP 只負責打勾彈出。顏色留在 CSS 裡，亮暗模式才會正確。",
+        "en": "The green completion colour is a CSS class; GSAP only pops the tick. Keeping colours in CSS keeps light and dark mode correct."
+      }
+    }
+  ]
+}

@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Motion Lab</title>
   <meta name="description" content="Motion Lab">
+  <!-- 分享預覽：貼網址到 LINE、Facebook、Slack 時顯示的標題、說明和圖片（圖片由 tools/og.html 產生） -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Motion Lab">
+  <meta property="og:title" content="Motion Lab · 介面動態練習庫">
+  <meta property="og:description" content="UIUX 設計師的 GSAP 介面動態練習庫：每個練習都能看預覽、改程式碼、一鍵複製。A GSAP UI motion practice library.">
+  <meta property="og:image" content="https://noirfishejo.github.io/motion-lab/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <!-- 有動態時，先把開場藏起來，等 GSAP 設好初始狀態再顯示（避免一載入就閃出方塊和文字） -->
   <!-- 保險：6 秒後還沒播完（例如 GSAP 載不到），就直接顯示 -->
   <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('intro'); setTimeout(() => document.documentElement.classList.remove('intro'), 6000); }</script>

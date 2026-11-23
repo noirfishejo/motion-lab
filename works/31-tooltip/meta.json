@@ -1,0 +1,58 @@
+{
+  "title": {
+    "zh-TW": "工具列提示框的延遲與暖機",
+    "en": "Toolbar tooltips with delay and warm-up"
+  },
+  "short": {
+    "zh-TW": "提示框 Tooltip",
+    "en": "Tooltip"
+  },
+  "summary": {
+    "zh-TW": "編輯器工具列：滑鼠停一下才出現說明（避免滑過就閃）；說明出現後移到旁邊的按鈕，提示框直接滑過去，不用再等。鍵盤移到按鈕上會立刻顯示。",
+    "en": "An editor toolbar: the hint appears only after a short pause so passing over doesn’t flash; once visible, moving to a neighbour slides it across instantly. Keyboard focus shows it right away."
+  },
+  "topic": "overlays",
+  "tech": "Tween",
+  "tags": [
+    "setTimeout",
+    "warm-up",
+    "aria-describedby"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "DELAY = 0.45",
+      "text": {
+        "zh-TW": "第一次要停 0.45 秒才出現。太短的話，只是滑過工具列也會一直閃出提示框。",
+        "en": "The first hint waits 0.45s. Any shorter and merely sweeping across the toolbar keeps flashing hints."
+      }
+    },
+    {
+      "code": {
+        "zh-TW": "WARM = 0.4（暖機）",
+        "en": "WARM = 0.4 (warm-up)"
+      },
+      "text": {
+        "zh-TW": "提示框剛消失的 0.4 秒內移到其他按鈕，會立刻顯示。使用者已經在「看說明」，不該每個都再等一次。",
+        "en": "Within 0.4s of a hint closing, the next one appears instantly. The user is already reading hints — don’t make them wait each time."
+      }
+    },
+    {
+      "code": {
+        "zh-TW": "只有一個提示框",
+        "en": "Only one tooltip"
+      },
+      "text": {
+        "zh-TW": "整頁只有一個提示框，移到別的按鈕就用 GSAP 滑過去，比每個按鈕各自淡入淡出更穩定、不閃。",
+        "en": "There is one tooltip for the page; moving between buttons slides it over with GSAP, steadier than each button fading its own."
+      }
+    },
+    {
+      "code": "aria-describedby",
+      "text": {
+        "zh-TW": "顯示時把按鈕和提示框連起來，讀屏軟體會在按鈕名稱後唸出說明和快捷鍵。",
+        "en": "While shown, the button points to the tooltip so screen readers read the hint and shortcut after the button name."
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "title": {
+    "zh-TW": "勾選框打勾的描邊動畫",
+    "en": "Checkbox with a drawn check"
+  },
+  "short": {
+    "zh-TW": "勾選框",
+    "en": "Checkbox"
+  },
+  "summary": {
+    "zh-TW": "待辦清單的勾選框：勾選時方塊填色彈一下、勾勾一筆畫出來、文字劃上刪除線；取消時快速收回。真正的 checkbox 還在，鍵盤和讀屏軟體都能用。",
+    "en": "A to-do checkbox: checking pops the fill, draws the tick in one stroke and strikes through the text; unchecking retracts quickly. The real checkbox is still there for keyboards and screen readers."
+  },
+  "topic": "forms",
+  "tech": "DrawSVG",
+  "tags": [
+    "DrawSVGPlugin",
+    "CSS 變數",
+    "sr-only"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "drawSVG: '0%' → '100%'",
+      "text": {
+        "zh-TW": "勾勾是 Phosphor 的 check 圖示，改成線條（stroke）版本才能用 DrawSVG 一筆畫出來。",
+        "en": "The tick is Phosphor’s check icon converted to a stroke so DrawSVG can draw it in one line."
+      }
+    },
+    {
+      "code": "'--strike': 0 → 1",
+      "text": {
+        "zh-TW": "GSAP 動不到 ::after 這種偽元素，所以刪除線的長度寫成 CSS 變數，動畫改變數就好。",
+        "en": "GSAP can’t reach pseudo-elements like ::after, so the strike length is a CSS variable and the animation changes the variable."
+      }
+    },
+    {
+      "code": "<input class=\"sr-only\">",
+      "text": {
+        "zh-TW": "真正的 checkbox 只是看不到，不是拿掉。點文字、按空白鍵、讀屏軟體都照常運作，畫面上的方塊只負責好看。",
+        "en": "The real checkbox is only visually hidden, not removed. Clicking the label, pressing Space and screen readers all still work; the drawn box is just the look."
+      }
+    },
+    {
+      "code": "ease: 'back.out(2.5)'",
+      "text": {
+        "zh-TW": "填色放大時稍微超過再回來，像按下去的回饋。取消時用 power2.in 快速收回，不需要儀式感。",
+        "en": "The fill overshoots slightly like a press; unchecking retracts quickly with power2.in — no ceremony needed."
+      }
+    }
+  ]
+}

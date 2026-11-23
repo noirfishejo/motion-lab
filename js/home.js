@@ -109,12 +109,21 @@ function fitThumb(thumb) {
   frame.style.transform = `translate(${tx}px, ${ty}px) scale(${k})`;
 }
 
+// 目前的配色（縮圖分深色／亮色兩張）
+// （寫成 function：檔案上面一載入就會呼叫 renderCards，function 才不會有「還沒定義」的問題）
+function thumbSrc(id) {
+  const theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+  return `works/${id}/thumb-${theme}.jpg`;
+}
+
 function renderCards() {
   const grid = document.getElementById('workGrid');
+  // 縮圖平常是靜態圖片（tools/make_thumbs.py 產生）；滑鼠移上去才載入真的練習播放
+  // → 首頁不用同時跑 30 幾個網頁，捲動和記憶體都輕很多
   grid.innerHTML = WORKS.map((w, i) => `
     <a class="work-card" href="work.html?id=${w.id}" data-topic="${w.topic}" data-search="${searchText(w, t(`topic.${w.topic}`)).replace(/"/g, '&quot;')}" aria-labelledby="card-${w.id}" aria-describedby="card-${w.id}-sum">
-      <div class="thumb"${w.thumb ? ` data-fit="${w.thumb}"` : ''}>
-        <iframe src="works/${w.id}/index.html" loading="lazy" tabindex="-1" aria-hidden="true" title=""></iframe>
+      <div class="thumb" data-id="${w.id}"${w.thumb ? ` data-fit="${w.thumb}"` : ''}>
+        <img class="thumb-img" src="${thumbSrc(w.id)}" alt="" width="1200" height="750" loading="${i < 4 ? 'eager' : 'lazy'}" decoding="async">
         <span class="thumb-go" aria-hidden="true"><i class="ph-light ph-arrow-up-right"></i></span>
       </div>
       <div class="work-meta">
@@ -125,38 +134,53 @@ function renderCards() {
       </div>
     </a>`).join('');
 
-  // 縮圖只播放畫面上看得到的：捲出畫面就暫停練習裡的 GSAP，捲回來再繼續（省電、捲動比較順）
-  const setPlaying = (thumb, on) => {
-    thumb.dataset.playing = on;
-    try {
-      const timeline = thumb.querySelector('iframe').contentWindow.gsap?.globalTimeline;
-      if (timeline) on ? timeline.resume() : timeline.pause();
-    } catch {}
-  };
-  const io = new IntersectionObserver(entries => entries.forEach(e => setPlaying(e.target, e.isIntersecting)), { rootMargin: '80px 0px' });
+  const thumbs = [...grid.querySelectorAll('.thumb')];
+  const ro = new ResizeObserver(entries => entries.forEach(({ target }) => target.querySelector('iframe') && fitThumb(target)));
 
-  // 縮圖統一構圖：找出作品的主要內容，縮放並置中到同一個安全框裡
-  const ro = new ResizeObserver(entries => entries.forEach(({ target }) => fitThumb(target)));
-  grid.querySelectorAll('.thumb').forEach(el => {
-    ro.observe(el);
-    io.observe(el);
-    const frame = el.querySelector('iframe');
+  // 放進真的練習（iframe）：載入完成、構圖算好之後才淡入，蓋在圖片上面
+  const goLive = thumb => {
+    if (thumb.querySelector('iframe')) return;
+    const frame = document.createElement('iframe');
+    frame.src = `works/${thumb.dataset.id}/index.html`;
+    frame.tabIndex = -1;
+    frame.title = '';
+    frame.setAttribute('aria-hidden', 'true');
+    thumb.insertBefore(frame, thumb.querySelector('.thumb-go'));
     frame.addEventListener('load', () => {
-      setPlaying(el, el.dataset.playing !== 'false'); // 載入（或滑鼠移入重播）時，套用目前是否在畫面上
-      fitThumb(el);
-      frame.contentDocument?.fonts?.ready.then(() => fitThumb(el)); // 字體載入後尺寸會變，再算一次
+      fitThumb(thumb);
+      frame.contentDocument?.fonts?.ready.then(() => fitThumb(thumb)); // 字體載入後尺寸會變，再算一次
+      thumb.classList.add('is-live');
     });
+    ro.observe(thumb);
+  };
+  // 移走：先淡出，再把 iframe 整個拿掉（釋放記憶體）
+  const goStill = thumb => {
+    const frame = thumb.querySelector('iframe');
+    if (!frame || thumb.dataset.noImage) return;
+    thumb.classList.remove('is-live');
+    ro.unobserve(thumb);
+    setTimeout(() => { if (!thumb.classList.contains('is-live')) frame.remove(); }, 350);
+  };
+
+  thumbs.forEach(thumb => {
+    // 還沒有縮圖（例如剛新增、還沒跑 make_thumbs.py）：直接用真的練習當縮圖
+    thumb.querySelector('.thumb-img').addEventListener('error', () => { thumb.dataset.noImage = '1'; goLive(thumb); }, { once: true });
   });
 
-  // 滑鼠移入時重播縮圖裡的動畫
-  grid.querySelectorAll('.work-card').forEach(card => {
-    let last = 0;
-    card.addEventListener('mouseenter', () => {
-      if (Date.now() - last < 1500) return;
-      last = Date.now();
-      try { card.querySelector('iframe').contentWindow.location.reload(); } catch {}
+  // 只有滑鼠（可以「停在上面」）的裝置才在滑過時播放；停 0.15 秒才開始，滑過去不會一直載入
+  if (matchMedia('(hover: hover)').matches) {
+    grid.querySelectorAll('.work-card').forEach(card => {
+      const thumb = card.querySelector('.thumb');
+      let timer;
+      card.addEventListener('pointerenter', () => { timer = setTimeout(() => goLive(thumb), 150); });
+      card.addEventListener('pointerleave', () => { clearTimeout(timer); goStill(thumb); });
     });
-  });
+  }
+
+  // 切換深淺色：圖片換成另一張
+  document.addEventListener('themechange', () => grid.querySelectorAll('.thumb-img').forEach(img => {
+    img.src = thumbSrc(img.closest('.thumb').dataset.id);
+  }));
 }
 
 // ── 篩選：舊卡片淡出 → 換成新的一組 → 新卡片依序進場 ─────

@@ -1,0 +1,61 @@
+{
+  "title": {
+    "zh-TW": "捲動時的圖片視差",
+    "en": "Image parallax on scroll"
+  },
+  "short": {
+    "zh-TW": "圖片視差",
+    "en": "Parallax"
+  },
+  "summary": {
+    "zh-TW": "圖片框固定、框裡的畫面移動得比頁面慢，旁邊的文字移動得比頁面快，三種速度疊出前後的距離感。往回捲時方向相反。",
+    "en": "The image frame stays put while the picture inside drifts slower than the page and the text beside it moves faster — three speeds that create depth. Scrolling back reverses it."
+  },
+  "topic": "scroll",
+  "tech": "ScrollTrigger",
+  "tags": [
+    "yPercent",
+    "data-speed",
+    "scrub"
+  ],
+  "date": "2026-11-23",
+  "markers": true,
+  "thumb": ".intro, .feature:first-of-type",
+  "notes": [
+    {
+      "code": "overflow: hidden + height: 140%",
+      "text": {
+        "zh-TW": "圖片框裁掉超出的部分，框裡的畫面比框高 40%（上下各多 20%）。畫面在框裡上下移動，才不會露出空白。",
+        "en": "The frame clips overflow, and the picture inside is 40% taller (20% extra top and bottom), so it can move without revealing gaps."
+      }
+    },
+    {
+      "code": "data-speed=\"0.2\"",
+      "text": {
+        "zh-TW": "正數：移動得比頁面慢，感覺在遠處；負數：比頁面快，感覺在近處。速度寫在 HTML 上，改數字就能調，不用改程式。",
+        "en": "Positive values move slower than the page and feel far away; negative values move faster and feel close. Speeds live in the HTML, so tweaking needs no code."
+      }
+    },
+    {
+      "code": "start: 'top bottom', end: 'bottom top'",
+      "text": {
+        "zh-TW": "從元素剛出現在畫面底部，到完全離開畫面頂部，這整段捲動都在移動。視差才會連續，不會突然開始或停止。",
+        "en": "Movement spans from the moment the element enters at the bottom to when it leaves at the top, so the parallax never starts or stops abruptly."
+      }
+    },
+    {
+      "code": "ease: 'none'",
+      "text": {
+        "zh-TW": "視差一定要等速：捲多少就移多少。用 expo 之類的 ease，捲動和畫面移動會對不上，看起來像卡頓。",
+        "en": "Parallax must be linear — move exactly as much as you scroll. An ease like expo makes scrolling and movement drift apart and feel janky."
+      }
+    },
+    {
+      "code": "clamp(-14, 14, …)",
+      "text": {
+        "zh-TW": "視差強度要節制，10～20% 就夠，太大會讓人頭暈。這裡把畫面的移動限制在框能容納的範圍內。",
+        "en": "Keep parallax subtle — 10–20% is plenty; more can make people feel seasick. The picture’s travel is clamped to what the frame can hold."
+      }
+    }
+  ]
+}

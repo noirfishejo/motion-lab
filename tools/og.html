@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <title>Share image</title>
+  <!-- 分享預覽圖（貼網址到 LINE、Facebook、Slack 時顯示的圖片）
+       用 Chrome 截成 1200×630 的 og.png（見 tools/make_og.sh），網站本身不會用到這一頁 -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter+Tight:wght@400&family=JetBrains+Mono&family=Noto+Sans+TC:wght@400&display=swap">
+  <style>
+    html, body { margin: 0; }
+    body {
+      width: 1200px; height: 630px; box-sizing: border-box; padding: 72px 80px;
+      display: grid; grid-template-rows: auto 1fr auto;
+      background: #0B0D10; color: #F0F0F0; -webkit-font-smoothing: antialiased;
+      font-family: "Inter Tight", "Noto Sans TC", sans-serif;
+    }
+    .top { display: flex; justify-content: space-between; font: 400 18px/1 "JetBrains Mono", monospace; color: #6E83FF; letter-spacing: .04em; }
+    .lockup { align-self: center; display: flex; align-items: center; gap: .2em; font: 600 168px/.95 "Poppins", sans-serif; letter-spacing: -.045em; }
+    .square { width: .62em; height: .62em; background: #1733E5; flex: none; }
+    .sub { font-size: 30px; color: #8F8C85; display: flex; gap: 16px; align-items: center; }
+    .sub i { width: 8px; height: 8px; background: #3B3E44; display: inline-block; }
+  </style>
+</head>
+<body>
+  <div class="top"><span>GSAP · 32 PRACTICES</span><span>ZH / EN</span></div>
+  <div class="lockup"><span class="square"></span>Motion Lab</div>
+  <div class="sub"><span>介面動態練習庫</span><i></i><span>UI motion practice library</span></div>
+</body>
+</html>

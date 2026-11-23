@@ -1,0 +1,59 @@
+{
+  "title": {
+    "zh-TW": "可拖曳的底部抽屜",
+    "en": "Draggable bottom sheet"
+  },
+  "short": {
+    "zh-TW": "拖曳底部抽屜",
+    "en": "Bottom sheet"
+  },
+  "summary": {
+    "zh-TW": "手機常見的底部抽屜：上下拖曳，放開後依照甩動的速度繼續滑，最後吸附到「全開／半開／收合」三個位置之一。",
+    "en": "A mobile-style bottom sheet: drag it up or down, release and it keeps gliding with your flick speed, then snaps to open, half or collapsed."
+  },
+  "topic": "overlays",
+  "tech": "Draggable",
+  "tags": [
+    "Draggable",
+    "InertiaPlugin",
+    "snap"
+  ],
+  "date": "2026-11-19",
+  "notes": [
+    {
+      "code": "Draggable.create(sheet, { type: 'y' })",
+      "text": {
+        "zh-TW": "讓元素可以被拖曳。type 決定方向：'x'、'y'、'x,y'，或 'rotation'（旋轉旋鈕）。",
+        "en": "Makes an element draggable. type sets the direction: 'x', 'y', 'x,y', or 'rotation' for knobs."
+      }
+    },
+    {
+      "code": "bounds: { minY, maxY }",
+      "text": {
+        "zh-TW": "限制拖曳範圍。也可以直接給一個元素，例如 bounds: '.phone'，就不會拖出那個框。",
+        "en": "Limits how far it can be dragged. You can also pass an element, e.g. bounds: '.phone', to keep it inside that box."
+      }
+    },
+    {
+      "code": "inertia: true",
+      "text": {
+        "zh-TW": "放開後依照甩動的速度繼續滑一段再停下，手感更像原生 App。需要另外載入 InertiaPlugin。",
+        "en": "After release it keeps sliding with the flick velocity before stopping — feels like a native app. Requires InertiaPlugin."
+      }
+    },
+    {
+      "code": "snap: gsap.utils.snap(points)",
+      "text": {
+        "zh-TW": "慣性滑動最後會停在最接近的吸附點。改 PEEK 和 HALF 就能調整三個位置。",
+        "en": "The inertia glide ends on the nearest snap point. Change PEEK and HALF to adjust the three positions."
+      }
+    },
+    {
+      "code": "edgeResistance: 0.85",
+      "text": {
+        "zh-TW": "拖超過範圍時的阻力，0 是完全不擋，1 是完全拉不動。0.8 左右最像 iOS 的「橡皮筋」手感。",
+        "en": "Resistance when dragging past the limits: 0 is none, 1 won’t move at all. Around 0.8 feels like iOS rubber-banding."
+      }
+    }
+  ]
+}

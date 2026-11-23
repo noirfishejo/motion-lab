@@ -1,0 +1,72 @@
+{
+  "title": {
+    "zh-TW": "骨架屏載入與換上內容",
+    "en": "Skeleton loading to real content"
+  },
+  "short": {
+    "zh-TW": "骨架屏",
+    "en": "Skeleton"
+  },
+  "summary": {
+    "zh-TW": "資料還沒回來時先顯示和內容同形狀的灰色骨架，一道光從左上斜斜掃到右下；資料回來後骨架淡出，圖片、標題、內文依序浮現。按預覽上方的「重播」可以再看一次。",
+    "en": "While data loads, grey skeletons shaped like the content catch one diagonal sweep of light from top left to bottom right; when it arrives they fade out and the image, title and text rise in order. Use Replay above the preview to watch again."
+  },
+  "topic": "feedback",
+  "tech": "Timeline",
+  "tags": [
+    "repeat: -1",
+    "background-attachment",
+    "aria-busy"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": {
+        "zh-TW": "骨架和內容疊在一起",
+        "en": "Skeleton and content overlap"
+      },
+      "text": {
+        "zh-TW": "骨架的形狀、大小和真實內容一樣，兩者放在同一個格子裡疊著。換上內容時卡片高度不變，版面不會跳動。",
+        "en": "The skeleton matches the real content’s shape and size and sits in the same grid cell, so swapping doesn’t change the card’s height or shift the layout."
+      }
+    },
+    {
+      "code": "background-attachment: fixed",
+      "text": {
+        "zh-TW": "每一塊骨架的光澤都用「以畫面為基準」的同一張斜向漸層，再用 GSAP 移動 backgroundPosition。看起來是同一道光從左上掃到右下，經過哪塊就亮哪塊。",
+        "en": "Every bone uses the same diagonal gradient anchored to the viewport, and GSAP moves its backgroundPosition. It reads as one beam sweeping from top left to bottom right, lighting each bone it passes."
+      }
+    },
+    {
+      "code": "SWEEP - shimmer.time()",
+      "text": {
+        "zh-TW": "資料回來時如果光正掃到一半，先等它掃完這一趟再換上內容，光不會停在中間突然消失。",
+        "en": "If data arrives mid-sweep, it waits for the beam to finish its pass before swapping content, so the light never cuts out halfway."
+      }
+    },
+    {
+      "code": "shimmer.kill()",
+      "text": {
+        "zh-TW": "無限重複的動畫一定要在內容出現後停掉，不然看不到的骨架還會在背景一直跑。",
+        "en": "Always kill an infinitely repeating animation once content appears, or hidden skeletons keep animating in the background."
+      }
+    },
+    {
+      "code": "aria-busy='true' → 'false'",
+      "text": {
+        "zh-TW": "載入中告訴讀屏軟體「還在忙」，骨架本身加 aria-hidden 不會被唸出來；載入完才唸真實內容。",
+        "en": "aria-busy tells screen readers the area is loading, and the skeleton is aria-hidden; the real content is read once it arrives."
+      }
+    },
+    {
+      "code": {
+        "zh-TW": "reduce → 不掃光",
+        "en": "reduce → no shimmer"
+      },
+      "text": {
+        "zh-TW": "開啟「減少動態」時骨架保持靜止，內容直接換上。骨架本身已經表達「載入中」，光澤只是加分。",
+        "en": "With reduced motion the skeleton stays still and content swaps in directly. The skeleton already says “loading”; the shimmer is a bonus."
+      }
+    }
+  ]
+}

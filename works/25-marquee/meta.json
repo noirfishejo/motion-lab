@@ -1,0 +1,55 @@
+{
+  "title": {
+    "zh-TW": "無限輪播的文字跑馬燈",
+    "en": "Infinite text marquee"
+  },
+  "short": {
+    "zh-TW": "跑馬燈",
+    "en": "Marquee"
+  },
+  "summary": {
+    "zh-TW": "兩排大字一左一右無限輪播，第二排是空心字。滑鼠移上去會慢慢減速，移開再加速回來。",
+    "en": "Two rows of big type loop forever in opposite directions, the second in outline. Hovering eases it down to a crawl and moving away speeds it back up."
+  },
+  "topic": "graphics",
+  "tech": "Tween",
+  "tags": [
+    "repeat: -1",
+    "timeScale",
+    "width: max-content"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": {
+        "zh-TW": "內容複製兩份",
+        "en": "Two copies of the content"
+      },
+      "text": {
+        "zh-TW": "一排放兩份一模一樣的內容。第一份剛好跑出畫面時，第二份正好接在原位，從頭重來也看不出接縫。",
+        "en": "Each row holds two identical copies. When the first has fully scrolled out, the second sits exactly where it started, so the restart is seamless."
+      }
+    },
+    {
+      "code": "x: 0 → -width, repeat: -1",
+      "text": {
+        "zh-TW": "移動的距離剛好是「一份內容的寬度」，ease 用 none 等速，repeat: -1 無限重複。",
+        "en": "It moves exactly one copy’s width, linearly (ease: none), repeating forever (repeat: -1)."
+      }
+    },
+    {
+      "code": "gsap.to(loop, { timeScale: 0.2 })",
+      "text": {
+        "zh-TW": "timeScale 是動畫的播放速度。不直接暫停，而是用另一個補間慢慢把速度降下來，感覺像踩剎車。",
+        "en": "timeScale is the playback speed. Instead of pausing, another tween eases it down — like braking rather than stopping dead."
+      }
+    },
+    {
+      "code": "duration = width / SPEED",
+      "text": {
+        "zh-TW": "時間用「寬度 ÷ 速度」算，內容長短不同的兩排，看起來的移動速度才會一樣。",
+        "en": "Duration is width ÷ speed, so rows with different lengths move at the same visual speed."
+      }
+    }
+  ]
+}

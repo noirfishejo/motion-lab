@@ -26,7 +26,7 @@
 | 圖示 | Phosphor Icons・Light |
 | 動態節奏 | expo 快出：GSAP 用 `expo.out`，CSS 用 `cubic-bezier(.16,1,.3,1)` |
 
-所有數值都定義在 `css/tokens.css`，元件裡不寫死數值。
+所有數值都定義在 `css/tokens.css`，元件裡不寫死數值。完整的設計規範（顏色、字體、按鈕狀態、動態規則）見 **DESIGN.md**，改設計時兩邊一起更新。
 
 ## 參考網站
 - 滾動敘事、3D 文字空間：https://santalarch.com/#works （用 ScrollTrigger＋CSS 做近似效果，不用 WebGL）
@@ -52,7 +52,9 @@
 - 作品頁側欄有搜尋，比對中英文名稱、分類、tech、tags。
 
 ## 新增作品
-請照 `新增作品.md` 的步驟：複製 `works/_template`，再在 `js/works.js` 加一筆資料。
+請照 `新增作品.md` 的步驟：複製 `works/_template`，填該資料夾的 `meta.json`（serve.py 會自動合成 `js/works-data.js`，不要直接改它），再執行 `python3 tools/make_thumbs.py <練習>` 產生首頁縮圖。
+
+首頁縮圖是靜態圖片（每個練習 `thumb-dark.jpg`／`thumb-light.jpg`），滑鼠停在卡片上才載入真的練習。分享預覽圖是根目錄的 `og.png`（由 `tools/og.html` 截圖）。
 
 ## 版本管理
 - 使用 git，每個改版主題開一個分支。

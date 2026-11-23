@@ -1,0 +1,59 @@
+{
+  "title": {
+    "zh-TW": "堆疊式 Toast 通知",
+    "en": "Stacking toast notifications"
+  },
+  "short": {
+    "zh-TW": "Toast 通知",
+    "en": "Toast"
+  },
+  "summary": {
+    "zh-TW": "從右下角滑入的通知：新的會把舊的往上推，底部的細線顯示剩餘時間，時間到自動消失；滑鼠移上去會暫停。最多同時顯示三則。",
+    "en": "Notifications that slide in at the bottom right: new ones push older ones up, a thin line shows the time left, and they leave on their own — hovering pauses them. Up to three at once."
+  },
+  "topic": "feedback",
+  "tech": "Timeline",
+  "tags": [
+    "gsap.timeline",
+    "height: 0",
+    "pause / resume"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "from(wrap, { height: 0 })",
+      "text": {
+        "zh-TW": "通知外面多包一層，只動這層的高度。新通知撐開時，上面的通知會平順地被推上去，不會突然跳動。",
+        "en": "Each toast has an outer wrapper whose height animates. As a new one opens up, the ones above are pushed smoothly instead of jumping."
+      }
+    },
+    {
+      "code": "timer.pause() / resume()",
+      "text": {
+        "zh-TW": "倒數本身就是一段 tween（細線從滿縮到 0），onComplete 時收掉通知。滑鼠移上去或鍵盤焦點在裡面時暫停，讓人有時間看完。",
+        "en": "The countdown is itself a tween (the line shrinks to 0) that dismisses the toast on complete. It pauses on hover or keyboard focus so people have time to read."
+      }
+    },
+    {
+      "code": "x: 48 → height: 0",
+      "text": {
+        "zh-TW": "離場分兩步：先往右滑出淡出，再把高度收成 0。如果直接移除元素，下面的通知會瞬間跳上來。",
+        "en": "Leaving takes two steps: slide out and fade to the right, then collapse the height to 0. Removing the element directly would make the others jump."
+      }
+    },
+    {
+      "code": "MAX = 3",
+      "text": {
+        "zh-TW": "同時太多通知會蓋住畫面。超過上限就先收掉最舊的一則。",
+        "en": "Too many toasts at once cover the page. Over the limit, the oldest one is dismissed first."
+      }
+    },
+    {
+      "code": "role=\"status\" aria-live=\"polite\"",
+      "text": {
+        "zh-TW": "讀屏軟體會在使用者停下來時唸出新通知，不會打斷正在唸的內容。錯誤要立刻提醒的話可以改用 role=\"alert\"。",
+        "en": "Screen readers announce new toasts when the user pauses, without interrupting. For errors that need immediate attention, use role=\"alert\" instead."
+      }
+    }
+  ]
+}

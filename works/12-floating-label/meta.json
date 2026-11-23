@@ -1,0 +1,59 @@
+{
+  "title": {
+    "zh-TW": "浮動標籤輸入框",
+    "en": "Floating label input"
+  },
+  "short": {
+    "zh-TW": "浮動標籤",
+    "en": "Floating label"
+  },
+  "summary": {
+    "zh-TW": "標籤一開始躺在輸入框裡，點進去或有內容時縮小浮到上方，底線從左邊畫出來。Email 格式不對時，欄位會輕輕搖一下並顯示錯誤。",
+    "en": "The label starts inside the field and floats up, shrinking, when you focus or type; an underline draws in from the left. An invalid email gives the field a small shake and shows an error."
+  },
+  "topic": "forms",
+  "tech": "Tween",
+  "tags": [
+    "gsap.to",
+    "focus / blur",
+    "keyframes"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "isUp = focused || value !== ''",
+      "text": {
+        "zh-TW": "標籤浮起的條件只有兩個：正在輸入，或已經有內容。離開欄位但有填字時，標籤要留在上方，不然會蓋住文字。",
+        "en": "The label floats for only two reasons: the field is focused, or it has a value. If you leave a filled field the label must stay up, or it would cover the text."
+      }
+    },
+    {
+      "code": "y: LIFT, scale: SCALE",
+      "text": {
+        "zh-TW": "只用位移和縮放（transform），不改 top 或 font-size，動畫才順。transformOrigin 設在左邊，縮小時才會貼齊輸入框的左緣。",
+        "en": "Only translate and scale (transforms), never top or font-size, so it stays smooth. transformOrigin sits on the left so the shrunken label stays aligned to the field’s left edge."
+      }
+    },
+    {
+      "code": "transformOrigin: focused ? '0%' : '100%'",
+      "text": {
+        "zh-TW": "底線進場從左邊畫出來，離場往右收掉，方向一致看起來比較順。",
+        "en": "The underline draws in from the left and exits to the right, so the motion reads in one direction."
+      }
+    },
+    {
+      "code": "addEventListener('input', update)",
+      "text": {
+        "zh-TW": "除了 focus／blur，也聽 input 事件：瀏覽器自動填入帳號密碼時不會觸發 focus，沒聽 input 標籤就會和文字疊在一起。",
+        "en": "Besides focus/blur it listens to input: browser autofill doesn’t fire focus, and without input the label would overlap the filled text."
+      }
+    },
+    {
+      "code": "keyframes: { x: [-6, 6, -4, 4, 0] }",
+      "text": {
+        "zh-TW": "錯誤時左右搖晃，幅度越來越小。搖晃要短（0.4 秒）而且小（6px 以內），太大會像在責備使用者。",
+        "en": "A shake that gets smaller each time. Keep it short (0.4s) and small (within 6px) — bigger feels like scolding the user."
+      }
+    }
+  ]
+}

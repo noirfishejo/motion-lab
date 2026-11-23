@@ -1,0 +1,52 @@
+{
+  "title": {
+    "zh-TW": "下拉選單與滑動高亮",
+    "en": "Dropdown with a sliding highlight"
+  },
+  "short": {
+    "zh-TW": "下拉選單",
+    "en": "Dropdown"
+  },
+  "summary": {
+    "zh-TW": "點「Sort by」展開選單，滑鼠移過選項時，同一塊高亮底色跟著滑過去。方向鍵、Enter、Esc 都能操作，點外面會關閉。",
+    "en": "Click “Sort by” to open the list; as the cursor moves over options, a single highlight slides along. Arrow keys, Enter and Esc work, and clicking outside closes it."
+  },
+  "topic": "overlays",
+  "tech": "quickTo",
+  "tags": [
+    "gsap.quickTo",
+    "role=\"listbox\"",
+    "transform-origin"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "gsap.quickTo(highlight, 'y')",
+      "text": {
+        "zh-TW": "整個清單只有一塊高亮底色。移到哪個選項就把它的 y 丟給 quickTo，連續移動時會很順地跟過去。",
+        "en": "The list has a single highlight. Each option hovered sends its y to quickTo, so the highlight glides smoothly as you move."
+      }
+    },
+    {
+      "code": "moveY(y, y)",
+      "text": {
+        "zh-TW": "quickTo 的第二個值是「起點」。打開選單時起點和終點都設成目前選的那項，高亮直接出現在那裡，不會從頂端滑下來。",
+        "en": "quickTo’s second value is the start. On open, start and end are the current choice, so the highlight appears there instead of sliding from the top."
+      }
+    },
+    {
+      "code": "scaleY: 0.96 → 1",
+      "text": {
+        "zh-TW": "展開時從稍微壓扁的狀態長出來，transform-origin 設在上方，看起來像從按鈕底下拉出來。",
+        "en": "It opens from slightly squashed with transform-origin at the top, as if pulled out from under the button."
+      }
+    },
+    {
+      "code": "aria-activedescendant",
+      "text": {
+        "zh-TW": "焦點留在清單上，用 aria-activedescendant 告訴讀屏軟體目前停在哪個選項，方向鍵移動時才唸得出來。",
+        "en": "Focus stays on the list and aria-activedescendant tells screen readers which option is active, so arrow keys are announced."
+      }
+    }
+  ]
+}

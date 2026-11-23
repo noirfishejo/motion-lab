@@ -1,0 +1,55 @@
+{
+  "title": {
+    "zh-TW": "跟著滑鼠傾斜的 3D 卡片",
+    "en": "3D card that tilts with the cursor"
+  },
+  "short": {
+    "zh-TW": "3D 傾斜卡片",
+    "en": "3D tilt card"
+  },
+  "summary": {
+    "zh-TW": "滑鼠在卡片上移動時，卡片朝游標的方向傾斜，表面的反光跟著移動，標題和卡號浮在卡片前面一點。離開後慢慢回正。",
+    "en": "As the cursor moves over the card it tilts toward it, a glare drifts across the surface, and the title and number float slightly in front. It settles back when you leave."
+  },
+  "topic": "graphics",
+  "tech": "quickTo",
+  "tags": [
+    "rotationX / rotationY",
+    "perspective",
+    "translateZ"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "perspective: 900px",
+      "text": {
+        "zh-TW": "外層設定透視距離，裡面的卡片轉動時才有立體感。數字越小越誇張，像把卡片貼近眼睛看。",
+        "en": "Perspective on the outer element gives the rotating card depth. Smaller values exaggerate it, as if the card were closer to your eye."
+      }
+    },
+    {
+      "code": {
+        "zh-TW": "px = 位置 ÷ 寬度 − 0.5",
+        "en": "px = position ÷ width − 0.5"
+      },
+      "text": {
+        "zh-TW": "把滑鼠在卡片上的位置換算成 -0.5～0.5，中間是 0，再乘上最大角度。左右移動繞 Y 軸轉，上下移動繞 X 軸轉。",
+        "en": "The cursor position becomes -0.5 to 0.5 (centre is 0), times the max angle. Horizontal movement rotates around Y, vertical around X."
+      }
+    },
+    {
+      "code": "translateZ(40px)",
+      "text": {
+        "zh-TW": "標題往前浮 40px、卡號 24px，轉動時會和卡片表面分開，產生前後層次。外層要加 transform-style: preserve-3d。",
+        "en": "The title floats 40px forward and the number 24px, separating from the surface as it rotates. The card needs transform-style: preserve-3d."
+      }
+    },
+    {
+      "code": "(hover: hover)",
+      "text": {
+        "zh-TW": "只在有滑鼠的裝置啟用。手機沒有「游標停在卡片上」這件事，硬做會很奇怪。",
+        "en": "Only enabled with a mouse. Phones have no “cursor over the card”, so forcing it feels odd."
+      }
+    }
+  ]
+}

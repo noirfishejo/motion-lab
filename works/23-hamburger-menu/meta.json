@@ -1,0 +1,60 @@
+{
+  "title": {
+    "zh-TW": "漢堡選單變 × 與全螢幕選單",
+    "en": "Hamburger to × with fullscreen menu"
+  },
+  "short": {
+    "zh-TW": "漢堡選單",
+    "en": "Hamburger menu"
+  },
+  "summary": {
+    "zh-TW": "按漢堡按鈕：三條線變成 ×，藍色選單從上往下展開，選項一個一個從遮罩下方升起。關閉時把同一條時間軸倒著播，Esc 也能關。",
+    "en": "Press the hamburger: three lines become ×, a blue menu unfolds from the top and items rise one by one from a mask. Closing plays the same timeline in reverse; Esc works too."
+  },
+  "topic": "overlays",
+  "tech": "Timeline",
+  "tags": [
+    "tl.reverse()",
+    "clip-path",
+    "aria-expanded"
+  ],
+  "date": "2026-11-23",
+  "thumb": ".page",
+  "notes": [
+    {
+      "code": "tl.play() / tl.reverse()",
+      "text": {
+        "zh-TW": "打開和關閉用同一條時間軸：打開正著播、關閉倒著播。只要寫一次動畫，兩個方向都會對。",
+        "en": "One timeline for both directions: play to open, reverse to close. Write the animation once and both directions match."
+      }
+    },
+    {
+      "code": "timeScale(CLOSE_SPEED)",
+      "text": {
+        "zh-TW": "倒著播時加快 1.6 倍：關閉比打開快，使用者想離開時不用等。",
+        "en": "Reverse at 1.6× speed: closing is faster than opening, so leaving never feels slow."
+      }
+    },
+    {
+      "code": "rotation: 45 + y: 7",
+      "text": {
+        "zh-TW": "上下兩條線先移到中間再各轉 45°，中間那條縮掉，就變成 ×。三條線的間距決定 y 要移多少。",
+        "en": "The top and bottom lines move to the middle and rotate 45°, while the middle one shrinks away — that’s the ×. The line spacing decides how far y moves."
+      }
+    },
+    {
+      "code": "clipPath: 'inset(0% 0% 100% 0%)'",
+      "text": {
+        "zh-TW": "選單用 clip-path 從上面一條線展開成整個畫面，內容本身不會被壓扁或變形。",
+        "en": "The menu unfolds from a line at the top with clip-path, so its content never squashes or stretches."
+      }
+    },
+    {
+      "code": "onReverseComplete → hidden",
+      "text": {
+        "zh-TW": "倒著播完才把選單藏起來（hidden），讀屏軟體和 Tab 鍵才不會跑進看不到的選單。",
+        "en": "The menu is hidden only after reversing completes, so screen readers and Tab never land in an invisible menu."
+      }
+    }
+  ]
+}

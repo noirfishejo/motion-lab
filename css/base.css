@@ -49,11 +49,17 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
   display:grid;place-items:center;width:32px;height:32px;margin-left:-7px; /* 圖示本身對齊 gutter：(32 − 18) ÷ 2 = 7 */
   color:var(--muted);font-size:18px;transition:color var(--dur-fast),background-color var(--dur-fast);
 }
-.icon-toggle:hover{color:var(--text);background:var(--surface)}
+.icon-toggle:hover{color:var(--text);background:var(--surface-2)}
 .icon-toggle[aria-expanded="true"]{color:var(--text)}
 .lang-toggle{font:400 12px/1 var(--font-mono);letter-spacing:.04em}
 
-/* ── 按鈕 ── */
+/* ── 按鈕（狀態規則見 DESIGN.md「按鈕」）──
+   三種外觀，狀態變化統一：
+   · 實心（.btn-primary）　滑過：底色變亮 --accent-hover
+   · 外框（.btn-ghost／.btn-icon／.chip）　滑過：外框和文字變成 --text
+   · 無框（.icon-toggle／.search-clear）　滑過：出現 --surface-2 底色、文字變 --text
+   全部：按下縮成 0.97、鍵盤焦點是 2px --accent-fg 外框、停用是 40% 透明度且沒有滑過變化
+   不用位移（translateY）當滑過效果：按鈕會「跑走」，旁邊的東西看起來在抖 */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
   height:44px;padding:0 18px;border:1px solid transparent;border-radius:var(--radius);
@@ -62,11 +68,14 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 }
 .btn i{font-size:18px}
 .btn-primary{background:var(--accent);color:var(--accent-ink)}
-.btn-primary:hover{transform:translateY(-2px)}
+.btn-primary:hover{background:var(--accent-hover)}
 .btn-ghost{border-color:var(--line-strong);color:var(--text)}
 .btn-ghost:hover{border-color:var(--text)}
 .btn-icon{width:44px;padding:0;border-color:var(--line);background:var(--surface)}
-.btn-icon:hover{border-color:var(--accent-fg);color:var(--accent-fg)}
+.btn-icon:hover{border-color:var(--text);color:var(--text)}
+.btn:active,.chip:active,.search-clear:active{transform:scale(.97)}
+.btn:disabled,.btn:disabled:hover{opacity:.4;cursor:not-allowed;transform:none;border-color:var(--line-strong);background:transparent}
+.btn-primary:disabled,.btn-primary:disabled:hover{background:var(--accent);border-color:transparent}
 .btn-sm{height:36px;padding:0 12px;font-size:13px}
 .btn-sm.btn-icon{width:36px}
 /* 觸控裝置：小按鈕也要有 44px 的點擊範圍 */
@@ -127,9 +136,9 @@ html.has-cursor .CodeMirror,html.has-cursor .CodeMirror *{cursor:text!important}
 input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none;appearance:none;display:none}
 .search-clear{
   flex:none;display:grid;place-items:center;width:28px;height:28px;margin-right:-4px;
-  color:var(--muted);font-size:14px;transition:color var(--dur-fast),background-color var(--dur-fast);
+  color:var(--muted);font-size:14px;transition:color var(--dur-fast),background-color var(--dur-fast),transform var(--dur) var(--ease-out);
 }
-.search-clear:hover{color:var(--text);background:var(--surface)}
+.search-clear:hover{color:var(--text);background:var(--surface-2)}
 .search-clear:focus-visible{outline-offset:-2px}
 @media (pointer:coarse){.search-clear{width:var(--tap);height:var(--tap);margin-right:-10px}}
 
@@ -153,8 +162,8 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
 .empty-title{font:500 var(--fs-h3)/1.4 var(--font-display);color:var(--text);overflow-wrap:anywhere}
 .empty-hint{font-size:var(--fs-small);color:var(--muted)}
 .empty-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:8px}
-.chip{height:32px;padding:0 12px;border:1px solid var(--line-strong);font:400 12px/1 var(--font-mono);color:var(--text);transition:border-color var(--dur-fast),color var(--dur-fast)}
-.chip:hover{border-color:var(--accent-fg);color:var(--accent-fg)}
+.chip{height:32px;padding:0 12px;border:1px solid var(--line-strong);font:400 12px/1 var(--font-mono);color:var(--text);transition:border-color var(--dur-fast),color var(--dur-fast),transform var(--dur) var(--ease-out)}
+.chip:hover{border-color:var(--text);color:var(--text)}
 @media (pointer:coarse){.chip{height:var(--tap)}}
 .empty-state.is-compact{padding:24px var(--gutter);gap:10px}
 .empty-state.is-compact .empty-icon{width:44px;height:44px}

@@ -1,0 +1,59 @@
+{
+  "title": {
+    "zh-TW": "常見問題手風琴",
+    "en": "FAQ accordion"
+  },
+  "short": {
+    "zh-TW": "手風琴",
+    "en": "Accordion"
+  },
+  "summary": {
+    "zh-TW": "點問題展開答案、再點一次收合：高度從 0 長到內容的實際高度，「＋」轉成「－」，答案文字輕輕往下浮出。預設一次只開一個。",
+    "en": "Click a question to open its answer and again to close: the height grows from 0 to the real content height, “+” turns into “−”, and the answer text drifts in. One open at a time by default."
+  },
+  "topic": "overlays",
+  "tech": "Tween",
+  "tags": [
+    "height: 'auto'",
+    "aria-expanded",
+    "hidden"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "height: 'auto'",
+      "text": {
+        "zh-TW": "CSS 沒辦法從 0 過渡到 auto，但 GSAP 可以：它會先量出內容的實際高度再動畫過去。答案多長都不用自己算。",
+        "en": "CSS can’t transition from 0 to auto, but GSAP can: it measures the real content height first. Answers can be any length."
+      }
+    },
+    {
+      "code": "ONLY_ONE = true",
+      "text": {
+        "zh-TW": "一次只開一個，頁面比較不會忽長忽短。如果使用者常常需要比對兩個答案，改成 false 讓它們可以同時打開。",
+        "en": "One at a time keeps the page from growing and shrinking a lot. If people often compare answers, set it to false so several can be open."
+      }
+    },
+    {
+      "code": "answer.hidden = true",
+      "text": {
+        "zh-TW": "收合動畫播完後加上 hidden，讀屏軟體和 Tab 鍵才不會跑進看不到的答案裡。打開前先拿掉 hidden，才量得到高度。",
+        "en": "After closing, hidden is added so screen readers and the Tab key skip the invisible answer. It’s removed before opening so the height can be measured."
+      }
+    },
+    {
+      "code": "rotate(90deg) → 0",
+      "text": {
+        "zh-TW": "「＋」是兩條線，展開時直的那條轉 90° 疊到橫的上面變成「－」。這個用 CSS transition 就夠了，不需要 GSAP。",
+        "en": "The “+” is two lines; opening rotates the vertical one 90° onto the horizontal one to make “−”. A CSS transition is enough here — no GSAP needed."
+      }
+    },
+    {
+      "code": "<h2><button aria-expanded>",
+      "text": {
+        "zh-TW": "標題外面包 h2、裡面是 button：讀屏使用者可以用標題快速跳到每個問題，按鈕會唸出「已展開／已收合」。",
+        "en": "A button inside an h2: screen-reader users can jump between questions by heading, and the button announces expanded or collapsed."
+      }
+    }
+  ]
+}
