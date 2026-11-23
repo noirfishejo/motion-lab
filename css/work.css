@@ -225,3 +225,16 @@ html.nav-init body,html.nav-init .works-nav{transition:none!important}
 .not-found{min-height:70vh;display:grid;align-content:center;justify-items:start;gap:16px;padding-top:var(--header-h)}
 .not-found h1{font:500 var(--fs-h1)/1.1 var(--font-display);letter-spacing:-.03em}
 .not-found p:not(.label){color:var(--muted)}
+
+/* ═══ 作品頁之間換頁（側欄、上一個／下一個）：淡出淡入 ═══
+   瀏覽器內建的 View Transitions：頁首和側欄保持不動，只有內容區淡出、再往上浮出淡入。
+   Chrome／Edge 126+、Safari 18.2+ 支援；不支援的瀏覽器照常直接換頁。 */
+@media (prefers-reduced-motion: no-preference){
+  @view-transition{navigation:auto}
+  .site-header{view-transition-name:site-header}
+  .works-nav{view-transition-name:works-nav}
+  ::view-transition-old(root){animation:vt-out .18s cubic-bezier(.4,0,1,1) both}
+  ::view-transition-new(root){animation:vt-in .32s var(--ease-out) both}
+}
+@keyframes vt-out{to{opacity:0}}
+@keyframes vt-in{from{opacity:0;transform:translateY(8px)}}
