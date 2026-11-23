@@ -7,6 +7,7 @@ import { initI18n, t, pick, list } from './i18n.js';
 import { WORKS, TOPICS } from './works.js';
 import { initHeader } from './header.js';
 import { initSmooth } from './smooth.js';
+import { initCursor, magnetic, slidingIndicator, toast } from './interactions.js';
 
 // 三個程式碼檔案（放在最前面：下方的流程一開始就會用到）
 const FILES = { html: 'index.html', css: 'style.css', js: 'script.js' };
@@ -30,6 +31,8 @@ const src = work ? `works/${work.id}/index.html` : '';
 
 setupWorksNav();
 initSmooth();
+initCursor();
+magnetic('.site-header .icon-toggle');
 
 if (!work) {
   document.getElementById('main').hidden = true;
@@ -325,10 +328,7 @@ function setupSave() {
     document.querySelector('.toggle-hint').textContent = t('work.codeHintRemote');
     return;
   }
-  const label = btn.querySelector('span');
-  const text = label.textContent;
   const box = document.getElementById('saveConfirm');
-  const flash = msg => { label.textContent = msg; setTimeout(() => { label.textContent = text; }, 2400); };
   const changedFiles = () => Object.keys(FILES).filter(l => docs[l].getValue() !== original[l]);
 
   btn.addEventListener('click', () => {
@@ -350,11 +350,11 @@ function setupSave() {
         if (!res.ok) throw new Error(res.status);
         original[lang] = value.trimEnd(); // 存好的內容成為新的「原始版本」
       }
-      flash(t('work.saved'));
+      toast(t('work.savedStatus', { files: list(changed.map(l => FILES[l])) }));
       announce(t('work.savedStatus', { files: list(changed.map(l => FILES[l])) }));
       resetPreview();
     } catch {
-      flash(t('work.saveFailed'));
+      toast(t('work.saveFailed'), 'error');
       announce(t('work.saveFailedStatus'));
     }
     updateModified();
@@ -393,24 +393,24 @@ function setupTabs() {
     editor.swapDoc(docs[current]);
     editor.setOption('screenReaderLabel', t('work.editorLabel', { lang: tab.textContent.trim() }));
   };
-  tabs.forEach(b => b.addEventListener('click', () => select(b)));
+  const moveLine = slidingIndicator(document.querySelector('.code-tabs'), b => b.getAttribute('aria-selected') === 'true', 16);
+  document.getElementById('codeToggle').addEventListener('click', () => requestAnimationFrame(() => moveLine(false))); // 展開後才量得到位置
+  tabs.forEach(b => b.addEventListener('click', () => { select(b); moveLine(); }));
   document.querySelector('.code-tabs').addEventListener('keydown', e => {
     if (!['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
     const i = tabs.indexOf(document.activeElement);
     const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
-    next.focus(); select(next);
+    next.focus(); select(next); moveLine();
   });
 }
 
 // ── 複製（複製的是「目前編輯後」的內容） ─────────
 function setupCopy() {
+  // 結果用 Toast 通知顯示（練習 14），讀屏軟體另外由 #status 唸出
   const bind = (btn, getText) => {
-    const label = btn.querySelector('span');
-    const text = label.textContent;
     btn.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(getText()); label.textContent = t('work.copied'); announce(t('work.copiedStatus')); }
-      catch { label.textContent = t('work.copyFailed'); announce(t('work.copyFailed')); }
-      setTimeout(() => { label.textContent = text; }, 1600);
+      try { await navigator.clipboard.writeText(getText()); toast(t('work.copiedStatus')); announce(t('work.copiedStatus')); }
+      catch { toast(t('work.copyFailed'), 'error'); announce(t('work.copyFailed')); }
     });
   };
   bind(document.getElementById('copyBtn'), () => values()[current] ?? '');

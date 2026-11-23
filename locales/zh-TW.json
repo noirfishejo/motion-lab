@@ -60,5 +60,6 @@
   "site.titleSep": "｜",
   "work.pagerLabel": "上一個／下一個練習",
   "lang.switch": "EN",
-  "lang.switchLabel": "Switch to English"
+  "lang.switchLabel": "Switch to English",
+  "cursor.view": "看作品"
 }

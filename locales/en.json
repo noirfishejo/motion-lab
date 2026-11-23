@@ -60,5 +60,6 @@
   "site.titleSep": " | ",
   "work.pagerLabel": "Previous / next practice",
   "lang.switch": "中",
-  "lang.switchLabel": "切換成中文"
+  "lang.switchLabel": "切換成中文",
+  "cursor.view": "View"
 }

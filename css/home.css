@@ -41,19 +41,14 @@
   position:sticky;top:var(--header-h);z-index:5;background:var(--bg);
   border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:var(--grid-gap);
 }
-.filters{display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.filters{position:relative;display:flex;gap:0;overflow-x:auto;scrollbar-width:none} /* relative：滑動底線以這裡為基準 */
 .filters::-webkit-scrollbar{display:none}
 .filters button{
   position:relative;flex:none;height:48px;padding:0 14px;
   font:400 14px/1 var(--font-body);color:var(--muted);transition:color var(--dur-fast);
 }
 .filters button sup{font:400 10px/1 var(--font-mono);margin-left:3px;color:var(--muted)}
-.filters button::after{
-  content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:2px;background:var(--accent-fg);
-  transform:scaleX(0);transform-origin:left;transition:transform var(--dur) var(--ease-out);
-}
 .filters button:hover,.filters button[aria-pressed="true"]{color:var(--text)}
-.filters button[aria-pressed="true"]::after{transform:scaleX(1)}
 .filters button:focus-visible{outline-offset:-2px}
 /* 手機篩選列放不下時：邊緣漸隱，提示「還可以往旁邊滑」（class 由 home.js 依捲動位置切換） */
 .filters.more-end{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 56px),transparent)}

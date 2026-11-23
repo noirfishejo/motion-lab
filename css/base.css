@@ -90,6 +90,33 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 .site-footer a{display:inline-flex;align-items:center;min-height:var(--tap)}
 .site-footer a:hover{color:var(--text)}
 
+/* ── 游標跟隨方塊（js/interactions.js）：系統游標保留，旁邊多一個跟著跑的品牌方塊 ── */
+.cursor{
+  position:fixed;left:0;top:0;z-index:300;pointer-events:none;
+  display:grid;place-items:center;width:8px;height:8px;margin:-4px 0 0 -4px;
+  background:var(--accent);border:1px solid transparent;opacity:0;
+  transition:opacity .2s,width .45s var(--ease-out),height .45s var(--ease-out),margin .45s var(--ease-out),background-color .25s,border-color .25s;
+}
+.cursor.is-visible{opacity:1}
+.cursor.is-hidden{opacity:0}
+/* 可以點的東西：變成外框方塊，把目標「框」起來 */
+.cursor.is-link{width:36px;height:36px;margin:-18px 0 0 -18px;background:transparent;border-color:var(--accent-fg)}
+/* 作品卡：變成「看作品」標籤 */
+.cursor.is-card{width:96px;height:36px;margin:-18px 0 0 -48px;background:var(--accent)}
+.cursor-label{display:inline-flex;align-items:center;gap:6px;color:var(--accent-ink);font:400 13px/1 var(--font-body);white-space:nowrap;opacity:0;transition:opacity .2s}
+.cursor.is-card .cursor-label{opacity:1;transition-delay:.12s}
+
+/* ── 滑動底線（練習 15 的做法）：首頁篩選列、作品頁的程式碼分頁 ── */
+.slide-line{position:absolute;left:0;bottom:0;width:100px;height:2px;background:var(--accent-fg);transform-origin:0 50%;pointer-events:none}
+
+/* ── Toast 通知（練習 14 的簡化版）：複製、存檔的結果 ── */
+.toasts{position:fixed;right:var(--gutter);bottom:var(--gutter);z-index:250;width:min(320px,calc(100vw - var(--gutter) * 2));list-style:none;display:flex;flex-direction:column}
+.toast-wrap{overflow:hidden}
+.toast-wrap + .toast-wrap .toast{margin-top:8px}
+.toast{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface);border:1px solid var(--line-strong);font-size:14px;color:var(--text)}
+.toast i{font-size:18px;color:var(--accent-fg)}
+.toast[data-type="error"] i{color:var(--syn-error)}
+
 /* ── 平滑捲動（Lenis，見 js/smooth.js） ── */
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}

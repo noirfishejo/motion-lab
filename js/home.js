@@ -5,10 +5,12 @@ import { initI18n, t, pick } from './i18n.js';
 import { WORKS, TOPICS } from './works.js';
 import { initHeader } from './header.js';
 import { initSmooth, scrollToY } from './smooth.js';
+import { initCursor, magnetic, slidingIndicator } from './interactions.js';
 
 // 縮圖構圖用的常數（見下方 fitThumb）。要放在所有 await 之前，否則縮圖載入時還讀不到
 const THUMB_VIEW = { w: 960, h: 600 };
 const FIT_W = 0.82, FIT_H = 0.72;
+let moveFilterLine = () => {}; // 篩選列的滑動底線（renderFilters 建立）
 
 // GSAP 從 CDN 載入；載入失敗時內容照樣顯示，只是沒有動畫
 const hasGsap = !!(window.gsap && window.ScrollTrigger && window.SplitText);
@@ -23,6 +25,8 @@ initHeader();
 renderFilters();
 renderCards();
 initSmooth();
+initCursor();
+magnetic('.site-header .icon-toggle');
 if (hasGsap) {
   await document.fonts.ready; // 字體載入後再拆字，位置才會準
   initMotion();
@@ -49,6 +53,8 @@ function renderFilters() {
     <button type="button" data-topic="${topic}" aria-pressed="${topic === 'all'}">
       ${t(topic === 'all' ? 'home.filter.all' : `topic.${topic}`)}<sup>${count(topic)}</sup>
     </button>`).join('');
+  // 選中的分類下方：一條會滑動的底線（練習 15）
+  moveFilterLine = slidingIndicator(nav, b => b.getAttribute('aria-pressed') === 'true', 14);
   nav.addEventListener('click', e => {
     const btn = e.target.closest('button');
     if (btn) applyFilter(btn.dataset.topic);
@@ -150,6 +156,7 @@ function renderCards() {
 let filterTl;
 function applyFilter(topic) {
   document.querySelectorAll('.filters button').forEach(b => b.setAttribute('aria-pressed', b.dataset.topic === topic));
+  moveFilterLine();
   const cards = [...document.querySelectorAll('.work-card')];
   const shown = cards.filter(c => c.style.display !== 'none');
   const next = cards.filter(c => topic === 'all' || c.dataset.topic === topic);
