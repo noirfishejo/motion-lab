@@ -1,16 +1,22 @@
 // ═══════════════════════════════════════════════
 // 作品清單：新增練習時，在陣列最後加一筆
 // id 要和 works/ 底下的資料夾名稱完全相同
-// topic 可用：tween、timeline、scroll、svg、plugins、ui（介面元件）
+// ── 命名與分類規則（新增練習時照這個寫，搜尋才找得到） ──
+// title：看得到的東西（元件或效果）＋情境，用設計師會搜尋的詞，不用 GSAP 名詞開頭。例：「浮動標籤輸入框」
+// short：側欄用的名稱，中文 8 個字以內。例：「浮動標籤」
+// topic（分類，依用途）：components 元件／transitions 進場與轉場／scroll 捲動／graphics 文字與圖形
+// tech：主要的 GSAP 功能，例：Tween、Timeline、ScrollTrigger、Flip、Draggable、SplitText
+// tags：細節技巧（gsap.to、stagger、overwrite…）
 // 文字欄位都寫成 { 'zh-TW': '…', en: '…' }；少了 en 會自動顯示中文
 // ═══════════════════════════════════════════════
 export const WORKS = [
   {
     id: '01-stagger',
-    title: { 'zh-TW': 'Stagger 進場・卡片列表', en: 'Stagger entrance · Card list' },
-    short: { 'zh-TW': 'Stagger 進場', en: 'Stagger entrance' }, // 側欄用的短名稱
+    title: { 'zh-TW': '卡片列表依序進場', en: 'Card list staggered entrance' },
+    short: { 'zh-TW': '卡片依序進場', en: 'Staggered cards' }, // 側欄用的短名稱
     summary: { 'zh-TW': '6 張卡片依序浮現。每張卡片上寫著自己的延遲時間，底部的時間條顯示播放進度，一眼就看得出 stagger 在做什麼。', en: 'Six cards fade up one after another. Each card shows its own delay and the bar at the bottom shows playback progress, so you can see exactly what stagger does.' },
-    topic: 'tween',
+    topic: 'transitions',
+    tech: 'Stagger', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.from', 'stagger', 'expo.out'],
     date: '2026-11-19',
     notes: [
@@ -22,10 +28,11 @@ export const WORKS = [
   },
   {
     id: '02-timeline',
-    title: { 'zh-TW': 'Timeline 編排・Onboarding 三步驟', en: 'Timeline sequencing · 3-step onboarding' },
-    short: { 'zh-TW': 'Timeline 編排', en: 'Timeline sequencing' }, // 側欄用的短名稱
+    title: { 'zh-TW': '新手引導三步驟轉場', en: 'Onboarding three-step transition' },
+    short: { 'zh-TW': '新手引導轉場', en: 'Onboarding steps' }, // 側欄用的短名稱
     summary: { 'zh-TW': '三個步驟依序進場、停留、離場，下一步會在上一步離開前提早進來。下方的時間軸會顯示播放頭和每個步驟的 label 位置。', en: 'Three steps enter, hold and leave in sequence, and each next step arrives just before the previous one leaves. The timeline below shows the playhead and where each step’s label sits.' },
-    topic: 'timeline',
+    topic: 'transitions',
+    tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.timeline', 'label', 'position'],
     date: '2026-11-19',
     notes: [
@@ -38,10 +45,11 @@ export const WORKS = [
   },
   {
     id: '03-scroll-logo',
-    title: { 'zh-TW': 'ScrollTrigger・方塊飛進頁首', en: 'ScrollTrigger · Square flies into the header' },
-    short: { 'zh-TW': '方塊飛進頁首', en: 'Square to header' }, // 側欄用的短名稱
+    title: { 'zh-TW': '捲動時 Logo 飛進頁首', en: 'Logo flies into the header on scroll' },
+    short: { 'zh-TW': 'Logo 飛進頁首', en: 'Logo to header' }, // 側欄用的短名稱
     summary: { 'zh-TW': '首頁開場的簡化教學版：往下捲時，標題字母往上移出，方塊轉半圈飛進頁首，接著頁首文字逐字出現。在預覽畫面裡捲動就能看到。', en: 'A simplified version of the home page intro: as you scroll, the title letters slide up, the square spins half a turn into the header, then the header text appears letter by letter. Scroll inside the preview to see it.' },
     topic: 'scroll',
+    tech: 'ScrollTrigger', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['ScrollTrigger', 'scrub', 'markers'],
     markers: true, // 作品頁預覽上方會出現 Markers 開關
     thumb: '.lockup', // 首頁縮圖要對準的主要內容（預設是 <main> 的子元素）
@@ -56,10 +64,11 @@ export const WORKS = [
   },
   {
     id: '04-svg-draw',
-    title: { 'zh-TW': 'SVG 描邊・Smiley 圖示', en: 'SVG drawing · Smiley icon' },
-    short: { 'zh-TW': 'SVG 描邊', en: 'SVG drawing' }, // 側欄用的短名稱
+    title: { 'zh-TW': '圖示描邊動畫', en: 'Icon line drawing' },
+    short: { 'zh-TW': '圖示描邊', en: 'Icon drawing' }, // 側欄用的短名稱
     summary: { 'zh-TW': '把 Phosphor 的 Smiley 圖示一筆一筆畫出來：圓 → 左眼 → 右眼 → 微笑。下方的步驟會跟著目前畫到的那一筆亮起來，點任何一步都能從那一步重新播放。', en: 'Draws Phosphor’s Smiley icon stroke by stroke: circle → left eye → right eye → smile. The step list below lights up with the stroke being drawn, and clicking any step replays from there.' },
-    topic: 'svg',
+    topic: 'graphics',
+    tech: 'DrawSVG', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['DrawSVGPlugin', 'stroke', 'label'],
     date: '2026-11-19',
     notes: [
@@ -72,10 +81,11 @@ export const WORKS = [
   },
   {
     id: '05-splittext',
-    title: { 'zh-TW': 'SplitText・行／單字／字元三種拆法', en: 'SplitText · Lines, words and characters' },
-    short: { 'zh-TW': 'SplitText 拆字', en: 'SplitText' }, // 側欄用的短名稱
+    title: { 'zh-TW': '標題逐行、逐字浮現', en: 'Text reveal by line, word and letter' },
+    short: { 'zh-TW': '文字拆分浮現', en: 'Text reveal' }, // 側欄用的短名稱
     summary: { 'zh-TW': '同一個外掛的三種拆法：英文標題一行一行從遮罩升起、英文句子一個單字一個單字浮現、中文一個字一個字亮起來。', en: 'Three ways to split with the same plugin: an English headline rising line by line from a mask, an English sentence appearing word by word, and letters lighting up one by one.' },
-    topic: 'plugins',
+    topic: 'graphics',
+    tech: 'SplitText', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['SplitText', 'mask', 'autoSplit'],
     date: '2026-11-19',
     notes: [
@@ -88,10 +98,11 @@ export const WORKS = [
   },
   {
     id: '06-flip',
-    title: { 'zh-TW': 'Flip・卡片展開成詳細內容', en: 'Flip · Card expands into details' },
-    short: { 'zh-TW': 'Flip 展開', en: 'Flip expand' }, // 側欄用的短名稱
+    title: { 'zh-TW': '卡片展開成詳細內容', en: 'Card expands into details' },
+    short: { 'zh-TW': '卡片展開', en: 'Card expand' }, // 側欄用的短名稱
     summary: { 'zh-TW': '點一張卡片，它會展開到最上方、其他卡片縮成一排；再點一次收合。版面只靠切換 CSS class，動畫全部交給 Flip 補上。', en: 'Click a card and it expands to the top while the others shrink into a row; click again to collapse. The layout only toggles a CSS class — Flip fills in all the animation.' },
-    topic: 'plugins',
+    topic: 'transitions',
+    tech: 'Flip', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['Flip', 'getState', 'layout'],
     date: '2026-11-19',
     notes: [
@@ -104,10 +115,11 @@ export const WORKS = [
   },
   {
     id: '07-draggable',
-    title: { 'zh-TW': 'Draggable・底部抽屜', en: 'Draggable · Bottom sheet' },
-    short: { 'zh-TW': 'Draggable 抽屜', en: 'Draggable sheet' }, // 側欄用的短名稱
+    title: { 'zh-TW': '可拖曳的底部抽屜', en: 'Draggable bottom sheet' },
+    short: { 'zh-TW': '拖曳底部抽屜', en: 'Bottom sheet' }, // 側欄用的短名稱
     summary: { 'zh-TW': '手機常見的底部抽屜：上下拖曳，放開後依照甩動的速度繼續滑，最後吸附到「全開／半開／收合」三個位置之一。', en: 'A mobile-style bottom sheet: drag it up or down, release and it keeps gliding with your flick speed, then snaps to open, half or collapsed.' },
-    topic: 'plugins',
+    topic: 'components',
+    tech: 'Draggable', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['Draggable', 'InertiaPlugin', 'snap'],
     date: '2026-11-19',
     notes: [
@@ -120,10 +132,11 @@ export const WORKS = [
   },
   {
     id: '08-motionpath',
-    title: { 'zh-TW': 'MotionPath・加入購物車', en: 'MotionPath · Add to cart' },
-    short: { 'zh-TW': 'MotionPath 路徑', en: 'MotionPath cart' }, // 側欄用的短名稱
+    title: { 'zh-TW': '加入購物車飛入動畫', en: 'Add-to-cart fly-in' },
+    short: { 'zh-TW': '加入購物車', en: 'Add to cart' }, // 側欄用的短名稱
     summary: { 'zh-TW': '按下「加入購物車」，商品方塊會沿著一條弧線飛進右上角的購物車，抵達後數字加一、購物車彈一下。虛線就是飛行路徑。', en: 'Press “Add to cart” and a product square flies along an arc into the cart at the top right; when it lands the count goes up and the cart bounces. The dashed line is the flight path.' },
-    topic: 'plugins',
+    topic: 'components',
+    tech: 'MotionPath', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['MotionPathPlugin', 'arrayToRawPath', 'align'],
     date: '2026-11-19',
     notes: [
@@ -136,10 +149,11 @@ export const WORKS = [
   },
   {
     id: '09-micro-interactions',
-    title: { 'zh-TW': '按鈕微互動・磁吸與波紋', en: 'Button micro-interactions · Magnetic & ripple' },
-    short: { 'zh-TW': '按鈕微互動', en: 'Button micro-interactions' }, // 側欄用的短名稱
+    title: { 'zh-TW': '按鈕磁吸與波紋', en: 'Magnetic & ripple buttons' },
+    short: { 'zh-TW': '按鈕磁吸＋波紋', en: 'Button feedback' }, // 側欄用的短名稱
     summary: { 'zh-TW': '兩種常見的按鈕回饋：滑鼠靠近時按鈕被吸過去的磁吸效果，以及從點擊位置擴散的波紋。按下時按鈕會稍微縮小，給手指「壓下去」的感覺。', en: 'Two common button feedbacks: a magnetic pull toward the cursor, and a ripple spreading from where you click. Pressing shrinks the button slightly so it feels pushed in.' },
-    topic: 'tween',
+    topic: 'components',
+    tech: 'quickTo', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.quickTo', 'pointer events', 'elastic'],
     date: '2026-11-20',
     notes: [
@@ -153,10 +167,11 @@ export const WORKS = [
   },
   {
     id: '10-horizontal-scroll',
-    title: { 'zh-TW': '橫向捲動・固定畫面往側邊走', en: 'Horizontal scroll · Pinned section moves sideways' },
+    title: { 'zh-TW': '固定畫面橫向捲動', en: 'Pinned horizontal scroll' },
     short: { 'zh-TW': '橫向捲動', en: 'Horizontal scroll' }, // 側欄用的短名稱
     summary: { 'zh-TW': '往下捲時區塊固定在畫面上，裡面的面板改成往左移動；走完後恢復一般的直向捲動。每個面板進入畫面時，文字會跟著升起。', en: 'Scrolling down pins the section and moves its panels to the left; once they’re done, normal vertical scrolling resumes. Each panel’s text rises as it comes into view.' },
     topic: 'scroll',
+    tech: 'ScrollTrigger', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     markers: true, // 作品頁預覽上方會出現 Markers 開關
     thumb: '.hs-head, .panel:nth-child(-n+2)', // 首頁縮圖對準頁首和前兩個面板（被 pin 的區塊是 fixed，量不到）
     tags: ['pin', 'scrub', 'containerAnimation'],
@@ -171,10 +186,11 @@ export const WORKS = [
   },
   {
     id: '11-toggle-switch',
-    title: { 'zh-TW': 'Tween 開關・設定頁的 Switch', en: 'Toggle switch · Settings page' },
-    short: { 'zh-TW': 'Switch 開關', en: 'Toggle switch' }, // 側欄用的短名稱
+    title: { 'zh-TW': '設定頁開關', en: 'Settings toggle switch' },
+    short: { 'zh-TW': '開關 Switch', en: 'Toggle switch' }, // 側欄用的短名稱
     summary: { 'zh-TW': '設定頁最常見的開關：點擊時滑塊滑到另一邊，途中被拉長再縮回，按住時滑塊先稍微變寬。顏色交給 CSS，位置和形變交給 GSAP。', en: 'The most common control on a settings page: on click the thumb slides across, stretching on the way and settling back; pressing widens it slightly first. CSS handles colour, GSAP handles position and shape.' },
-    topic: 'ui',
+    topic: 'components',
+    tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.to', 'overwrite', 'role="switch"'],
     date: '2026-11-23',
     notes: [
@@ -187,10 +203,11 @@ export const WORKS = [
   },
   {
     id: '12-floating-label',
-    title: { 'zh-TW': '浮動標籤輸入框・註冊表單', en: 'Floating label input · Sign-up form' },
+    title: { 'zh-TW': '浮動標籤輸入框', en: 'Floating label input' },
     short: { 'zh-TW': '浮動標籤', en: 'Floating label' }, // 側欄用的短名稱
     summary: { 'zh-TW': '標籤一開始躺在輸入框裡，點進去或有內容時縮小浮到上方，底線從左邊畫出來。Email 格式不對時，欄位會輕輕搖一下並顯示錯誤。', en: 'The label starts inside the field and floats up, shrinking, when you focus or type; an underline draws in from the left. An invalid email gives the field a small shake and shows an error.' },
-    topic: 'ui',
+    topic: 'components',
+    tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.to', 'focus / blur', 'keyframes'],
     date: '2026-11-23',
     notes: [
@@ -203,10 +220,11 @@ export const WORKS = [
   },
   {
     id: '13-submit-states',
-    title: { 'zh-TW': '送出按鈕狀態・載入、成功、失敗', en: 'Submit button states · Loading, success, error' },
+    title: { 'zh-TW': '送出按鈕的載入與結果', en: 'Submit button: loading and result' },
     short: { 'zh-TW': '送出按鈕狀態', en: 'Submit states' }, // 側欄用的短名稱
     summary: { 'zh-TW': '按下送出後，按鈕縮成方塊、裡面的小方塊開始轉；成功時撐回原本寬度並打勾，失敗時變紅並左右搖晃。勾選下方的選項就能試失敗的情況。', en: 'Pressing Send shrinks the button into a square with a small spinning square inside; on success it widens back with a check, on failure it turns red and shakes. Tick the option below to try a failure.' },
-    topic: 'ui',
+    topic: 'components',
+    tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.timeline', 'async / await', 'aria-busy'],
     date: '2026-11-23',
     notes: [
@@ -219,10 +237,11 @@ export const WORKS = [
   },
   {
     id: '14-toast',
-    title: { 'zh-TW': 'Toast 通知・堆疊與自動消失', en: 'Toast notifications · Stack and auto-dismiss' },
+    title: { 'zh-TW': '堆疊式 Toast 通知', en: 'Stacking toast notifications' },
     short: { 'zh-TW': 'Toast 通知', en: 'Toast' }, // 側欄用的短名稱
     summary: { 'zh-TW': '從右下角滑入的通知：新的會把舊的往上推，底部的細線顯示剩餘時間，時間到自動消失；滑鼠移上去會暫停。最多同時顯示三則。', en: 'Notifications that slide in at the bottom right: new ones push older ones up, a thin line shows the time left, and they leave on their own — hovering pauses them. Up to three at once.' },
-    topic: 'ui',
+    topic: 'components',
+    tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.timeline', 'height: 0', 'pause / resume'],
     date: '2026-11-23',
     notes: [
@@ -235,4 +254,4 @@ export const WORKS = [
   }
 ];
 
-export const TOPICS = ['tween', 'timeline', 'scroll', 'svg', 'plugins', 'ui'];
+export const TOPICS = ['components', 'transitions', 'scroll', 'graphics'];

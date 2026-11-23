@@ -68,7 +68,7 @@ body {
   transition: background-color 0.3s;
 }
 .submit:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 3px; }
-.submit[aria-busy="true"] { cursor: progress; }
+.submit[aria-busy="true"] { cursor: default; } /* 送出中：游標維持一般箭頭（不要和按鈕裡的方塊一起轉圈）*/
 .submit.is-fail { background: var(--danger-fill); }
 
 /* 三種文字疊在同一個位置，一次只顯示一種（由 script.js 切換） */

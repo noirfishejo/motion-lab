@@ -55,7 +55,7 @@ function renderInfo() {
   document.getElementById('workSummary').textContent = pick(work.summary);
   document.getElementById('workTopic').textContent = t(`topic.${work.topic}`);
   document.getElementById('workDate').textContent = work.date.replaceAll('-', '.');
-  document.getElementById('workTags').innerHTML = work.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+  document.getElementById('workTags').innerHTML = [work.tech, ...work.tags].map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
   document.getElementById('notes').innerHTML = (work.notes || []).map(n =>
     `<li><code>${escapeHtml(pick(n.code))}</code><p>${pick(n.text)}</p></li>`).join('');
 }
@@ -121,9 +121,29 @@ function setupWorksNav() {
       <div class="works-nav-group">
         <h3>${t(`topic.${topic}`)}</h3>
         <ul>${WORKS.filter(w => w.topic === topic).map(w => `
-          <li><a href="work.html?id=${w.id}"${w.id === id ? ' aria-current="page"' : ''}>${pick(w.short || w.title)}</a></li>`).join('')}
+          <li><a href="work.html?id=${w.id}"${w.id === id ? ' aria-current="page"' : ''} data-search="${escapeHtml(searchText(w))}">${pick(w.short || w.title)}</a></li>`).join('')}
         </ul>
       </div>`).join('');
+
+  // 搜尋：輸入時即時篩選，沒有符合的分組整組藏起來
+  const search = document.getElementById('worksSearch');
+  const empty = document.getElementById('worksNavEmpty');
+  search.addEventListener('input', () => {
+    const words = search.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    let any = false;
+    nav.querySelectorAll('.works-nav-group').forEach(group => {
+      let groupHit = false;
+      group.querySelectorAll('li').forEach(li => {
+        const hit = words.every(word => li.firstElementChild.dataset.search.includes(word));
+        li.hidden = !hit;
+        groupHit ||= hit;
+      });
+      group.hidden = !groupHit;
+      any ||= groupHit;
+    });
+    empty.hidden = any;
+  });
+  search.addEventListener('keydown', e => { if (e.key === 'Escape' && search.value) { search.value = ''; search.dispatchEvent(new Event('input')); e.stopPropagation(); } });
 
   const remembered = () => { try { return localStorage.getItem('worksNav') !== 'closed'; } catch { return true; } };
   const list = document.getElementById('worksNavList');
@@ -137,7 +157,7 @@ function setupWorksNav() {
     if (save && !overlay) try { localStorage.setItem('worksNav', open ? 'open' : 'closed'); } catch {}
     if (open && !init) nav.querySelector('[aria-current]')?.scrollIntoView({ block: 'nearest' });
     if (focus && !open) toggle.focus();
-    if (focus && open && overlay) nav.querySelector('a')?.focus();
+    if (focus && open && overlay) search.focus(); // 手機、平板打開側欄時，直接可以打字搜尋
     if (!init) setTimeout(() => editor?.refresh(), 650); // 內容變寬變窄後，編輯器重新量尺寸
   };
 
@@ -434,4 +454,9 @@ function reveal() {
 }
 
 function reduceMotion() { return matchMedia('(prefers-reduced-motion: reduce)').matches; }
+// 側欄搜尋用的文字：中英文名稱、分類、GSAP 功能、標籤（全部轉小寫）
+function searchText(w) {
+  const both = f => (typeof f === 'string' ? f : Object.values(f || {}).join(' '));
+  return [both(w.title), both(w.short), t(`topic.${w.topic}`), w.tech, ...w.tags].join(' ').toLowerCase();
+}
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]); }

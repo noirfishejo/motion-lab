@@ -44,6 +44,13 @@
 - 介面文字放在 `locales/zh-TW.json` 和 `locales/en.json`（兩邊的 key 要一致），不寫死在 HTML 裡。
 - 練習資料（`js/works.js`）的 title、short、summary、notes 都寫成 `{ 'zh-TW': '…', en: '…' }`；新增練習時兩種語言都要填。
 
+## 作品命名與分類
+- **分類（topic）依用途**，不依 GSAP 功能：`components` 元件／`transitions` 進場與轉場／`scroll` 捲動／`graphics` 文字與圖形。
+- **title**：看得到的東西（元件或效果）＋情境，用設計師會搜尋的詞，不用 GSAP 名詞開頭。例：「浮動標籤輸入框」「捲動時 Logo 飛進頁首」。
+- **short**：側欄名稱，中文 8 個字以內。
+- **tech**：主要的 GSAP 功能（Tween、Timeline、ScrollTrigger、Flip…），顯示在卡片右上角和作品頁第一個標籤；**tags** 放細節技巧。
+- 作品頁側欄有搜尋，比對中英文名稱、分類、tech、tags。
+
 ## 新增作品
 請照 `新增作品.md` 的步驟：複製 `works/_template`，再在 `js/works.js` 加一筆資料。
 

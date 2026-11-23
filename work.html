@@ -146,7 +146,13 @@
   <!-- 作品列表側欄：電腦寬螢幕（≥1280px）固定在左側、可收合；較窄時覆蓋在畫面上方 -->
   <aside class="works-nav" id="worksNav" aria-labelledby="worksNavTitle">
     <h2 class="visually-hidden" id="worksNavTitle" data-i18n="work.listTitle"></h2>
+    <!-- 搜尋：名稱（中英文）、分類、GSAP 功能、標籤都找得到 -->
+    <div class="works-nav-search">
+      <i class="ph-light ph-magnifying-glass" aria-hidden="true"></i>
+      <input type="search" id="worksSearch" autocomplete="off" data-i18n-attr="aria-label:work.search;placeholder:work.search">
+    </div>
     <div class="works-nav-list" id="worksNavList"></div>
+    <p class="works-nav-empty" id="worksNavEmpty" hidden data-i18n="work.searchEmpty"></p>
   </aside>
   <div class="works-nav-scrim" id="worksNavScrim" hidden></div>
 

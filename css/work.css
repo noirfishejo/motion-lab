@@ -176,6 +176,19 @@ html.has-full{overflow:hidden} /* 全螢幕時後方頁面不捲動 */
   transition:transform var(--dur) var(--ease-out),visibility 0s linear var(--dur);
 }
 .works-nav.is-open{transform:none;visibility:visible;transition:transform var(--dur) var(--ease-out),visibility 0s}
+/* 側欄搜尋：底線式輸入框，圖示對齊 gutter */
+.works-nav-search{position:relative;display:flex;align-items:center;margin:16px var(--gutter) 0;border-bottom:1px solid var(--line-strong);transition:border-color var(--dur-fast)}
+.works-nav-search:focus-within{border-bottom-color:var(--accent-fg)}
+.works-nav-search i{font-size:16px;color:var(--muted)}
+.works-nav-search input{
+  flex:1;min-width:0;height:40px;padding:0 0 0 8px;border:0;background:transparent;color:var(--text);
+  font:400 14px/1 var(--font-body);outline:none;border-radius:0;
+}
+.works-nav-search input::placeholder{color:var(--muted)}
+.works-nav-search input::-webkit-search-cancel-button{filter:grayscale(1)}
+.works-nav-empty{padding:16px var(--gutter);font-size:14px;color:var(--muted)}
+@media (pointer:coarse){.works-nav-search input{height:var(--tap);font-size:16px}} /* 16px：iPhone 點進去不會放大畫面 */
+
 /* 參考 shadcn/ui 文件側欄：依主題分組，只列短名稱 */
 .works-nav-list{flex:1;overflow-y:auto;scrollbar-width:none;padding:20px calc(var(--gutter) - 8px) 32px} /* 連結本身有 8px 內距 → 文字剛好在 gutter 上 */
 .works-nav-list::-webkit-scrollbar{display:none}

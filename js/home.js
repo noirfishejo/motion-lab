@@ -104,7 +104,7 @@ function renderCards() {
       </div>
       <div class="work-meta">
         <h3 id="card-${w.id}">${pick(w.title)}</h3>
-        <span class="topic">${t(`topic.${w.topic}`)}</span>
+        <span class="topic">${w.tech}</span>
         <p id="card-${w.id}-sum">${pick(w.summary)}</p>
         <div class="tags">${w.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
       </div>
