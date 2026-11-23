@@ -55,13 +55,12 @@ body {
 .hint { font-size: 14px; color: var(--muted); }
 body { display: block; }
 
-.shot { width: min(560px, 86vw); margin: 0 auto 18vh; display: grid; gap: 10px; }
-.shot.is-wide { width: min(820px, 92vw); }
+.shot { width: min(820px, 92vw); margin: 0 auto 18vh; display: grid; gap: 10px; } /* 三張同寬（16:9） */
 .shot figcaption { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--muted); }
 
 /* 圖片框：裁切由 clip-path 控制（script.js），裡面的圖另外做「縮回原尺寸」 */
 .shot-img {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
   display: grid;
   place-items: center;
   background: var(--accent);
@@ -69,7 +68,6 @@ body { display: block; }
   overflow: hidden;
   will-change: clip-path;
 }
-.shot.is-wide .shot-img { aspect-ratio: 16 / 9; }
 .shot-img i { font-size: clamp(72px, 14vw, 140px); will-change: transform; }
 
 .outro { min-height: 60vh; display: grid; place-items: center; padding: 24px; color: var(--muted); text-align: center; }

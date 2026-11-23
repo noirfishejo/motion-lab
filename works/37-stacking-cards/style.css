@@ -1,0 +1,81 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --surface-2: #1B1E23;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-hover: #2B45F0; /* 實心按鈕滑過 */
+  --accent-fg: #6E83FF;
+  --success: #4CC38A;
+  --warning: #F2B35A;
+  --danger: #FF7A7A;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --surface-2: #ECECE8;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+  --success: #0B7354;
+  --warning: #8A5300;
+  --danger: #C0262D;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; } /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+
+body { display: block; }
+.intro { min-height: 60vh; display: grid; align-content: center; justify-items: center; gap: 16px; padding: 24px; text-align: center; }
+.intro-title { font: 500 clamp(32px, 6vw, 64px)/1.08 "Poppins", sans-serif; letter-spacing: -0.03em; }
+.hint { font-size: 14px; color: var(--muted); }
+
+.stack { width: min(760px, 92vw); margin: 0 auto; padding-bottom: 20vh; }
+/* 每張卡片都用 CSS sticky 黏在畫面上方，所以後面的會一張張疊上來；--i 讓每張往下錯開一點 */
+.stack-card {
+  position: sticky;
+  top: calc(12vh + var(--i, 0) * 14px);
+  height: 62vh;
+  margin-bottom: 16vh;
+  padding: clamp(24px, 4vw, 48px);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  overflow: hidden;
+  transform-origin: 50% 0%;
+  will-change: transform;
+}
+.stack-card.is-accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+.stack-num { font: 400 13px/1 "JetBrains Mono", monospace; opacity: 0.7; }
+.stack-card h2 { align-self: end; font: 500 clamp(40px, 8vw, 88px)/1 "Poppins", sans-serif; letter-spacing: -0.03em; }
+.stack-card p { margin-top: 12px; font-size: 15px; opacity: 0.75; }
+/* 變暗用的黑色蓋板：透明度由 script.js 控制 */
+.shade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
+
+.outro { min-height: 50vh; display: grid; place-items: center; padding: 24px; color: var(--muted); text-align: center; }

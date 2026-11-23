@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>39 Draggable: Range Slider with Bubble</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <section class="card">
+      <span class="tag">range slider</span>
+      <!-- 價格上限（假資料）：拖曳方塊、點軌道、或用方向鍵；上方的數值泡泡會跟著移動，拖得快時會稍微傾斜 -->
+      <span class="label" id="price-label">Max price</span>
+      <div class="slider">
+        <div class="track"><span class="fill"></span></div>
+        <div class="thumb" role="slider" tabindex="0" aria-labelledby="price-label" aria-valuemin="0" aria-valuemax="500" aria-valuenow="200">
+          <span class="bubble" aria-hidden="true"><span class="bubble-text">$200</span></span>
+        </div>
+      </div>
+      <div class="scale" aria-hidden="true"><span>$0</span><span>$500</span></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

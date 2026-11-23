@@ -1,0 +1,52 @@
+{
+  "title": {
+    "zh-TW": "範圍滑桿與數值泡泡",
+    "en": "Range slider with a value bubble"
+  },
+  "short": {
+    "zh-TW": "範圍滑桿",
+    "en": "Range slider"
+  },
+  "summary": {
+    "zh-TW": "拖曳方塊調整價格上限，上方的數值泡泡跟著移動，拖得快時會往反方向傾斜、放開後彈回。也可以點軌道或用方向鍵調整。",
+    "en": "Drag the thumb to set a price limit; the value bubble follows, leaning away when you drag fast and springing back on release. Click the track or use arrow keys too."
+  },
+  "topic": "forms",
+  "tech": "Draggable",
+  "tags": [
+    "Draggable",
+    "deltaX",
+    "role=\"slider\""
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "Draggable.create(thumb, { type: 'x', bounds: slider })",
+      "text": {
+        "zh-TW": "方塊只能左右拖、不能拖出軌道。拖曳時用目前的 x 換算成數值，同時更新填色和泡泡的文字。",
+        "en": "The thumb only moves horizontally within the track. The current x converts to a value and updates the fill and bubble text."
+      }
+    },
+    {
+      "code": "-this.deltaX × TILT",
+      "text": {
+        "zh-TW": "deltaX 是這一格畫面移動了多少（約等於速度）。拖得越快泡泡傾斜越多，方向相反，像被甩在後面；用 quickTo 讓角度平順。",
+        "en": "deltaX is how far it moved this frame — roughly speed. Faster drags tilt the bubble more, leaning backwards; quickTo keeps the angle smooth."
+      }
+    },
+    {
+      "code": "gsap.utils.snap(STEP, …)",
+      "text": {
+        "zh-TW": "數值對齊到每 5 一格。拖曳時顯示對齊後的數值，放開時方塊也滑到那一格的位置。",
+        "en": "Values snap to steps of 5. The bubble shows the snapped value while dragging, and the thumb settles onto that step on release."
+      }
+    },
+    {
+      "code": "role=\"slider\" + aria-valuenow",
+      "text": {
+        "zh-TW": "自製的滑桿要補上語意：讀屏軟體才會唸出「滑桿，200 美元」，方向鍵、Shift、Home／End 都能操作。",
+        "en": "A custom slider needs semantics so screen readers announce “slider, $200”; arrow keys, Shift, Home and End all work."
+      }
+    }
+  ]
+}

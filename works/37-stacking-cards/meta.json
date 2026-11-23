@@ -1,0 +1,57 @@
+{
+  "title": {
+    "zh-TW": "捲動時卡片堆疊",
+    "en": "Cards stack as you scroll"
+  },
+  "short": {
+    "zh-TW": "卡片堆疊",
+    "en": "Stacking cards"
+  },
+  "summary": {
+    "zh-TW": "往下捲時，下一張卡片蓋上來，被蓋住的那張往後縮小、變暗，最後疊成一疊。往回捲會一張張掀開。",
+    "en": "As you scroll, each new card slides over the previous one, which shrinks back and darkens until they form a stack. Scroll back to peel them off one by one."
+  },
+  "topic": "scroll",
+  "tech": "ScrollTrigger",
+  "tags": [
+    "position: sticky",
+    "scrub",
+    "scale"
+  ],
+  "date": "2026-11-23",
+  "markers": true,
+  "thumb": ".stack-card:first-child",
+  "notes": [
+    {
+      "code": "position: sticky",
+      "text": {
+        "zh-TW": "每張卡片都用 CSS sticky 黏在畫面上方，後面的卡片自然會捲上來蓋住前面的。堆疊本身不需要 GSAP。",
+        "en": "Each card sticks to the top with CSS sticky, so later cards naturally scroll over earlier ones. The stacking itself needs no GSAP."
+      }
+    },
+    {
+      "code": "trigger: next, start: 'top bottom', end: 'top 20%'",
+      "text": {
+        "zh-TW": "被蓋住的卡片什麼時候縮小？看「下一張」：從它出現在畫面底部，到它黏到定位，這段捲動裡慢慢縮小變暗。",
+        "en": "When does a card shrink? Watch the next card: from when it appears at the bottom until it sticks in place, the current one gradually shrinks and darkens."
+      }
+    },
+    {
+      "code": "top: calc(12vh + i × 14px)",
+      "text": {
+        "zh-TW": "每張卡片的黏貼位置往下錯開一點，疊起來時看得到後面卡片的上緣，比完全重疊更有層次。",
+        "en": "Each card sticks slightly lower than the last, so the tops of earlier cards peek out — more depth than a perfect overlap."
+      }
+    },
+    {
+      "code": {
+        "zh-TW": ".shade（黑色蓋板）",
+        "en": ".shade (black overlay)"
+      },
+      "text": {
+        "zh-TW": "變暗用一層黑色蓋板改透明度，不用 filter: brightness，比較省效能，也不會影響文字的清晰度。",
+        "en": "Darkening uses a black overlay’s opacity instead of filter: brightness — cheaper, and text stays crisp."
+      }
+    }
+  ]
+}

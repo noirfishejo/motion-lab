@@ -373,7 +373,7 @@ export const WORKS = [
       "zh-TW": "手機常見的底部抽屜：上下拖曳，放開後依照甩動的速度繼續滑，最後吸附到「全開／半開／收合」三個位置之一。",
       "en": "A mobile-style bottom sheet: drag it up or down, release and it keeps gliding with your flick speed, then snaps to open, half or collapsed."
     },
-    "topic": "overlays",
+    "topic": "pointer",
     "tech": "Draggable",
     "tags": [
       "Draggable",
@@ -493,7 +493,7 @@ export const WORKS = [
       "zh-TW": "兩種常見的按鈕回饋：滑鼠靠近時按鈕被吸過去的磁吸效果，以及從點擊位置擴散的波紋。按下時按鈕會稍微縮小，給手指「壓下去」的感覺。",
       "en": "Two common button feedbacks: a magnetic pull toward the cursor, and a ripple spreading from where you click. Pressing shrinks the button slightly so it feels pushed in."
     },
-    "topic": "feedback",
+    "topic": "pointer",
     "tech": "quickTo",
     "tags": [
       "gsap.quickTo",
@@ -1535,7 +1535,7 @@ export const WORKS = [
       "zh-TW": "滑鼠在卡片上移動時，卡片朝游標的方向傾斜，表面的反光跟著移動，標題和卡號浮在卡片前面一點。離開後慢慢回正。",
       "en": "As the cursor moves over the card it tilts toward it, a glare drifts across the surface, and the title and number float slightly in front. It settles back when you leave."
     },
-    "topic": "graphics",
+    "topic": "pointer",
     "tech": "quickTo",
     "tags": [
       "rotationX / rotationY",
@@ -1921,7 +1921,7 @@ export const WORKS = [
       "en": "Clip-path reveal"
     },
     "summary": {
-      "zh-TW": "捲到圖片時，圖片用 clip-path 從一條縫慢慢打開：第一張從中間往上下撐開、第二張從左邊擦開、第三張從底部升起，裡面的圖示同時從放大縮回原尺寸。往回捲會再關上。",
+      "zh-TW": "捲到圖片時（三張同寬），圖片用 clip-path 從一條縫慢慢打開：第一張從中間往上下撐開、第二張從左邊擦開、第三張從底部升起，裡面的圖示同時從放大縮回原尺寸。往回捲會再關上。",
       "en": "As each image scrolls in, clip-path opens it from a slit — the first splits from the centre, the second wipes from the left, the third rises from the bottom — while the icon inside zooms back to normal. Scrolling back closes them again."
     },
     "topic": "scroll",
@@ -2031,44 +2031,374 @@ export const WORKS = [
       "en": "List / grid switch"
     },
     "summary": {
-      "zh-TW": "按右上角的按鈕在清單和格狀之間切換：每個項目、裡面的方塊和文字，都從原本的位置移動、縮放到新的位置，一眼就看得出誰去了哪裡。版面只靠切換 CSS class，動畫全部交給 Flip。",
-      "en": "Toggle between list and grid with the buttons at the top right: every item, its thumbnail and its text move and scale from where they were to where they go, so you can see what went where. The layout is just a CSS class; Flip handles all the motion."
+      "zh-TW": "按右上角的按鈕在清單和格狀之間切換。預設是產品裡最常見的做法：項目先淡出、版面切換、再在新的位置依序浮出，不會有縮放變形。把 MODE 改成 morph，就是用 Flip 讓每個項目從舊位置移動、縮放到新位置。",
+      "en": "Toggle between list and grid with the buttons at the top right. By default it uses the most common product pattern — items fade out, the layout switches, and they rise in at their new spots without any scaling. Set MODE to morph to have Flip move and scale every item from old to new position."
     },
     "topic": "transitions",
     "tech": "Flip",
     "tags": [
-      "Flip.getState",
-      "nested",
-      "stagger"
+      "stagger",
+      "Flip",
+      "nested"
     ],
     "date": "2026-11-23",
     "notes": [
       {
-        "code": "Flip.getState('.item, .item-thumb, .item-text')",
+        "code": "MODE = 'fade'",
         "text": {
-          "zh-TW": "① 先記下所有東西現在的位置和大小，不只外層的項目，也包括裡面的方塊和文字。",
-          "en": "① Record where everything is now — not just the items but their thumbnails and text too."
+          "zh-TW": "產品介面最常見的切換方式：舊版面很快淡出（0.18 秒）、瞬間換版面、新版面依序浮出。不會有縮放變形，文字一直清楚可讀。",
+          "en": "The most common product pattern: the old layout fades out fast (0.18s), the layout switches instantly, and the new one rises in item by item. No scaling, so text stays crisp."
+        }
+      },
+      {
+        "code": "MODE = 'morph'",
+        "text": {
+          "zh-TW": "Flip 讓每個項目從舊位置移動、縮放到新位置，看得出「誰去了哪裡」。適合相簿、檔案、商品這種要追蹤同一個項目的情境；一般清單用 fade 就夠了。",
+          "en": "Flip moves and scales each item from old to new position so you can see what went where. Good for photos, files and products where tracking an item matters; for ordinary lists, fade is enough."
         }
       },
       {
         "code": "classList.toggle('is-grid')",
         "text": {
-          "zh-TW": "② 直接切換 CSS class，版面瞬間變成另一種。清單和格狀的樣子完全寫在 CSS，設計師改版面不用動 JS。",
-          "en": "② Toggle the CSS class and the layout switches instantly. Both layouts live entirely in CSS, so designers can restyle without touching JS."
+          "zh-TW": "兩種模式都一樣：版面完全寫在 CSS，JS 只切換 class。設計師改清單或格狀的樣子，不用動程式。",
+          "en": "Both modes share this: the layouts live entirely in CSS and JS only toggles a class, so designers can restyle either view without touching code."
         }
       },
       {
-        "code": "nested: true",
+        "code": "nested: true + scale: true",
         "text": {
-          "zh-TW": "項目裡面的方塊和文字，位置會跟著外層一起變。加上 nested，Flip 才會把「外層的移動」扣掉，裡面的東西不會飄移錯位。",
-          "en": "The thumbnail and text move along with their item. nested tells Flip to account for the parent’s movement so the children don’t drift."
+          "zh-TW": "morph 模式用到：裡面的方塊和文字會跟著外層一起移動，nested 讓 Flip 扣掉外層的移動；scale 讓方塊用縮放過去，比改寬高順。",
+          "en": "Used in morph mode: nested accounts for the parent’s movement so children don’t drift; scale animates the thumbnail by scaling, smoother than resizing."
+        }
+      }
+    ]
+  },
+  {
+    "id": "36-sortable-list",
+    "title": {
+      "zh-TW": "可拖曳排序的清單",
+      "en": "Drag-to-reorder list"
+    },
+    "short": {
+      "zh-TW": "拖曳排序",
+      "en": "Sortable list"
+    },
+    "summary": {
+      "zh-TW": "抓住左邊的把手上下拖，其他項目會即時讓位；放開後吸到最近的位置。鍵盤用上下方向鍵也能移動，讀屏軟體會唸出新的位置。",
+      "en": "Grab the handle and drag up or down; the other items make room as you go, and the row snaps into the nearest slot on release. Arrow keys move it too, and screen readers announce the new position."
+    },
+    "topic": "pointer",
+    "tech": "Draggable",
+    "tags": [
+      "Draggable",
+      "trigger",
+      "aria-live"
+    ],
+    "date": "2026-11-23",
+    "notes": [
+      {
+        "code": "Draggable.create(row, { type: 'y', trigger: handle })",
+        "text": {
+          "zh-TW": "整列可以上下拖，但只有抓把手才會開始拖；列上其他地方還是可以點、可以選字。",
+          "en": "The whole row drags vertically, but only the handle starts a drag, so the rest of the row stays clickable and selectable."
         }
       },
       {
-        "code": "scale: true",
+        "code": "Math.round(this.y / ROW)",
         "text": {
-          "zh-TW": "方塊從 48px 變成整張卡片寬，用縮放（scale）過去而不是改寬高，動畫比較順；Flip 會在結束時換回真正的尺寸。",
-          "en": "The thumbnail grows from 48px to card width by scaling rather than resizing, which is smoother; Flip restores the real size at the end."
+          "zh-TW": "拖到哪一格：目前的位置除以每列的高度再四捨五入。格子變了，就更新順序、讓其他列讓位。",
+          "en": "The target slot is the current y divided by row height, rounded. When it changes, the order updates and other rows move aside."
+        }
+      },
+      {
+        "code": "order.splice(…)",
+        "text": {
+          "zh-TW": "畫面上的位置不直接改 DOM，而是維護一個「順序陣列」，再依陣列把每列移到 slot × 列高。拖曳中不動 DOM，動畫才不會跳。",
+          "en": "Instead of reordering the DOM mid-drag, an order array is updated and each row moves to slot × row height. Leaving the DOM alone keeps the motion smooth."
+        }
+      },
+      {
+        "code": "ArrowUp / ArrowDown",
+        "text": {
+          "zh-TW": "拖曳一定要有鍵盤替代方案：把手有焦點時用上下鍵一次移一格，並用 aria-live 唸出「第幾個，共幾個」。",
+          "en": "Dragging always needs a keyboard alternative: with the handle focused, arrow keys move one slot and aria-live announces the position."
+        }
+      }
+    ]
+  },
+  {
+    "id": "37-stacking-cards",
+    "title": {
+      "zh-TW": "捲動時卡片堆疊",
+      "en": "Cards stack as you scroll"
+    },
+    "short": {
+      "zh-TW": "卡片堆疊",
+      "en": "Stacking cards"
+    },
+    "summary": {
+      "zh-TW": "往下捲時，下一張卡片蓋上來，被蓋住的那張往後縮小、變暗，最後疊成一疊。往回捲會一張張掀開。",
+      "en": "As you scroll, each new card slides over the previous one, which shrinks back and darkens until they form a stack. Scroll back to peel them off one by one."
+    },
+    "topic": "scroll",
+    "tech": "ScrollTrigger",
+    "tags": [
+      "position: sticky",
+      "scrub",
+      "scale"
+    ],
+    "date": "2026-11-23",
+    "markers": true,
+    "thumb": ".stack-card:first-child",
+    "notes": [
+      {
+        "code": "position: sticky",
+        "text": {
+          "zh-TW": "每張卡片都用 CSS sticky 黏在畫面上方，後面的卡片自然會捲上來蓋住前面的。堆疊本身不需要 GSAP。",
+          "en": "Each card sticks to the top with CSS sticky, so later cards naturally scroll over earlier ones. The stacking itself needs no GSAP."
+        }
+      },
+      {
+        "code": "trigger: next, start: 'top bottom', end: 'top 20%'",
+        "text": {
+          "zh-TW": "被蓋住的卡片什麼時候縮小？看「下一張」：從它出現在畫面底部，到它黏到定位，這段捲動裡慢慢縮小變暗。",
+          "en": "When does a card shrink? Watch the next card: from when it appears at the bottom until it sticks in place, the current one gradually shrinks and darkens."
+        }
+      },
+      {
+        "code": "top: calc(12vh + i × 14px)",
+        "text": {
+          "zh-TW": "每張卡片的黏貼位置往下錯開一點，疊起來時看得到後面卡片的上緣，比完全重疊更有層次。",
+          "en": "Each card sticks slightly lower than the last, so the tops of earlier cards peek out — more depth than a perfect overlap."
+        }
+      },
+      {
+        "code": {
+          "zh-TW": ".shade（黑色蓋板）",
+          "en": ".shade (black overlay)"
+        },
+        "text": {
+          "zh-TW": "變暗用一層黑色蓋板改透明度，不用 filter: brightness，比較省效能，也不會影響文字的清晰度。",
+          "en": "Darkening uses a black overlay’s opacity instead of filter: brightness — cheaper, and text stays crisp."
+        }
+      }
+    ]
+  },
+  {
+    "id": "38-flip-filter",
+    "title": {
+      "zh-TW": "篩選時卡片重新排列",
+      "en": "Filter with cards reflowing into place"
+    },
+    "short": {
+      "zh-TW": "篩選重新排列",
+      "en": "Filter reflow"
+    },
+    "summary": {
+      "zh-TW": "切換分類時，被篩掉的卡片縮小淡出，留下的卡片從原位置移動補位，新出現的卡片放大淡入。比整批淡出淡入更有空間感，看得出卡片去了哪裡。",
+      "en": "Switching categories shrinks and fades out the filtered cards, slides the remaining ones into the gaps, and scales in new ones. More spatial than fading everything, and you can follow where each card went."
+    },
+    "topic": "transitions",
+    "tech": "Flip",
+    "tags": [
+      "Flip.from",
+      "onEnter",
+      "onLeave"
+    ],
+    "date": "2026-11-23",
+    "notes": [
+      {
+        "code": "Flip.getState(tiles)",
+        "text": {
+          "zh-TW": "① 篩選前先記下所有卡片的位置。",
+          "en": "① Record where every card is before filtering."
+        }
+      },
+      {
+        "code": "style.display = 'none'",
+        "text": {
+          "zh-TW": "② 直接把不符合的卡片藏起來，版面瞬間變成篩選後的樣子。這裡用 inline 的 display，Flip 才能暫時讓離開的卡片顯示、播完淡出再藏。",
+          "en": "② Hide non-matching cards and the layout jumps to the filtered state. Inline display lets Flip briefly show leaving cards so they can fade out first."
+        }
+      },
+      {
+        "code": "onEnter / onLeave",
+        "text": {
+          "zh-TW": "③ Flip 把留下的卡片移動補位；新出現的交給 onEnter 放大淡入，被篩掉的交給 onLeave 縮小淡出。",
+          "en": "③ Flip slides the remaining cards into place; onEnter scales new ones in and onLeave shrinks filtered ones out."
+        }
+      },
+      {
+        "code": "absolute: true",
+        "text": {
+          "zh-TW": "動畫期間暫時改成絕對定位，卡片在格子裡移動時不會互相推擠。",
+          "en": "Cards are temporarily absolutely positioned during the animation so they don’t push each other while moving in the grid."
+        }
+      }
+    ]
+  },
+  {
+    "id": "39-range-slider",
+    "title": {
+      "zh-TW": "範圍滑桿與數值泡泡",
+      "en": "Range slider with a value bubble"
+    },
+    "short": {
+      "zh-TW": "範圍滑桿",
+      "en": "Range slider"
+    },
+    "summary": {
+      "zh-TW": "拖曳方塊調整價格上限，上方的數值泡泡跟著移動，拖得快時會往反方向傾斜、放開後彈回。也可以點軌道或用方向鍵調整。",
+      "en": "Drag the thumb to set a price limit; the value bubble follows, leaning away when you drag fast and springing back on release. Click the track or use arrow keys too."
+    },
+    "topic": "forms",
+    "tech": "Draggable",
+    "tags": [
+      "Draggable",
+      "deltaX",
+      "role=\"slider\""
+    ],
+    "date": "2026-11-23",
+    "notes": [
+      {
+        "code": "Draggable.create(thumb, { type: 'x', bounds: slider })",
+        "text": {
+          "zh-TW": "方塊只能左右拖、不能拖出軌道。拖曳時用目前的 x 換算成數值，同時更新填色和泡泡的文字。",
+          "en": "The thumb only moves horizontally within the track. The current x converts to a value and updates the fill and bubble text."
+        }
+      },
+      {
+        "code": "-this.deltaX × TILT",
+        "text": {
+          "zh-TW": "deltaX 是這一格畫面移動了多少（約等於速度）。拖得越快泡泡傾斜越多，方向相反，像被甩在後面；用 quickTo 讓角度平順。",
+          "en": "deltaX is how far it moved this frame — roughly speed. Faster drags tilt the bubble more, leaning backwards; quickTo keeps the angle smooth."
+        }
+      },
+      {
+        "code": "gsap.utils.snap(STEP, …)",
+        "text": {
+          "zh-TW": "數值對齊到每 5 一格。拖曳時顯示對齊後的數值，放開時方塊也滑到那一格的位置。",
+          "en": "Values snap to steps of 5. The bubble shows the snapped value while dragging, and the thumb settles onto that step on release."
+        }
+      },
+      {
+        "code": "role=\"slider\" + aria-valuenow",
+        "text": {
+          "zh-TW": "自製的滑桿要補上語意：讀屏軟體才會唸出「滑桿，200 美元」，方向鍵、Shift、Home／End 都能操作。",
+          "en": "A custom slider needs semantics so screen readers announce “slider, $200”; arrow keys, Shift, Home and End all work."
+        }
+      }
+    ]
+  },
+  {
+    "id": "40-menu-expand",
+    "title": {
+      "zh-TW": "按鈕展開成導覽面板",
+      "en": "Menu button that expands into a nav panel"
+    },
+    "short": {
+      "zh-TW": "按鈕展開選單",
+      "en": "Expanding menu"
+    },
+    "summary": {
+      "zh-TW": "參考 patricktischendorf.de：右上角的「Menu ＋」按鈕本身往左下撐開成導覽面板，按鈕文字像滾輪一樣換成「Close」、＋ 轉成 ×，連結一個一個升起，後方變暗。",
+      "en": "Inspired by patricktischendorf.de: the “Menu +” button at the top right grows down and left into the navigation panel, its label rolls to “Close”, + turns into ×, links rise one by one and the page behind dims."
+    },
+    "topic": "overlays",
+    "tech": "Timeline",
+    "tags": [
+      "width / height",
+      "tl.reverse()",
+      "yPercent"
+    ],
+    "date": "2026-11-23",
+    "thumb": ".page",
+    "notes": [
+      {
+        "code": {
+          "zh-TW": "同一個外殼",
+          "en": "One shell"
+        },
+        "text": {
+          "zh-TW": "按鈕和面板是同一個元素：關著時只有按鈕那麼大，打開時撐開成面板。比「按鈕消失、面板出現」更有連續感，看得出面板是從按鈕來的。",
+          "en": "The button and panel are the same element: closed it’s button-sized, open it grows into the panel. That continuity shows where the panel came from."
+        }
+      },
+      {
+        "code": {
+          "zh-TW": "build()（每次重新量）",
+          "en": "build() (measure each time)"
+        },
+        "text": {
+          "zh-TW": "打開前先量出按鈕大小和面板內容的實際高度，再建立動畫。內容或畫面寬度改變，動畫也會對。",
+          "en": "Before opening it measures the button and the panel’s real content height, then builds the animation, so it stays correct when content or screen width changes."
+        }
+      },
+      {
+        "code": "right: 16px; top: 14px",
+        "text": {
+          "zh-TW": "外殼靠右上定位，寬高變大時會自然往左下撐開，右上角固定不動。",
+          "en": "The shell is anchored top-right, so growing its width and height naturally expands down and left while the corner stays put."
+        }
+      },
+      {
+        "code": "words → yPercent: -100",
+        "text": {
+          "zh-TW": "「Menu」和「Close」上下疊著放在一個遮罩裡，往上移一格就換字，像滾輪。比直接換文字更有回饋感。",
+          "en": "“Menu” and “Close” are stacked in a mask; shifting up one line swaps them like a rolling counter — more tactile than swapping text."
+        }
+      }
+    ]
+  },
+  {
+    "id": "41-hover-image-follow",
+    "title": {
+      "zh-TW": "滑過專案時圖片跟著游標",
+      "en": "Project list with an image that follows the cursor"
+    },
+    "short": {
+      "zh-TW": "游標跟隨圖片",
+      "en": "Hover image"
+    },
+    "summary": {
+      "zh-TW": "作品集常見的專案清單：滑鼠移到哪一列，就有一張圖片跟著游標移動，移得快時會稍微傾斜；換到別列時，圖片像捲軸一樣上下捲到那一張。手機沒有滑過，改成每列左邊直接放小圖。",
+      "en": "A common portfolio project list: hovering a row brings up an image that follows the cursor and tilts when you move fast; moving to another row scrolls the image strip to that project. Phones show a small thumbnail on each row instead."
+    },
+    "topic": "pointer",
+    "tech": "quickTo",
+    "tags": [
+      "gsap.quickTo",
+      "yPercent",
+      "(hover: hover)"
+    ],
+    "date": "2026-11-23",
+    "notes": [
+      {
+        "code": "gsap.quickTo(preview, 'x')",
+        "text": {
+          "zh-TW": "跟著游標的東西都用 quickTo：先建立好補間，滑鼠每動一次只丟新的位置進去，比每次 gsap.to() 省效能，也比較順。",
+          "en": "Anything that follows the cursor uses quickTo: build the tween once and feed it new positions — cheaper and smoother than calling gsap.to() each time."
+        }
+      },
+      {
+        "code": "moveX(x, x)",
+        "text": {
+          "zh-TW": "圖片第一次出現時，起點和終點都設成游標的位置，直接出現在游標旁，不會從畫面角落飛過來。",
+          "en": "On first appearance the start and end are both the cursor position, so it appears right there instead of flying in from a corner."
+        }
+      },
+      {
+        "code": "strip yPercent: -i × (100 / n)",
+        "text": {
+          "zh-TW": "所有圖片排成一直欄放在框裡，換專案時整欄上下移動。往下一列，圖片就往上捲，方向和清單一致。",
+          "en": "All images sit in one column inside the frame; changing project moves the whole column. Going down the list scrolls the images up, matching the direction."
+        }
+      },
+      {
+        "code": "@media (hover: none)",
+        "text": {
+          "zh-TW": "手機沒有「滑過」，跟著游標的圖片完全不會出現。改成每列左邊直接放小圖，內容才不會在手機上消失。",
+          "en": "Phones have no hover, so the following image would never appear. Each row shows a small thumbnail instead so nothing is lost on mobile."
         }
       }
     ]

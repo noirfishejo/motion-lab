@@ -1,0 +1,52 @@
+{
+  "title": {
+    "zh-TW": "可拖曳排序的清單",
+    "en": "Drag-to-reorder list"
+  },
+  "short": {
+    "zh-TW": "拖曳排序",
+    "en": "Sortable list"
+  },
+  "summary": {
+    "zh-TW": "抓住左邊的把手上下拖，其他項目會即時讓位；放開後吸到最近的位置。鍵盤用上下方向鍵也能移動，讀屏軟體會唸出新的位置。",
+    "en": "Grab the handle and drag up or down; the other items make room as you go, and the row snaps into the nearest slot on release. Arrow keys move it too, and screen readers announce the new position."
+  },
+  "topic": "pointer",
+  "tech": "Draggable",
+  "tags": [
+    "Draggable",
+    "trigger",
+    "aria-live"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "Draggable.create(row, { type: 'y', trigger: handle })",
+      "text": {
+        "zh-TW": "整列可以上下拖，但只有抓把手才會開始拖；列上其他地方還是可以點、可以選字。",
+        "en": "The whole row drags vertically, but only the handle starts a drag, so the rest of the row stays clickable and selectable."
+      }
+    },
+    {
+      "code": "Math.round(this.y / ROW)",
+      "text": {
+        "zh-TW": "拖到哪一格：目前的位置除以每列的高度再四捨五入。格子變了，就更新順序、讓其他列讓位。",
+        "en": "The target slot is the current y divided by row height, rounded. When it changes, the order updates and other rows move aside."
+      }
+    },
+    {
+      "code": "order.splice(…)",
+      "text": {
+        "zh-TW": "畫面上的位置不直接改 DOM，而是維護一個「順序陣列」，再依陣列把每列移到 slot × 列高。拖曳中不動 DOM，動畫才不會跳。",
+        "en": "Instead of reordering the DOM mid-drag, an order array is updated and each row moves to slot × row height. Leaving the DOM alone keeps the motion smooth."
+      }
+    },
+    {
+      "code": "ArrowUp / ArrowDown",
+      "text": {
+        "zh-TW": "拖曳一定要有鍵盤替代方案：把手有焦點時用上下鍵一次移一格，並用 aria-live 唸出「第幾個，共幾個」。",
+        "en": "Dragging always needs a keyboard alternative: with the handle focused, arrow keys move one slot and aria-live announces the position."
+      }
+    }
+  ]
+}

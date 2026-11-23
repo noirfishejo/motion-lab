@@ -11,7 +11,7 @@
     "zh-TW": "手機常見的底部抽屜：上下拖曳，放開後依照甩動的速度繼續滑，最後吸附到「全開／半開／收合」三個位置之一。",
     "en": "A mobile-style bottom sheet: drag it up or down, release and it keeps gliding with your flick speed, then snaps to open, half or collapsed."
   },
-  "topic": "overlays",
+  "topic": "pointer",
   "tech": "Draggable",
   "tags": [
     "Draggable",

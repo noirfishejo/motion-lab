@@ -55,13 +55,17 @@
         ty = H / 2 - (t + b) / 2 * k;
       }
       frame.style.transform = `translate(${tx}px, ${ty}px) scale(${k})`;
+      if (params.has('debug')) document.title = `${l},${t},${r},${b} k=${k.toFixed(2)} sy=${win.scrollY}`;
     }
 
     frame.addEventListener('load', () => {
+      // 背景截圖時，捲動類練習有時會在 iframe 尺寸還沒算好時就量位置，進度直接跳到結尾（畫面變空白）
+      // → 載入後請 ScrollTrigger 重新量一次，回到「還沒捲動」的起點
+      frame.contentWindow.ScrollTrigger?.refresh();
       fit();
       frame.contentDocument.fonts.ready.then(fit);
       // 等練習的自動示範播完再截圖（make_thumbs.py 用 virtual-time-budget 控制時間）
-      setTimeout(fit, 3500);
+      setTimeout(() => { frame.contentWindow.ScrollTrigger?.refresh(); fit(); }, 3500);
     });
     frame.src = `../works/${id}/index.html`;
   </script>

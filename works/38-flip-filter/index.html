@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>38 Flip: Filter and Reflow</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <!-- 篩選（假資料）：被篩掉的卡片縮小淡出，留下的卡片移動補位，新出現的放大淡入 -->
+    <div class="filters" role="group" aria-label="Filter">
+      <button type="button" aria-pressed="true" data-cat="all">All</button>
+      <button type="button" aria-pressed="false" data-cat="design">Design</button>
+      <button type="button" aria-pressed="false" data-cat="motion">Motion</button>
+      <button type="button" aria-pressed="false" data-cat="code">Code</button>
+    </div>
+    <ul class="tiles">
+      <li class="tile" data-cat="design"><span class="tile-img"><i class="ph-light ph-pen-nib"></i></span><span class="tile-name">Brand book</span><span class="tile-cat">design</span></li>
+      <li class="tile" data-cat="motion"><span class="tile-img"><i class="ph-light ph-film-strip"></i></span><span class="tile-name">Logo sting</span><span class="tile-cat">motion</span></li>
+      <li class="tile" data-cat="code"><span class="tile-img"><i class="ph-light ph-brackets-curly"></i></span><span class="tile-name">Design tokens</span><span class="tile-cat">code</span></li>
+      <li class="tile" data-cat="design"><span class="tile-img"><i class="ph-light ph-layout"></i></span><span class="tile-name">Landing page</span><span class="tile-cat">design</span></li>
+      <li class="tile" data-cat="motion"><span class="tile-img"><i class="ph-light ph-sparkle"></i></span><span class="tile-name">Micro-interactions</span><span class="tile-cat">motion</span></li>
+      <li class="tile" data-cat="code"><span class="tile-img"><i class="ph-light ph-terminal-window"></i></span><span class="tile-name">CLI tool</span><span class="tile-cat">code</span></li>
+      <li class="tile" data-cat="design"><span class="tile-img"><i class="ph-light ph-device-mobile"></i></span><span class="tile-name">App screens</span><span class="tile-cat">design</span></li>
+      <li class="tile" data-cat="motion"><span class="tile-img"><i class="ph-light ph-wave-sine"></i></span><span class="tile-name">Loading loop</span><span class="tile-cat">motion</span></li>
+      <li class="tile" data-cat="code"><span class="tile-img"><i class="ph-light ph-plug"></i></span><span class="tile-name">Figma plugin</span><span class="tile-cat">code</span></li>
+    </ul>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

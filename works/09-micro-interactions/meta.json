@@ -11,7 +11,7 @@
     "zh-TW": "兩種常見的按鈕回饋：滑鼠靠近時按鈕被吸過去的磁吸效果，以及從點擊位置擴散的波紋。按下時按鈕會稍微縮小，給手指「壓下去」的感覺。",
     "en": "Two common button feedbacks: a magnetic pull toward the cursor, and a ripple spreading from where you click. Pressing shrinks the button slightly so it feels pushed in."
   },
-  "topic": "feedback",
+  "topic": "pointer",
   "tech": "quickTo",
   "tags": [
     "gsap.quickTo",

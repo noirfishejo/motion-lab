@@ -1,0 +1,107 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --surface-2: #1B1E23;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-hover: #2B45F0; /* 實心按鈕滑過 */
+  --accent-fg: #6E83FF;
+  --success: #4CC38A;
+  --warning: #F2B35A;
+  --danger: #FF7A7A;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --surface-2: #ECECE8;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+  --success: #0B7354;
+  --warning: #8A5300;
+  --danger: #C0262D;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; } /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+
+body { display: block; }
+.bar { position: fixed; inset: 0 0 auto 0; height: 72px; display: flex; align-items: center; padding: 0 24px; z-index: 5; }
+.brand { font: 500 18px/1 "Poppins", sans-serif; letter-spacing: -0.02em; }
+
+.page { min-height: 100vh; display: grid; place-content: center; justify-items: center; gap: 16px; text-align: center; padding: 96px 24px; }
+.headline { font: 500 clamp(40px, 8vw, 88px)/1.02 "Poppins", sans-serif; letter-spacing: -0.03em; }
+.hint { font-size: 14px; color: var(--muted); }
+
+/* 外殼：固定在右上角，底色是反白（深色模式白底黑字、亮色模式黑底白字），大小由 script.js 動畫 */
+.shell {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  z-index: 20;
+  overflow: hidden;
+  background: var(--text);
+  color: var(--bg);
+}
+.toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  height: 44px;
+  padding: 0 14px 0 18px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: 400 15px/1 "Inter Tight", sans-serif;
+  cursor: pointer;
+}
+.toggle:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: -4px; }
+/* 「Menu」和「Close」疊在一起，像滾輪一樣上下換字 */
+.toggle-label { position: relative; display: block; height: 1em; overflow: hidden; line-height: 1; }
+.word { display: block; }
+.toggle-icon { font-size: 18px; }
+
+.nav { padding: 8px 18px 22px; }
+.nav ul { list-style: none; display: grid; gap: 2px; }
+.nav a { color: inherit; text-decoration: none; font: 500 clamp(32px, 6vw, 44px)/1.15 "Poppins", sans-serif; letter-spacing: -0.02em; }
+.nav a:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 2px; }
+.mask { display: block; overflow: hidden; padding-bottom: 0.06em; }
+.item { display: inline-block; transition: color 0.3s; }
+.nav a:hover .item { color: var(--accent-fg); }
+
+/* 後方變暗 */
+.scrim { position: fixed; inset: 0; z-index: 10; background: rgba(0, 0, 0, 0.45); opacity: 0; pointer-events: none; }
+
+/* ── 按鈕狀態：和作品集網站相同的規則（見 DESIGN.md「按鈕」）──
+   實心：滑過底色變亮｜外框：滑過外框和文字變主文字色｜無框：滑過出現淺色底
+   全部：按下縮成 0.97、停用 40% 透明 */
+.toggle { transition: background-color 0.3s; }
+.toggle:hover { background: rgba(127, 127, 127, 0.14); }

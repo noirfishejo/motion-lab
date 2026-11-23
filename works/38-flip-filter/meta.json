@@ -1,0 +1,52 @@
+{
+  "title": {
+    "zh-TW": "篩選時卡片重新排列",
+    "en": "Filter with cards reflowing into place"
+  },
+  "short": {
+    "zh-TW": "篩選重新排列",
+    "en": "Filter reflow"
+  },
+  "summary": {
+    "zh-TW": "切換分類時，被篩掉的卡片縮小淡出，留下的卡片從原位置移動補位，新出現的卡片放大淡入。比整批淡出淡入更有空間感，看得出卡片去了哪裡。",
+    "en": "Switching categories shrinks and fades out the filtered cards, slides the remaining ones into the gaps, and scales in new ones. More spatial than fading everything, and you can follow where each card went."
+  },
+  "topic": "transitions",
+  "tech": "Flip",
+  "tags": [
+    "Flip.from",
+    "onEnter",
+    "onLeave"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "Flip.getState(tiles)",
+      "text": {
+        "zh-TW": "① 篩選前先記下所有卡片的位置。",
+        "en": "① Record where every card is before filtering."
+      }
+    },
+    {
+      "code": "style.display = 'none'",
+      "text": {
+        "zh-TW": "② 直接把不符合的卡片藏起來，版面瞬間變成篩選後的樣子。這裡用 inline 的 display，Flip 才能暫時讓離開的卡片顯示、播完淡出再藏。",
+        "en": "② Hide non-matching cards and the layout jumps to the filtered state. Inline display lets Flip briefly show leaving cards so they can fade out first."
+      }
+    },
+    {
+      "code": "onEnter / onLeave",
+      "text": {
+        "zh-TW": "③ Flip 把留下的卡片移動補位；新出現的交給 onEnter 放大淡入，被篩掉的交給 onLeave 縮小淡出。",
+        "en": "③ Flip slides the remaining cards into place; onEnter scales new ones in and onLeave shrinks filtered ones out."
+      }
+    },
+    {
+      "code": "absolute: true",
+      "text": {
+        "zh-TW": "動畫期間暫時改成絕對定位，卡片在格子裡移動時不會互相推擠。",
+        "en": "Cards are temporarily absolutely positioned during the animation so they don’t push each other while moving in the grid."
+      }
+    }
+  ]
+}

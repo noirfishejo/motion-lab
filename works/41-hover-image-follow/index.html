@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>41 quickTo: Project List with Cursor Image</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <span class="tag">hover image</span>
+    <!-- 專案清單（假資料）：滑鼠移到哪一列，就有一張圖片跟著游標移動；換列時圖片上下捲到下一張 -->
+    <ul class="projects">
+      <li><a class="project" href="#" data-index="0">
+        <span class="project-thumb" aria-hidden="true"><i class="ph-light ph-coffee"></i></span>
+        <span class="project-name">Northwind Coffee</span><span class="project-cat">Branding</span><span class="project-year">2026</span>
+      </a></li>
+      <li><a class="project" href="#" data-index="1">
+        <span class="project-thumb" aria-hidden="true"><i class="ph-light ph-map-trifold"></i></span>
+        <span class="project-name">Atlas Maps</span><span class="project-cat">Product</span><span class="project-year">2025</span>
+      </a></li>
+      <li><a class="project" href="#" data-index="2">
+        <span class="project-thumb" aria-hidden="true"><i class="ph-light ph-sun"></i></span>
+        <span class="project-name">Sola Energy</span><span class="project-cat">Website</span><span class="project-year">2025</span>
+      </a></li>
+      <li><a class="project" href="#" data-index="3">
+        <span class="project-thumb" aria-hidden="true"><i class="ph-light ph-bank"></i></span>
+        <span class="project-name">Kite Bank</span><span class="project-cat">App</span><span class="project-year">2024</span>
+      </a></li>
+      <li><a class="project" href="#" data-index="4">
+        <span class="project-thumb" aria-hidden="true"><i class="ph-light ph-notebook"></i></span>
+        <span class="project-name">Field Notes</span><span class="project-cat">Editorial</span><span class="project-year">2024</span>
+      </a></li>
+    </ul>
+  </main>
+
+  <!-- 跟著游標的圖片框：裡面把所有圖片排成一直欄，換專案時整欄上下移動 -->
+  <div class="preview" aria-hidden="true">
+    <div class="preview-strip">
+        <span class="preview-img"><i class="ph-light ph-coffee"></i></span>
+        <span class="preview-img"><i class="ph-light ph-map-trifold"></i></span>
+        <span class="preview-img"><i class="ph-light ph-sun"></i></span>
+        <span class="preview-img"><i class="ph-light ph-bank"></i></span>
+        <span class="preview-img"><i class="ph-light ph-notebook"></i></span>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

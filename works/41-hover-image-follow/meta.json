@@ -1,0 +1,52 @@
+{
+  "title": {
+    "zh-TW": "滑過專案時圖片跟著游標",
+    "en": "Project list with an image that follows the cursor"
+  },
+  "short": {
+    "zh-TW": "游標跟隨圖片",
+    "en": "Hover image"
+  },
+  "summary": {
+    "zh-TW": "作品集常見的專案清單：滑鼠移到哪一列，就有一張圖片跟著游標移動，移得快時會稍微傾斜；換到別列時，圖片像捲軸一樣上下捲到那一張。手機沒有滑過，改成每列左邊直接放小圖。",
+    "en": "A common portfolio project list: hovering a row brings up an image that follows the cursor and tilts when you move fast; moving to another row scrolls the image strip to that project. Phones show a small thumbnail on each row instead."
+  },
+  "topic": "pointer",
+  "tech": "quickTo",
+  "tags": [
+    "gsap.quickTo",
+    "yPercent",
+    "(hover: hover)"
+  ],
+  "date": "2026-11-23",
+  "notes": [
+    {
+      "code": "gsap.quickTo(preview, 'x')",
+      "text": {
+        "zh-TW": "跟著游標的東西都用 quickTo：先建立好補間，滑鼠每動一次只丟新的位置進去，比每次 gsap.to() 省效能，也比較順。",
+        "en": "Anything that follows the cursor uses quickTo: build the tween once and feed it new positions — cheaper and smoother than calling gsap.to() each time."
+      }
+    },
+    {
+      "code": "moveX(x, x)",
+      "text": {
+        "zh-TW": "圖片第一次出現時，起點和終點都設成游標的位置，直接出現在游標旁，不會從畫面角落飛過來。",
+        "en": "On first appearance the start and end are both the cursor position, so it appears right there instead of flying in from a corner."
+      }
+    },
+    {
+      "code": "strip yPercent: -i × (100 / n)",
+      "text": {
+        "zh-TW": "所有圖片排成一直欄放在框裡，換專案時整欄上下移動。往下一列，圖片就往上捲，方向和清單一致。",
+        "en": "All images sit in one column inside the frame; changing project moves the whole column. Going down the list scrolls the images up, matching the direction."
+      }
+    },
+    {
+      "code": "@media (hover: none)",
+      "text": {
+        "zh-TW": "手機沒有「滑過」，跟著游標的圖片完全不會出現。改成每列左邊直接放小圖，內容才不會在手機上消失。",
+        "en": "Phones have no hover, so the following image would never appear. Each row shows a small thumbnail instead so nothing is lost on mobile."
+      }
+    }
+  ]
+}

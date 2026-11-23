@@ -4,14 +4,14 @@
 // ── 命名與分類規則（新增練習時照這個寫，搜尋才找得到） ──
 // title：看得到的東西（元件或效果）＋情境，用設計師會搜尋的詞，不用 GSAP 名詞開頭。例：「浮動標籤輸入框」
 // short：側欄用的名稱，中文 8 個字以內。例：「浮動標籤」
-// topic（分類，依用途）：forms 表單／overlays 導覽與浮層／feedback 回饋與狀態／transitions 進場與轉場／scroll 捲動／graphics 文字與視覺效果
+// topic（分類，依用途）：forms 表單／overlays 導覽與浮層／feedback 回饋與狀態／pointer 拖曳與游標／transitions 進場與轉場／scroll 捲動／graphics 文字與視覺效果
 // tech：主要的 GSAP 功能，例：Tween、Timeline、ScrollTrigger、Flip、Draggable、SplitText
 // tags：細節技巧（gsap.to、stagger、overwrite…）
 // 文字欄位都寫成 { 'zh-TW': '…', en: '…' }；少了 en 會自動顯示中文
 // ═══════════════════════════════════════════════
 export { WORKS } from './works-data.js';
 
-export const TOPICS = ['forms', 'overlays', 'feedback', 'transitions', 'scroll', 'graphics'];
+export const TOPICS = ['forms', 'overlays', 'feedback', 'pointer', 'transitions', 'scroll', 'graphics'];
 
 // ── 搜尋（首頁和作品頁側欄共用） ─────────────────
 // 每個欄位用「|」分開：中英文名稱、短名稱、分類名稱、GSAP 功能、標籤（全部轉小寫）

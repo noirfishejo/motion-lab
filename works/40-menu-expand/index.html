@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>40 Timeline: Menu Button Expands into Navigation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 參考 patricktischendorf.de 右上角的選單：按鈕本身「長大」變成導覽面板 -->
+  <header class="bar">
+    <span class="brand">Studio</span>
+  </header>
+
+  <!-- 同一個外殼：關著時就是「Menu ＋」按鈕，打開時往左下撐開成面板 -->
+  <div class="shell">
+    <button class="toggle" type="button" aria-expanded="false" aria-controls="nav">
+      <span class="toggle-label"><span class="word">Menu</span><span class="word">Close</span></span>
+      <i class="ph-light ph-plus toggle-icon" aria-hidden="true"></i>
+    </button>
+    <nav class="nav" id="nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="#"><span class="mask"><span class="item">Home</span></span></a></li>
+        <li><a href="#"><span class="mask"><span class="item">Work</span></span></a></li>
+        <li><a href="#"><span class="mask"><span class="item">Services</span></span></a></li>
+        <li><a href="#"><span class="mask"><span class="item">Contact</span></span></a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <main class="page">
+    <h1 class="headline">Designer<br>&amp; developer</h1>
+    <p class="hint">Open the menu at the top right.</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

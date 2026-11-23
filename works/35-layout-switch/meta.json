@@ -8,44 +8,44 @@
     "en": "List / grid switch"
   },
   "summary": {
-    "zh-TW": "按右上角的按鈕在清單和格狀之間切換：每個項目、裡面的方塊和文字，都從原本的位置移動、縮放到新的位置，一眼就看得出誰去了哪裡。版面只靠切換 CSS class，動畫全部交給 Flip。",
-    "en": "Toggle between list and grid with the buttons at the top right: every item, its thumbnail and its text move and scale from where they were to where they go, so you can see what went where. The layout is just a CSS class; Flip handles all the motion."
+    "zh-TW": "按右上角的按鈕在清單和格狀之間切換。預設是產品裡最常見的做法：項目先淡出、版面切換、再在新的位置依序浮出，不會有縮放變形。把 MODE 改成 morph，就是用 Flip 讓每個項目從舊位置移動、縮放到新位置。",
+    "en": "Toggle between list and grid with the buttons at the top right. By default it uses the most common product pattern — items fade out, the layout switches, and they rise in at their new spots without any scaling. Set MODE to morph to have Flip move and scale every item from old to new position."
   },
   "topic": "transitions",
   "tech": "Flip",
   "tags": [
-    "Flip.getState",
-    "nested",
-    "stagger"
+    "stagger",
+    "Flip",
+    "nested"
   ],
   "date": "2026-11-23",
   "notes": [
     {
-      "code": "Flip.getState('.item, .item-thumb, .item-text')",
+      "code": "MODE = 'fade'",
       "text": {
-        "zh-TW": "① 先記下所有東西現在的位置和大小，不只外層的項目，也包括裡面的方塊和文字。",
-        "en": "① Record where everything is now — not just the items but their thumbnails and text too."
+        "zh-TW": "產品介面最常見的切換方式：舊版面很快淡出（0.18 秒）、瞬間換版面、新版面依序浮出。不會有縮放變形，文字一直清楚可讀。",
+        "en": "The most common product pattern: the old layout fades out fast (0.18s), the layout switches instantly, and the new one rises in item by item. No scaling, so text stays crisp."
+      }
+    },
+    {
+      "code": "MODE = 'morph'",
+      "text": {
+        "zh-TW": "Flip 讓每個項目從舊位置移動、縮放到新位置，看得出「誰去了哪裡」。適合相簿、檔案、商品這種要追蹤同一個項目的情境；一般清單用 fade 就夠了。",
+        "en": "Flip moves and scales each item from old to new position so you can see what went where. Good for photos, files and products where tracking an item matters; for ordinary lists, fade is enough."
       }
     },
     {
       "code": "classList.toggle('is-grid')",
       "text": {
-        "zh-TW": "② 直接切換 CSS class，版面瞬間變成另一種。清單和格狀的樣子完全寫在 CSS，設計師改版面不用動 JS。",
-        "en": "② Toggle the CSS class and the layout switches instantly. Both layouts live entirely in CSS, so designers can restyle without touching JS."
+        "zh-TW": "兩種模式都一樣：版面完全寫在 CSS，JS 只切換 class。設計師改清單或格狀的樣子，不用動程式。",
+        "en": "Both modes share this: the layouts live entirely in CSS and JS only toggles a class, so designers can restyle either view without touching code."
       }
     },
     {
-      "code": "nested: true",
+      "code": "nested: true + scale: true",
       "text": {
-        "zh-TW": "項目裡面的方塊和文字，位置會跟著外層一起變。加上 nested，Flip 才會把「外層的移動」扣掉，裡面的東西不會飄移錯位。",
-        "en": "The thumbnail and text move along with their item. nested tells Flip to account for the parent’s movement so the children don’t drift."
-      }
-    },
-    {
-      "code": "scale: true",
-      "text": {
-        "zh-TW": "方塊從 48px 變成整張卡片寬，用縮放（scale）過去而不是改寬高，動畫比較順；Flip 會在結束時換回真正的尺寸。",
-        "en": "The thumbnail grows from 48px to card width by scaling rather than resizing, which is smoother; Flip restores the real size at the end."
+        "zh-TW": "morph 模式用到：裡面的方塊和文字會跟著外層一起移動，nested 讓 Flip 扣掉外層的移動；scale 讓方塊用縮放過去，比改寬高順。",
+        "en": "Used in morph mode: nested accounts for the parent’s movement so children don’t drift; scale animates the thumbnail by scaling, smoother than resizing."
       }
     }
   ]

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>37 ScrollTrigger: Stacking Cards</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <section class="intro">
+      <span class="tag">stacking cards</span>
+      <h1 class="intro-title">Process</h1>
+      <p class="hint">↓ Scroll inside the preview</p>
+    </section>
+
+    <!-- 四張卡片（假文案）：往下捲時，下一張蓋上來，被蓋住的那張往後縮小、變暗 -->
+    <section class="stack">
+      <article class="stack-card is-accent">
+        <span class="stack-num">01</span>
+        <h2>Research</h2>
+        <p>Talk to the people who will use it.</p>
+        <span class="shade" aria-hidden="true"></span>
+      </article>
+      <article class="stack-card">
+        <span class="stack-num">02</span>
+        <h2>Shape</h2>
+        <p>Turn findings into a clear direction.</p>
+        <span class="shade" aria-hidden="true"></span>
+      </article>
+      <article class="stack-card is-accent">
+        <span class="stack-num">03</span>
+        <h2>Build</h2>
+        <p>Make it real, one component at a time.</p>
+        <span class="shade" aria-hidden="true"></span>
+      </article>
+      <article class="stack-card">
+        <span class="stack-num">04</span>
+        <h2>Ship</h2>
+        <p>Release, measure and learn.</p>
+        <span class="shade" aria-hidden="true"></span>
+      </article>
+    </section>
+
+    <section class="outro"><p>Scroll back up to unstack them.</p></section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

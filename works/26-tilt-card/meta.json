@@ -11,7 +11,7 @@
     "zh-TW": "滑鼠在卡片上移動時，卡片朝游標的方向傾斜，表面的反光跟著移動，標題和卡號浮在卡片前面一點。離開後慢慢回正。",
     "en": "As the cursor moves over the card it tilts toward it, a glare drifts across the surface, and the title and number float slightly in front. It settles back when you leave."
   },
-  "topic": "graphics",
+  "topic": "pointer",
   "tech": "quickTo",
   "tags": [
     "rotationX / rotationY",

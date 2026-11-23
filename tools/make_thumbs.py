@@ -29,7 +29,7 @@ def shoot(work_id, theme, tmpdir):
     out = os.path.join(ROOT, 'works', work_id, f'thumb-{theme}.jpg')
     subprocess.run([
         CHROME, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--mute-audio',
-        '--force-prefers-reduced-motion=0', '--window-size=1200,750',
+        '--window-size=1200,750',
         f'--virtual-time-budget={WAIT_MS}', f'--screenshot={png}',
         f'{BASE}/tools/capture.html?id={work_id}&theme={theme}'
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=90)

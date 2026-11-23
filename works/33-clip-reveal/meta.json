@@ -8,7 +8,7 @@
     "en": "Clip-path reveal"
   },
   "summary": {
-    "zh-TW": "捲到圖片時，圖片用 clip-path 從一條縫慢慢打開：第一張從中間往上下撐開、第二張從左邊擦開、第三張從底部升起，裡面的圖示同時從放大縮回原尺寸。往回捲會再關上。",
+    "zh-TW": "捲到圖片時（三張同寬），圖片用 clip-path 從一條縫慢慢打開：第一張從中間往上下撐開、第二張從左邊擦開、第三張從底部升起，裡面的圖示同時從放大縮回原尺寸。往回捲會再關上。",
     "en": "As each image scrolls in, clip-path opens it from a slit — the first splits from the centre, the second wipes from the left, the third rises from the bottom — while the icon inside zooms back to normal. Scrolling back closes them again."
   },
   "topic": "scroll",

@@ -1,0 +1,72 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --surface-2: #1B1E23;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-hover: #2B45F0; /* 實心按鈕滑過 */
+  --accent-fg: #6E83FF;
+  --success: #4CC38A;
+  --warning: #F2B35A;
+  --danger: #FF7A7A;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --surface-2: #ECECE8;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+  --success: #0B7354;
+  --warning: #8A5300;
+  --danger: #C0262D;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; } /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+
+.stage { width: min(760px, 100%); padding: 32px 16px; display: grid; gap: 16px; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.filters button { height: 36px; padding: 0 14px; border: 1px solid var(--line-strong); background: transparent; color: var(--text); font: 400 13px/1 "Inter Tight", sans-serif; cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.filters button:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 3px; }
+
+.tiles { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 520px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tile { display: grid; gap: 6px; padding-bottom: 12px; background: var(--surface); border: 1px solid var(--line); }
+.tile-img { aspect-ratio: 4 / 3; display: grid; place-items: center; background: var(--accent); color: #fff; font-size: 36px; }
+.tile-name { padding: 0 12px; font-size: 14px; font-weight: 500; }
+.tile-cat { padding: 0 12px; font: 400 11px/1 "JetBrains Mono", monospace; color: var(--muted); }
+
+/* ── 按鈕狀態：和作品集網站相同的規則（見 DESIGN.md「按鈕」）──
+   實心：滑過底色變亮｜外框：滑過外框和文字變主文字色｜無框：滑過出現淺色底
+   全部：按下縮成 0.97、停用 40% 透明 */
+.filters button { transition: background-color 0.3s, border-color 0.3s, color 0.3s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.filters button[aria-pressed="false"]:hover { border-color: var(--text); }
+.filters button[aria-pressed="true"]:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.filters button:active { transform: scale(0.97); }
