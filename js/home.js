@@ -2,7 +2,7 @@
 // 首頁：開場滾動、篩選列、作品卡片
 // ═══════════════════════════════════════════════
 import { initI18n, t, pick } from './i18n.js';
-import { WORKS, TOPICS } from './works.js';
+import { WORKS, TOPICS, searchText, matches } from './works.js';
 import { initHeader } from './header.js';
 import { initSmooth, scrollToY } from './smooth.js';
 import { initCursor, magnetic, slidingIndicator } from './interactions.js';
@@ -55,6 +55,11 @@ function renderFilters() {
     </button>`).join('');
   // 選中的分類下方：一條會滑動的底線（練習 15）
   moveFilterLine = slidingIndicator(nav, b => b.getAttribute('aria-pressed') === 'true', 14);
+  // 搜尋：停止輸入 0.2 秒後才篩選，打字時卡片不會一直閃
+  let timer;
+  const search = document.getElementById('workSearch');
+  search.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => applyFilter(), 200); });
+  search.addEventListener('keydown', e => { if (e.key === 'Escape' && search.value) { search.value = ''; applyFilter(); } });
   nav.addEventListener('click', e => {
     const btn = e.target.closest('button');
     if (btn) applyFilter(btn.dataset.topic);
@@ -103,7 +108,7 @@ function fitThumb(thumb) {
 function renderCards() {
   const grid = document.getElementById('workGrid');
   grid.innerHTML = WORKS.map((w, i) => `
-    <a class="work-card" href="work.html?id=${w.id}" data-topic="${w.topic}" aria-labelledby="card-${w.id}" aria-describedby="card-${w.id}-sum">
+    <a class="work-card" href="work.html?id=${w.id}" data-topic="${w.topic}" data-search="${searchText(w, t(`topic.${w.topic}`)).replace(/"/g, '&quot;')}" aria-labelledby="card-${w.id}" aria-describedby="card-${w.id}-sum">
       <div class="thumb"${w.thumb ? ` data-fit="${w.thumb}"` : ''}>
         <iframe src="works/${w.id}/index.html" loading="lazy" tabindex="-1" aria-hidden="true" title=""></iframe>
         <span class="thumb-go" aria-hidden="true"><i class="ph-light ph-arrow-up-right"></i></span>
@@ -154,12 +159,18 @@ function renderCards() {
 // （之前用 Flip 只會「移動」卡片；還沒捲進畫面的卡片是透明的，篩選後就看不到。
 //   現在每次篩選都重新播一次進場動畫，所有分類都一定會出現卡片）
 let filterTl;
-function applyFilter(topic) {
+// 分類和搜尋一起決定要顯示哪些卡片
+let currentTopic = 'all';
+function applyFilter(topic = currentTopic) {
+  currentTopic = topic;
   document.querySelectorAll('.filters button').forEach(b => b.setAttribute('aria-pressed', b.dataset.topic === topic));
   moveFilterLine();
+  const query = document.getElementById('workSearch').value;
   const cards = [...document.querySelectorAll('.work-card')];
   const shown = cards.filter(c => c.style.display !== 'none');
-  const next = cards.filter(c => topic === 'all' || c.dataset.topic === topic);
+  const next = cards.filter(c => (topic === 'all' || c.dataset.topic === topic) && matches(c.dataset.search, query));
+  const empty = document.getElementById('empty');
+  empty.textContent = t(query.trim() ? 'work.searchEmpty' : 'home.works.empty');
 
   const swap = () => {
     cards.forEach(c => { c.style.display = next.includes(c) ? '' : 'none'; });

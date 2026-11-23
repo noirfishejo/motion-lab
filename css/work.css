@@ -37,10 +37,10 @@
 .switch{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 10px;font:400 13px/1 var(--font-mono);color:var(--muted)}
 .switch:hover{color:var(--text)}
 .switch-track{position:relative;width:32px;height:18px;border:1px solid var(--line-strong);background:var(--bg);transition:background-color var(--dur-fast),border-color var(--dur-fast)}
-.switch-thumb{position:absolute;top:2px;left:2px;width:12px;height:12px;background:var(--muted);transition:transform var(--dur) var(--ease-out),background-color var(--dur-fast)}
+.switch-thumb{position:absolute;top:2px;left:2px;width:12px;height:12px;background:var(--muted);transition:background-color var(--dur-fast)} /* 位置和伸縮交給 GSAP（練習 11 的做法） */
 .switch[aria-checked="true"]{color:var(--text)}
 .switch[aria-checked="true"] .switch-track{background:var(--accent);border-color:var(--accent)}
-.switch[aria-checked="true"] .switch-thumb{transform:translateX(14px);background:var(--accent-ink)}
+.switch[aria-checked="true"] .switch-thumb{background:var(--accent-ink)}
 
 /* ── 程式碼面板：可收合 ── */
 .code-toggle{

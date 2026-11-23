@@ -4,7 +4,7 @@
 // 原始程式碼直接讀 works/<id>/ 的檔案；按「存回檔案」才會寫回（需用 tools/serve.py 開啟）
 // ═══════════════════════════════════════════════
 import { initI18n, t, pick, list } from './i18n.js';
-import { WORKS, TOPICS } from './works.js';
+import { WORKS, TOPICS, searchText, matches } from './works.js';
 import { initHeader } from './header.js';
 import { initSmooth } from './smooth.js';
 import { initCursor, magnetic, slidingIndicator, toast } from './interactions.js';
@@ -12,6 +12,7 @@ import { initCursor, magnetic, slidingIndicator, toast } from './interactions.js
 // 三個程式碼檔案（放在最前面：下方的流程一開始就會用到）
 const FILES = { html: 'index.html', css: 'style.css', js: 'script.js' };
 const MODES = { html: 'htmlmixed', css: 'css', js: 'javascript' };
+const LANG_NAMES = { html: 'HTML', css: 'CSS', js: 'JS' };
 const original = {};   // 檔案裡的原始程式碼
 const docs = {};       // 編輯器裡每個分頁各自的內容（各自有 Ctrl+Z 紀錄）
 let editor = null;
@@ -124,7 +125,7 @@ function setupWorksNav() {
       <div class="works-nav-group">
         <h3>${t(`topic.${topic}`)}</h3>
         <ul>${WORKS.filter(w => w.topic === topic).map(w => `
-          <li><a href="work.html?id=${w.id}"${w.id === id ? ' aria-current="page"' : ''} data-search="${escapeHtml(searchText(w))}">${pick(w.short || w.title)}</a></li>`).join('')}
+          <li><a href="work.html?id=${w.id}"${w.id === id ? ' aria-current="page"' : ''} data-search="${escapeHtml(searchText(w, t(`topic.${w.topic}`)))}">${pick(w.short || w.title)}</a></li>`).join('')}
         </ul>
       </div>`).join('');
 
@@ -132,12 +133,11 @@ function setupWorksNav() {
   const search = document.getElementById('worksSearch');
   const empty = document.getElementById('worksNavEmpty');
   search.addEventListener('input', () => {
-    const words = search.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
     let any = false;
     nav.querySelectorAll('.works-nav-group').forEach(group => {
       let groupHit = false;
       group.querySelectorAll('li').forEach(li => {
-        const hit = words.every(word => li.firstElementChild.dataset.search.includes(word));
+        const hit = matches(li.firstElementChild.dataset.search, search.value);
         li.hidden = !hit;
         groupHit ||= hit;
       });
@@ -204,9 +204,20 @@ function setupMarkers() {
   try { showMarkers = localStorage.getItem('showMarkers') !== 'false'; } catch {}
   sw.hidden = false;
   sw.setAttribute('aria-checked', showMarkers);
+  // 滑塊：滑過去途中被拉長再縮回（練習 11 的開關動效）
+  const thumb = sw.querySelector('.switch-thumb');
+  const TRAVEL = 14; // 軌道內寬 30 − 左右各 2 − 滑塊 12
+  const place = on => {
+    if (!window.gsap) { thumb.style.transform = `translateX(${on ? TRAVEL : 0}px)`; return; }
+    if (reduceMotion()) { gsap.set(thumb, { x: on ? TRAVEL : 0 }); return; }
+    gsap.to(thumb, { x: on ? TRAVEL : 0, duration: 0.45, ease: 'expo.out', overwrite: true });
+    gsap.fromTo(thumb, { scaleX: 1.5, transformOrigin: on ? '0% 50%' : '100% 50%' }, { scaleX: 1, duration: 0.4, ease: 'expo.out' });
+  };
+  if (window.gsap) gsap.set(thumb, { x: showMarkers ? TRAVEL : 0 }); else place(showMarkers);
   sw.addEventListener('click', () => {
     showMarkers = !showMarkers;
     sw.setAttribute('aria-checked', showMarkers);
+    place(showMarkers);
     try { localStorage.setItem('showMarkers', showMarkers); } catch {}
     if (isModified()) renderEdited(); else resetPreview(); // 重新載入預覽套用設定
   });
@@ -392,6 +403,7 @@ function setupTabs() {
     current = tab.dataset.lang;
     editor.swapDoc(docs[current]);
     editor.setOption('screenReaderLabel', t('work.editorLabel', { lang: tab.textContent.trim() }));
+    labelCopy();
   };
   const moveLine = slidingIndicator(document.querySelector('.code-tabs'), b => b.getAttribute('aria-selected') === 'true', 16);
   document.getElementById('codeToggle').addEventListener('click', () => requestAnimationFrame(() => moveLine(false))); // 展開後才量得到位置
@@ -404,17 +416,27 @@ function setupTabs() {
   });
 }
 
+// 「複製 JS」：按鈕文字跟著目前的分頁改變
+function labelCopy() {
+  const btn = document.getElementById('copyBtn');
+  btn.querySelector('span').textContent = t('work.copy', { lang: LANG_NAMES[current] });
+  btn.title = t('work.copyHint', { lang: LANG_NAMES[current] });
+}
+
 // ── 複製（複製的是「目前編輯後」的內容） ─────────
 function setupCopy() {
   // 結果用 Toast 通知顯示（練習 14），讀屏軟體另外由 #status 唸出
-  const bind = (btn, getText) => {
+  // 兩顆按鈕的差別寫在按鈕上：「複製 JS」只複製目前分頁；「複製完整頁面」是三個檔案合成一個可以直接打開的 HTML
+  const bind = (btn, getText, what) => {
     btn.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(getText()); toast(t('work.copiedStatus')); announce(t('work.copiedStatus')); }
+      const msg = t('work.copiedStatus', { what: what() });
+      try { await navigator.clipboard.writeText(getText()); toast(msg); announce(msg); }
       catch { toast(t('work.copyFailed'), 'error'); announce(t('work.copyFailed')); }
     });
   };
-  bind(document.getElementById('copyBtn'), () => values()[current] ?? '');
-  bind(document.getElementById('copyAllBtn'), () => buildHtml({ withBase: false }));
+  bind(document.getElementById('copyBtn'), () => values()[current] ?? '', () => LANG_NAMES[current]);
+  bind(document.getElementById('copyAllBtn'), () => buildHtml({ withBase: false }), () => t('work.copiedAll'));
+  labelCopy();
 }
 
 // ── 手機：展開程式碼後，預覽整個捲出畫面時出現「看預覽」按鈕 ──
@@ -454,9 +476,4 @@ function reveal() {
 }
 
 function reduceMotion() { return matchMedia('(prefers-reduced-motion: reduce)').matches; }
-// 側欄搜尋用的文字：中英文名稱、分類、GSAP 功能、標籤（全部轉小寫）
-function searchText(w) {
-  const both = f => (typeof f === 'string' ? f : Object.values(f || {}).join(' '));
-  return [both(w.title), both(w.short), t(`topic.${w.topic}`), w.tech, ...w.tags].join(' ').toLowerCase();
-}
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]); }

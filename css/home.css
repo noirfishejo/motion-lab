@@ -41,6 +41,20 @@
   position:sticky;top:var(--header-h);z-index:5;background:var(--bg);
   border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:var(--grid-gap);
 }
+/* 篩選列＋搜尋：電腦、平板同一列（搜尋靠右）；手機搜尋換到下一列 */
+.filters-bar{display:flex;align-items:stretch}
+.filters-bar .filters{flex:1;min-width:0}
+.search{display:flex;align-items:center;gap:8px;flex:0 0 220px;padding:0 0 0 16px;border-left:1px solid var(--line);transition:border-color var(--dur-fast)}
+.search i{font-size:16px;color:var(--muted)}
+.search input{flex:1;min-width:0;height:48px;border:0;background:transparent;color:var(--text);font:400 14px/1 var(--font-body);outline:none;border-radius:0}
+.search input::placeholder{color:var(--muted)}
+.search:focus-within i{color:var(--accent-fg)}
+@media (max-width:599px){
+  .filters-bar{flex-wrap:wrap}
+  .filters-bar .filters{flex:1 1 100%}
+  .search{flex:1 1 100%;padding:0;border-left:0;border-top:1px solid var(--line)}
+  .search input{font-size:16px} /* 16px：iPhone 點進去不會放大畫面 */
+}
 .filters{position:relative;display:flex;gap:0;overflow-x:auto;scrollbar-width:none} /* relative：滑動底線以這裡為基準 */
 .filters::-webkit-scrollbar{display:none}
 .filters button{

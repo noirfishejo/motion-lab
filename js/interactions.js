@@ -11,45 +11,55 @@ import { t } from './i18n.js';
 const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = () => matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-// ── 游標跟隨方塊 ─────────────────────────────────
-// 系統游標保留（點選、選字要精準），旁邊多一個會跟著跑的品牌方塊：
-// 平常是小方塊；移到可以點的東西上變成外框；移到作品卡上變成「看作品」標籤；
-// 移到預覽、程式碼、輸入框上就藏起來（那裡需要專心操作）
-const LAG = 0.35; // 方塊追上游標要幾秒（越大越「飄」）
+// ── 自訂游標 ─────────────────────────────────────
+// 取代系統游標（有滑鼠的裝置才啟用；觸控、減少動態時維持系統游標）：
+// · 點：8px 品牌方塊，完全貼著滑鼠，點選才精準
+// · 框：跟在後面、有一點延遲的外框；移到可以點的東西上會放大把它框起來
+// · 移到作品卡上：外框變成實心方塊，裡面是「眼睛」圖示（看作品）
+// · 預覽、程式碼、輸入框：換回系統游標（打字需要文字游標；iframe 裡也收不到滑鼠位置）
+const LAG = 0.28; // 外框追上游標要幾秒（越大越「飄」）
 
 export function initCursor() {
   if (!window.gsap || reduce() || !finePointer()) return;
-  const el = document.createElement('div');
-  el.className = 'cursor';
-  el.setAttribute('aria-hidden', 'true');
-  el.innerHTML = `<span class="cursor-label">${t('cursor.view')}<i class="ph-light ph-arrow-up-right"></i></span>`;
-  document.body.append(el);
+  const dot = document.createElement('div');
+  dot.className = 'cursor-dot';
+  const ring = document.createElement('div');
+  ring.className = 'cursor';
+  ring.innerHTML = '<i class="ph-light ph-eye"></i>';
+  [dot, ring].forEach(el => { el.setAttribute('aria-hidden', 'true'); document.body.append(el); });
+  document.documentElement.classList.add('has-cursor'); // CSS：這時才把系統游標藏起來
 
-  const moveX = gsap.quickTo(el, 'x', { duration: LAG, ease: 'expo.out' });
-  const moveY = gsap.quickTo(el, 'y', { duration: LAG, ease: 'expo.out' });
+  const ringX = gsap.quickTo(ring, 'x', { duration: LAG, ease: 'expo.out' });
+  const ringY = gsap.quickTo(ring, 'y', { duration: LAG, ease: 'expo.out' });
   let first = true;
 
   const setState = target => {
-    const hide = target.closest('iframe, .CodeMirror, input, textarea, select, .preview-frame');
-    const card = target.closest('.work-card');
-    const link = target.closest('a, button, [role="tab"], [role="switch"], label');
-    el.classList.toggle('is-hidden', !!hide);
-    el.classList.toggle('is-card', !hide && !!card);
-    el.classList.toggle('is-link', !hide && !card && !!link);
+    const native = !!target.closest('iframe, .CodeMirror, input, textarea, select, .preview-frame');
+    const card = !native && !!target.closest('.work-card');
+    const link = !native && !card && !!target.closest('a, button, [role="tab"], [role="switch"], label, summary');
+    document.documentElement.classList.toggle('cursor-native', native);
+    ring.classList.toggle('is-card', card);
+    ring.classList.toggle('is-link', link);
+    dot.classList.toggle('is-hidden', native || card);
+    ring.classList.toggle('is-hidden', native);
   };
 
   document.addEventListener('pointermove', e => {
     if (e.pointerType !== 'mouse') return;
-    if (first) { gsap.set(el, { x: e.clientX, y: e.clientY }); first = false; }
-    moveX(e.clientX);
-    moveY(e.clientY);
-    el.classList.add('is-visible');
+    gsap.set(dot, { x: e.clientX, y: e.clientY }); // 點：立刻跟上
+    if (first) { gsap.set(ring, { x: e.clientX, y: e.clientY }); first = false; }
+    ringX(e.clientX);
+    ringY(e.clientY);
+    dot.classList.add('is-visible');
+    ring.classList.add('is-visible');
     setState(e.target);
   }, { passive: true });
   // 游標離開視窗，或移進 iframe（之後就收不到移動事件了）時藏起來
-  document.addEventListener('pointerout', e => { if (!e.relatedTarget || e.relatedTarget.tagName === 'IFRAME') el.classList.remove('is-visible'); });
-  document.addEventListener('pointerdown', () => gsap.to(el, { scale: 0.8, duration: 0.15, ease: 'power2.out' }));
-  document.addEventListener('pointerup', () => gsap.to(el, { scale: 1, duration: 0.5, ease: 'expo.out' }));
+  document.addEventListener('pointerout', e => {
+    if (!e.relatedTarget || e.relatedTarget.tagName === 'IFRAME') { dot.classList.remove('is-visible'); ring.classList.remove('is-visible'); }
+  });
+  document.addEventListener('pointerdown', () => gsap.to([dot, ring], { scale: 0.75, duration: 0.15, ease: 'power2.out' }));
+  document.addEventListener('pointerup', () => gsap.to([dot, ring], { scale: 1, duration: 0.5, ease: 'expo.out' }));
 }
 
 // ── 磁吸按鈕 ─────────────────────────────────────

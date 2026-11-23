@@ -15,10 +15,10 @@
   "topic.graphics": "Text & graphics",
   "work.preview": "Preview",
   "work.replay": "Replay",
-  "work.copy": "Copy",
+  "work.copy": "Copy {lang}",
   "work.copied": "Copied",
   "work.copyFailed": "Copy failed — please select it manually",
-  "work.copyAll": "Copy as one HTML file",
+  "work.copyAll": "Copy full page",
   "work.notes": "Key notes",
   "work.prev": "Previous",
   "work.next": "Next",
@@ -41,7 +41,7 @@
   "work.saveConfirmYes": "Save",
   "work.saveConfirmNo": "Cancel",
   "work.savedStatus": "Saved {files}",
-  "work.copiedStatus": "Copied to clipboard",
+  "work.copiedStatus": "Copied {what}",
   "work.saveFailedStatus": "Save failed",
   "nav.label": "Main menu",
   "nav.skip": "Skip to main content",
@@ -61,5 +61,7 @@
   "work.pagerLabel": "Previous / next practice",
   "lang.switch": "中",
   "lang.switchLabel": "切換成中文",
-  "cursor.view": "View"
+  "work.copyHint": "Copy only the {lang} code in this tab",
+  "work.copyAllHint": "Combine HTML, CSS and JS into one file — paste it into a .html file and open it",
+  "work.copiedAll": "the full page (save it as .html to open)"
 }

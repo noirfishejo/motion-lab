@@ -15,10 +15,10 @@
   "topic.graphics": "文字與圖形",
   "work.preview": "預覽",
   "work.replay": "重播",
-  "work.copy": "複製",
+  "work.copy": "複製 {lang}",
   "work.copied": "已複製",
   "work.copyFailed": "複製失敗，請手動選取",
-  "work.copyAll": "複製成單一 HTML 檔",
+  "work.copyAll": "複製完整頁面",
   "work.notes": "重點筆記",
   "work.prev": "上一個",
   "work.next": "下一個",
@@ -41,7 +41,7 @@
   "work.saveConfirmYes": "確定存檔",
   "work.saveConfirmNo": "取消",
   "work.savedStatus": "已存回 {files}",
-  "work.copiedStatus": "已複製到剪貼簿",
+  "work.copiedStatus": "已複製 {what}",
   "work.saveFailedStatus": "存檔失敗",
   "nav.label": "主選單",
   "nav.skip": "跳到主要內容",
@@ -61,5 +61,7 @@
   "work.pagerLabel": "上一個／下一個練習",
   "lang.switch": "EN",
   "lang.switchLabel": "Switch to English",
-  "cursor.view": "看作品"
+  "work.copyHint": "只複製目前分頁的 {lang} 程式碼",
+  "work.copyAllHint": "把 HTML、CSS、JS 合成一個檔案，貼上存成 .html 就能直接打開",
+  "work.copiedAll": "完整頁面（可存成 .html 直接打開）"
 }

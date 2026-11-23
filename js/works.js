@@ -306,3 +306,14 @@ export const WORKS = [
 ];
 
 export const TOPICS = ['components', 'transitions', 'scroll', 'graphics'];
+
+// 搜尋用的文字：中英文名稱、分類名稱、GSAP 功能、標籤（全部轉小寫）。首頁和作品頁側欄共用
+export function searchText(w, topicLabel) {
+  const both = f => (typeof f === 'string' ? f : Object.values(f || {}).join(' '));
+  return [both(w.title), both(w.short), topicLabel, w.tech, ...w.tags].join(' ').toLowerCase();
+}
+
+// 輸入的字（用空白分開）全部都要出現才算符合
+export function matches(text, query) {
+  return query.trim().toLowerCase().split(/\s+/).filter(Boolean).every(word => text.includes(word));
+}

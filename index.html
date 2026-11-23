@@ -62,7 +62,14 @@
       </div>
 
       <!-- 外層負責吸附和不透明底色；內層負責橫向捲動和邊緣漸隱（漸隱才不會透出後面的卡片） -->
-      <div class="filters-bar"><nav class="filters" aria-label="" data-i18n-attr="aria-label:home.filter.label"></nav></div>
+      <div class="filters-bar">
+        <nav class="filters" aria-label="" data-i18n-attr="aria-label:home.filter.label"></nav>
+        <!-- 搜尋：和分類一起篩選（例如「元件」裡搜「按鈕」） -->
+        <label class="search">
+          <i class="ph-light ph-magnifying-glass" aria-hidden="true"></i>
+          <input type="search" id="workSearch" autocomplete="off" data-i18n-attr="aria-label:work.search;placeholder:work.search">
+        </label>
+      </div>
 
       <div class="work-grid" id="workGrid"></div>
       <p class="empty" id="empty" hidden data-i18n="home.works.empty"></p>
