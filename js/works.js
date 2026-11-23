@@ -4,7 +4,7 @@
 // ── 命名與分類規則（新增練習時照這個寫，搜尋才找得到） ──
 // title：看得到的東西（元件或效果）＋情境，用設計師會搜尋的詞，不用 GSAP 名詞開頭。例：「浮動標籤輸入框」
 // short：側欄用的名稱，中文 8 個字以內。例：「浮動標籤」
-// topic（分類，依用途）：components 元件／transitions 進場與轉場／scroll 捲動／graphics 文字與圖形
+// topic（分類，依用途）：forms 表單／overlays 導覽與浮層／feedback 回饋與狀態／transitions 進場與轉場／scroll 捲動／graphics 文字與視覺效果
 // tech：主要的 GSAP 功能，例：Tween、Timeline、ScrollTrigger、Flip、Draggable、SplitText
 // tags：細節技巧（gsap.to、stagger、overwrite…）
 // 文字欄位都寫成 { 'zh-TW': '…', en: '…' }；少了 en 會自動顯示中文
@@ -118,7 +118,7 @@ export const WORKS = [
     title: { 'zh-TW': '可拖曳的底部抽屜', en: 'Draggable bottom sheet' },
     short: { 'zh-TW': '拖曳底部抽屜', en: 'Bottom sheet' }, // 側欄用的短名稱
     summary: { 'zh-TW': '手機常見的底部抽屜：上下拖曳，放開後依照甩動的速度繼續滑，最後吸附到「全開／半開／收合」三個位置之一。', en: 'A mobile-style bottom sheet: drag it up or down, release and it keeps gliding with your flick speed, then snaps to open, half or collapsed.' },
-    topic: 'components',
+    topic: 'overlays',
     tech: 'Draggable', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['Draggable', 'InertiaPlugin', 'snap'],
     date: '2026-11-19',
@@ -135,7 +135,7 @@ export const WORKS = [
     title: { 'zh-TW': '加入購物車飛入動畫', en: 'Add-to-cart fly-in' },
     short: { 'zh-TW': '加入購物車', en: 'Add to cart' }, // 側欄用的短名稱
     summary: { 'zh-TW': '按下「加入購物車」，商品方塊會沿著一條弧線飛進右上角的購物車，抵達後數字加一、購物車彈一下。虛線就是飛行路徑。', en: 'Press “Add to cart” and a product square flies along an arc into the cart at the top right; when it lands the count goes up and the cart bounces. The dashed line is the flight path.' },
-    topic: 'components',
+    topic: 'feedback',
     tech: 'MotionPath', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['MotionPathPlugin', 'arrayToRawPath', 'align'],
     date: '2026-11-19',
@@ -152,7 +152,7 @@ export const WORKS = [
     title: { 'zh-TW': '按鈕磁吸與波紋', en: 'Magnetic & ripple buttons' },
     short: { 'zh-TW': '按鈕磁吸＋波紋', en: 'Button feedback' }, // 側欄用的短名稱
     summary: { 'zh-TW': '兩種常見的按鈕回饋：滑鼠靠近時按鈕被吸過去的磁吸效果，以及從點擊位置擴散的波紋。按下時按鈕會稍微縮小，給手指「壓下去」的感覺。', en: 'Two common button feedbacks: a magnetic pull toward the cursor, and a ripple spreading from where you click. Pressing shrinks the button slightly so it feels pushed in.' },
-    topic: 'components',
+    topic: 'feedback',
     tech: 'quickTo', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.quickTo', 'pointer events', 'elastic'],
     date: '2026-11-20',
@@ -189,7 +189,7 @@ export const WORKS = [
     title: { 'zh-TW': '設定頁開關', en: 'Settings toggle switch' },
     short: { 'zh-TW': '開關 Switch', en: 'Toggle switch' }, // 側欄用的短名稱
     summary: { 'zh-TW': '設定頁最常見的開關：點擊時滑塊滑到另一邊，途中被拉長再縮回，按住時滑塊先稍微變寬。顏色交給 CSS，位置和形變交給 GSAP。', en: 'The most common control on a settings page: on click the thumb slides across, stretching on the way and settling back; pressing widens it slightly first. CSS handles colour, GSAP handles position and shape.' },
-    topic: 'components',
+    topic: 'forms',
     tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.to', 'overwrite', 'role="switch"'],
     date: '2026-11-23',
@@ -206,7 +206,7 @@ export const WORKS = [
     title: { 'zh-TW': '浮動標籤輸入框', en: 'Floating label input' },
     short: { 'zh-TW': '浮動標籤', en: 'Floating label' }, // 側欄用的短名稱
     summary: { 'zh-TW': '標籤一開始躺在輸入框裡，點進去或有內容時縮小浮到上方，底線從左邊畫出來。Email 格式不對時，欄位會輕輕搖一下並顯示錯誤。', en: 'The label starts inside the field and floats up, shrinking, when you focus or type; an underline draws in from the left. An invalid email gives the field a small shake and shows an error.' },
-    topic: 'components',
+    topic: 'forms',
     tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.to', 'focus / blur', 'keyframes'],
     date: '2026-11-23',
@@ -223,7 +223,7 @@ export const WORKS = [
     title: { 'zh-TW': '送出按鈕的載入與結果', en: 'Submit button: loading and result' },
     short: { 'zh-TW': '送出按鈕狀態', en: 'Submit states' }, // 側欄用的短名稱
     summary: { 'zh-TW': '按下送出後，按鈕縮成方塊、裡面的小方塊開始轉；成功時撐回原本寬度並打勾，失敗時變紅並左右搖晃。勾選下方的選項就能試失敗的情況。', en: 'Pressing Send shrinks the button into a square with a small spinning square inside; on success it widens back with a check, on failure it turns red and shakes. Tick the option below to try a failure.' },
-    topic: 'components',
+    topic: 'forms',
     tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.timeline', 'async / await', 'aria-busy'],
     date: '2026-11-23',
@@ -240,7 +240,7 @@ export const WORKS = [
     title: { 'zh-TW': '堆疊式 Toast 通知', en: 'Stacking toast notifications' },
     short: { 'zh-TW': 'Toast 通知', en: 'Toast' }, // 側欄用的短名稱
     summary: { 'zh-TW': '從右下角滑入的通知：新的會把舊的往上推，底部的細線顯示剩餘時間，時間到自動消失；滑鼠移上去會暫停。最多同時顯示三則。', en: 'Notifications that slide in at the bottom right: new ones push older ones up, a thin line shows the time left, and they leave on their own — hovering pauses them. Up to three at once.' },
-    topic: 'components',
+    topic: 'feedback',
     tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.timeline', 'height: 0', 'pause / resume'],
     date: '2026-11-23',
@@ -257,7 +257,7 @@ export const WORKS = [
     title: { 'zh-TW': '分頁切換的底線滑動', en: 'Tabs with a sliding underline' },
     short: { 'zh-TW': '分頁 Tabs', en: 'Tabs' }, // 側欄用的短名稱
     summary: { 'zh-TW': '帳號設定頁的四個分頁：點分頁時，底線滑到它下方並變成它的寬度，內容往分頁移動的方向滑進來。方向鍵也能切換。', en: 'Four tabs on an account page: the underline slides under the chosen tab and matches its width, and the content slides in from the direction you moved. Arrow keys work too.' },
-    topic: 'components',
+    topic: 'overlays',
     tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.to', 'scaleX', 'role="tablist"'],
     date: '2026-11-23',
@@ -274,7 +274,7 @@ export const WORKS = [
     title: { 'zh-TW': '確認彈窗（手機變底部抽屜）', en: 'Confirm modal that becomes a bottom sheet' },
     short: { 'zh-TW': '彈窗 Modal', en: 'Modal / sheet' }, // 側欄用的短名稱
     summary: { 'zh-TW': '按「Delete project」打開確認彈窗：背景變暗，電腦版從下方稍微浮起、手機版從畫面底部整個滑上來。同一個元件依螢幕寬度切換，Esc、點背景都能關閉。', en: 'Delete project opens a confirmation: the background dims, and the dialog rises slightly on desktop or slides up from the bottom on phones. One component switches by screen width; Esc or clicking outside closes it.' },
-    topic: 'components',
+    topic: 'overlays',
     tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['<dialog>', 'showModal', 'matchMedia'],
     date: '2026-11-23',
@@ -291,7 +291,7 @@ export const WORKS = [
     title: { 'zh-TW': '常見問題手風琴', en: 'FAQ accordion' },
     short: { 'zh-TW': '手風琴', en: 'Accordion' }, // 側欄用的短名稱
     summary: { 'zh-TW': '點問題展開答案、再點一次收合：高度從 0 長到內容的實際高度，「＋」轉成「－」，答案文字輕輕往下浮出。預設一次只開一個。', en: 'Click a question to open its answer and again to close: the height grows from 0 to the real content height, “+” turns into “−”, and the answer text drifts in. One open at a time by default.' },
-    topic: 'components',
+    topic: 'overlays',
     tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ["height: 'auto'", 'aria-expanded', 'hidden'],
     date: '2026-11-23',
@@ -308,7 +308,7 @@ export const WORKS = [
     title: { 'zh-TW': '儀表板數字跳動計數', en: 'Dashboard count-up numbers' },
     short: { 'zh-TW': '數字計數', en: 'Count-up' }, // 側欄用的短名稱
     summary: { 'zh-TW': '三個統計數字從 0 跳到目標值，一開始很快、最後慢慢停在正確的數字。按 Refresh 換成新數字時，會從目前的值跳過去，不會每次都從 0 開始。', en: 'Three stats count up from 0 — fast at first, settling on the exact value. Refresh jumps from the current value to new numbers instead of restarting at 0.' },
-    topic: 'components',
+    topic: 'feedback',
     tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.to(object)', 'onUpdate', 'Intl.NumberFormat'],
     date: '2026-11-23',
@@ -344,7 +344,7 @@ export const WORKS = [
     title: { 'zh-TW': '骨架屏載入與換上內容', en: 'Skeleton loading to real content' },
     short: { 'zh-TW': '骨架屏', en: 'Skeleton' }, // 側欄用的短名稱
     summary: { 'zh-TW': '資料還沒回來時先顯示和內容同形狀的灰色骨架，一道光從左上斜斜掃到右下；資料回來後骨架淡出，圖片、標題、內文依序浮現。按預覽上方的「重播」可以再看一次。', en: 'While data loads, grey skeletons shaped like the content catch one diagonal sweep of light from top left to bottom right; when it arrives they fade out and the image, title and text rise in order. Use Replay above the preview to watch again.' },
-    topic: 'components',
+    topic: 'feedback',
     tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['repeat: -1', 'background-attachment', 'aria-busy'],
     date: '2026-11-23',
@@ -362,7 +362,7 @@ export const WORKS = [
     title: { 'zh-TW': '按讚愛心與粒子', en: 'Like button with particle burst' },
     short: { 'zh-TW': '按讚愛心', en: 'Like burst' }, // 側欄用的短名稱
     summary: { 'zh-TW': '按下愛心：空心縮掉、實心彈出，外框方塊擴散、十顆小方塊往四周噴開，按讚數往上滾一格。在圖片上點兩下也能按讚，中間會跳出大愛心。取消按讚則安靜地縮回去。', en: 'Tap the heart: the outline shrinks away, the filled heart pops in, a square ring expands and ten tiny squares burst outward while the count rolls up. Double-click the photo to like with a big centre heart. Unliking quietly shrinks back.' },
-    topic: 'components',
+    topic: 'feedback',
     tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['back.out', 'gsap.utils.random', 'aria-pressed'],
     date: '2026-11-23',
@@ -398,7 +398,7 @@ export const WORKS = [
     title: { 'zh-TW': '漢堡選單變 × 與全螢幕選單', en: 'Hamburger to × with fullscreen menu' },
     short: { 'zh-TW': '漢堡選單', en: 'Hamburger menu' }, // 側欄用的短名稱
     summary: { 'zh-TW': '按漢堡按鈕：三條線變成 ×，藍色選單從上往下展開，選項一個一個從遮罩下方升起。關閉時把同一條時間軸倒著播，Esc 也能關。', en: 'Press the hamburger: three lines become ×, a blue menu unfolds from the top and items rise one by one from a mask. Closing plays the same timeline in reverse; Esc works too.' },
-    topic: 'components',
+    topic: 'overlays',
     tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['tl.reverse()', 'clip-path', 'aria-expanded'],
     date: '2026-11-23',
@@ -414,7 +414,7 @@ export const WORKS = [
     title: { 'zh-TW': '下拉選單與滑動高亮', en: 'Dropdown with a sliding highlight' },
     short: { 'zh-TW': '下拉選單', en: 'Dropdown' }, // 側欄用的短名稱
     summary: { 'zh-TW': '點「Sort by」展開選單，滑鼠移過選項時，同一塊高亮底色跟著滑過去。方向鍵、Enter、Esc 都能操作，點外面會關閉。', en: 'Click “Sort by” to open the list; as the cursor moves over options, a single highlight slides along. Arrow keys, Enter and Esc work, and clicking outside closes it.' },
-    topic: 'components',
+    topic: 'overlays',
     tech: 'quickTo', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['gsap.quickTo', 'role="listbox"', 'transform-origin'],
     date: '2026-11-23',
@@ -444,7 +444,7 @@ export const WORKS = [
     title: { 'zh-TW': '跟著滑鼠傾斜的 3D 卡片', en: '3D card that tilts with the cursor' },
     short: { 'zh-TW': '3D 傾斜卡片', en: '3D tilt card' }, // 側欄用的短名稱
     summary: { 'zh-TW': '滑鼠在卡片上移動時，卡片朝游標的方向傾斜，表面的反光跟著移動，標題和卡號浮在卡片前面一點。離開後慢慢回正。', en: 'As the cursor moves over the card it tilts toward it, a glare drifts across the surface, and the title and number float slightly in front. It settles back when you leave.' },
-    topic: 'components',
+    topic: 'graphics',
     tech: 'quickTo', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['rotationX / rotationY', 'perspective', 'translateZ'],
     date: '2026-11-23',
@@ -459,7 +459,7 @@ export const WORKS = [
     title: { 'zh-TW': '勾選框打勾的描邊動畫', en: 'Checkbox with a drawn check' },
     short: { 'zh-TW': '勾選框', en: 'Checkbox' }, // 側欄用的短名稱
     summary: { 'zh-TW': '待辦清單的勾選框：勾選時方塊填色彈一下、勾勾一筆畫出來、文字劃上刪除線；取消時快速收回。真正的 checkbox 還在，鍵盤和讀屏軟體都能用。', en: 'A to-do checkbox: checking pops the fill, draws the tick in one stroke and strikes through the text; unchecking retracts quickly. The real checkbox is still there for keyboards and screen readers.' },
-    topic: 'components',
+    topic: 'forms',
     tech: 'DrawSVG', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['DrawSVGPlugin', 'CSS 變數', 'sr-only'],
     date: '2026-11-23',
@@ -474,7 +474,7 @@ export const WORKS = [
     title: { 'zh-TW': '密碼強度條', en: 'Password strength meter' },
     short: { 'zh-TW': '密碼強度', en: 'Password strength' }, // 側欄用的短名稱
     summary: { 'zh-TW': '輸入密碼時，四格強度條一次只動一格：變強時從左往右一格填滿才換下一格，變弱時從右往左清空；顏色從紅、橘、藍到綠。下方的條件符合時小方塊變綠（只是顯示狀態，不是按鈕）。', en: 'As you type, the four-segment meter moves one segment at a time — each fills completely before the next starts, and weaker passwords empty from the right — shifting from red through amber and blue to green. Met requirements turn their bullet green (status only, not a control).' },
-    topic: 'components',
+    topic: 'forms',
     tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['timeline', 'CSS 變數', 'aria-live'],
     date: '2026-11-23',
@@ -489,7 +489,7 @@ export const WORKS = [
     title: { 'zh-TW': '分段控制器與長條圖切換', en: 'Segmented control with chart transition' },
     short: { 'zh-TW': '分段控制', en: 'Segmented control' }, // 側欄用的短名稱
     summary: { 'zh-TW': 'Day／Week／Month／Year 四段切換：藍色底色滑到選中的那一格，下方長條圖的每一根依序長到新的高度。方向鍵也能切換。', en: 'Switch between Day, Week, Month and Year: the blue pill slides to the chosen segment and each chart bar grows to its new height in turn. Arrow keys work too.' },
-    topic: 'components',
+    topic: 'overlays',
     tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['xPercent', 'scaleY', 'role="radiogroup"'],
     date: '2026-11-23',
@@ -504,7 +504,7 @@ export const WORKS = [
     title: { 'zh-TW': '上傳進度環', en: 'Upload progress ring' },
     short: { 'zh-TW': '進度環', en: 'Progress ring' }, // 側欄用的短名稱
     summary: { 'zh-TW': '按 Upload：進度環和長條一起前進，速度忽快忽慢像真的網路；完成時百分比淡出，環變綠、打勾彈出來。', en: 'Press Upload: the ring and bar advance together at an uneven, realistic pace; on completion the percentage fades, the ring turns green and a tick pops in.' },
-    topic: 'components',
+    topic: 'feedback',
     tech: 'DrawSVG', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['DrawSVGPlugin', 'onUpdate', 'rotate(-90deg)'],
     date: '2026-11-23',
@@ -519,7 +519,7 @@ export const WORKS = [
     title: { 'zh-TW': '工具列提示框的延遲與暖機', en: 'Toolbar tooltips with delay and warm-up' },
     short: { 'zh-TW': '提示框 Tooltip', en: 'Tooltip' }, // 側欄用的短名稱
     summary: { 'zh-TW': '編輯器工具列：滑鼠停一下才出現說明（避免滑過就閃）；說明出現後移到旁邊的按鈕，提示框直接滑過去，不用再等。鍵盤移到按鈕上會立刻顯示。', en: 'An editor toolbar: the hint appears only after a short pause so passing over doesn’t flash; once visible, moving to a neighbour slides it across instantly. Keyboard focus shows it right away.' },
-    topic: 'components',
+    topic: 'overlays',
     tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['setTimeout', 'warm-up', 'aria-describedby'],
     date: '2026-11-23',
@@ -534,7 +534,7 @@ export const WORKS = [
     title: { 'zh-TW': '圖片載入從模糊變清楚', en: 'Blur-up image loading' },
     short: { 'zh-TW': '圖片模糊載入', en: 'Blur-up loading' }, // 側欄用的短名稱
     summary: { 'zh-TW': '圖片還在載入時先顯示很模糊的預覽，載入完成後由模糊漸漸變清楚。每張圖載入時間不同，所以會一張一張清楚起來；圖片框大小固定，版面不會跳。', en: 'While images load, a very blurred preview shows; once loaded, each sharpens into focus. Load times differ, so they clear one by one, and the fixed frames keep the layout still.' },
-    topic: 'graphics',
+    topic: 'feedback',
     tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
     tags: ['filter: blur', 'scale', 'aspect-ratio'],
     date: '2026-11-23',
@@ -547,7 +547,7 @@ export const WORKS = [
   }
 ];
 
-export const TOPICS = ['components', 'transitions', 'scroll', 'graphics'];
+export const TOPICS = ['forms', 'overlays', 'feedback', 'transitions', 'scroll', 'graphics'];
 
 // ── 搜尋（首頁和作品頁側欄共用） ─────────────────
 // 每個欄位用「|」分開：中英文名稱、短名稱、分類名稱、GSAP 功能、標籤（全部轉小寫）

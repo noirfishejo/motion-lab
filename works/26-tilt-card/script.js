@@ -15,8 +15,10 @@ if (!reduce && window.matchMedia('(hover: hover)').matches) {
   const glY = gsap.quickTo(glare, 'yPercent', { duration: FOLLOW, ease: 'power3.out' });
 
   // 滑鼠在卡片上的位置換算成 -0.5 ～ 0.5（正中間是 0）
+  // 用外層 .scene（不會轉動）的位置來算：卡片轉動後自己的外框會變大變形，從角落滑入時會算錯
+  const scene = card.parentElement;
   const point = e => {
-    const r = card.getBoundingClientRect();
+    const r = scene.getBoundingClientRect();
     return { px: (e.clientX - r.left) / r.width - 0.5, py: (e.clientY - r.top) / r.height - 0.5 };
   };
   // 光斑是卡片的 2 倍大（inset: -50%），所以移動「卡片寬度 × px」= 自己寬度的 px × 50%
@@ -33,6 +35,7 @@ if (!reduce && window.matchMedia('(hover: hover)').matches) {
     // 一進來就把光斑放在游標的位置（quickTo 第二個值是起點：起點＝終點就是直接跳過去），再淡入
     // 不這樣做的話，光斑會從上一次的位置（通常是正中央）滑過來
     const { px, py } = point(e);
+    gsap.killTweensOf(glare); // 停掉「離開時回到中央」的動畫，不然它會把光斑拉回正中間
     glX(px * GLARE, px * GLARE);
     glY(py * GLARE, py * GLARE);
     gsap.to(glare, { opacity: 1, duration: 0.4 });
@@ -40,7 +43,7 @@ if (!reduce && window.matchMedia('(hover: hover)').matches) {
   card.addEventListener('pointerleave', () => {
     // 離開：慢慢回正
     gsap.to(card, { rotationX: 0, rotationY: 0, duration: 1, ease: 'expo.out' });
-    gsap.to(glare, { opacity: 0, xPercent: 0, yPercent: 0, duration: 0.6 });
+    gsap.to(glare, { opacity: 0, duration: 0.4 }); // 只淡出、位置不動：下次進來時直接從游標的位置出現
   });
 
   // ── 自動示範一次（首頁縮圖也看得到動態）：左右輕輕晃一下再回正 ──
