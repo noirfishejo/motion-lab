@@ -82,8 +82,10 @@ moveIndicator(current, false);
 document.fonts.ready.then(() => moveIndicator(current, false));
 window.addEventListener('resize', () => moveIndicator(current, false));
 
+// #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // ── 自動示範一次（首頁縮圖也看得到動態） ──
 if (!reduce) {
   gsap.delayedCall(0.8, () => select(tabs[2]));
   gsap.delayedCall(1.8, () => select(tabs[1]));
 }
+// #endregion demo

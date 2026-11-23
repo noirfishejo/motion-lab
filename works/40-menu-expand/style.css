@@ -10,6 +10,7 @@
   --accent: #1733E5;
   --accent-hover: #2B45F0; /* 實心按鈕滑過 */
   --accent-fg: #6E83FF;
+  --accent-on-panel: #1733E5; /* 面板是反色的（深色模式下是白底），面板上的強調字要用深藍 */
   --success: #4CC38A;
   --warning: #F2B35A;
   --danger: #FF7A7A;
@@ -26,6 +27,7 @@
   --text: #141518;
   --muted: #62625D;
   --accent-fg: #1733E5;
+  --accent-on-panel: #6E83FF; /* 亮色模式下面板是黑底，改用淺藍 */
   --success: #0B7354;
   --warning: #8A5300;
   --danger: #C0262D;
@@ -92,10 +94,10 @@ body { display: block; }
 .nav { padding: 8px 18px 22px; }
 .nav ul { list-style: none; display: grid; gap: 2px; }
 .nav a { color: inherit; text-decoration: none; font: 500 clamp(32px, 6vw, 44px)/1.15 "Poppins", sans-serif; letter-spacing: -0.02em; }
-.nav a:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 2px; }
+.nav a:focus-visible { outline: 2px solid var(--accent-on-panel); outline-offset: 2px; }
 .mask { display: block; overflow: hidden; padding-bottom: 0.06em; }
 .item { display: inline-block; transition: color 0.3s; }
-.nav a:hover .item { color: var(--accent-fg); }
+.nav a:hover .item { color: var(--accent-on-panel); }
 
 /* 後方變暗 */
 .scrim { position: fixed; inset: 0; z-index: 10; background: rgba(0, 0, 0, 0.45); opacity: 0; pointer-events: none; }

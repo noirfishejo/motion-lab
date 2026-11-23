@@ -64,7 +64,7 @@
   "lang.switch": "EN",
   "lang.switchLabel": "Switch to English",
   "work.copyHint": "只複製目前分頁的 {lang} 程式碼",
-  "work.copyAllHint": "把 HTML、CSS、JS 合成一個檔案，貼上存成 .html 就能直接打開",
+  "work.copyAllHint": "把 HTML、CSS、JS 合成一個檔案，貼上存成 .html 就能直接打開（不含載入時的自動示範）",
   "work.copiedAll": "完整頁面（可存成 .html 直接打開）",
   "search.clear": "清除搜尋",
   "search.suggestions": "搜尋建議",

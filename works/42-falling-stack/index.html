@@ -23,11 +23,16 @@
 </head>
 <body>
   <main>
-    <!-- 一開始就是一疊卡片（假圖片：藍底＋白色圖示）。往下捲時畫面先固定住，最上面的卡片一張張往下掉落消失，
+    <!-- 一開始就是一疊卡片（假圖片：藍底＋白色圖示）。往下捲時畫面先固定住，最上面的卡片一張張往下掉落（或左右甩出）消失，
          全部掉完之後，頁面才真的開始往下捲（和練習 37「捲動時卡片堆疊」相反） -->
     <section class="pile">
       <div class="pile-head">
         <span class="tag">falling stack</span>
+        <!-- 切換兩種離場方式：往下掉落／左右甩出 -->
+        <div class="modes" role="group" aria-label="Exit style">
+          <button type="button" class="mode-btn" data-mode="fall" aria-pressed="true">Fall</button>
+          <button type="button" class="mode-btn" data-mode="swipe" aria-pressed="false">Swipe</button>
+        </div>
         <p class="hint">↓ Scroll inside the preview</p>
       </div>
       <div class="deck">

@@ -55,5 +55,6 @@
         "en": "Each step’s entrance is a function that returns a small timeline, added to the main one with tl.add(). All three steps share the same code."
       }
     }
-  ]
+  ],
+  "thumbEnd": true
 }

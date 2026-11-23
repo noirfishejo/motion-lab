@@ -112,7 +112,8 @@ export const WORKS = [
           "en": "Each step’s entrance is a function that returns a small timeline, added to the main one with tl.add(). All three steps share the same code."
         }
       }
-    ]
+    ],
+    "thumbEnd": true
   },
   {
     "id": "03-scroll-logo",
@@ -2406,23 +2407,24 @@ export const WORKS = [
   {
     "id": "42-falling-stack",
     "title": {
-      "zh-TW": "捲動時堆疊卡片依序掉落",
-      "en": "Stacked cards fall away as you scroll"
+      "zh-TW": "捲動時堆疊卡片依序掉落或甩出",
+      "en": "Stacked cards fall or swipe away as you scroll"
     },
     "short": {
       "zh-TW": "卡片依序掉落",
       "en": "Falling stack"
     },
     "summary": {
-      "zh-TW": "和「捲動時卡片堆疊」相反：一開始就是一疊卡片，往下捲時畫面先固定住，最上面的卡片一張張往下掉落消失、後面的往前遞補；掉完之後頁面才真的開始捲動。往回捲會再疊回去。",
-      "en": "The reverse of “cards stack as you scroll”: it starts as a stack, the view stays pinned while the top cards fall away one by one and the rest move forward; only then does the page actually scroll. Scroll back to restack them."
+      "zh-TW": "和「捲動時卡片堆疊」相反：一開始就是一疊卡片，往下捲時畫面先固定住，最上面的卡片一張張離場、後面的往前遞補；全部離場後頁面才真的開始捲動。上方可切換兩種離場方式：往下掉落，或左右交替甩出。往回捲會再疊回去。",
+      "en": "The reverse of “cards stack as you scroll”: it starts as a stack, the view stays pinned while the top cards leave one by one and the rest move forward; only then does the page actually scroll. Switch between two exits at the top: falling down, or swiping out left and right. Scroll back to restack them."
     },
     "topic": "scroll",
     "tech": "ScrollTrigger",
     "tags": [
       "pin",
       "scrub",
-      "power2.in"
+      "power2.in",
+      "x / rotation"
     ],
     "date": "2026-11-23",
     "markers": true,
@@ -2447,6 +2449,13 @@ export const WORKS = [
         "text": {
           "zh-TW": "掉落用「一開始慢、越來越快」的 ease，像受重力影響；後面的卡片往前遞補則用 power2.out，快到位、慢慢停。",
           "en": "Falling uses an ease that starts slow and speeds up, like gravity; the cards behind move forward with power2.out, arriving quickly and settling."
+        }
+      },
+      {
+        "code": "EXITS = { fall, swipe }",
+        "text": {
+          "zh-TW": "兩種離場方式寫成兩個函式，回傳「第 i 張卡片要動到哪裡」，其他（固定畫面、遞補）完全共用。甩出用 x 往左右交替飛出畫面（i % 2 決定方向），轉的角度比掉落大、不用淡出；切換時先把舊的 timeline 和 ScrollTrigger 拆掉再重建。",
+          "en": "Each exit is a function that returns where card i should go; pinning and the move-forward are shared. Swipe flies cards out with x, alternating sides by i % 2, with more rotation and no fade. Switching kills the old timeline and its ScrollTrigger, then rebuilds."
         }
       },
       {

@@ -61,7 +61,9 @@ function addToCart() {
 
 document.querySelector('.add').addEventListener('click', addToCart);
 
+// #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // 自動示範一次（首頁縮圖也看得到動態）
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   gsap.delayedCall(0.8, addToCart);
 }
+// #endregion demo

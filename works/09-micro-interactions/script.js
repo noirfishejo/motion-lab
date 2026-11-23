@@ -71,6 +71,7 @@ document.querySelectorAll('.btn-ripple, .btn-magnetic').forEach(btn => {
   });
 });
 
+// #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // ── 自動示範一次（首頁縮圖也看得到動態） ──
 if (!reduce) {
   gsap.timeline({ delay: 0.6 })
@@ -81,3 +82,4 @@ if (!reduce) {
       ripple(btn, btn.offsetWidth * 0.3, btn.offsetHeight * 0.5);
     }, 1.2);
 }
+// #endregion demo

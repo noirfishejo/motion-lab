@@ -24,6 +24,7 @@ if (!reduce && window.matchMedia('(hover: hover)').matches) {
   // 光斑是卡片的 2 倍大（inset: -50%），所以移動「卡片寬度 × px」= 自己寬度的 px × 50%
   const GLARE = 50;
 
+  let demo = null; // 自動示範的 timeline（滑鼠進來時停掉；複製時示範被拿掉就是 null）
   card.addEventListener('pointermove', e => {
     const { px, py } = point(e);
     rotY(px * MAX_TILT * 2);     // 左右移動 → 繞 Y 軸轉
@@ -32,7 +33,7 @@ if (!reduce && window.matchMedia('(hover: hover)').matches) {
     glY(py * GLARE);
   });
   card.addEventListener('pointerenter', e => {
-    demo.kill();
+    demo?.kill();
     // 一進來就把光斑放在游標的位置（quickTo 第二個值是起點：起點＝終點就是直接跳過去），再淡入
     // 不這樣做的話，光斑會從上一次的位置（通常是正中央）滑過來
     const { px, py } = point(e);
@@ -48,10 +49,12 @@ if (!reduce && window.matchMedia('(hover: hover)').matches) {
     gsap.to(glare, { opacity: 0, duration: 0.4 }); // 只淡出、位置不動：下次進來時直接從游標的位置出現
   });
 
+  // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
   // ── 自動示範一次（首頁縮圖也看得到動態）：左右輕輕晃一下再回正 ──
   // 滑鼠一進來就停掉示範，交給滑鼠控制（不然示範會和 quickTo 搶角度）
-  const demo = gsap.timeline({ delay: 0.8 })
+  demo = gsap.timeline({ delay: 0.8 })
     .to(card, { rotationY: 12, rotationX: 6, duration: 0.8, ease: 'power2.inOut' })
     .to(card, { rotationY: -10, rotationX: -4, duration: 1, ease: 'power2.inOut' })
     .to(card, { rotationY: 0, rotationX: 0, duration: 0.8, ease: 'expo.out' });
+  // #endregion demo
 }

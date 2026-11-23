@@ -64,7 +64,7 @@
   "lang.switch": "中",
   "lang.switchLabel": "切換成中文",
   "work.copyHint": "Copy only the {lang} code in this tab",
-  "work.copyAllHint": "Combine HTML, CSS and JS into one file — paste it into a .html file and open it",
+  "work.copyAllHint": "Combine HTML, CSS and JS into one file — paste it into a .html file and open it (without the on-load demo)",
   "work.copiedAll": "the full page (save it as .html to open)",
   "search.clear": "Clear search",
   "search.suggestions": "Suggestions",

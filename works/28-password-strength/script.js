@@ -72,8 +72,10 @@ reveal.addEventListener('click', () => {
   reveal.querySelector('i').className = `ph-light ${show ? 'ph-eye-slash' : 'ph-eye'}`;
 });
 
+// #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // ── 自動示範一次：一個字一個字「打」出一組密碼，看強度慢慢升級（假資料） ──
 if (!reduce) {
   const demo = 'Motion#2026';
   [...demo].forEach((_, i) => gsap.delayedCall(0.8 + i * 0.12, () => { input.value = demo.slice(0, i + 1); update(); }));
 }
+// #endregion demo

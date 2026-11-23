@@ -280,8 +280,9 @@ function setupMarkers() {
 function previewSrc() { return work.markers && showMarkers ? `${src}?markers` : src; }
 
 // 把三個檔案合成一個 HTML；加上 <base> 讓相對路徑（圖片等）仍然找得到
-function buildHtml({ withBase = true } = {}) {
+function buildHtml({ withBase = true, forCopy = false } = {}) {
   const v = values();
+  if (forCopy) v.js = stripDemo(v.js);
   let html = v.html
     .replace(/<link[^>]*href=["']style\.css["'][^>]*>/, () => `<style>\n${v.css}\n  </style>`)
     .replace(/<script[^>]*src=["']script\.js["'][^>]*><\/script>/, () => `<script>\n${v.js}\n  </script>`);
@@ -291,6 +292,9 @@ function buildHtml({ withBase = true } = {}) {
   }
   return html;
 }
+
+// 複製用：拿掉練習裡標成 demo 的段落（載入後自己播一次的示範，貼到自己的專案不需要）
+const stripDemo = js => js.replace(/[ \t]*\/\/ #region demo[\s\S]*?\/\/ #endregion demo[^\n]*\n?/g, '').replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
 
 function renderEdited() { frame.srcdoc = buildHtml(); }
 
@@ -489,8 +493,9 @@ function setupCopy() {
       catch { toast(t('work.copyFailed'), 'error'); announce(t('work.copyFailed')); }
     });
   };
-  bind(document.getElementById('copyBtn'), () => values()[current] ?? '', () => LANG_NAMES[current]);
-  bind(document.getElementById('copyAllBtn'), () => buildHtml({ withBase: false }), () => t('work.copiedAll'));
+  // 複製時拿掉自動示範（只有 JS 有）
+  bind(document.getElementById('copyBtn'), () => { const v = values()[current] ?? ''; return current === 'js' ? stripDemo(v) : v; }, () => LANG_NAMES[current]);
+  bind(document.getElementById('copyAllBtn'), () => buildHtml({ withBase: false, forCopy: true }), () => t('work.copiedAll'));
   labelCopy();
 }
 

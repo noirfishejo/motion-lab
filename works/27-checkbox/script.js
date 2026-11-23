@@ -44,7 +44,9 @@ document.querySelectorAll('.task').forEach(task => {
   });
 });
 
+// #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // ── 自動示範一次（首頁縮圖也看得到動態） ──
 if (!reduce) {
   gsap.delayedCall(0.8, () => { const i = document.querySelector('.task input'); i.checked = true; i.dispatchEvent(new Event('change')); });
 }
+// #endregion demo

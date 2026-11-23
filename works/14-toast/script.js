@@ -66,8 +66,10 @@ function dismiss(wrap) {
 document.querySelectorAll('.btn').forEach(btn =>
   btn.addEventListener('click', () => showToast(btn.dataset.type)));
 
+// #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // ── 自動示範一次（首頁縮圖也看得到動態） ──
 if (!reduce) {
   gsap.delayedCall(0.6, () => showToast('success'));
   gsap.delayedCall(1.3, () => showToast('info'));
 }
+// #endregion demo

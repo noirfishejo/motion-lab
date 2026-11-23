@@ -48,5 +48,7 @@ function setView(view) {
 
 buttons.forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
 
+// #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // ── 自動示範一次（首頁縮圖也看得到動態） ──
 if (!reduce) gsap.delayedCall(1, () => setView('grid'));
+// #endregion demo

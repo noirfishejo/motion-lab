@@ -26,6 +26,8 @@ export async function initI18n() {
 // 切換語言：記住後重新載入（作品頁有沒存的修改時，瀏覽器會先提醒）
 export function setLang(next) {
   try { localStorage.setItem('lang', next); } catch {}
+  // 記下目前捲到哪裡：重新載入後回到同一個位置（首頁也不會重播開場）
+  try { sessionStorage.setItem('langScroll', JSON.stringify({ path: location.pathname, y: scrollY })); } catch {}
   location.reload();
 }
 

@@ -65,7 +65,11 @@
       fit();
       frame.contentDocument.fonts.ready.then(fit);
       // 等練習的自動示範播完再截圖（make_thumbs.py 用 virtual-time-budget 控制時間）
-      setTimeout(() => { frame.contentWindow.ScrollTrigger?.refresh(); fit(); }, 3500);
+      setTimeout(() => {
+        // meta.json 的 "thumbEnd": true → 把目前所有動畫直接跳到結尾再截（避免截到轉場轉一半的畫面）
+        if (meta.thumbEnd) frame.contentWindow.gsap?.exportRoot().progress(1);
+        frame.contentWindow.ScrollTrigger?.refresh(); fit();
+      }, 3500);
     });
     frame.src = `../works/${id}/index.html`;
   </script>

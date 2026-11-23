@@ -26,6 +26,15 @@ if (hasGsap) gsap.registerPlugin(ScrollTrigger, SplitText);
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 if (!location.hash) window.scrollTo(0, 0);
 
+// 剛切換語言：回到切換前的位置，不重播開場（見 i18n.js 的 setLang）
+const resumeY = (() => {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem('langScroll'));
+    sessionStorage.removeItem('langScroll');
+    return saved?.path === location.pathname ? saved.y : null;
+  } catch { return null; }
+})();
+
 await initI18n();
 initHeader();
 renderFilters();
@@ -42,6 +51,10 @@ if (hasGsap) {
   document.documentElement.classList.remove('intro'); // 沒有動畫：直接顯示開場
 }
 scrollToHash();
+if (resumeY !== null) {
+  window.ScrollTrigger?.refresh(); // 開場的固定畫面會把頁面撐長，算好位置再捲過去
+  scrollToY(resumeY, { immediate: true });
+}
 
 // 從作品頁點「作品」回來（網址帶 #works）：
 // 開場固定畫面會把頁面撐長，要等 ScrollTrigger 算好位置再捲過去
@@ -391,7 +404,7 @@ function initMotion() {
       .add(showRest, '-=0.3');                                                   // 開場收尾時，其他內容才出現
 
     // 從作品頁回到 #works：不等開場，直接顯示
-    if (location.hash) intro.progress(1);
+    if (location.hash || resumeY !== null) intro.progress(1);
 
     return () => split.revert();
   });
