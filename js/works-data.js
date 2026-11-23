@@ -1909,5 +1909,168 @@ export const WORKS = [
         }
       }
     ]
+  },
+  {
+    "id": "33-clip-reveal",
+    "title": {
+      "zh-TW": "捲動時圖片從一條縫打開",
+      "en": "Images open from a slit on scroll"
+    },
+    "short": {
+      "zh-TW": "圖片遮罩揭露",
+      "en": "Clip-path reveal"
+    },
+    "summary": {
+      "zh-TW": "捲到圖片時，圖片用 clip-path 從一條縫慢慢打開：第一張從中間往上下撐開、第二張從左邊擦開、第三張從底部升起，裡面的圖示同時從放大縮回原尺寸。往回捲會再關上。",
+      "en": "As each image scrolls in, clip-path opens it from a slit — the first splits from the centre, the second wipes from the left, the third rises from the bottom — while the icon inside zooms back to normal. Scrolling back closes them again."
+    },
+    "topic": "scroll",
+    "tech": "ScrollTrigger",
+    "tags": [
+      "clip-path",
+      "inset()",
+      "scrub"
+    ],
+    "date": "2026-11-23",
+    "markers": true,
+    "thumb": ".intro, .shot:first-of-type",
+    "notes": [
+      {
+        "code": "clipPath: 'inset(50% 0% 50% 0%)'",
+        "text": {
+          "zh-TW": "inset 的四個數字是「上、右、下、左各裁掉多少」。上下各裁 50% 只剩中間一條線，補間到全部 0% 就是整張打開。",
+          "en": "inset’s four numbers are how much to cut from the top, right, bottom and left. Cutting 50% top and bottom leaves a line; tweening to all 0% opens it fully."
+        }
+      },
+      {
+        "code": "'inset(0% 100% 0% 0%)'",
+        "text": {
+          "zh-TW": "右邊裁 100%＝完全看不到，補間到 0 時會從左邊往右擦開。換一個邊就能換方向，不用改程式。",
+          "en": "Cutting 100% on the right hides everything; tweening to 0 wipes in from the left. Change which side to change the direction — no code changes."
+        }
+      },
+      {
+        "code": "scale: ZOOM → 1",
+        "text": {
+          "zh-TW": "打開的同時，裡面的圖從放大縮回原尺寸，像鏡頭往後拉，比單純打開更有深度。外框負責裁切、裡面負責縮放，兩層分開做。",
+          "en": "While it opens, the picture inside zooms back from larger, like a camera pulling out — more depth than a plain reveal. The frame clips and the inner layer scales."
+        }
+      },
+      {
+        "code": "start: 'top 85%', end: 'top 35%'",
+        "text": {
+          "zh-TW": "圖片頂端從畫面 85% 的位置開始打開、到 35% 時完全打開，也就是捲到畫面中間時剛好看完整張。",
+          "en": "It starts opening when the image top reaches 85% of the screen and is fully open at 35% — completely visible by the middle of the screen."
+        }
+      }
+    ]
+  },
+  {
+    "id": "34-sticky-steps",
+    "title": {
+      "zh-TW": "固定畫面的功能步驟說明",
+      "en": "Sticky visual with scrolling feature steps"
+    },
+    "short": {
+      "zh-TW": "固定步驟說明",
+      "en": "Sticky steps"
+    },
+    "summary": {
+      "zh-TW": "產品介紹頁常見的版面：左邊的畫面固定不動，右邊的四個步驟一段段捲過；捲到哪一步，左邊就換成那一步的畫面，下方的進度條也跟著前進。往回捲方向相反。",
+      "en": "A common product-page layout: the visual on the left stays put while four steps scroll past on the right; whichever step is in the middle, the visual switches to match and the progress marks follow. Scrolling back reverses the direction."
+    },
+    "topic": "scroll",
+    "tech": "ScrollTrigger",
+    "tags": [
+      "position: sticky",
+      "onToggle",
+      "autoAlpha"
+    ],
+    "date": "2026-11-23",
+    "markers": true,
+    "thumb": ".media, .step:first-child",
+    "notes": [
+      {
+        "code": "position: sticky",
+        "text": {
+          "zh-TW": "左邊的固定用 CSS 的 sticky 就好，不需要 GSAP 的 pin。GSAP 只負責「現在是哪一步、換畫面」這件事，分工比較單純。",
+          "en": "CSS sticky handles the fixed visual — no GSAP pin needed. GSAP only decides which step is active and swaps the visual, keeping responsibilities simple."
+        }
+      },
+      {
+        "code": "start: 'top center', end: 'bottom center'",
+        "text": {
+          "zh-TW": "每一步的範圍是「它經過畫面中間的這段時間」。這段時間裡它就是目前的步驟，捲過去就換下一步。",
+          "en": "Each step is active while it crosses the middle of the screen; scroll past and the next one takes over."
+        }
+      },
+      {
+        "code": "onToggle: self => self.isActive && show(i)",
+        "text": {
+          "zh-TW": "onToggle 在「進入或離開範圍」時觸發，只在進入時換畫面。往上捲、往下捲都會正確觸發，不用自己算方向。",
+          "en": "onToggle fires on entering or leaving the range; the visual changes only on entry. It works scrolling either way without tracking direction yourself."
+        }
+      },
+      {
+        "code": "y: 40 * dir",
+        "text": {
+          "zh-TW": "往下捲時新畫面從下面浮上來、往上捲時從上面下來，方向和捲動一致，比單純淡入淡出更清楚「往前還是往後」。",
+          "en": "New visuals rise from below when scrolling down and drop from above when scrolling up — matching the scroll makes forward and back clearer than a plain fade."
+        }
+      }
+    ]
+  },
+  {
+    "id": "35-layout-switch",
+    "title": {
+      "zh-TW": "清單與格狀檢視切換",
+      "en": "Switch between list and grid view"
+    },
+    "short": {
+      "zh-TW": "清單／格狀切換",
+      "en": "List / grid switch"
+    },
+    "summary": {
+      "zh-TW": "按右上角的按鈕在清單和格狀之間切換：每個項目、裡面的方塊和文字，都從原本的位置移動、縮放到新的位置，一眼就看得出誰去了哪裡。版面只靠切換 CSS class，動畫全部交給 Flip。",
+      "en": "Toggle between list and grid with the buttons at the top right: every item, its thumbnail and its text move and scale from where they were to where they go, so you can see what went where. The layout is just a CSS class; Flip handles all the motion."
+    },
+    "topic": "transitions",
+    "tech": "Flip",
+    "tags": [
+      "Flip.getState",
+      "nested",
+      "stagger"
+    ],
+    "date": "2026-11-23",
+    "notes": [
+      {
+        "code": "Flip.getState('.item, .item-thumb, .item-text')",
+        "text": {
+          "zh-TW": "① 先記下所有東西現在的位置和大小，不只外層的項目，也包括裡面的方塊和文字。",
+          "en": "① Record where everything is now — not just the items but their thumbnails and text too."
+        }
+      },
+      {
+        "code": "classList.toggle('is-grid')",
+        "text": {
+          "zh-TW": "② 直接切換 CSS class，版面瞬間變成另一種。清單和格狀的樣子完全寫在 CSS，設計師改版面不用動 JS。",
+          "en": "② Toggle the CSS class and the layout switches instantly. Both layouts live entirely in CSS, so designers can restyle without touching JS."
+        }
+      },
+      {
+        "code": "nested: true",
+        "text": {
+          "zh-TW": "項目裡面的方塊和文字，位置會跟著外層一起變。加上 nested，Flip 才會把「外層的移動」扣掉，裡面的東西不會飄移錯位。",
+          "en": "The thumbnail and text move along with their item. nested tells Flip to account for the parent’s movement so the children don’t drift."
+        }
+      },
+      {
+        "code": "scale: true",
+        "text": {
+          "zh-TW": "方塊從 48px 變成整張卡片寬，用縮放（scale）過去而不是改寬高，動畫比較順；Flip 會在結束時換回真正的尺寸。",
+          "en": "The thumbnail grows from 48px to card width by scaling rather than resizing, which is smoother; Flip restores the real size at the end."
+        }
+      }
+    ]
   }
 ];

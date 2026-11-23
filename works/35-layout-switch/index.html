@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>35 Flip: List and Grid Switch</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <header class="bar">
+      <h1 class="title">Projects</h1>
+      <!-- 檢視切換：清單 ↔ 格狀。版面只靠切換 class，動畫交給 Flip -->
+      <div class="view" role="group" aria-label="View">
+        <button type="button" class="view-btn" data-view="list" aria-pressed="true" aria-label="List view"><i class="ph-light ph-list"></i></button>
+        <button type="button" class="view-btn" data-view="grid" aria-pressed="false" aria-label="Grid view"><i class="ph-light ph-squares-four"></i></button>
+      </div>
+    </header>
+
+    <!-- 專案清單（假資料） -->
+    <ul class="items is-list">
+      <li class="item">
+        <span class="item-thumb"><i class="ph-light ph-folder"></i></span>
+        <span class="item-text"><span class="item-name">Brand refresh</span><span class="item-meta">24 files · Today</span></span>
+      </li>
+      <li class="item">
+        <span class="item-thumb"><i class="ph-light ph-image"></i></span>
+        <span class="item-text"><span class="item-name">Campaign shots</span><span class="item-meta">86 files · Yesterday</span></span>
+      </li>
+      <li class="item">
+        <span class="item-thumb"><i class="ph-light ph-file-text"></i></span>
+        <span class="item-text"><span class="item-name">Copy deck</span><span class="item-meta">3 files · Mon</span></span>
+      </li>
+      <li class="item">
+        <span class="item-thumb"><i class="ph-light ph-music-notes"></i></span>
+        <span class="item-text"><span class="item-name">Sound logo</span><span class="item-meta">5 files · Sun</span></span>
+      </li>
+      <li class="item">
+        <span class="item-thumb"><i class="ph-light ph-video"></i></span>
+        <span class="item-text"><span class="item-name">Launch film</span><span class="item-meta">12 files · Last week</span></span>
+      </li>
+      <li class="item">
+        <span class="item-thumb"><i class="ph-light ph-palette"></i></span>
+        <span class="item-text"><span class="item-name">Color study</span><span class="item-meta">9 files · Last week</span></span>
+      </li>
+    </ul>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

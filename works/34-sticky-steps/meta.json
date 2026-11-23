@@ -1,0 +1,54 @@
+{
+  "title": {
+    "zh-TW": "固定畫面的功能步驟說明",
+    "en": "Sticky visual with scrolling feature steps"
+  },
+  "short": {
+    "zh-TW": "固定步驟說明",
+    "en": "Sticky steps"
+  },
+  "summary": {
+    "zh-TW": "產品介紹頁常見的版面：左邊的畫面固定不動，右邊的四個步驟一段段捲過；捲到哪一步，左邊就換成那一步的畫面，下方的進度條也跟著前進。往回捲方向相反。",
+    "en": "A common product-page layout: the visual on the left stays put while four steps scroll past on the right; whichever step is in the middle, the visual switches to match and the progress marks follow. Scrolling back reverses the direction."
+  },
+  "topic": "scroll",
+  "tech": "ScrollTrigger",
+  "tags": [
+    "position: sticky",
+    "onToggle",
+    "autoAlpha"
+  ],
+  "date": "2026-11-23",
+  "markers": true,
+  "thumb": ".media, .step:first-child",
+  "notes": [
+    {
+      "code": "position: sticky",
+      "text": {
+        "zh-TW": "左邊的固定用 CSS 的 sticky 就好，不需要 GSAP 的 pin。GSAP 只負責「現在是哪一步、換畫面」這件事，分工比較單純。",
+        "en": "CSS sticky handles the fixed visual — no GSAP pin needed. GSAP only decides which step is active and swaps the visual, keeping responsibilities simple."
+      }
+    },
+    {
+      "code": "start: 'top center', end: 'bottom center'",
+      "text": {
+        "zh-TW": "每一步的範圍是「它經過畫面中間的這段時間」。這段時間裡它就是目前的步驟，捲過去就換下一步。",
+        "en": "Each step is active while it crosses the middle of the screen; scroll past and the next one takes over."
+      }
+    },
+    {
+      "code": "onToggle: self => self.isActive && show(i)",
+      "text": {
+        "zh-TW": "onToggle 在「進入或離開範圍」時觸發，只在進入時換畫面。往上捲、往下捲都會正確觸發，不用自己算方向。",
+        "en": "onToggle fires on entering or leaving the range; the visual changes only on entry. It works scrolling either way without tracking direction yourself."
+      }
+    },
+    {
+      "code": "y: 40 * dir",
+      "text": {
+        "zh-TW": "往下捲時新畫面從下面浮上來、往上捲時從上面下來，方向和捲動一致，比單純淡入淡出更清楚「往前還是往後」。",
+        "en": "New visuals rise from below when scrolling down and drop from above when scrolling up — matching the scroll makes forward and back clearer than a plain fade."
+      }
+    }
+  ]
+}

@@ -42,6 +42,13 @@
         if (!rc.width || !rc.height) continue;
         l = Math.min(l, rc.left); t = Math.min(t, rc.top); r = Math.max(r, rc.right); b = Math.max(b, rc.bottom);
       }
+      // 主要內容超出練習的畫面下緣（例如很長的捲動練習）：先把練習捲到內容的開頭，再重新量一次
+      if (b > VIEW.h && !fit.scrolled) {
+        fit.scrolled = true;
+        win.scrollTo(0, win.scrollY + t - 24);
+        win.ScrollTrigger?.update();
+        return requestAnimationFrame(fit);
+      }
       if (r > l && b > t) {
         k = Math.min(W * FIT_W / (r - l), H * FIT_H / (b - t), base * 2);
         tx = W / 2 - (l + r) / 2 * k;
