@@ -49,7 +49,7 @@
   --fs-label:11px;
 
   /* ── 間距與版面 ── */
-  --gutter:16px;
+  --gutter:20px;         /* 畫面左右邊距：頁首、側欄文字、內容都對齊這條線（以側欄為準）*/
   --max:none;            /* 不限制最大寬度：頁首、內容、頁尾都撐滿，只留左右 gutter */
   --header-h:56px;
   --section-gap:96px;
@@ -102,7 +102,6 @@
     --fs-title:30px;
     --fs-h2:34px;
     --fs-h3:20px;
-    --gutter:32px;
     --header-h:64px;
     --section-gap:120px;
     --grid-gap:16px;
@@ -118,7 +117,6 @@
     --fs-h2:44px;
     --fs-h3:22px;
     --fs-body:16px;
-    --gutter:48px;
     --header-h:72px;
     --section-gap:160px;
     --grid-gap:16px;      /* 卡片之間的間距（電腦） */

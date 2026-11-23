@@ -177,7 +177,7 @@ html.has-full{overflow:hidden} /* 全螢幕時後方頁面不捲動 */
 }
 .works-nav.is-open{transform:none;visibility:visible;transition:transform var(--dur) var(--ease-out),visibility 0s}
 /* 參考 shadcn/ui 文件側欄：依主題分組，只列短名稱 */
-.works-nav-list{flex:1;overflow-y:auto;scrollbar-width:none;padding:20px 12px 32px}
+.works-nav-list{flex:1;overflow-y:auto;scrollbar-width:none;padding:20px calc(var(--gutter) - 8px) 32px} /* 連結本身有 8px 內距 → 文字剛好在 gutter 上 */
 .works-nav-list::-webkit-scrollbar{display:none}
 .works-nav-group + .works-nav-group{margin-top:20px}
 .works-nav-group h3{padding:0 8px 6px;font:400 var(--fs-label)/1.4 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
@@ -233,8 +233,8 @@ html.nav-init body,html.nav-init .works-nav{transition:none!important}
   @view-transition{navigation:auto}
   .site-header{view-transition-name:site-header}
   .works-nav{view-transition-name:works-nav}
-  ::view-transition-old(root){animation:vt-out .18s cubic-bezier(.4,0,1,1) both}
-  ::view-transition-new(root){animation:vt-in .32s var(--ease-out) both}
+  /* 舊頁面留在下面不淡出，新頁面直接淡入蓋上去：中間不會有兩頁都半透明、露出空白的瞬間（之前閃白就是這個原因） */
+  ::view-transition-old(root){animation:none}
+  ::view-transition-new(root){animation:vt-in .3s var(--ease-out) both}
 }
-@keyframes vt-out{to{opacity:0}}
 @keyframes vt-in{from{opacity:0;transform:translateY(8px)}}

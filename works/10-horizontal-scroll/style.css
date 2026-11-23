@@ -1,4 +1,5 @@
 :root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
   --bg: #0B0D10;
   --surface: #14161A;
   --line: #23262B;
@@ -11,6 +12,7 @@
 
 /* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
 :root[data-theme="light"] {
+  color-scheme: light;
   --bg: #F5F5F2;
   --surface: #FFFFFF;
   --line: #E0E0DB;
@@ -67,7 +69,7 @@ body {
   background: var(--surface);
   border: 1px solid var(--line);
 }
-.panel-intro { background: var(--accent); border-color: var(--accent); }
+.panel-intro { background: var(--accent); border-color: var(--accent); color: #fff; } /* 藍底一律白字（亮色模式的 --text 是深色） */
 .num { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--muted); }
 h2 {
   align-self: end;

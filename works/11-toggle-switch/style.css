@@ -1,4 +1,5 @@
 :root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
   --bg: #0B0D10;
   --surface: #14161A;
   --line: #23262B;
@@ -11,6 +12,7 @@
 
 /* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
 :root[data-theme="light"] {
+  color-scheme: light;
   --bg: #F5F5F2;
   --surface: #FFFFFF;
   --line: #E0E0DB;
@@ -61,7 +63,8 @@ body {
 .row-hint { font-size: 13px; color: var(--muted); }
 
 /* ── 開關 ──
-   軌道 52×28（含 1px 邊框），滑塊 22×22，左右各留 3px → 滑塊要移動 52 − 2 − 3 × 2 − 22 = 22px（script.js 會自己量） */
+   軌道 52×28（含 1px 邊框），內距 3px → 裡面剩 20px 高，滑塊做成 20×20 才會上下左右都留 3px 置中；
+   滑塊要移動 52 − 2 − 3 × 2 − 20 = 24px（script.js 會自己量） */
 .switch {
   position: relative;
   flex: none;
@@ -79,8 +82,8 @@ body {
 
 .thumb {
   display: block;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   background: var(--muted);
   transition: background-color 0.3s;
   will-change: transform;
