@@ -146,7 +146,7 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
 /* ── 搜尋找不到的空狀態 ── */
 .empty-state{display:grid;justify-items:center;gap:12px;padding:56px 16px;text-align:center}
 .empty-icon{display:grid;place-items:center;width:64px;height:64px;border:1px solid var(--line-strong);margin-bottom:4px;overflow:hidden}
-.empty-icon i{font-size:28px;color:var(--accent-fg)}
+.empty-icon i{font-size:28px;color:var(--line-strong)} /* 和外框同色 */
 .empty-title{font:500 var(--fs-h3)/1.4 var(--font-display);color:var(--text);overflow-wrap:anywhere}
 .empty-hint{font-size:var(--fs-small);color:var(--muted)}
 .empty-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:8px}

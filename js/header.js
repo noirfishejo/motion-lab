@@ -48,9 +48,16 @@ function setupTheme() {
   };
   render();
   btn.addEventListener('click', () => {
-    root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
-    try { localStorage.setItem('theme', root.dataset.theme); } catch {}
-    render();
+    const apply = () => {
+      root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
+      try { localStorage.setItem('theme', root.dataset.theme); } catch {}
+      render();
+    };
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // 整頁的顏色淡入淡出（瀏覽器內建的 View Transitions；不支援就直接換）
+    if (document.startViewTransition && !reduce) document.startViewTransition(apply); else apply();
+    // 圖示轉半圈換成新的（太陽 ↔ 月亮）
+    if (window.gsap && !reduce) gsap.fromTo(btn.querySelector('i'), { rotation: -120, scale: 0.4, opacity: 0 }, { rotation: 0, scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(2)' });
   });
   matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
     let saved = null;

@@ -214,9 +214,12 @@ html.nav-init body,html.nav-init .works-nav{transition:none!important}
 .notes{list-style:none;counter-reset:note;display:grid;border-top:1px solid var(--line)}
 .notes li{counter-increment:note;display:grid;gap:8px;padding:16px 0;border-bottom:1px solid var(--line)}
 .notes code{
-  justify-self:start;font:400 12px/1.4 var(--font-mono);color:var(--accent-fg);
+  /* 標籤一律一行、同樣高度；太長的程式碼可以左右滑動，滑鼠移上去看完整內容（data-tip） */
+  justify-self:start;max-width:100%;height:30px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;white-space:nowrap;
+  font:400 12px/20px var(--font-mono); /* 固定 30px 高：中英文、符號混排時行高也不會被撐開 */color:var(--accent-fg);
   background:var(--surface);border:1px solid var(--line);padding:4px 8px;
 }
+.notes code::-webkit-scrollbar{display:none}
 .notes code::before{content:counter(note,decimal-leading-zero) "  ";color:var(--muted)}
 .notes p{font-size:14px;color:var(--muted);line-height:1.7}
 

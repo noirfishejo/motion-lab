@@ -64,6 +64,10 @@ function renderInfo() {
   document.getElementById('workTags').innerHTML = [work.tech, ...work.tags].map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
   document.getElementById('notes').innerHTML = (work.notes || []).map(n =>
     `<li><code>${escapeHtml(pick(n.code))}</code><p>${pick(n.text)}</p></li>`).join('');
+  // 被截掉的長程式碼：加上提示框顯示完整內容
+  document.fonts.ready.then(() => document.querySelectorAll('.notes code').forEach(c => {
+    if (c.scrollWidth > c.clientWidth + 1) { c.dataset.tip = c.textContent; c.tabIndex = 0; }
+  }));
 }
 
 function renderPager() {
@@ -97,17 +101,53 @@ function setupFullscreen() {
   const panel = document.getElementById('previewWrap').closest('.panel');
   const full = document.getElementById('fullBtn');
   const exit = document.getElementById('exitFullBtn');
-  const set = on => {
-    panel.classList.toggle('is-full', on);
-    document.documentElement.classList.toggle('has-full', on);
-    on ? window.__lenis?.stop() : window.__lenis?.start(); // 全螢幕時後方頁面不捲動
+  const placeholder = document.createElement('div'); // 全螢幕時佔住原本的位置，後面的版面不會跳動
+  // 把一個矩形換成 clip-path：只露出畫面上這一塊
+  const clipTo = r => `inset(${r.top}px ${innerWidth - r.right}px ${innerHeight - r.bottom}px ${r.left}px)`;
+  let busy = false;
+
+  const finish = on => {
     full.hidden = on;
     exit.hidden = !on;
     (on ? exit : full).focus();
+    busy = false;
   };
-  full.addEventListener('click', () => set(true));
-  exit.addEventListener('click', () => set(false));
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('is-full')) set(false); });
+
+  const open = () => {
+    if (busy || panel.classList.contains('is-full')) return;
+    busy = true;
+    const r = panel.getBoundingClientRect();
+    const cs = getComputedStyle(panel);
+    placeholder.style.height = `${r.height}px`;
+    placeholder.style.position = cs.position; // 電腦版預覽是 sticky：佔位方塊也一起固定，收回時才回到看得到的位置
+    placeholder.style.top = cs.top;
+    panel.before(placeholder);
+    panel.classList.add('is-full');
+    document.documentElement.classList.add('has-full');
+    window.__lenis?.stop(); // 全螢幕時後方頁面不捲動
+    if (!window.gsap || reduceMotion()) { finish(true); return; }
+    // 從原本的位置「展開」到整個畫面（clip-path 不會把預覽內容壓扁變形）
+    gsap.fromTo(panel, { clipPath: clipTo(r) }, { clipPath: 'inset(0px 0px 0px 0px)', duration: 0.55, ease: 'expo.inOut', clearProps: 'clipPath', onComplete: () => finish(true) });
+  };
+
+  const close = () => {
+    if (busy || !panel.classList.contains('is-full')) return;
+    busy = true;
+    const done = () => {
+      panel.classList.remove('is-full');
+      document.documentElement.classList.remove('has-full');
+      placeholder.remove();
+      window.__lenis?.start();
+      finish(false);
+    };
+    if (!window.gsap || reduceMotion()) { done(); return; }
+    // 收回原本的位置（佔位的方塊就是目的地）
+    gsap.to(panel, { clipPath: clipTo(placeholder.getBoundingClientRect()), duration: 0.45, ease: 'expo.inOut', onComplete: () => { gsap.set(panel, { clearProps: 'clipPath' }); done(); } });
+  };
+
+  full.addEventListener('click', open);
+  exit.addEventListener('click', close);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('is-full')) close(); });
 }
 
 // ── 作品列表側欄 ─────────────────────────────────
@@ -171,6 +211,12 @@ function setupWorksNav() {
     if (focus && !open) toggle.focus();
     if (focus && open && overlay) search.focus(); // 手機、平板打開側欄時，直接可以打字搜尋
     if (!init) setTimeout(() => editor?.refresh(), 650); // 內容變寬變窄後，編輯器重新量尺寸
+    // 打開時：分組標題和連結依序浮出（GSAP）；背景遮罩淡入
+    if (open && !init && window.gsap && !reduceMotion()) {
+      gsap.fromTo(nav.querySelectorAll('.works-nav-search, .works-nav-group h3, .works-nav-group li'),
+        { x: -12, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45, stagger: 0.015, ease: 'expo.out', clearProps: 'transform,opacity' });
+      if (overlay) gsap.fromTo(scrim, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power1.out' });
+    }
   };
 
   set(wide.matches && remembered(), { focus: false, save: false, init: true });
