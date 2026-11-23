@@ -31,7 +31,8 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-[hidden] { display: none !important; } /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
+[hidden] { display: none !important; }
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */ /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
 
 /* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
 html { scrollbar-width: none; }
@@ -82,3 +83,9 @@ body {
 .bullet { flex: none; width: 6px; height: 6px; background: var(--line-strong); transition: background-color 0.3s; }
 .rules li.ok .bullet { background: var(--success); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ── 按鈕狀態：和作品集網站相同的規則（見 DESIGN.md「按鈕」）──
+   實心：滑過底色變亮｜外框：滑過外框和文字變主文字色｜無框：滑過出現淺色底
+   全部：按下縮成 0.97、停用 40% 透明 */
+.reveal { transition: background-color 0.3s, color 0.3s; }
+.reveal:hover { color: var(--text); background: var(--surface-2); }

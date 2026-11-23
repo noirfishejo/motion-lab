@@ -31,7 +31,8 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-[hidden] { display: none !important; } /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
+[hidden] { display: none !important; }
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */ /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
 
 /* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
 html { scrollbar-width: none; }
@@ -71,3 +72,8 @@ body {
 .chart { height: 160px; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; align-items: end; gap: 6px; border-bottom: 1px solid var(--line); }
 .chart i { display: block; height: 100%; background: var(--accent-fg); transform-origin: 50% 100%; }
 .total { font: 400 13px/1 "JetBrains Mono", monospace; color: var(--muted); }
+
+/* ── 按鈕狀態：和作品集網站相同的規則（見 DESIGN.md「按鈕」）──
+   實心：滑過底色變亮｜外框：滑過外框和文字變主文字色｜無框：滑過出現淺色底
+   全部：按下縮成 0.97、停用 40% 透明 */
+.segmented button:not([aria-checked="true"]):hover { color: var(--text); }

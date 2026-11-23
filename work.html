@@ -31,6 +31,16 @@
 
   <!-- 換頁時側欄不要重新滑入：在畫面出現前就套用上次的開關狀態，並暫停側欄動畫 -->
   <script>
+    // 進場動畫的起點設好之前，先藏起標題和內容（不然會先閃出完整畫面、再跳回起點）
+    // 從側欄換頁、減少動態時不播進場，所以不用藏；2.5 秒後無論如何都顯示
+    (function () {
+      var skip = false;
+      try { skip = sessionStorage.getItem('skipReveal') === '1'; } catch (e) {}
+      if (!skip && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('reveal-pending');
+        setTimeout(function () { document.documentElement.classList.remove('reveal-pending'); }, 2500);
+      }
+    })();
     document.documentElement.classList.add('nav-init');
     try { if (matchMedia('(min-width: 1280px)').matches && localStorage.getItem('worksNav') !== 'closed') document.documentElement.classList.add('nav-preload'); } catch (e) {}
   </script>

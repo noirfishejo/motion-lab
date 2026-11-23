@@ -2,6 +2,7 @@
   color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
   --bg: #0B0D10;
   --surface: #14161A;
+  --surface-2: #1B1E23;
   --line: #23262B;
   --line-strong: #3B3E44;
   --text: #F0F0F0;
@@ -15,6 +16,7 @@
   color-scheme: light;
   --bg: #F5F5F2;
   --surface: #FFFFFF;
+  --surface-2: #ECECE8;
   --line: #E0E0DB;
   --line-strong: #C4C4BE;
   --text: #141518;
@@ -23,7 +25,8 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-[hidden] { display: none !important; } /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
+[hidden] { display: none !important; }
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */ /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
 
 /* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
 html { scrollbar-width: none; }
@@ -87,3 +90,9 @@ body {
 /* 答案：外層負責高度（從 0 長到內容的高度），裡面的段落負責淡入 */
 .answer { overflow: hidden; }
 .answer p { padding: 0 20px 20px; max-width: 52ch; font-size: 14px; line-height: 1.65; color: var(--muted); }
+
+/* ── 按鈕狀態：和作品集網站相同的規則（見 DESIGN.md「按鈕」）──
+   實心：滑過底色變亮｜外框：滑過外框和文字變主文字色｜無框：滑過出現淺色底
+   全部：按下縮成 0.97、停用 40% 透明 */
+.trigger { transition: background-color 0.3s, color 0.3s; }
+.trigger:hover { background: var(--surface-2); }

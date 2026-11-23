@@ -32,22 +32,25 @@ if (!reduce && window.matchMedia('(hover: hover)').matches) {
     glY(py * GLARE);
   });
   card.addEventListener('pointerenter', e => {
+    demo.kill();
     // 一進來就把光斑放在游標的位置（quickTo 第二個值是起點：起點＝終點就是直接跳過去），再淡入
     // 不這樣做的話，光斑會從上一次的位置（通常是正中央）滑過來
     const { px, py } = point(e);
-    gsap.killTweensOf(glare); // 停掉「離開時回到中央」的動畫，不然它會把光斑拉回正中間
     glX(px * GLARE, px * GLARE);
     glY(py * GLARE, py * GLARE);
     gsap.to(glare, { opacity: 1, duration: 0.4 });
   });
   card.addEventListener('pointerleave', () => {
-    // 離開：慢慢回正
-    gsap.to(card, { rotationX: 0, rotationY: 0, duration: 1, ease: 'expo.out' });
+    // 離開：用同一組 quickTo 回正
+    // （不要另外開一個 gsap.to 轉回 0：它會和 quickTo 搶同一個屬性，滑鼠很快又進來時卡片會卡在半路）
+    rotX(0);
+    rotY(0);
     gsap.to(glare, { opacity: 0, duration: 0.4 }); // 只淡出、位置不動：下次進來時直接從游標的位置出現
   });
 
   // ── 自動示範一次（首頁縮圖也看得到動態）：左右輕輕晃一下再回正 ──
-  gsap.timeline({ delay: 0.8 })
+  // 滑鼠一進來就停掉示範，交給滑鼠控制（不然示範會和 quickTo 搶角度）
+  const demo = gsap.timeline({ delay: 0.8 })
     .to(card, { rotationY: 12, rotationX: 6, duration: 0.8, ease: 'power2.inOut' })
     .to(card, { rotationY: -10, rotationX: -4, duration: 1, ease: 'power2.inOut' })
     .to(card, { rotationY: 0, rotationX: 0, duration: 0.8, ease: 'expo.out' });

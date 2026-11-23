@@ -4,6 +4,9 @@
 .work{padding-top:calc(var(--header-h) + 24px)}
 
 
+/* 進場動畫的起點設好前先藏起來（見 work.html 開頭、work.js 的 reveal） */
+.reveal-pending #workTitle,.reveal-pending .work-info,.reveal-pending .work-main > .panel,.reveal-pending .work-side{visibility:hidden}
+
 /* ── 標題區 ── */
 .work-head{
   display:grid;grid-template-columns:minmax(0,1fr);gap:16px;

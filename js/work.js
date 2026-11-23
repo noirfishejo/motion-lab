@@ -520,13 +520,15 @@ function setupToPreview() {
 function reveal() {
   let fromSidebar = false;
   try { fromSidebar = sessionStorage.getItem('skipReveal') === '1'; sessionStorage.removeItem('skipReveal'); } catch {}
-  if (fromSidebar || reduceMotion() || !window.gsap || !window.SplitText) return;
+  const ready = () => document.documentElement.classList.remove('reveal-pending');
+  if (fromSidebar || reduceMotion() || !window.gsap || !window.SplitText) { ready(); return; }
   document.fonts.ready.then(() => {
     const split = SplitText.create('#workTitle', { type: 'words', mask: 'words' });
     // 作品頁常常來回切換，進場要短（約 0.6 秒）；預覽和程式碼直接顯示，不等動畫
     gsap.timeline({ defaults: { ease: 'expo.out' } })
       .from(split.words, { yPercent: 110, duration: 0.6, stagger: 0.03 })
       .from('.work-info, .work-main > .panel, .work-side', { opacity: 0, y: 16, duration: 0.5, stagger: 0.05, clearProps: 'transform,opacity' }, 0.1);
+    ready(); // 起點都設好了（from 會先把元素放到起點），這時才顯示
   });
 }
 

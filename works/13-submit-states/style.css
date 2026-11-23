@@ -7,6 +7,7 @@
   --text: #F0F0F0;
   --muted: #8F8C85;
   --accent: #1733E5;
+  --accent-hover: #2B45F0; /* 實心按鈕滑過 */
   --accent-fg: #6E83FF;
   --danger-fill: #C8283A;   /* 失敗時的按鈕底色（上面放白字，對比 5.5:1） */
 }
@@ -24,7 +25,8 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-[hidden] { display: none !important; } /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
+[hidden] { display: none !important; }
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */ /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
 
 /* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
 html { scrollbar-width: none; }
@@ -101,3 +103,10 @@ body {
 .fail-toggle input { width: 16px; height: 16px; accent-color: var(--accent); }
 
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ── 按鈕狀態：和作品集網站相同的規則（見 DESIGN.md「按鈕」）──
+   實心：滑過底色變亮｜外框：滑過外框和文字變主文字色｜無框：滑過出現淺色底
+   全部：按下縮成 0.97、停用 40% 透明 */
+.submit:hover { background: var(--accent-hover); } /* 按下的縮放、搖晃由 script.js（GSAP）處理 */
+.submit.is-fail:hover { background: var(--danger-fill); }
+.submit[aria-busy="true"]:hover { background: var(--accent); }

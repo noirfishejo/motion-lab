@@ -31,7 +31,8 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-[hidden] { display: none !important; } /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
+[hidden] { display: none !important; }
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */ /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
 
 /* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
 html { scrollbar-width: none; }
@@ -101,3 +102,10 @@ body { place-items: stretch; }
 /* 選單打開時，頁首的線和品牌名稱變白（在藍色背景上才看得到） */
 .is-open .line { background: #fff; }
 .is-open .brand { color: #fff; }
+
+/* ── 按鈕狀態：和作品集網站相同的規則（見 DESIGN.md「按鈕」）──
+   實心：滑過底色變亮｜外框：滑過外框和文字變主文字色｜無框：滑過出現淺色底
+   全部：按下縮成 0.97、停用 40% 透明 */
+.burger { transition: background-color 0.3s; }
+.burger:hover { background: var(--surface-2); }
+.is-open .burger:hover { background: rgba(255, 255, 255, 0.12); } /* 藍色選單上 */

@@ -25,7 +25,8 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-[hidden] { display: none !important; } /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
+[hidden] { display: none !important; }
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */ /* 一定要藏起來：不然元素自己的 display（例如 grid）會蓋掉 hidden，一載入就閃一下 */
 
 /* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
 html { scrollbar-width: none; }
@@ -66,7 +67,6 @@ body {
   cursor: pointer;
 }
 .refresh i { font-size: 16px; }
-.refresh:hover { border-color: var(--text); }
 .refresh:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 3px; }
 
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
@@ -82,3 +82,10 @@ body {
   font-variant-numeric: tabular-nums;
 }
 .stat-delta { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--success); }
+
+/* ── 按鈕狀態：和作品集網站相同的規則（見 DESIGN.md「按鈕」）──
+   實心：滑過底色變亮｜外框：滑過外框和文字變主文字色｜無框：滑過出現淺色底
+   全部：按下縮成 0.97、停用 40% 透明 */
+.refresh { transition: background-color 0.3s, border-color 0.3s, color 0.3s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.refresh:hover { border-color: var(--text); color: var(--text); }
+.refresh:active { transform: scale(0.97); }
