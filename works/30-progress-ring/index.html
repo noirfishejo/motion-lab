@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>30 DrawSVG: Upload Progress Ring</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <section class="card">
+      <span class="tag">upload progress</span>
+      <div class="file">
+        <!-- 進度環：灰色的底圈＋藍色的進度（用 DrawSVG 畫出百分比） -->
+        <div class="ring">
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <circle class="track" cx="24" cy="24" r="20"/>
+            <circle class="bar" cx="24" cy="24" r="20"/>
+          </svg>
+          <i class="ph-light ph-check done-icon" aria-hidden="true"></i>
+          <span class="pct">0%</span>
+        </div>
+        <div class="meta">
+          <span class="name">brand-guidelines.pdf</span>
+          <span class="status" aria-live="polite">Ready to upload · 4.2 MB</span>
+          <span class="line" aria-hidden="true"><i></i></span>
+        </div>
+      </div>
+      <button class="upload" type="button"><i class="ph-light ph-upload-simple"></i>Upload</button>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

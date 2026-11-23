@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>31 Tween: Toolbar Tooltips</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <section class="card">
+      <span class="tag">tooltip</span>
+      <!-- 編輯器工具列（假資料）：滑鼠停一下才出現說明；說明出現後，移到旁邊的按鈕就立刻換（不用再等） -->
+      <div class="toolbar" role="toolbar" aria-label="Formatting">
+        <button class="tool" type="button" aria-label="Bold" data-tip="Bold" data-key="⌘B"><i class="ph-light ph-text-b"></i></button>
+        <button class="tool" type="button" aria-label="Italic" data-tip="Italic" data-key="⌘I"><i class="ph-light ph-text-italic"></i></button>
+        <button class="tool" type="button" aria-label="Insert link" data-tip="Insert link" data-key="⌘K"><i class="ph-light ph-link-simple"></i></button>
+        <button class="tool" type="button" aria-label="Add image" data-tip="Add image" data-key=""><i class="ph-light ph-image"></i></button>
+        <button class="tool" type="button" aria-label="Bulleted list" data-tip="Bulleted list" data-key=""><i class="ph-light ph-list-bullets"></i></button>
+      </div>
+      <p class="hint">Hover a button and wait a moment, then slide across the others.</p>
+    </section>
+  </main>
+  <div class="tooltip" id="tooltip" role="tooltip"><span class="tip-text"></span><kbd class="tip-key"></kbd></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+// ── 試著改這幾個數字 ──
+const MAX_TILT = 14;   // 最多傾斜幾度
+const FOLLOW = 0.5;    // 跟上滑鼠要幾秒（越大越「沉」）
+
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const card = document.querySelector('.card');
+const glare = card.querySelector('.glare');
+
+// 只在有滑鼠、沒開「減少動態」時啟用（手機沒有「游標在卡片上」這件事）
+if (!reduce && window.matchMedia('(hover: hover)').matches) {
+  // quickTo：先建立好「只改某一個屬性」的補間，之後滑鼠每動一次只丟新數值進去
+  const rotX = gsap.quickTo(card, 'rotationX', { duration: FOLLOW, ease: 'power3.out' });
+  const rotY = gsap.quickTo(card, 'rotationY', { duration: FOLLOW, ease: 'power3.out' });
+  const glX = gsap.quickTo(glare, 'xPercent', { duration: FOLLOW, ease: 'power3.out' });
+  const glY = gsap.quickTo(glare, 'yPercent', { duration: FOLLOW, ease: 'power3.out' });
+
+  card.addEventListener('pointermove', e => {
+    const r = card.getBoundingClientRect();
+    // 滑鼠在卡片上的位置換算成 -0.5 ～ 0.5（正中間是 0）
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    rotY(px * MAX_TILT * 2);     // 左右移動 → 繞 Y 軸轉
+    rotX(-py * MAX_TILT * 2);    // 上下移動 → 繞 X 軸轉（加負號：滑鼠在上面時，卡片上緣往後倒）
+    glX(px * 40);
+    glY(py * 40);
+  });
+  card.addEventListener('pointerenter', () => gsap.to(glare, { opacity: 1, duration: 0.4 }));
+  card.addEventListener('pointerleave', () => {
+    // 離開：慢慢回正
+    gsap.to(card, { rotationX: 0, rotationY: 0, duration: 1, ease: 'expo.out' });
+    gsap.to(glare, { opacity: 0, xPercent: 0, yPercent: 0, duration: 0.6 });
+  });
+
+  // ── 自動示範一次（首頁縮圖也看得到動態）：左右輕輕晃一下再回正 ──
+  gsap.timeline({ delay: 0.8 })
+    .to(card, { rotationY: 12, rotationX: 6, duration: 0.8, ease: 'power2.inOut' })
+    .to(card, { rotationY: -10, rotationX: -4, duration: 1, ease: 'power2.inOut' })
+    .to(card, { rotationY: 0, rotationX: 0, duration: 0.8, ease: 'expo.out' });
+}

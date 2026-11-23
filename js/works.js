@@ -392,6 +392,158 @@ export const WORKS = [
       { code: "ease: 'none'", text: { 'zh-TW': '視差一定要等速：捲多少就移多少。用 expo 之類的 ease，捲動和畫面移動會對不上，看起來像卡頓。', en: 'Parallax must be linear — move exactly as much as you scroll. An ease like expo makes scrolling and movement drift apart and feel janky.' } },
       { code: 'clamp(-14, 14, …)', text: { 'zh-TW': '視差強度要節制，10～20% 就夠，太大會讓人頭暈。這裡把畫面的移動限制在框能容納的範圍內。', en: 'Keep parallax subtle — 10–20% is plenty; more can make people feel seasick. The picture’s travel is clamped to what the frame can hold.' } }
     ]
+  },
+  {
+    id: '23-hamburger-menu',
+    title: { 'zh-TW': '漢堡選單變 × 與全螢幕選單', en: 'Hamburger to × with fullscreen menu' },
+    short: { 'zh-TW': '漢堡選單', en: 'Hamburger menu' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '按漢堡按鈕：三條線變成 ×，藍色選單從上往下展開，選項一個一個從遮罩下方升起。關閉時把同一條時間軸倒著播，Esc 也能關。', en: 'Press the hamburger: three lines become ×, a blue menu unfolds from the top and items rise one by one from a mask. Closing plays the same timeline in reverse; Esc works too.' },
+    topic: 'components',
+    tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['tl.reverse()', 'clip-path', 'aria-expanded'],
+    date: '2026-11-23',
+    notes: [
+      { code: 'tl.play() / tl.reverse()', text: { 'zh-TW': '打開和關閉用同一條時間軸：打開正著播、關閉倒著播。只要寫一次動畫，兩個方向都會對。', en: 'One timeline for both directions: play to open, reverse to close. Write the animation once and both directions match.' } },
+      { code: 'timeScale(CLOSE_SPEED)', text: { 'zh-TW': '倒著播時加快 1.6 倍：關閉比打開快，使用者想離開時不用等。', en: 'Reverse at 1.6× speed: closing is faster than opening, so leaving never feels slow.' } },
+      { code: 'rotation: 45 + y: 7', text: { 'zh-TW': '上下兩條線先移到中間再各轉 45°，中間那條縮掉，就變成 ×。三條線的間距決定 y 要移多少。', en: 'The top and bottom lines move to the middle and rotate 45°, while the middle one shrinks away — that’s the ×. The line spacing decides how far y moves.' } },
+      { code: 'clipPath: \'inset(0% 0% 100% 0%)\'', text: { 'zh-TW': '選單用 clip-path 從上面一條線展開成整個畫面，內容本身不會被壓扁或變形。', en: 'The menu unfolds from a line at the top with clip-path, so its content never squashes or stretches.' } },
+      { code: 'onReverseComplete → hidden', text: { 'zh-TW': '倒著播完才把選單藏起來（hidden），讀屏軟體和 Tab 鍵才不會跑進看不到的選單。', en: 'The menu is hidden only after reversing completes, so screen readers and Tab never land in an invisible menu.' } }
+    ]  },
+  {
+    id: '24-dropdown',
+    title: { 'zh-TW': '下拉選單與滑動高亮', en: 'Dropdown with a sliding highlight' },
+    short: { 'zh-TW': '下拉選單', en: 'Dropdown' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '點「Sort by」展開選單，滑鼠移過選項時，同一塊高亮底色跟著滑過去。方向鍵、Enter、Esc 都能操作，點外面會關閉。', en: 'Click “Sort by” to open the list; as the cursor moves over options, a single highlight slides along. Arrow keys, Enter and Esc work, and clicking outside closes it.' },
+    topic: 'components',
+    tech: 'quickTo', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['gsap.quickTo', 'role="listbox"', 'transform-origin'],
+    date: '2026-11-23',
+    notes: [
+      { code: 'gsap.quickTo(highlight, \'y\')', text: { 'zh-TW': '整個清單只有一塊高亮底色。移到哪個選項就把它的 y 丟給 quickTo，連續移動時會很順地跟過去。', en: 'The list has a single highlight. Each option hovered sends its y to quickTo, so the highlight glides smoothly as you move.' } },
+      { code: 'moveY(y, y)', text: { 'zh-TW': 'quickTo 的第二個值是「起點」。打開選單時起點和終點都設成目前選的那項，高亮直接出現在那裡，不會從頂端滑下來。', en: 'quickTo’s second value is the start. On open, start and end are the current choice, so the highlight appears there instead of sliding from the top.' } },
+      { code: 'scaleY: 0.96 → 1', text: { 'zh-TW': '展開時從稍微壓扁的狀態長出來，transform-origin 設在上方，看起來像從按鈕底下拉出來。', en: 'It opens from slightly squashed with transform-origin at the top, as if pulled out from under the button.' } },
+      { code: 'aria-activedescendant', text: { 'zh-TW': '焦點留在清單上，用 aria-activedescendant 告訴讀屏軟體目前停在哪個選項，方向鍵移動時才唸得出來。', en: 'Focus stays on the list and aria-activedescendant tells screen readers which option is active, so arrow keys are announced.' } }
+    ]  },
+  {
+    id: '25-marquee',
+    title: { 'zh-TW': '無限輪播的文字跑馬燈', en: 'Infinite text marquee' },
+    short: { 'zh-TW': '跑馬燈', en: 'Marquee' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '兩排大字一左一右無限輪播，第二排是空心字。滑鼠移上去會慢慢減速，移開再加速回來。', en: 'Two rows of big type loop forever in opposite directions, the second in outline. Hovering eases it down to a crawl and moving away speeds it back up.' },
+    topic: 'graphics',
+    tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['repeat: -1', 'timeScale', 'width: max-content'],
+    date: '2026-11-23',
+    notes: [
+      { code: { 'zh-TW': '內容複製兩份', en: 'Two copies of the content' }, text: { 'zh-TW': '一排放兩份一模一樣的內容。第一份剛好跑出畫面時，第二份正好接在原位，從頭重來也看不出接縫。', en: 'Each row holds two identical copies. When the first has fully scrolled out, the second sits exactly where it started, so the restart is seamless.' } },
+      { code: 'x: 0 → -width, repeat: -1', text: { 'zh-TW': '移動的距離剛好是「一份內容的寬度」，ease 用 none 等速，repeat: -1 無限重複。', en: 'It moves exactly one copy’s width, linearly (ease: none), repeating forever (repeat: -1).' } },
+      { code: 'gsap.to(loop, { timeScale: 0.2 })', text: { 'zh-TW': 'timeScale 是動畫的播放速度。不直接暫停，而是用另一個補間慢慢把速度降下來，感覺像踩剎車。', en: 'timeScale is the playback speed. Instead of pausing, another tween eases it down — like braking rather than stopping dead.' } },
+      { code: 'duration = width / SPEED', text: { 'zh-TW': '時間用「寬度 ÷ 速度」算，內容長短不同的兩排，看起來的移動速度才會一樣。', en: 'Duration is width ÷ speed, so rows with different lengths move at the same visual speed.' } }
+    ]  },
+  {
+    id: '26-tilt-card',
+    title: { 'zh-TW': '跟著滑鼠傾斜的 3D 卡片', en: '3D card that tilts with the cursor' },
+    short: { 'zh-TW': '3D 傾斜卡片', en: '3D tilt card' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '滑鼠在卡片上移動時，卡片朝游標的方向傾斜，表面的反光跟著移動，標題和卡號浮在卡片前面一點。離開後慢慢回正。', en: 'As the cursor moves over the card it tilts toward it, a glare drifts across the surface, and the title and number float slightly in front. It settles back when you leave.' },
+    topic: 'components',
+    tech: 'quickTo', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['rotationX / rotationY', 'perspective', 'translateZ'],
+    date: '2026-11-23',
+    notes: [
+      { code: 'perspective: 900px', text: { 'zh-TW': '外層設定透視距離，裡面的卡片轉動時才有立體感。數字越小越誇張，像把卡片貼近眼睛看。', en: 'Perspective on the outer element gives the rotating card depth. Smaller values exaggerate it, as if the card were closer to your eye.' } },
+      { code: { 'zh-TW': 'px = 位置 ÷ 寬度 − 0.5', en: 'px = position ÷ width − 0.5' }, text: { 'zh-TW': '把滑鼠在卡片上的位置換算成 -0.5～0.5，中間是 0，再乘上最大角度。左右移動繞 Y 軸轉，上下移動繞 X 軸轉。', en: 'The cursor position becomes -0.5 to 0.5 (centre is 0), times the max angle. Horizontal movement rotates around Y, vertical around X.' } },
+      { code: 'translateZ(40px)', text: { 'zh-TW': '標題往前浮 40px、卡號 24px，轉動時會和卡片表面分開，產生前後層次。外層要加 transform-style: preserve-3d。', en: 'The title floats 40px forward and the number 24px, separating from the surface as it rotates. The card needs transform-style: preserve-3d.' } },
+      { code: '(hover: hover)', text: { 'zh-TW': '只在有滑鼠的裝置啟用。手機沒有「游標停在卡片上」這件事，硬做會很奇怪。', en: 'Only enabled with a mouse. Phones have no “cursor over the card”, so forcing it feels odd.' } }
+    ]  },
+  {
+    id: '27-checkbox',
+    title: { 'zh-TW': '勾選框打勾的描邊動畫', en: 'Checkbox with a drawn check' },
+    short: { 'zh-TW': '勾選框', en: 'Checkbox' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '待辦清單的勾選框：勾選時方塊填色彈一下、勾勾一筆畫出來、文字劃上刪除線；取消時快速收回。真正的 checkbox 還在，鍵盤和讀屏軟體都能用。', en: 'A to-do checkbox: checking pops the fill, draws the tick in one stroke and strikes through the text; unchecking retracts quickly. The real checkbox is still there for keyboards and screen readers.' },
+    topic: 'components',
+    tech: 'DrawSVG', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['DrawSVGPlugin', 'CSS 變數', 'sr-only'],
+    date: '2026-11-23',
+    notes: [
+      { code: 'drawSVG: \'0%\' → \'100%\'', text: { 'zh-TW': '勾勾是 Phosphor 的 check 圖示，改成線條（stroke）版本才能用 DrawSVG 一筆畫出來。', en: 'The tick is Phosphor’s check icon converted to a stroke so DrawSVG can draw it in one line.' } },
+      { code: '\'--strike\': 0 → 1', text: { 'zh-TW': 'GSAP 動不到 ::after 這種偽元素，所以刪除線的長度寫成 CSS 變數，動畫改變數就好。', en: 'GSAP can’t reach pseudo-elements like ::after, so the strike length is a CSS variable and the animation changes the variable.' } },
+      { code: '<input class="sr-only">', text: { 'zh-TW': '真正的 checkbox 只是看不到，不是拿掉。點文字、按空白鍵、讀屏軟體都照常運作，畫面上的方塊只負責好看。', en: 'The real checkbox is only visually hidden, not removed. Clicking the label, pressing Space and screen readers all still work; the drawn box is just the look.' } },
+      { code: 'ease: \'back.out(2.5)\'', text: { 'zh-TW': '填色放大時稍微超過再回來，像按下去的回饋。取消時用 power2.in 快速收回，不需要儀式感。', en: 'The fill overshoots slightly like a press; unchecking retracts quickly with power2.in — no ceremony needed.' } }
+    ]  },
+  {
+    id: '28-password-strength',
+    title: { 'zh-TW': '密碼強度條', en: 'Password strength meter' },
+    short: { 'zh-TW': '密碼強度', en: 'Password strength' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '輸入密碼時，四格強度條從左到右一格一格填滿，顏色從紅、橘、藍到綠；下方規則符合時打勾彈一下。可以顯示或隱藏密碼。', en: 'As you type, the four-segment meter fills left to right and shifts from red through amber and blue to green; each rule ticks with a small pop when met. The password can be shown or hidden.' },
+    topic: 'components',
+    tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['stagger', 'CSS 變數', 'aria-live'],
+    date: '2026-11-23',
+    notes: [
+      { code: '\'--on\': i => (i < level ? 1 : 0)', text: { 'zh-TW': '四格都用同一個補間，值用函式算：前 level 格是 1、後面是 0。加上 stagger，就會一格一格依序填滿或清空。', en: 'All four segments share one tween with a function value — 1 for the first level segments, 0 after. With stagger they fill or empty one by one.' } },
+      { code: '--level-color', text: { 'zh-TW': '強度的顏色寫成 CSS 變數放在卡片上，強度條和文字一起換色；亮暗模式各自有對應的顏色。', en: 'The strength colour is a CSS variable on the card, so the bar and label change together, with matching colours in light and dark mode.' } },
+      { code: 'back.out(3)', text: { 'zh-TW': '剛符合的那條規則，打勾的方塊彈一下，讓人注意到「這條過了」。已經符合的不會重複彈。', en: 'A newly met rule pops its tick so people notice it passed. Rules already met don’t pop again.' } },
+      { code: 'aria-live="polite"', text: { 'zh-TW': '強度文字（Weak、Strong）放在 aria-live 區塊，讀屏使用者打字時也會聽到強度變化。', en: 'The strength label sits in an aria-live region, so screen-reader users hear it change as they type.' } }
+    ]  },
+  {
+    id: '29-segmented-control',
+    title: { 'zh-TW': '分段控制器與長條圖切換', en: 'Segmented control with chart transition' },
+    short: { 'zh-TW': '分段控制', en: 'Segmented control' }, // 側欄用的短名稱
+    summary: { 'zh-TW': 'Day／Week／Month／Year 四段切換：藍色底色滑到選中的那一格，下方長條圖的每一根依序長到新的高度。方向鍵也能切換。', en: 'Switch between Day, Week, Month and Year: the blue pill slides to the chosen segment and each chart bar grows to its new height in turn. Arrow keys work too.' },
+    topic: 'components',
+    tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['xPercent', 'scaleY', 'role="radiogroup"'],
+    date: '2026-11-23',
+    notes: [
+      { code: 'xPercent: index × 100', text: { 'zh-TW': '底色的寬度剛好是一格，xPercent 100 就是往右移「自己一整格」。第幾格就乘以幾，不用量位置。', en: 'The pill is exactly one segment wide, so xPercent 100 moves it one segment. Multiply by the index — no measuring needed.' } },
+      { code: 'scaleY + transform-origin: bottom', text: { 'zh-TW': '長條用 scaleY 從底部長高，不改 height。只動 transform，資料一換整排一起動也很順。', en: 'Bars grow from the bottom with scaleY rather than height. Only transforms change, so a whole row updating stays smooth.' } },
+      { code: 'scaleY: i => DATA[range][i]', text: { 'zh-TW': '一個補間處理整排長條，每根的目標值用函式從資料裡拿，再加 stagger 讓它們由左到右依序長。', en: 'One tween drives every bar; a function pulls each target from the data, and stagger grows them left to right.' } },
+      { code: 'role="radiogroup"', text: { 'zh-TW': '分段控制在語意上是「多選一」，用 radiogroup 和 radio，方向鍵切換，讀屏軟體會唸出「第 2 個，共 4 個」。', en: 'A segmented control is semantically “choose one”, so it uses radiogroup and radio with arrow keys; screen readers announce “2 of 4”.' } }
+    ]  },
+  {
+    id: '30-progress-ring',
+    title: { 'zh-TW': '上傳進度環', en: 'Upload progress ring' },
+    short: { 'zh-TW': '進度環', en: 'Progress ring' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '按 Upload：進度環和長條一起前進，速度忽快忽慢像真的網路；完成時百分比淡出，環變綠、打勾彈出來。', en: 'Press Upload: the ring and bar advance together at an uneven, realistic pace; on completion the percentage fades, the ring turns green and a tick pops in.' },
+    topic: 'components',
+    tech: 'DrawSVG', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['DrawSVGPlugin', 'onUpdate', 'rotate(-90deg)'],
+    date: '2026-11-23',
+    notes: [
+      { code: 'state = { p: 0 }', text: { 'zh-TW': '進度只存在一個數字裡，環、長條、百分比文字都在 onUpdate 裡依這個數字重畫，三者永遠同步。', en: 'Progress lives in one number; the ring, bar and percentage all redraw from it in onUpdate, so they always agree.' } },
+      { code: 'drawSVG: `${p * 100}%`', text: { 'zh-TW': '用 DrawSVG 把圓圈畫出百分比那麼長。SVG 轉 -90°，進度才會從 12 點鐘方向開始。', en: 'DrawSVG draws the circle to the percentage. The SVG is rotated -90° so progress starts at 12 o’clock.' } },
+      { code: { 'zh-TW': 'STEPS（不等速）', en: 'STEPS (uneven pace)' }, text: { 'zh-TW': '假的上傳分好幾段、每段速度不同，看起來比一路等速更真實；真實情況是依伺服器回報的進度更新 p。', en: 'The fake upload runs in uneven steps, which looks more real than a constant speed; in production, p follows the server’s reported progress.' } },
+      { code: 'classList.add(\'is-done\')', text: { 'zh-TW': '完成時的綠色交給 CSS class，GSAP 只負責打勾彈出。顏色留在 CSS 裡，亮暗模式才會正確。', en: 'The green completion colour is a CSS class; GSAP only pops the tick. Keeping colours in CSS keeps light and dark mode correct.' } }
+    ]  },
+  {
+    id: '31-tooltip',
+    title: { 'zh-TW': '工具列提示框的延遲與暖機', en: 'Toolbar tooltips with delay and warm-up' },
+    short: { 'zh-TW': '提示框 Tooltip', en: 'Tooltip' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '編輯器工具列：滑鼠停一下才出現說明（避免滑過就閃）；說明出現後移到旁邊的按鈕，提示框直接滑過去，不用再等。鍵盤移到按鈕上會立刻顯示。', en: 'An editor toolbar: the hint appears only after a short pause so passing over doesn’t flash; once visible, moving to a neighbour slides it across instantly. Keyboard focus shows it right away.' },
+    topic: 'components',
+    tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['setTimeout', 'warm-up', 'aria-describedby'],
+    date: '2026-11-23',
+    notes: [
+      { code: 'DELAY = 0.45', text: { 'zh-TW': '第一次要停 0.45 秒才出現。太短的話，只是滑過工具列也會一直閃出提示框。', en: 'The first hint waits 0.45s. Any shorter and merely sweeping across the toolbar keeps flashing hints.' } },
+      { code: { 'zh-TW': 'WARM = 0.4（暖機）', en: 'WARM = 0.4 (warm-up)' }, text: { 'zh-TW': '提示框剛消失的 0.4 秒內移到其他按鈕，會立刻顯示。使用者已經在「看說明」，不該每個都再等一次。', en: 'Within 0.4s of a hint closing, the next one appears instantly. The user is already reading hints — don’t make them wait each time.' } },
+      { code: { 'zh-TW': '只有一個提示框', en: 'Only one tooltip' }, text: { 'zh-TW': '整頁只有一個提示框，移到別的按鈕就用 GSAP 滑過去，比每個按鈕各自淡入淡出更穩定、不閃。', en: 'There is one tooltip for the page; moving between buttons slides it over with GSAP, steadier than each button fading its own.' } },
+      { code: 'aria-describedby', text: { 'zh-TW': '顯示時把按鈕和提示框連起來，讀屏軟體會在按鈕名稱後唸出說明和快捷鍵。', en: 'While shown, the button points to the tooltip so screen readers read the hint and shortcut after the button name.' } }
+    ]  },
+  {
+    id: '32-image-blur-up',
+    title: { 'zh-TW': '圖片載入從模糊變清楚', en: 'Blur-up image loading' },
+    short: { 'zh-TW': '圖片模糊載入', en: 'Blur-up loading' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '圖片還在載入時先顯示很模糊的預覽，載入完成後由模糊漸漸變清楚。每張圖載入時間不同，所以會一張一張清楚起來；圖片框大小固定，版面不會跳。', en: 'While images load, a very blurred preview shows; once loaded, each sharpens into focus. Load times differ, so they clear one by one, and the fixed frames keep the layout still.' },
+    topic: 'graphics',
+    tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['filter: blur', 'scale', 'aspect-ratio'],
+    date: '2026-11-23',
+    notes: [
+      { code: 'filter: \'blur(24px)\' → \'blur(0px)\'', text: { 'zh-TW': '預覽圖先模糊，載入完成後補間到 0。真實做法是先放一張很小的低解析度圖，img 的 load 事件觸發時再換成清楚的。', en: 'The preview starts blurred and tweens to 0 on load. In practice you show a tiny low-res image first and swap on the img load event.' } },
+      { code: 'scale: 1.15 → 1', text: { 'zh-TW': '模糊會讓邊緣變淡、露出底色，稍微放大可以把淡掉的邊緣藏到框外面，清楚時再縮回原尺寸。', en: 'Blur fades the edges and reveals the background; scaling up slightly hides those edges outside the frame until it sharpens.' } },
+      { code: 'aspect-ratio: 4 / 5', text: { 'zh-TW': '圖片框先決定比例，載入前後大小都一樣，下面的內容不會因為圖片載入而被推動。', en: 'The frame’s ratio is fixed up front, so its size never changes and content below isn’t pushed when images load.' } },
+      { code: 'delayedCall(data-load)', text: { 'zh-TW': '示範用：每張圖片的「載入時間」寫在 HTML 上，所以會一張一張變清楚。真實情況直接聽 load 事件。', en: 'For the demo each image’s “load time” lives in the HTML, so they clear one at a time. In production, listen for the load event.' } }
+    ]
   }
 ];
 

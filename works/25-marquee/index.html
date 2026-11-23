@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>25 Tween: Infinite Marquee</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <span class="tag">marquee</span>
+    <!-- 兩排跑馬燈：第一排往左、第二排往右。滑鼠移上去會慢下來 -->
+    <!-- 每一排的內容複製兩份放在一起：第一份跑出畫面時，第二份剛好接上，看起來永遠跑不完 -->
+    <div class="marquee" data-direction="left" aria-label="Motion · Interaction · Feedback · Rhythm">
+      <div class="track" aria-hidden="true">
+        <span class="chunk">Motion <i class="dot"></i> Interaction <i class="dot"></i> Feedback <i class="dot"></i> Rhythm <i class="dot"></i></span>
+        <span class="chunk">Motion <i class="dot"></i> Interaction <i class="dot"></i> Feedback <i class="dot"></i> Rhythm <i class="dot"></i></span>
+      </div>
+    </div>
+    <div class="marquee is-outline" data-direction="right" aria-label="GSAP · Tween · Timeline · ScrollTrigger">
+      <div class="track" aria-hidden="true">
+        <span class="chunk">GSAP <i class="dot"></i> Tween <i class="dot"></i> Timeline <i class="dot"></i> ScrollTrigger <i class="dot"></i></span>
+        <span class="chunk">GSAP <i class="dot"></i> Tween <i class="dot"></i> Timeline <i class="dot"></i> ScrollTrigger <i class="dot"></i></span>
+      </div>
+    </div>
+    <p class="hint">Hover a row to slow it down.</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --surface-2: #1B1E23;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+  --success: #4CC38A;
+  --warning: #F2B35A;
+  --danger: #FF7A7A;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --surface-2: #ECECE8;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+  --success: #0B7354;
+  --warning: #8A5300;
+  --danger: #C0262D;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+
+.stage { display: grid; justify-items: center; gap: 24px; padding: 32px 16px; }
+.hint { font-size: 13px; color: var(--muted); }
+
+/* perspective：數字越小，3D 效果越誇張（越像貼近眼睛看） */
+.scene { perspective: 900px; }
+
+.card {
+  position: relative;
+  width: min(340px, 80vw);
+  aspect-ratio: 1.586;      /* 信用卡比例 */
+  padding: 22px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--accent);
+  color: #fff;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.card .tag { color: rgba(255, 255, 255, 0.75); }
+.card-title { align-self: center; font: 500 34px/1 "Poppins", sans-serif; letter-spacing: -0.03em; transform: translateZ(40px); } /* 往前浮一點：轉動時和卡片有前後層次 */
+.card-foot { display: flex; align-items: center; justify-content: space-between; transform: translateZ(24px); }
+.chip-square { width: 36px; height: 26px; background: rgba(255, 255, 255, 0.85); }
+.card-no { font: 400 13px/1 "JetBrains Mono", monospace; letter-spacing: 0.08em; }
+
+/* 反光：一片白色的光斑，位置跟著滑鼠移動 */
+.glare {
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.35), transparent 45%);
+  opacity: 0;
+  pointer-events: none;
+}

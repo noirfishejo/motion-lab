@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>26 Tween: 3D Tilt Card</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <!-- 會跟著滑鼠傾斜的卡片（假資料）。外層負責「透視」，內層負責「轉動」 -->
+    <div class="scene">
+      <article class="card">
+        <span class="glare" aria-hidden="true"></span>
+        <span class="tag">3d tilt</span>
+        <h1 class="card-title">Member<br>card</h1>
+        <div class="card-foot">
+          <span class="chip-square" aria-hidden="true"></span>
+          <span class="card-no">0420 · 2026</span>
+        </div>
+      </article>
+    </div>
+    <p class="hint">Move the cursor over the card.</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>23 Timeline: Hamburger to X Menu</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 網站頁首（假資料）：右邊的漢堡按鈕打開全螢幕選單 -->
+  <header class="bar">
+    <span class="brand">Studio</span>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span class="line"></span><span class="line"></span><span class="line"></span>
+    </button>
+  </header>
+
+  <main class="page">
+    <span class="tag">hamburger → ×</span>
+    <p class="hint">Open the menu with the button at the top right.</p>
+  </main>
+
+  <!-- 全螢幕選單：預設藏起來，script.js 打開時才顯示 -->
+  <nav class="menu" id="menu" aria-label="Main" hidden>
+    <ul class="menu-list">
+      <li><a href="#"><span class="mask"><span class="item">Work</span></span></a></li>
+      <li><a href="#"><span class="mask"><span class="item">Services</span></span></a></li>
+      <li><a href="#"><span class="mask"><span class="item">About</span></span></a></li>
+      <li><a href="#"><span class="mask"><span class="item">Contact</span></span></a></li>
+    </ul>
+    <p class="menu-foot">hello@studio.example · +00 000 000</p>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>27 DrawSVG: Checkbox Draw-on</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <!-- 待辦清單（假資料）：勾選時，方塊填色彈一下、勾勾一筆畫出來、文字劃上刪除線 -->
+    <section class="todo" aria-labelledby="todo-title">
+      <h1 class="todo-title" id="todo-title">Today</h1>
+      <label class="task">
+        <!-- 真正的 checkbox 還在（鍵盤、讀屏軟體都能用），只是看不到；畫面上的方塊是自己畫的 -->
+        <input type="checkbox" class="sr-only">
+        <span class="box"><svg class="check" viewBox="0 0 256 256" aria-hidden="true"><polyline class="check-path" points="40 144 96 200 224 72"/></svg></span>
+        <span class="text">Review the onboarding flow</span>
+      </label>
+      <label class="task">
+        <input type="checkbox" class="sr-only">
+        <span class="box"><svg class="check" viewBox="0 0 256 256" aria-hidden="true"><polyline class="check-path" points="40 144 96 200 224 72"/></svg></span>
+        <span class="text">Export icons for handoff</span>
+      </label>
+      <label class="task">
+        <input type="checkbox" class="sr-only">
+        <span class="box"><svg class="check" viewBox="0 0 256 256" aria-hidden="true"><polyline class="check-path" points="40 144 96 200 224 72"/></svg></span>
+        <span class="text">Write motion specs</span>
+      </label>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

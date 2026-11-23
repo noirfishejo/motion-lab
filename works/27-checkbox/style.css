@@ -1,0 +1,79 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --surface-2: #1B1E23;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+  --success: #4CC38A;
+  --warning: #F2B35A;
+  --danger: #FF7A7A;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --surface-2: #ECECE8;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+  --success: #0B7354;
+  --warning: #8A5300;
+  --danger: #C0262D;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+
+.stage { width: min(420px, 100%); padding: 32px 16px; }
+.todo { background: var(--surface); border: 1px solid var(--line); }
+.todo-title { padding: 16px 20px; border-bottom: 1px solid var(--line); font: 400 12px/1 "JetBrains Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+.task { display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 0 20px; cursor: pointer; }
+.task + .task { border-top: 1px solid var(--line); }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* 自己畫的方塊 */
+.box {
+  position: relative;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--line-strong);
+  transition: border-color 0.2s;
+}
+.box::before { content: ""; position: absolute; inset: -1px; background: var(--accent); transform: scale(var(--fill, 0)); } /* 勾選時的填色：script.js 改 --fill（0 → 1）放大 */
+.task:hover .box { border-color: var(--text); }
+.sr-only:focus-visible + .box { outline: 2px solid var(--accent-fg); outline-offset: 3px; }
+
+/* 勾勾：Phosphor 的 check 圖示，改成「線條」才能一筆畫出來 */
+.check { position: absolute; inset: 3px; width: calc(100% - 6px); height: calc(100% - 6px); }
+.check-path { fill: none; stroke: #fff; stroke-width: 24; stroke-linecap: square; stroke-linejoin: miter; }
+
+/* 文字＋刪除線（一條線，由 script.js 從左畫到右） */
+.text { position: relative; font-size: 15px; transition: color 0.3s; }
+.text::after { content: ""; position: absolute; left: 0; right: 0; top: 52%; height: 1px; background: currentColor; transform: scaleX(var(--strike, 0)); transform-origin: 0 50%; }
+.is-done .text { color: var(--muted); }

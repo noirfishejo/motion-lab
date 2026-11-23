@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>28 Tween: Password Strength</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <section class="card">
+      <span class="tag">password</span>
+      <label class="label" for="pw">New password</label>
+      <div class="input-wrap">
+        <input class="input" id="pw" type="password" autocomplete="new-password" aria-describedby="strength rules">
+        <button class="reveal" type="button" aria-pressed="false" aria-label="Show password"><i class="ph-light ph-eye"></i></button>
+      </div>
+
+      <!-- 強度條：四格，依強度依序填滿 -->
+      <div class="meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <p class="strength" id="strength" aria-live="polite">Start typing</p>
+
+      <!-- 規則清單：符合時打勾 -->
+      <ul class="rules" id="rules">
+        <li data-rule="length"><span class="mark"><i class="ph-light ph-check"></i></span>At least 8 characters</li>
+        <li data-rule="case"><span class="mark"><i class="ph-light ph-check"></i></span>Upper and lower case</li>
+        <li data-rule="number"><span class="mark"><i class="ph-light ph-check"></i></span>A number</li>
+        <li data-rule="symbol"><span class="mark"><i class="ph-light ph-check"></i></span>A symbol</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

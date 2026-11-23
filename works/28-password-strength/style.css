@@ -1,0 +1,80 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --surface-2: #1B1E23;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+  --success: #4CC38A;
+  --warning: #F2B35A;
+  --danger: #FF7A7A;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --surface-2: #ECECE8;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+  --success: #0B7354;
+  --warning: #8A5300;
+  --danger: #C0262D;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+
+.stage { width: min(420px, 100%); padding: 32px 16px; }
+.card { display: grid; gap: 10px; padding: 24px; background: var(--surface); border: 1px solid var(--line); }
+.label { margin-top: 6px; font-size: 13px; color: var(--muted); }
+
+.input-wrap { position: relative; }
+.input {
+  width: 100%;
+  height: 48px;
+  padding: 0 48px 0 14px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg);
+  color: var(--text);
+  font: 400 16px/1 "Inter Tight", sans-serif;
+  outline: none;
+  border-radius: 0;
+}
+.input:focus { border-color: var(--accent-fg); }
+.reveal { position: absolute; right: 2px; top: 2px; width: 44px; height: 44px; display: grid; place-items: center; border: 0; background: transparent; color: var(--muted); font-size: 18px; cursor: pointer; }
+.reveal:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: -4px; }
+
+/* 四格強度條：每一格是一個色塊，由 script.js 從左到右填 */
+.meter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 4px; }
+.meter i { height: 4px; background: var(--line); position: relative; overflow: hidden; }
+.meter i::after { content: ""; position: absolute; inset: 0; background: var(--level-color, var(--accent-fg)); transform: scaleX(var(--on, 0)); transform-origin: 0 50%; }
+.strength { min-height: 20px; font-size: 13px; color: var(--level-color, var(--muted)); }
+
+.rules { list-style: none; display: grid; gap: 8px; margin-top: 6px; }
+.rules li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); transition: color 0.3s; }
+.rules li.ok { color: var(--text); }
+.mark { flex: none; display: grid; place-items: center; width: 18px; height: 18px; border: 1px solid var(--line-strong); font-size: 12px; color: transparent; }
+.rules li.ok .mark { border-color: var(--success); background: var(--success); color: var(--bg); }
