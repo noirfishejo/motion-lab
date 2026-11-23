@@ -1,0 +1,53 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent-fg: #6E83FF;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.intro {
+  min-height: 70vh;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+}
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+.hint { font-size: 14px; color: var(--muted); }
+
+.story { display: grid; gap: 18vh; padding: 0 clamp(20px, 6vw, 80px) 30vh; }
+
+/* 大字：一行一行由 script.js 拆開後做動畫 */
+.statement {
+  max-width: 16ch;
+  font: 500 clamp(36px, 7vw, 88px)/1.08 "Poppins", sans-serif;
+  letter-spacing: -0.03em;
+}
+.statement.muted { color: var(--muted); }
+
+.outro { min-height: 60vh; display: grid; place-items: center; padding: 24px; color: var(--muted); text-align: center; }

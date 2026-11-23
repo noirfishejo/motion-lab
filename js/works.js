@@ -302,6 +302,59 @@ export const WORKS = [
       { code: 'rotate(90deg) → 0', text: { 'zh-TW': '「＋」是兩條線，展開時直的那條轉 90° 疊到橫的上面變成「－」。這個用 CSS transition 就夠了，不需要 GSAP。', en: 'The “+” is two lines; opening rotates the vertical one 90° onto the horizontal one to make “−”. A CSS transition is enough here — no GSAP needed.' } },
       { code: '<h2><button aria-expanded>', text: { 'zh-TW': '標題外面包 h2、裡面是 button：讀屏使用者可以用標題快速跳到每個問題，按鈕會唸出「已展開／已收合」。', en: 'A button inside an h2: screen-reader users can jump between questions by heading, and the button announces expanded or collapsed.' } }
     ]
+  },
+  {
+    id: '18-count-up',
+    title: { 'zh-TW': '儀表板數字跳動計數', en: 'Dashboard count-up numbers' },
+    short: { 'zh-TW': '數字計數', en: 'Count-up' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '三個統計數字從 0 跳到目標值，一開始很快、最後慢慢停在正確的數字。按 Refresh 換成新數字時，會從目前的值跳過去，不會每次都從 0 開始。', en: 'Three stats count up from 0 — fast at first, settling on the exact value. Refresh jumps from the current value to new numbers instead of restarting at 0.' },
+    topic: 'components',
+    tech: 'Tween', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['gsap.to(object)', 'onUpdate', 'Intl.NumberFormat'],
+    date: '2026-11-23',
+    notes: [
+      { code: 'gsap.to(c, { n: to, onUpdate })', text: { 'zh-TW': 'GSAP 不只能動畫元素，也能動畫一個普通物件的數字。改 c.n，再在 onUpdate 裡把它格式化成文字寫回畫面。', en: 'GSAP can tween a plain object’s number, not just elements. It changes c.n, and onUpdate formats it back into the text on screen.' } },
+      { code: 'Intl.NumberFormat', text: { 'zh-TW': '千分位、貨幣符號、小數位數交給瀏覽器內建的格式化，換語言或幣別時只要改設定，不用自己拼字串。', en: 'Thousands separators, currency symbols and decimals come from the built-in formatter; switching locale or currency is a setting, not string building.' } },
+      { code: 'font-variant-numeric: tabular-nums', text: { 'zh-TW': '等寬數字：跳動時每個數字一樣寬，整串數字不會左右抖動。所有會變動的數字（計時、價格）都建議加。', en: 'Tabular figures keep every digit the same width so the number doesn’t wobble while counting. Use it for any changing number — timers, prices.' } },
+      { code: "ease: 'expo.out'", text: { 'zh-TW': '大部分時間花在最後幾個數字，眼睛來得及讀到結果。用 none（等速）會一直快速閃動到最後一刻才停。', en: 'Most of the time is spent on the last digits so the eye can catch the result. Linear (none) flickers fast right up to the final frame.' } },
+      { code: { 'zh-TW': 'c.n（記住目前的值）', en: 'c.n (remembers the current value)' }, text: { 'zh-TW': '每個數字記住目前顯示的值，Refresh 時從這裡跳到新值。配上 overwrite: true，連按也不會跳回 0。', en: 'Each counter remembers its current value and refreshes from there. With overwrite: true, repeated clicks never snap back to 0.' } }
+    ]
+  },
+  {
+    id: '19-blur-reveal',
+    title: { 'zh-TW': '捲動時大字從模糊變清楚', en: 'Large text sharpens from blur on scroll' },
+    short: { 'zh-TW': '模糊變清楚', en: 'Blur reveal' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '參考 santalarch 的大字敘事：每一行捲進畫面時，從模糊、半透明、偏下的位置，跟著捲動慢慢變清楚、到位。往回捲會再變模糊。', en: 'Big-type storytelling inspired by santalarch: each line starts blurred, faint and slightly low, and sharpens into place as you scroll. Scrolling back blurs it again.' },
+    topic: 'scroll',
+    tech: 'ScrollTrigger', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['SplitText', 'filter: blur', 'scrub'],
+    markers: true, // 作品頁預覽上方會出現 Markers 開關
+    thumb: '.intro, .statement:first-child', // 首頁縮圖對準開頭和第一段大字
+    date: '2026-11-23',
+    notes: [
+      { code: "filter: 'blur(14px)' → 'blur(0px)'", text: { 'zh-TW': 'GSAP 可以直接補間 CSS filter。模糊很吃效能，所以只用在少量的大字上，不要整頁每個元素都加。', en: 'GSAP can tween CSS filter directly. Blur is expensive, so keep it to a few large lines rather than every element on the page.' } },
+      { code: "SplitText { type: 'lines' }", text: { 'zh-TW': '拆成畫面上實際的一行一行，每行各自變清楚，比整段一起變清楚更有節奏。autoSplit 讓視窗變寬變窄時重新拆行。', en: 'Splits into the actual on-screen lines so each one sharpens in turn — more rhythm than the whole paragraph at once. autoSplit re-splits on resize.' } },
+      { code: "start: 'top 85%', end: 'bottom 55%'", text: { 'zh-TW': '文字頂端到畫面下方 85% 開始，底端到畫面中間偏下時全部清楚。也就是讀者讀到那裡的時候，字剛好清楚。', en: 'Starts when the top reaches 85% down the screen and is fully sharp when the bottom reaches 55% — right where the reader’s eyes are.' } },
+      { code: "ease: 'none' + scrub", text: { 'zh-TW': '跟著捲動的動畫用等速，捲多少就清楚多少；scrub: 0.8 讓它稍微落後捲動一點，比較滑順。', en: 'Scroll-linked animation stays linear — sharpness follows scroll exactly; scrub: 0.8 trails slightly behind for smoothness.' } },
+      { code: 'stagger: 0.15', text: { 'zh-TW': '同一段裡，下一行比上一行晚一點清楚，閱讀方向和動畫方向一致。', en: 'Within a paragraph each line sharpens a little after the one above, matching the reading direction.' } }
+    ]
+  },
+  {
+    id: '20-skeleton',
+    title: { 'zh-TW': '骨架屏載入與換上內容', en: 'Skeleton loading to real content' },
+    short: { 'zh-TW': '骨架屏', en: 'Skeleton' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '資料還沒回來時先顯示和內容同形狀的灰色骨架，光澤從左掃到右；資料回來後骨架淡出，圖片、標題、內文依序浮現。按 Reload 可以重來。', en: 'While data loads, grey skeletons shaped like the content shimmer from left to right; when it arrives they fade out and the image, title and text rise in order. Reload to replay.' },
+    topic: 'components',
+    tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['repeat: -1', 'xPercent', 'aria-busy'],
+    date: '2026-11-23',
+    notes: [
+      { code: { 'zh-TW': '骨架和內容疊在一起', en: 'Skeleton and content overlap' }, text: { 'zh-TW': '骨架的形狀、大小和真實內容一樣，兩者放在同一個格子裡疊著。換上內容時卡片高度不變，版面不會跳動。', en: 'The skeleton matches the real content’s shape and size and sits in the same grid cell, so swapping doesn’t change the card’s height or shift the layout.' } },
+      { code: "gsap.fromTo('.shine', { xPercent: -100 }, { xPercent: 100, repeat: -1 })", text: { 'zh-TW': '所有骨架用同一段動畫一起掃，看起來像同一道光。xPercent 是「自己寬度的百分比」，長短不同的骨架都剛好從頭掃到尾。', en: 'All skeletons share one animation so it reads as a single light sweep. xPercent is a percentage of each element’s own width, so bones of any length sweep end to end.' } },
+      { code: 'shimmer.kill()', text: { 'zh-TW': '無限重複的動畫一定要在內容出現後停掉，不然看不到的骨架還會在背景一直跑。', en: 'Always kill an infinitely repeating animation once content appears, or hidden skeletons keep animating in the background.' } },
+      { code: "aria-busy='true' → 'false'", text: { 'zh-TW': '載入中告訴讀屏軟體「還在忙」，骨架本身加 aria-hidden 不會被唸出來；載入完才唸真實內容。', en: 'aria-busy tells screen readers the area is loading, and the skeleton is aria-hidden; the real content is read once it arrives.' } },
+      { code: { 'zh-TW': 'reduce → 不掃光', en: 'reduce → no shimmer' }, text: { 'zh-TW': '開啟「減少動態」時骨架保持靜止，內容直接換上。骨架本身已經表達「載入中」，光澤只是加分。', en: 'With reduced motion the skeleton stays still and content swaps in directly. The skeleton already says “loading”; the shimmer is a bonus.' } }
+    ]
   }
 ];
 

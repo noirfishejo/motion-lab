@@ -1,0 +1,96 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+  --bone: #1F2227;                          /* 骨架方塊的底色 */
+  --shine: rgba(255, 255, 255, 0.07);       /* 掃過的光澤 */
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+  --bone: #ECECE8;
+  --shine: rgba(255, 255, 255, 0.75);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage { width: min(880px, 100%); padding: 32px 16px; display: grid; gap: 16px; }
+.bar { display: flex; align-items: center; justify-content: space-between; }
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+.reload {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text);
+  font: 400 13px/1 "Inter Tight", sans-serif;
+  cursor: pointer;
+}
+.reload i { font-size: 16px; }
+.reload:hover { border-color: var(--text); }
+.reload:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 3px; }
+
+.feed { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+
+/* 骨架和真實內容疊在同一個位置：換的時候卡片高度不變 */
+.card { display: grid; background: var(--surface); border: 1px solid var(--line); }
+.skeleton, .content { grid-area: 1 / 1; display: grid; gap: 10px; align-content: start; padding: 0 0 20px; }
+.content { gap: 0; }
+.content .media { margin-bottom: 18px; }
+.content .text { margin-top: 10px; }
+
+/* 骨架的每一條都對應真實內容的一行：高度＋上下留白 = 那一行文字的行高
+   （標題 16px × 1.35 ≈ 21.6px、內文 13px × 1.55 ≈ 20.2px），換上內容時卡片高度才不會跳 */
+.skeleton { gap: 0; }
+.bone { position: relative; display: block; overflow: hidden; background: var(--bone); }
+.bone-media { height: 140px; margin-bottom: 18px; }               /* 圖片 140 + 下方 8 + 間距 10 */
+.bone-title { height: 14px; width: 80%; margin: 3.8px 16px; }     /* 3.8 + 14 + 3.8 = 21.6 */
+.bone-title.short { width: 55%; }
+.bone-line { height: 11px; width: calc(100% - 32px); margin: 4.6px 16px; } /* 4.6 + 11 + 4.6 ≈ 20.2 */
+.bone-line.first { margin-top: 14.6px; }                         /* 加上標題和內文之間的 10px */
+.bone-line.short { width: 45%; }
+
+/* 光澤：一條斜斜的亮帶，由 script.js 從左邊掃到右邊 */
+.shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%, var(--shine) 50%, transparent 80%);
+  transform: translateX(-100%);
+}
+
+.media { height: 140px; background: var(--accent); }
+.media[data-tone="2"] { background: var(--line-strong); }
+.media[data-tone="3"] { background: var(--accent-fg); }
+.title { padding: 0 16px; font: 500 16px/1.35 "Inter Tight", sans-serif; }
+.text { padding: 0 16px; font-size: 13px; line-height: 1.55; color: var(--muted); }

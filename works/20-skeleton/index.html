@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>20 Timeline: Skeleton Loading</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <header class="bar">
+      <span class="tag">skeleton</span>
+      <button class="reload" type="button"><i class="ph-light ph-arrow-clockwise"></i>Reload</button>
+    </header>
+
+    <!-- 文章列表：載入中先顯示骨架（灰色方塊＋光澤掃過），資料回來後換成真實內容 -->
+    <section class="feed" aria-busy="true" aria-live="polite">
+      <!-- 卡片由 script.js 產生（假資料） -->
+    </section>
+  </main>
+
+  <template id="card-template">
+    <article class="card">
+      <!-- 骨架：形狀和真實內容一樣，換上去時版面才不會跳動 -->
+      <div class="skeleton" aria-hidden="true">
+        <span class="bone bone-media"><i class="shine"></i></span>
+        <span class="bone bone-title"><i class="shine"></i></span>
+        <span class="bone bone-title short"><i class="shine"></i></span>
+        <span class="bone bone-line first"><i class="shine"></i></span>
+        <span class="bone bone-line short"><i class="shine"></i></span>
+      </div>
+      <!-- 真實內容 -->
+      <div class="content" hidden>
+        <div class="media"></div>
+        <h2 class="title"></h2>
+        <p class="text"></p>
+      </div>
+    </article>
+  </template>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>18 Tween: Count-up Numbers</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+
+    <!-- 儀表板的統計數字（假資料）：數字從 0（或目前的值）跳到新的值 -->
+    <section class="board" aria-labelledby="board-title">
+      <header class="board-head">
+        <h1 class="board-title" id="board-title">This week</h1>
+        <button class="refresh" type="button"><i class="ph-light ph-arrow-clockwise"></i>Refresh</button>
+      </header>
+
+      <div class="stats">
+        <!-- data-value：目標數字；data-format：number 整數、currency 金額、percent 百分比 -->
+        <article class="stat">
+          <span class="stat-label">Active users</span>
+          <span class="stat-value" data-value="12480" data-format="number">0</span>
+          <span class="stat-delta">+8.2%</span>
+        </article>
+        <article class="stat">
+          <span class="stat-label">Revenue</span>
+          <span class="stat-value" data-value="84230" data-format="currency">0</span>
+          <span class="stat-delta">+3.1%</span>
+        </article>
+        <article class="stat">
+          <span class="stat-label">Conversion</span>
+          <span class="stat-value" data-value="3.6" data-format="percent">0</span>
+          <span class="stat-delta">+0.4 pt</span>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

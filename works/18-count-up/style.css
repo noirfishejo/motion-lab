@@ -1,0 +1,83 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+  --success: #4CC38A;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+  --success: #0B7354;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage { width: min(880px, 100%); padding: 32px 16px; }
+
+.board { background: var(--surface); border: 1px solid var(--line); }
+.board-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 12px 12px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.board-title { font: 400 12px/1 "JetBrains Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text);
+  font: 400 13px/1 "Inter Tight", sans-serif;
+  cursor: pointer;
+}
+.refresh i { font-size: 16px; }
+.refresh:hover { border-color: var(--text); }
+.refresh:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 3px; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.stat { display: grid; gap: 8px; padding: 24px 20px 28px; }
+.stat + .stat { border-left: 1px solid var(--line); }
+@media (max-width: 640px) { .stat + .stat { border-left: 0; border-top: 1px solid var(--line); } }
+
+.stat-label { font-size: 13px; color: var(--muted); }
+.stat-value {
+  font: 500 clamp(36px, 6vw, 48px)/1.05 "Poppins", sans-serif;
+  letter-spacing: -0.02em;
+  /* 等寬數字：跳動時每個數字寬度一樣，整串數字不會左右抖動 */
+  font-variant-numeric: tabular-nums;
+}
+.stat-delta { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--success); }
