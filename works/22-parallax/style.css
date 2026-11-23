@@ -1,0 +1,80 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.intro { min-height: 80vh; display: grid; align-content: center; justify-items: center; gap: 16px; padding: 24px; text-align: center; }
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+.intro-title { font: 500 clamp(32px, 6vw, 64px)/1.08 "Poppins", sans-serif; letter-spacing: -0.03em; }
+.hint { font-size: 14px; color: var(--muted); }
+
+/* ── 圖片＋文字 ── */
+.feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(24px, 5vw, 64px);
+  padding: 12vh clamp(20px, 6vw, 80px);
+}
+.feature.is-flipped .media { order: 2; }
+@media (max-width: 640px) {
+  .feature { grid-template-columns: minmax(0, 1fr); }
+  .feature.is-flipped .media { order: 0; }
+}
+
+/* 圖片框：固定大小、裁掉超出的部分 */
+.media { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--surface); }
+/* 框裡的畫面：比框高 40%（上下各多 20%），捲動時才有空間上下移動而不露出空白 */
+.media-inner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -20%;
+  height: 140%;
+  display: grid;
+  place-items: center;
+  will-change: transform;
+}
+/* 假圖片：色塊＋斜條紋，看得出畫面在移動 */
+.tone-1 { background: repeating-linear-gradient(135deg, var(--accent) 0 24px, #2944EE 24px 48px); }
+.tone-2 { background: repeating-linear-gradient(135deg, var(--surface) 0 24px, var(--line) 24px 48px); }
+.tone-3 { background: repeating-linear-gradient(45deg, var(--accent-fg) 0 24px, var(--accent) 24px 48px); }
+.media-num { font: 500 clamp(64px, 12vw, 140px)/1 "Poppins", sans-serif; letter-spacing: -0.04em; color: #fff; mix-blend-mode: overlay; }
+.tone-2 .media-num { color: var(--text); mix-blend-mode: normal; opacity: 0.3; }
+
+.copy h2 { font: 500 clamp(24px, 3.4vw, 36px)/1.15 "Poppins", sans-serif; letter-spacing: -0.02em; }
+.copy p { margin-top: 12px; max-width: 32ch; font-size: 15px; line-height: 1.6; color: var(--muted); }
+
+.outro { min-height: 60vh; display: grid; place-items: center; padding: 24px; color: var(--muted); text-align: center; }

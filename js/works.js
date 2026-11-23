@@ -343,17 +343,54 @@ export const WORKS = [
     id: '20-skeleton',
     title: { 'zh-TW': '骨架屏載入與換上內容', en: 'Skeleton loading to real content' },
     short: { 'zh-TW': '骨架屏', en: 'Skeleton' }, // 側欄用的短名稱
-    summary: { 'zh-TW': '資料還沒回來時先顯示和內容同形狀的灰色骨架，光澤從左掃到右；資料回來後骨架淡出，圖片、標題、內文依序浮現。按 Reload 可以重來。', en: 'While data loads, grey skeletons shaped like the content shimmer from left to right; when it arrives they fade out and the image, title and text rise in order. Reload to replay.' },
+    summary: { 'zh-TW': '資料還沒回來時先顯示和內容同形狀的灰色骨架，一道光從左上斜斜掃到右下；資料回來後骨架淡出，圖片、標題、內文依序浮現。按預覽上方的「重播」可以再看一次。', en: 'While data loads, grey skeletons shaped like the content catch one diagonal sweep of light from top left to bottom right; when it arrives they fade out and the image, title and text rise in order. Use Replay above the preview to watch again.' },
     topic: 'components',
     tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
-    tags: ['repeat: -1', 'xPercent', 'aria-busy'],
+    tags: ['repeat: -1', 'background-attachment', 'aria-busy'],
     date: '2026-11-23',
     notes: [
       { code: { 'zh-TW': '骨架和內容疊在一起', en: 'Skeleton and content overlap' }, text: { 'zh-TW': '骨架的形狀、大小和真實內容一樣，兩者放在同一個格子裡疊著。換上內容時卡片高度不變，版面不會跳動。', en: 'The skeleton matches the real content’s shape and size and sits in the same grid cell, so swapping doesn’t change the card’s height or shift the layout.' } },
-      { code: "gsap.fromTo('.shine', { xPercent: -100 }, { xPercent: 100, repeat: -1 })", text: { 'zh-TW': '所有骨架用同一段動畫一起掃，看起來像同一道光。xPercent 是「自己寬度的百分比」，長短不同的骨架都剛好從頭掃到尾。', en: 'All skeletons share one animation so it reads as a single light sweep. xPercent is a percentage of each element’s own width, so bones of any length sweep end to end.' } },
+      { code: 'background-attachment: fixed', text: { 'zh-TW': '每一塊骨架的光澤都用「以畫面為基準」的同一張斜向漸層，再用 GSAP 移動 backgroundPosition。看起來是同一道光從左上掃到右下，經過哪塊就亮哪塊。', en: 'Every bone uses the same diagonal gradient anchored to the viewport, and GSAP moves its backgroundPosition. It reads as one beam sweeping from top left to bottom right, lighting each bone it passes.' } },
+      { code: 'SWEEP - shimmer.time()', text: { 'zh-TW': '資料回來時如果光正掃到一半，先等它掃完這一趟再換上內容，光不會停在中間突然消失。', en: 'If data arrives mid-sweep, it waits for the beam to finish its pass before swapping content, so the light never cuts out halfway.' } },
       { code: 'shimmer.kill()', text: { 'zh-TW': '無限重複的動畫一定要在內容出現後停掉，不然看不到的骨架還會在背景一直跑。', en: 'Always kill an infinitely repeating animation once content appears, or hidden skeletons keep animating in the background.' } },
       { code: "aria-busy='true' → 'false'", text: { 'zh-TW': '載入中告訴讀屏軟體「還在忙」，骨架本身加 aria-hidden 不會被唸出來；載入完才唸真實內容。', en: 'aria-busy tells screen readers the area is loading, and the skeleton is aria-hidden; the real content is read once it arrives.' } },
       { code: { 'zh-TW': 'reduce → 不掃光', en: 'reduce → no shimmer' }, text: { 'zh-TW': '開啟「減少動態」時骨架保持靜止，內容直接換上。骨架本身已經表達「載入中」，光澤只是加分。', en: 'With reduced motion the skeleton stays still and content swaps in directly. The skeleton already says “loading”; the shimmer is a bonus.' } }
+    ]
+  },
+  {
+    id: '21-like-burst',
+    title: { 'zh-TW': '按讚愛心與粒子', en: 'Like button with particle burst' },
+    short: { 'zh-TW': '按讚愛心', en: 'Like burst' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '按下愛心：空心縮掉、實心彈出，外框方塊擴散、十顆小方塊往四周噴開，按讚數往上滾一格。在圖片上點兩下也能按讚，中間會跳出大愛心。取消按讚則安靜地縮回去。', en: 'Tap the heart: the outline shrinks away, the filled heart pops in, a square ring expands and ten tiny squares burst outward while the count rolls up. Double-click the photo to like with a big centre heart. Unliking quietly shrinks back.' },
+    topic: 'components',
+    tech: 'Timeline', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['back.out', 'gsap.utils.random', 'aria-pressed'],
+    date: '2026-11-23',
+    notes: [
+      { code: "ease: 'back.out(3)'", text: { 'zh-TW': '先放大超過一點再回到原尺寸，像被按下去又彈回來。括號裡的數字越大，「超過」的幅度越大。', en: 'Overshoots slightly before settling, like a press that springs back. The bigger the number, the bigger the overshoot.' } },
+      { code: 'angle = i / PARTICLES × 2π', text: { 'zh-TW': '粒子沿著圓周平均分佈，再加一點隨機的角度和距離（gsap.utils.random），看起來自然而不是死板的放射狀。', en: 'Particles are spread evenly around a circle, then nudged with random angle and distance (gsap.utils.random) so the burst looks natural rather than rigid.' } },
+      { code: 'onComplete: () => p.remove()', text: { 'zh-TW': '每次按讚都會新增粒子，飛完一定要移除，不然連按很多次頁面上會堆滿看不見的元素。', en: 'New particles are created on every like, so remove them when they finish — otherwise repeated taps pile up invisible elements.' } },
+      { code: { 'zh-TW': '取消不噴粒子', en: 'No burst on unlike' }, text: { 'zh-TW': '慶祝只給「按讚」。取消時安靜地縮回空心，動態的情緒要和動作的意義一致。', en: 'Celebrate only the like. Unliking quietly shrinks back — the motion’s mood should match the meaning of the action.' } },
+      { code: "aria-pressed='true'", text: { 'zh-TW': '按讚按鈕是「切換」的按鈕，用 aria-pressed 讓讀屏軟體唸出「已按下／未按下」。點兩下圖片只是捷徑，鍵盤使用者用按鈕就好。', en: 'A like button is a toggle; aria-pressed lets screen readers announce pressed or not. Double-clicking the photo is a shortcut — keyboard users use the button.' } }
+    ]
+  },
+  {
+    id: '22-parallax',
+    title: { 'zh-TW': '捲動時的圖片視差', en: 'Image parallax on scroll' },
+    short: { 'zh-TW': '圖片視差', en: 'Parallax' }, // 側欄用的短名稱
+    summary: { 'zh-TW': '圖片框固定、框裡的畫面移動得比頁面慢，旁邊的文字移動得比頁面快，三種速度疊出前後的距離感。往回捲時方向相反。', en: 'The image frame stays put while the picture inside drifts slower than the page and the text beside it moves faster — three speeds that create depth. Scrolling back reverses it.' },
+    topic: 'scroll',
+    tech: 'ScrollTrigger', // 主要用到的 GSAP 功能（卡片右上角顯示、可搜尋）
+    tags: ['yPercent', 'data-speed', 'scrub'],
+    markers: true, // 作品頁預覽上方會出現 Markers 開關
+    thumb: '.intro, .feature:first-of-type', // 首頁縮圖對準開頭和第一張圖
+    date: '2026-11-23',
+    notes: [
+      { code: 'overflow: hidden + height: 140%', text: { 'zh-TW': '圖片框裁掉超出的部分，框裡的畫面比框高 40%（上下各多 20%）。畫面在框裡上下移動，才不會露出空白。', en: 'The frame clips overflow, and the picture inside is 40% taller (20% extra top and bottom), so it can move without revealing gaps.' } },
+      { code: 'data-speed="0.2"', text: { 'zh-TW': '正數：移動得比頁面慢，感覺在遠處；負數：比頁面快，感覺在近處。速度寫在 HTML 上，改數字就能調，不用改程式。', en: 'Positive values move slower than the page and feel far away; negative values move faster and feel close. Speeds live in the HTML, so tweaking needs no code.' } },
+      { code: "start: 'top bottom', end: 'bottom top'", text: { 'zh-TW': '從元素剛出現在畫面底部，到完全離開畫面頂部，這整段捲動都在移動。視差才會連續，不會突然開始或停止。', en: 'Movement spans from the moment the element enters at the bottom to when it leaves at the top, so the parallax never starts or stops abruptly.' } },
+      { code: "ease: 'none'", text: { 'zh-TW': '視差一定要等速：捲多少就移多少。用 expo 之類的 ease，捲動和畫面移動會對不上，看起來像卡頓。', en: 'Parallax must be linear — move exactly as much as you scroll. An ease like expo makes scrolling and movement drift apart and feel janky.' } },
+      { code: 'clamp(-14, 14, …)', text: { 'zh-TW': '視差強度要節制，10～20% 就夠，太大會讓人頭暈。這裡把畫面的移動限制在框能容納的範圍內。', en: 'Keep parallax subtle — 10–20% is plenty; more can make people feel seasick. The picture’s travel is clamped to what the frame can hold.' } }
     ]
   }
 ];

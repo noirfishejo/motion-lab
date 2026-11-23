@@ -43,23 +43,6 @@ body {
 }
 
 .stage { width: min(880px, 100%); padding: 32px 16px; display: grid; gap: 16px; }
-.bar { display: flex; align-items: center; justify-content: space-between; }
-.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
-.reload {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 36px;
-  padding: 0 12px;
-  border: 1px solid var(--line-strong);
-  background: transparent;
-  color: var(--text);
-  font: 400 13px/1 "Inter Tight", sans-serif;
-  cursor: pointer;
-}
-.reload i { font-size: 16px; }
-.reload:hover { border-color: var(--text); }
-.reload:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 3px; }
 
 .feed { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
 
@@ -81,12 +64,16 @@ body {
 .bone-line.first { margin-top: 14.6px; }                         /* 加上標題和內文之間的 10px */
 .bone-line.short { width: 45%; }
 
-/* 光澤：一條斜斜的亮帶，由 script.js 從左邊掃到右邊 */
+/* 光澤：一道斜斜的光從左上掃到右下
+   background-attachment: fixed → 所有骨架共用「同一張」以畫面為基準的漸層，
+   看起來像同一道光掃過整排卡片，而不是每一塊各自閃一下（iPhone 不支援 fixed，會變成每塊各自斜掃） */
 .shine {
   position: absolute;
   inset: 0;
-  background: linear-gradient(100deg, transparent 20%, var(--shine) 50%, transparent 80%);
-  transform: translateX(-100%);
+  background: linear-gradient(115deg, transparent 42%, var(--shine) 50%, transparent 58%);
+  background-size: 300% 300%;
+  background-attachment: fixed;
+  background-position: 100% 100%;   /* 起點：光還在畫面左上外面 */
 }
 
 .media { height: 140px; background: var(--accent); }

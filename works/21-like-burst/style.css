@@ -1,0 +1,84 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-fg: #6E83FF;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage { width: min(380px, 100%); padding: 32px 16px; }
+
+.post { background: var(--surface); border: 1px solid var(--line); }
+
+/* 圖片（假的）：克萊因藍色塊 */
+.photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: #fff;
+  user-select: none;        /* 點兩下時不要選到文字 */
+  cursor: pointer;
+}
+.photo-text { font: 400 12px/1.5 "JetBrains Mono", monospace; text-align: center; opacity: 0.7; }
+.big-heart { position: absolute; font-size: 96px; color: #fff; opacity: 0; pointer-events: none; }
+
+.post-bar { display: flex; align-items: center; gap: 10px; padding: 8px 16px 8px 8px; }
+
+/* ── 愛心按鈕 ── */
+.like {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+.like:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: -2px; }
+.like-icon { position: relative; display: grid; font-size: 28px; }
+.like-icon i { grid-area: 1 / 1; }
+.icon-on { color: var(--accent-fg); opacity: 0; transform: scale(0); }
+
+/* 粒子容器：以按鈕中心為原點 */
+.burst { position: absolute; left: 50%; top: 50%; pointer-events: none; }
+.particle { position: absolute; width: 6px; height: 6px; margin: -3px 0 0 -3px; background: var(--accent-fg); }
+.ring { position: absolute; width: 24px; height: 24px; margin: -12px 0 0 -12px; border: 2px solid var(--accent-fg); }
+
+.count { font-size: 14px; color: var(--muted); }
+.count-num { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }

@@ -1,6 +1,7 @@
 // ── 試著改這幾個數字 ──
 const LOAD_TIME = 1.8;   // 假裝資料要載入幾秒
-const SWEEP = 1.3;       // 光澤掃過一次要幾秒
+const SWEEP = 1.6;       // 光澤從左上掃到右下要幾秒
+const PAUSE = 0.4;       // 兩次之間停多久
 
 // 假資料：三篇文章
 const POSTS = [
@@ -17,17 +18,24 @@ let pending; // 等待中的「資料回來」
 
 function load() {
   shimmer?.kill();
-  pending?.kill(); // 還在載入時又按 Reload：取消上一次的等待
+  pending?.kill(); // 再載入一次時：取消上一次的等待
   feed.setAttribute('aria-busy', 'true');
   feed.replaceChildren(...POSTS.map(() => template.content.firstElementChild.cloneNode(true)));
 
   // 光澤：所有骨架用同一段動畫一起掃，看起來像同一道光；減少動態時不掃（骨架靜止）
   if (!reduce) {
-    shimmer = gsap.fromTo('.shine', { xPercent: -100 }, { xPercent: 100, duration: SWEEP, ease: 'power1.inOut', repeat: -1, repeatDelay: 0.2 });
+    // 背景位置 100% → 0%：整張漸層往右下移，光就從畫面左上掃到右下（見 style.css）
+    shimmer = gsap.fromTo('.shine',
+      { backgroundPosition: '100% 100%' },
+      { backgroundPosition: '0% 0%', duration: SWEEP, ease: 'none', repeat: -1, repeatDelay: PAUSE });
   }
 
   // 假裝等資料：真實情況是 fetch() 回來之後才呼叫 reveal()
-  pending = gsap.delayedCall(LOAD_TIME, reveal);
+  pending = gsap.delayedCall(LOAD_TIME, () => {
+    // 資料回來時，光如果正掃到一半，等它掃完這一趟才換內容（不會停在中間突然消失）
+    const t = shimmer ? shimmer.time() : SWEEP;
+    pending = gsap.delayedCall(t < SWEEP ? SWEEP - t : 0, reveal);
+  });
 }
 
 function reveal() {
@@ -53,5 +61,4 @@ function reveal() {
     .from(feed.querySelectorAll('.content > *'), { y: 12, opacity: 0, duration: 0.6, stagger: 0.05, ease: 'expo.out' }, 0.05);
 }
 
-document.querySelector('.reload').addEventListener('click', load);
 load();

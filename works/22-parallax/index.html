@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <title>22 ScrollTrigger: Image Parallax</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+
+    <section class="intro">
+      <span class="tag">parallax</span>
+      <h1 class="intro-title">Things move<br>at different speeds.</h1>
+      <p class="hint">↓ Scroll inside the preview</p>
+    </section>
+
+    <!-- 三段「圖片＋文字」（假圖片：用色塊和條紋代替照片）
+         圖片框固定不動，裡面的畫面（.media-inner）比框高，捲動時以比較慢的速度移動 → 視差 -->
+    <section class="feature">
+      <figure class="media" data-speed="0.2">
+        <div class="media-inner tone-1"><span class="media-num">01</span></div>
+      </figure>
+      <div class="copy" data-speed="-0.1">
+        <h2>Depth without 3D</h2>
+        <p>The picture drifts slower than the page, so it feels further away.</p>
+      </div>
+    </section>
+
+    <section class="feature is-flipped">
+      <figure class="media" data-speed="0.3">
+        <div class="media-inner tone-2"><span class="media-num">02</span></div>
+      </figure>
+      <div class="copy" data-speed="-0.1">
+        <h2>Keep it subtle</h2>
+        <p>Ten to twenty percent is plenty. More than that starts to feel seasick.</p>
+      </div>
+    </section>
+
+    <section class="feature">
+      <figure class="media" data-speed="0.2">
+        <div class="media-inner tone-3"><span class="media-num">03</span></div>
+      </figure>
+      <div class="copy" data-speed="-0.1">
+        <h2>Only transforms</h2>
+        <p>Everything moves with yPercent, so scrolling stays smooth.</p>
+      </div>
+    </section>
+
+    <section class="outro"><p>Scroll back up — the layers move the other way.</p></section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

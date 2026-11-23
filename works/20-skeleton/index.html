@@ -7,15 +7,12 @@
   <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
   <title>20 Timeline: Skeleton Loading</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
-  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="stage">
-    <header class="bar">
-      <span class="tag">skeleton</span>
-      <button class="reload" type="button"><i class="ph-light ph-arrow-clockwise"></i>Reload</button>
-    </header>
+    <!-- 想再看一次：按作品頁預覽上方的「重播」 -->
+    <span class="tag">skeleton</span>
 
     <!-- 文章列表：載入中先顯示骨架（灰色方塊＋光澤掃過），資料回來後換成真實內容 -->
     <section class="feed" aria-busy="true" aria-live="polite">
