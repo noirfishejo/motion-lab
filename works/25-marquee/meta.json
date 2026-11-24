@@ -1,15 +1,15 @@
 {
   "title": {
-    "zh-TW": "無限輪播的文字跑馬燈",
-    "en": "Infinite text marquee"
+    "zh-TW": "文字跑馬燈無限輪播",
+    "en": "Text marquee infinite loop"
   },
   "short": {
     "zh-TW": "跑馬燈",
     "en": "Marquee"
   },
   "summary": {
-    "zh-TW": "兩排大字一左一右無限輪播，第二排是空心字。滑鼠移上去會慢慢減速，移開再加速回來。",
-    "en": "Two rows of big type loop forever in opposite directions, the second in outline. Hovering eases it down to a crawl and moving away speeds it back up."
+    "zh-TW": "兩排大字一左一右無限輪播，第二排是空心字。滑鼠移上去會慢慢減速，移開再加速回來；右下角有暫停鈕，可以讓兩排一起慢慢停下。",
+    "en": "Two rows of big type loop forever in opposite directions, the second in outline. Hovering eases it down to a crawl and moving away speeds it back up. A Pause button eases both rows to a stop."
   },
   "topic": "graphics",
   "tech": "Tween",
@@ -56,6 +56,13 @@
       "text": {
         "zh-TW": "時間用「寬度 ÷ 速度」算，內容長短不同的兩排，看起來的移動速度才會一樣。",
         "en": "Duration is width ÷ speed, so rows with different lengths move at the same visual speed."
+      }
+    },
+    {
+      "code": "gsap.to(loop, { timeScale: paused ? 0 : 1 })",
+      "text": {
+        "zh-TW": "暫停鈕也用 timeScale：慢慢停下、慢慢開始，不是突然定格。一直在動的內容要能讓人停下來（WCAG 2.2.2：會動超過 5 秒的東西要能暫停），對容易分心或暈眩的人很重要。",
+        "en": "The Pause button also tweens timeScale, so the rows ease to a stop and back instead of freezing. Content that keeps moving needs a way to stop it (WCAG 2.2.2: anything moving longer than 5 seconds must be pausable) — important for people who get distracted or dizzy."
       }
     }
   ]

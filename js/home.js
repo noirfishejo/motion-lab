@@ -43,6 +43,8 @@ renderFilters();
 renderFeatured();
 renderCards();
 setupRefine();
+setupRefineToggle();
+updateRefineCount();
 initSmooth();
 initCursor();
 initTooltips();
@@ -241,6 +243,7 @@ function compare(a, b) {
 
 // GSAP 功能 chip 的選取狀態
 function syncChips() {
+  updateRefineCount();
   document.querySelectorAll('#techChips .chip').forEach(c => {
     const on = c.dataset.tech === currentTech;
     c.setAttribute('aria-pressed', on);
@@ -248,18 +251,57 @@ function syncChips() {
   });
 }
 
-// chip 上的數字跟著目前的主題和搜尋重新算；0 個的 chip 停用（不然點下去只會得到空結果）
-// 已選中的 chip 就算是 0 也保留可按，才能取消
+// chip 上的數字跟著目前的主題和搜尋重新算；0 個的 chip 藏起來（點下去只會得到空結果），後面的往前遞補
+// 已選中的 chip 就算是 0 也留著，才能取消
 function updateChipCounts(topic, query) {
   const counts = {};
   document.querySelectorAll('.work-card').forEach(c => {
     if ((topic === 'all' || c.dataset.topic === topic) && matches(c.dataset.search, query)) counts[c.dataset.tech] = (counts[c.dataset.tech] || 0) + 1;
   });
-  document.querySelectorAll('#techChips .chip').forEach(c => {
-    const n = counts[c.dataset.tech] || 0;
-    c.querySelector('sup').textContent = n;
-    c.disabled = n === 0 && c.dataset.tech !== currentTech;
+  const chips = [...document.querySelectorAll('#techChips .chip')];
+  const willHide = c => !counts[c.dataset.tech] && c.dataset.tech !== currentTech;
+  if (chips.every(c => c.hidden === willHide(c))) { // 顯示哪些沒變：只更新數字
+    chips.forEach(c => { c.querySelector('sup').textContent = counts[c.dataset.tech] || 0; });
+    return;
+  }
+  // Flip：先記下每個 chip 的位置 → 改成新的狀態 → 從舊位置滑到新位置（練習「篩選重新排列」的做法）
+  const state = window.Flip && !reduceMotion() ? Flip.getState(chips) : null;
+  chips.forEach(c => {
+    c.querySelector('sup').textContent = counts[c.dataset.tech] || 0;
+    c.hidden = willHide(c);
   });
+  if (!state) return;
+  Flip.from(state, {
+    targets: chips, duration: 0.5, ease: 'expo.out', absolute: true,
+    onEnter: els => gsap.fromTo(els, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'expo.out' }),
+    onLeave: els => gsap.to(els, { opacity: 0, scale: 0.8, duration: 0.25, ease: 'power2.in' })
+  });
+}
+
+// 手機的「篩選」按鈕：展開／收起第二排（高度補間），按鈕上顯示正在作用的條件數
+function setupRefineToggle() {
+  const btn = document.getElementById('refineToggle');
+  const panel = document.getElementById('refine');
+  let tl;
+  btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', open);
+    tl?.kill();
+    if (open) panel.classList.add('is-open');
+    if (reduceMotion() || !window.gsap) { panel.classList.toggle('is-open', open); return; }
+    tl = open
+      ? gsap.timeline()
+          .fromTo(panel, { height: 0, overflow: 'hidden' }, { height: 'auto', duration: 0.5, ease: 'expo.out', clearProps: 'height,overflow' }) // 動畫時才裁切：展開後排序的下拉清單要能超出去
+          .from(panel.children, { opacity: 0, y: 8, duration: 0.4, stagger: 0.05, ease: 'expo.out', clearProps: 'opacity,transform' }, 0.05)
+      : gsap.timeline({ onComplete: () => { panel.classList.remove('is-open'); gsap.set(panel, { clearProps: 'height,paddingTop,paddingBottom,overflow' }); } })
+          .to(panel, { height: 0, paddingTop: 0, paddingBottom: 0, overflow: 'hidden', duration: 0.35, ease: 'expo.inOut' });
+  });
+}
+function updateRefineCount() {
+  const n = (currentTech ? 1 : 0) + (currentSort !== 'newest' ? 1 : 0);
+  const badge = document.getElementById('refineCount');
+  badge.hidden = !n;
+  badge.textContent = n;
 }
 
 // 一次清掉主題、GSAP 功能和搜尋，回到全部
@@ -324,6 +366,7 @@ function setupRefine() {
   const choose = i => {
     currentSort = SORTS[i];
     try { localStorage.setItem('sort', currentSort); } catch {}
+    updateRefineCount();
     opts.forEach((o, n) => o.setAttribute('aria-selected', n === i));
     value.textContent = t(`sort.${currentSort}`);
     close();

@@ -1,7 +1,7 @@
 {
   "title": {
-    "zh-TW": "分段控制器與長條圖切換",
-    "en": "Segmented control with chart transition"
+    "zh-TW": "分段控制器切換長條圖",
+    "en": "Segmented control chart switch"
   },
   "short": {
     "zh-TW": "分段控制",

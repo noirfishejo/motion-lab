@@ -1,7 +1,7 @@
 {
   "title": {
-    "zh-TW": "捲動時大字從模糊變清楚",
-    "en": "Large text sharpens from blur on scroll"
+    "zh-TW": "大字捲動時從模糊變清楚",
+    "en": "Large text blur-to-sharp on scroll"
   },
   "short": {
     "zh-TW": "模糊變清楚",

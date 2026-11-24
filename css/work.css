@@ -130,28 +130,29 @@
 .frame-cover:hover .frame-cover-chip{border-color:var(--text)} /* 外框按鈕的滑過規則 */
 .frame-cover:focus-visible{outline-offset:-4px}
 
-/* ═══ 電腦 ≥1024px：程式碼固定展開，預覽和程式碼左右並排 ═══
-   兩欄等高、一起填滿一個畫面；預覽固定不動，筆記移到下方 */
+/* ═══ 電腦 ≥1024px：左邊預覽固定在畫面上，右邊依序是程式碼（可收合）→ 重點筆記 ═══
+   讀筆記時預覽一直看得到，可以邊讀邊對照動畫；程式碼高度縮小，筆記不用捲很遠才看到 */
 @media (min-width:1024px){
   :root{--stage-h:max(360px,calc(100svh - var(--header-h) - 32px - 56px))} /* 畫面高 − 頁首 − 上下留白 − 面板標題列 */
-  .work-main{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:16px}
-  .work-main > .panel:first-child{position:sticky;top:calc(var(--header-h) + 16px);z-index:2}
-  .code-toggle{display:none}
-  .code-body{border-top:0}
+  .work-body{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:16px;row-gap:32px;align-items:start}
+  .work-main{display:contents} /* 預覽、程式碼直接放進兩欄的格子裡 */
+  .work-main > .panel:first-child{grid-column:1;grid-row:1 / span 2;position:sticky;top:calc(var(--header-h) + 16px);z-index:2}
+  .code-panel{grid-column:2;grid-row:1}
+  .work-side{grid-column:2;grid-row:2}
   .preview-frame{aspect-ratio:auto;height:var(--stage-h)}
-  .editor-wrap .CodeMirror{height:var(--stage-h)}
-  .notes{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));column-gap:32px}
+  .editor-wrap .CodeMirror{height:clamp(280px,calc(var(--stage-h) * .6),560px)} /* 約預覽高度的六成：下面接著就是重點筆記 */
 }
 
-/* ═══ 平板（夠高時）：展開程式碼後，預覽固定在上方約半個畫面 ═══ */
-@media (min-width:600px) and (max-width:1023px) and (min-height:700px){
-  .work-body.is-editing .work-main > .panel:first-child{position:sticky;top:var(--header-h);z-index:2;box-shadow:0 1px 0 var(--line-strong),0 12px 16px -12px rgb(0 0 0 / .5)} /* 下緣一條線＋淡淡的影子：看得出預覽是疊在程式碼上面、裡面還能捲 */
-  .work-body.is-editing .preview-frame{aspect-ratio:auto;height:46svh}
-  .work-body.is-editing .editor-wrap .CodeMirror{height:max(240px,calc(54svh - var(--header-h) - 200px))} /* 剩下的高度：減掉預覽、展開列、分頁列和間距 */
+/* ═══ 平板、手機：預覽和程式碼都跟著頁面捲動（不固定），各自不超過一個螢幕高 ═══
+   捲到程式碼、預覽看不到時出現「回到預覽」按鈕 */
+@media (max-width:1023px){
+  .preview-frame{max-height:calc(100svh - var(--header-h) - 54px - 24px)} /* 螢幕高 − 頁首 − 預覽標題列 − 留白 */
+  .editor-wrap .CodeMirror{height:max(240px,min(520px,calc(100svh - var(--header-h) - 190px)))} /* 減掉展開列和分頁列 */
 }
-
-/* ═══ 手機（和矮的平板橫放）：預覽保持完整大小，不固定；捲到程式碼時出現「看預覽」按鈕 ═══ */
-@media (max-width:599px){.preview-frame{aspect-ratio:4/5}}
+@media (max-width:599px){
+  .preview-frame{aspect-ratio:4/5}
+  .editor-wrap .CodeMirror{height:max(240px,min(520px,calc(100svh - var(--header-h) - 250px)))} /* 手機的分頁列和按鈕分兩排，再多扣一些 */
+}
 .to-preview{
   position:fixed;z-index:40;right:var(--gutter);bottom:calc(16px + env(safe-area-inset-bottom));
   opacity:0;transform:translateY(24px);pointer-events:none;

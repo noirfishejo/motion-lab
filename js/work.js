@@ -360,23 +360,22 @@ function setupToggle() {
   const workBody = document.querySelector('.work-body');
   const animate = () => !reduceMotion() && window.gsap;
 
-  // 電腦版（≥1024px）：程式碼固定展開，和預覽左右並排（展開列在電腦版隱藏）
+  // 電腦版（≥1024px）：一打開頁面程式碼就是展開的（在預覽右邊），但也可以收合，讓重點筆記往上
   const desktop = matchMedia('(min-width: 1024px)');
-  const openNow = () => {
+  if (desktop.matches) {
     btn.setAttribute('aria-expanded', true);
     workBody.classList.add('is-editing');
     body.hidden = false;
     editor?.refresh();
-  };
-  if (desktop.matches) openNow();
-  desktop.addEventListener('change', e => { if (e.matches) openNow(); else editor?.refresh(); });
+  }
+  desktop.addEventListener('change', () => editor?.refresh());
 
   const frameWrap = document.getElementById('previewWrap');
   let bodyTl; // 展開／收合的 timeline：再按一次時先 kill()（不會觸發 onComplete，收合到一半的「藏起來」不會在展開後才執行）
   btn.addEventListener('click', () => {
     const open = btn.getAttribute('aria-expanded') !== 'true';
     btn.setAttribute('aria-expanded', open);
-    // 編輯模式：平板的預覽固定在上方、縮成半個畫面；手機捲到程式碼時出現「看預覽」按鈕
+    // 編輯模式：平板、手機捲到程式碼時出現「回到預覽」按鈕
     // 切換 class 前後各量一次預覽的高度，再補間過去：預覽會跟著程式碼一起伸縮，不會一下子跳成另一個大小
     const before = frameWrap.getBoundingClientRect().height; // 動畫中途再按：從目前畫面上的高度接著動
     bodyTl?.kill();
@@ -584,13 +583,13 @@ function setupCopy() {
 }
 
 // ── 手機：展開程式碼後，預覽整個捲出畫面時出現「看預覽」按鈕 ──
-// （平板、電腦的預覽固定在畫面上，永遠看得到，按鈕不會出現：用寬度條件確保只在手機出現）
+// （電腦版的預覽固定在畫面上，永遠看得到，按鈕不會出現：用寬度條件確保只在平板、手機出現）
 function setupToPreview() {
   const btn = document.getElementById('toPreview');
   const panel = document.getElementById('previewWrap').closest('.panel');
   const workBody = document.querySelector('.work-body');
   let offscreen = false;
-  const phone = matchMedia('(max-width: 599px), (max-width: 1023px) and (max-height: 699px)'); // 預覽沒有固定在畫面上的尺寸（手機、很矮的平板）
+  const phone = matchMedia('(max-width: 1023px)'); // 預覽沒有固定在畫面上的尺寸（平板、手機）
   phone.addEventListener('change', () => update());
   const update = () => {
     const show = offscreen && workBody.classList.contains('is-editing') && phone.matches;

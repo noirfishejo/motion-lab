@@ -74,8 +74,12 @@ reveal.addEventListener('click', () => {
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // ── 自動示範一次：一個字一個字「打」出一組密碼，看強度慢慢升級（假資料） ──
-if (!reduce) {
-  const demo = 'Motion#2026';
-  [...demo].forEach((_, i) => gsap.delayedCall(0.8 + i * 0.12, () => { input.value = demo.slice(0, i + 1); update(); }));
-}
+const demo = gsap.context(() => {
+  if (!reduce) {
+    const demo = 'Motion#2026';
+    [...demo].forEach((_, i) => gsap.delayedCall(0.8 + i * 0.12, () => { input.value = demo.slice(0, i + 1); update(); }));
+  }
+});
+// 自己動手（按滑鼠或鍵盤）就停掉示範，免得和你的操作互搶
+['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.kill(), { once: true }));
 // #endregion demo

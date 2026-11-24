@@ -1,7 +1,7 @@
 {
   "title": {
-    "zh-TW": "堆疊式 Toast 通知",
-    "en": "Stacking toast notifications"
+    "zh-TW": "Toast 通知堆疊",
+    "en": "Toast notification stacking"
   },
   "short": {
     "zh-TW": "Toast 通知",

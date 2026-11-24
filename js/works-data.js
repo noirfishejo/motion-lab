@@ -133,8 +133,8 @@ export const WORKS = [
   {
     "id": "03-scroll-logo",
     "title": {
-      "zh-TW": "捲動時 Logo 飛進頁首",
-      "en": "Logo flies into the header on scroll"
+      "zh-TW": "Logo 捲動時飛進頁首",
+      "en": "Logo fly-in to header on scroll"
     },
     "short": {
       "zh-TW": "Logo 飛進頁首",
@@ -273,7 +273,7 @@ export const WORKS = [
     "id": "05-splittext",
     "title": {
       "zh-TW": "標題逐行、逐字浮現",
-      "en": "Text reveal by line, word and letter"
+      "en": "Heading reveal by line, word and letter"
     },
     "short": {
       "zh-TW": "文字拆分浮現",
@@ -340,7 +340,7 @@ export const WORKS = [
     "id": "06-flip",
     "title": {
       "zh-TW": "卡片展開成詳細內容",
-      "en": "Card expands into details"
+      "en": "Card expand into details"
     },
     "short": {
       "zh-TW": "卡片展開",
@@ -406,8 +406,8 @@ export const WORKS = [
   {
     "id": "07-draggable",
     "title": {
-      "zh-TW": "可拖曳的底部抽屜",
-      "en": "Draggable bottom sheet"
+      "zh-TW": "底部抽屜拖曳開合",
+      "en": "Bottom sheet drag to open and close"
     },
     "short": {
       "zh-TW": "拖曳底部抽屜",
@@ -472,8 +472,8 @@ export const WORKS = [
   {
     "id": "08-motionpath",
     "title": {
-      "zh-TW": "加入購物車飛入動畫",
-      "en": "Add-to-cart fly-in"
+      "zh-TW": "商品飛入購物車",
+      "en": "Product fly-to-cart"
     },
     "short": {
       "zh-TW": "加入購物車",
@@ -538,7 +538,7 @@ export const WORKS = [
     "id": "09-micro-interactions",
     "title": {
       "zh-TW": "按鈕磁吸與波紋",
-      "en": "Magnetic & ripple buttons"
+      "en": "Button magnetic pull and ripple"
     },
     "short": {
       "zh-TW": "按鈕磁吸＋波紋",
@@ -610,8 +610,8 @@ export const WORKS = [
   {
     "id": "10-horizontal-scroll",
     "title": {
-      "zh-TW": "固定畫面橫向捲動",
-      "en": "Pinned horizontal scroll"
+      "zh-TW": "區塊固定後橫向捲動",
+      "en": "Pinned section horizontal scroll"
     },
     "short": {
       "zh-TW": "橫向捲動",
@@ -679,7 +679,7 @@ export const WORKS = [
   {
     "id": "11-toggle-switch",
     "title": {
-      "zh-TW": "設定頁開關",
+      "zh-TW": "設定頁開關切換",
       "en": "Settings toggle switch"
     },
     "short": {
@@ -746,8 +746,8 @@ export const WORKS = [
   {
     "id": "12-floating-label",
     "title": {
-      "zh-TW": "浮動標籤輸入框",
-      "en": "Floating label input"
+      "zh-TW": "輸入框浮動標籤",
+      "en": "Input floating label"
     },
     "short": {
       "zh-TW": "浮動標籤",
@@ -814,8 +814,8 @@ export const WORKS = [
   {
     "id": "13-submit-states",
     "title": {
-      "zh-TW": "送出按鈕的載入與結果",
-      "en": "Submit button: loading and result"
+      "zh-TW": "送出按鈕載入與結果",
+      "en": "Submit button loading and result"
     },
     "short": {
       "zh-TW": "送出按鈕狀態",
@@ -881,8 +881,8 @@ export const WORKS = [
   {
     "id": "14-toast",
     "title": {
-      "zh-TW": "堆疊式 Toast 通知",
-      "en": "Stacking toast notifications"
+      "zh-TW": "Toast 通知堆疊",
+      "en": "Toast notification stacking"
     },
     "short": {
       "zh-TW": "Toast 通知",
@@ -949,8 +949,8 @@ export const WORKS = [
   {
     "id": "15-tabs",
     "title": {
-      "zh-TW": "分頁切換的底線滑動",
-      "en": "Tabs with a sliding underline"
+      "zh-TW": "分頁底線滑動",
+      "en": "Tabs sliding underline"
     },
     "short": {
       "zh-TW": "分頁 Tabs",
@@ -1017,7 +1017,7 @@ export const WORKS = [
     "id": "16-modal-sheet",
     "title": {
       "zh-TW": "確認彈窗（手機變底部抽屜）",
-      "en": "Confirm modal that becomes a bottom sheet"
+      "en": "Confirm modal (bottom sheet on mobile)"
     },
     "short": {
       "zh-TW": "彈窗 Modal",
@@ -1083,8 +1083,8 @@ export const WORKS = [
   {
     "id": "17-accordion",
     "title": {
-      "zh-TW": "常見問題手風琴",
-      "en": "FAQ accordion"
+      "zh-TW": "常見問題手風琴展開",
+      "en": "FAQ accordion expand"
     },
     "short": {
       "zh-TW": "手風琴",
@@ -1152,7 +1152,7 @@ export const WORKS = [
     "id": "18-count-up",
     "title": {
       "zh-TW": "儀表板數字跳動計數",
-      "en": "Dashboard count-up numbers"
+      "en": "Dashboard number count-up"
     },
     "short": {
       "zh-TW": "數字計數",
@@ -1220,8 +1220,8 @@ export const WORKS = [
   {
     "id": "19-blur-reveal",
     "title": {
-      "zh-TW": "捲動時大字從模糊變清楚",
-      "en": "Large text sharpens from blur on scroll"
+      "zh-TW": "大字捲動時從模糊變清楚",
+      "en": "Large text blur-to-sharp on scroll"
     },
     "short": {
       "zh-TW": "模糊變清楚",
@@ -1288,8 +1288,8 @@ export const WORKS = [
   {
     "id": "20-skeleton",
     "title": {
-      "zh-TW": "骨架屏載入與換上內容",
-      "en": "Skeleton loading to real content"
+      "zh-TW": "骨架屏換成真實內容",
+      "en": "Skeleton screen to real content"
     },
     "short": {
       "zh-TW": "骨架屏",
@@ -1370,7 +1370,7 @@ export const WORKS = [
     "id": "21-like-burst",
     "title": {
       "zh-TW": "按讚愛心與粒子",
-      "en": "Like button with particle burst"
+      "en": "Like button particle burst"
     },
     "short": {
       "zh-TW": "按讚愛心",
@@ -1438,7 +1438,7 @@ export const WORKS = [
   {
     "id": "22-parallax",
     "title": {
-      "zh-TW": "捲動時的圖片視差",
+      "zh-TW": "圖片捲動視差",
       "en": "Image parallax on scroll"
     },
     "short": {
@@ -1508,7 +1508,7 @@ export const WORKS = [
     "id": "23-hamburger-menu",
     "title": {
       "zh-TW": "漢堡選單變 × 與全螢幕選單",
-      "en": "Hamburger to × with fullscreen menu"
+      "en": "Hamburger icon to × with fullscreen menu"
     },
     "short": {
       "zh-TW": "漢堡選單",
@@ -1575,8 +1575,8 @@ export const WORKS = [
   {
     "id": "24-dropdown",
     "title": {
-      "zh-TW": "下拉選單與滑動高亮",
-      "en": "Dropdown with a sliding highlight"
+      "zh-TW": "下拉選單滑動高亮",
+      "en": "Dropdown sliding highlight"
     },
     "short": {
       "zh-TW": "下拉選單",
@@ -1635,8 +1635,8 @@ export const WORKS = [
   {
     "id": "25-marquee",
     "title": {
-      "zh-TW": "無限輪播的文字跑馬燈",
-      "en": "Infinite text marquee"
+      "zh-TW": "文字跑馬燈無限輪播",
+      "en": "Text marquee infinite loop"
     },
     "short": {
       "zh-TW": "跑馬燈",
@@ -1698,8 +1698,8 @@ export const WORKS = [
   {
     "id": "26-tilt-card",
     "title": {
-      "zh-TW": "跟著滑鼠傾斜的 3D 卡片",
-      "en": "3D card that tilts with the cursor"
+      "zh-TW": "3D 卡片跟著滑鼠傾斜",
+      "en": "3D card cursor tilt"
     },
     "short": {
       "zh-TW": "3D 傾斜卡片",
@@ -1761,8 +1761,8 @@ export const WORKS = [
   {
     "id": "27-checkbox",
     "title": {
-      "zh-TW": "勾選框打勾的描邊動畫",
-      "en": "Checkbox with a drawn check"
+      "zh-TW": "勾選框打勾描邊",
+      "en": "Checkbox drawn check"
     },
     "short": {
       "zh-TW": "勾選框",
@@ -1887,8 +1887,8 @@ export const WORKS = [
   {
     "id": "29-segmented-control",
     "title": {
-      "zh-TW": "分段控制器與長條圖切換",
-      "en": "Segmented control with chart transition"
+      "zh-TW": "分段控制器切換長條圖",
+      "en": "Segmented control chart switch"
     },
     "short": {
       "zh-TW": "分段控制",
@@ -2008,8 +2008,8 @@ export const WORKS = [
   {
     "id": "31-tooltip",
     "title": {
-      "zh-TW": "工具列提示框的延遲與暖機",
-      "en": "Toolbar tooltips with delay and warm-up"
+      "zh-TW": "工具列提示框延遲與暖機",
+      "en": "Toolbar tooltip delay and warm-up"
     },
     "short": {
       "zh-TW": "提示框 Tooltip",
@@ -2073,7 +2073,7 @@ export const WORKS = [
     "id": "32-image-blur-up",
     "title": {
       "zh-TW": "圖片載入從模糊變清楚",
-      "en": "Blur-up image loading"
+      "en": "Image blur-up loading"
     },
     "short": {
       "zh-TW": "圖片模糊載入",
@@ -2132,8 +2132,8 @@ export const WORKS = [
   {
     "id": "33-clip-reveal",
     "title": {
-      "zh-TW": "捲動時圖片從一條縫打開",
-      "en": "Images open from a slit on scroll"
+      "zh-TW": "圖片捲動時從一條縫打開",
+      "en": "Image slit reveal on scroll"
     },
     "short": {
       "zh-TW": "圖片遮罩揭露",
@@ -2194,8 +2194,8 @@ export const WORKS = [
   {
     "id": "34-sticky-steps",
     "title": {
-      "zh-TW": "固定畫面的功能步驟說明",
-      "en": "Sticky visual with scrolling feature steps"
+      "zh-TW": "功能步驟捲動說明（固定畫面）",
+      "en": "Feature steps scroll (sticky visual)"
     },
     "short": {
       "zh-TW": "固定步驟說明",
@@ -2256,7 +2256,7 @@ export const WORKS = [
     "id": "35-layout-switch",
     "title": {
       "zh-TW": "清單與格狀檢視切換",
-      "en": "Switch between list and grid view"
+      "en": "List and grid view switch"
     },
     "short": {
       "zh-TW": "清單／格狀切換",
@@ -2314,8 +2314,8 @@ export const WORKS = [
   {
     "id": "36-sortable-list",
     "title": {
-      "zh-TW": "可拖曳排序的清單",
-      "en": "Drag-to-reorder list"
+      "zh-TW": "清單拖曳排序",
+      "en": "List drag to reorder"
     },
     "short": {
       "zh-TW": "拖曳排序",
@@ -2373,8 +2373,8 @@ export const WORKS = [
   {
     "id": "37-stacking-cards",
     "title": {
-      "zh-TW": "捲動時卡片堆疊",
-      "en": "Cards stack as you scroll"
+      "zh-TW": "卡片捲動堆疊",
+      "en": "Card stacking on scroll"
     },
     "short": {
       "zh-TW": "卡片堆疊",
@@ -2437,8 +2437,8 @@ export const WORKS = [
   {
     "id": "38-flip-filter",
     "title": {
-      "zh-TW": "篩選時卡片重新排列",
-      "en": "Filter with cards reflowing into place"
+      "zh-TW": "卡片篩選重新排列",
+      "en": "Card filter reflow"
     },
     "short": {
       "zh-TW": "篩選重新排列",
@@ -2498,8 +2498,8 @@ export const WORKS = [
   {
     "id": "39-range-slider",
     "title": {
-      "zh-TW": "範圍滑桿與數值泡泡",
-      "en": "Range slider with a value bubble"
+      "zh-TW": "範圍滑桿數值泡泡",
+      "en": "Range slider value bubble"
     },
     "short": {
       "zh-TW": "範圍滑桿",
@@ -2558,7 +2558,7 @@ export const WORKS = [
     "id": "40-menu-expand",
     "title": {
       "zh-TW": "按鈕展開成導覽面板",
-      "en": "Menu button that expands into a nav panel"
+      "en": "Menu button expand into nav panel"
     },
     "short": {
       "zh-TW": "按鈕展開選單",
@@ -2623,8 +2623,8 @@ export const WORKS = [
   {
     "id": "41-hover-image-follow",
     "title": {
-      "zh-TW": "滑過專案時圖片跟著游標",
-      "en": "Project list with an image that follows the cursor"
+      "zh-TW": "專案列表游標跟隨圖片",
+      "en": "Project list cursor-follow image"
     },
     "short": {
       "zh-TW": "游標跟隨圖片",
@@ -2681,8 +2681,8 @@ export const WORKS = [
   {
     "id": "42-falling-stack",
     "title": {
-      "zh-TW": "捲動時堆疊卡片依序掉落或甩出",
-      "en": "Stacked cards fall or swipe away as you scroll"
+      "zh-TW": "堆疊卡片捲動時掉落或甩出",
+      "en": "Card stack fall or swipe on scroll"
     },
     "short": {
       "zh-TW": "卡片依序掉落",
@@ -2751,8 +2751,8 @@ export const WORKS = [
   {
     "id": "43-odometer",
     "title": {
-      "zh-TW": "數字像滾輪一樣捲動的計數器",
-      "en": "Counter with digits that roll like a wheel"
+      "zh-TW": "計數器數字滾輪",
+      "en": "Counter rolling digits"
     },
     "short": {
       "zh-TW": "數字滾輪",
@@ -2813,8 +2813,8 @@ export const WORKS = [
   {
     "id": "44-drag-carousel",
     "title": {
-      "zh-TW": "可拖曳、會滑行吸附的圖片輪播",
-      "en": "Image carousel you can drag, fling and snap"
+      "zh-TW": "圖片輪播拖曳與滑行吸附",
+      "en": "Image carousel drag, fling and snap"
     },
     "short": {
       "zh-TW": "拖曳輪播",
@@ -2889,7 +2889,7 @@ export const WORKS = [
   {
     "id": "45-quantity-stepper",
     "title": {
-      "zh-TW": "購物車數量增減按鈕",
+      "zh-TW": "購物車數量增減",
       "en": "Cart quantity stepper"
     },
     "short": {
@@ -2950,7 +2950,7 @@ export const WORKS = [
     "id": "46-shared-element",
     "title": {
       "zh-TW": "列表縮圖放大成詳細頁",
-      "en": "List thumbnail grows into a detail view"
+      "en": "List thumbnail to detail view"
     },
     "short": {
       "zh-TW": "縮圖放大轉場",
@@ -3011,8 +3011,8 @@ export const WORKS = [
   {
     "id": "47-swipe-delete",
     "title": {
-      "zh-TW": "往左滑刪除列表項目",
-      "en": "Swipe left to delete a list item"
+      "zh-TW": "列表項目左滑刪除",
+      "en": "List item swipe to delete"
     },
     "short": {
       "zh-TW": "滑動刪除",

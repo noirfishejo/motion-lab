@@ -1,7 +1,7 @@
 {
   "title": {
     "zh-TW": "列表縮圖放大成詳細頁",
-    "en": "List thumbnail grows into a detail view"
+    "en": "List thumbnail to detail view"
   },
   "short": {
     "zh-TW": "縮圖放大轉場",
@@ -40,6 +40,13 @@
       "text": {
         "zh-TW": "state 是從縮圖記下來的，targets 指定要動的是大圖。關閉時反過來：從大圖記下 state，targets 改成縮圖。",
         "en": "state is captured from the thumbnail and targets says the hero should move. Closing reverses it: capture from the hero, target the thumbnail."
+      }
+    },
+    {
+      "code": "keepIcon(box, from)",
+      "text": {
+        "zh-TW": "縮圖 4:3、大圖 16:9，Flip 用 scale 放大時寬和高放大的倍數不同，裡面的圖示會被拉扁。每一格把圖示反向修正（scaleX = 想要的大小 ÷ 外框的 scaleX），圖示就會等比例放大。",
+        "en": "The thumbnail is 4:3 and the hero 16:9, so Flip scales width and height by different amounts and would squash the icon. Each frame counter-scales the icon (scaleX = wanted size ÷ the box's scaleX) so it grows evenly."
       }
     },
     {

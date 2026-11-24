@@ -51,7 +51,14 @@ body {
 
 body { overflow-x: hidden; }
 .stage { width: 100%; display: grid; gap: 20px; padding: 32px 0; }
-.tag, .hint { padding: 0 24px; }
+.tag, .foot { padding: 0 24px; }
+.foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+/* 暫停鈕：外框按鈕（滑過外框和文字變主文字色、按下縮一點） */
+.pause-btn { height: 36px; padding: 0 12px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line-strong); background: transparent; color: var(--muted); font: 400 13px/1 "Inter Tight", sans-serif; cursor: pointer; transition: border-color 0.3s, color 0.3s, transform 0.15s; }
+.pause-btn:hover { border-color: var(--text); color: var(--text); }
+.pause-btn:active { transform: scale(0.97); }
+.pause-btn:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 2px; }
+.pause-btn i { font-size: 16px; }
 .hint { font-size: 13px; color: var(--muted); }
 
 .marquee { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 12px 0; }

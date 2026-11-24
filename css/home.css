@@ -51,10 +51,17 @@
 .search:focus-within i{color:var(--accent-fg)}
 .search::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent-fg);transform:scaleX(0);transform-origin:left;transition:transform var(--dur) var(--ease-out);pointer-events:none}
 .search:focus-within::after{transform:none} /* 聚焦時底部出現強調色底線（輸入框本身沒有焦點框） */
+/* 「篩選」按鈕：只有手機出現 */
+.refine-toggle{display:none;align-items:center;gap:6px;flex:none;padding:0 0 0 14px;border-left:1px solid var(--line);color:var(--muted);font:400 14px/1 var(--font-body);transition:color var(--dur-fast)}
+.refine-toggle i{font-size:18px}
+.refine-toggle:hover,.refine-toggle[aria-expanded="true"]{color:var(--text)}
+.refine-toggle:focus-visible{outline-offset:-2px}
+.refine-count{min-width:18px;height:18px;padding:0 5px;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font:400 11px/1 var(--font-mono)} /* 有幾個篩選條件正在作用 */
 @media (max-width:599px){
   .filters-bar{flex-wrap:wrap}
   .filters-bar .filters{flex:1 1 100%}
-  .search{flex:1 1 100%;padding:0;border-left:0;border-top:1px solid var(--line)}
+  .search{flex:1 1 0;padding:0;border-left:0;border-top:1px solid var(--line)}
+  .refine-toggle{display:inline-flex;border-top:1px solid var(--line)}
   .search input{font-size:16px} /* 16px：iPhone 點進去不會放大畫面 */
 }
 .filters{position:relative;display:flex;gap:0;overflow-x:auto;scrollbar-width:none} /* relative：滑動底線以這裡為基準 */
@@ -98,11 +105,19 @@
 .sort-list li[aria-selected="true"]::after{content:"";width:6px;height:6px;background:var(--accent-fg)}
 .sort-hl{position:absolute;left:0;right:0;top:0;height:36px;background:var(--surface-2);box-shadow:inset 2px 0 0 var(--accent-fg);opacity:0;pointer-events:none}
 @media (pointer:coarse){.sort-btn{height:var(--tap)}.tech-chips .chip{height:var(--tap)}}
+/* 手機：第二排收起來，按「篩選」才展開；展開時 GSAP 功能換行排開（不用左右滑），排序在最下面 */
 @media (max-width:599px){
-  .refine{flex-wrap:wrap}
-  .tech-filter{flex:1 1 100%}
-  .sort{margin-left:auto}
+  .refine{flex-direction:column;align-items:stretch;gap:16px;margin-bottom:0;padding:16px 0 20px;border-bottom:1px solid var(--line)}
+  .refine:not(.is-open){display:none}
+  .tech-filter{flex-direction:column;align-items:flex-start}
+  .tech-chips{flex-wrap:wrap;overflow:visible}
+  .sort{align-self:flex-start}
+  .sort-btn{padding-left:0}
+  .sort-list{left:0;right:auto}
+  .refine.is-open + .work-grid,.refine.is-open ~ .empty{margin-top:var(--grid-gap)}
 }
+/* GSAP 功能 chip：0 個的直接藏起來，其他的往前遞補（home.js 用 Flip 做補位動畫） */
+.tech-chips .chip[hidden]{display:none}
 
 /* 作品格：手機 1 欄、平板以上 2 欄（參考 Koleksiyon 的大圖格） */
 .work-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:calc(var(--grid-gap) * 2.5) var(--grid-gap)}

@@ -112,5 +112,6 @@
   "costNote.paint": "The shine moves via background-position, which repaints every frame; fine for a few blocks, but for a whole page move a pseudo-element with transform instead.",
   "home.featured.title": "Featured",
   "home.filter.clear": "Clear filters",
+  "home.filter.more": "Filters",
   "work.resetHint": "Discard all edits and go back to the saved files"
 }

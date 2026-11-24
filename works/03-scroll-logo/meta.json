@@ -1,7 +1,7 @@
 {
   "title": {
-    "zh-TW": "捲動時 Logo 飛進頁首",
-    "en": "Logo flies into the header on scroll"
+    "zh-TW": "Logo 捲動時飛進頁首",
+    "en": "Logo fly-in to header on scroll"
   },
   "short": {
     "zh-TW": "Logo 飛進頁首",

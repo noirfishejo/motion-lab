@@ -68,9 +68,12 @@ plusBtn.addEventListener('click', () => change(1));
 minus.setAttribute('aria-disabled', true);
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
-if (!reduce) {
-  const demo = [gsap.delayedCall(0.8, () => change(1)), gsap.delayedCall(1.5, () => change(1))];
-  // 自己動手了就停掉示範，免得數量被它多加
-  ['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.forEach(d => d.kill()), { once: true }));
-}
+const demo = gsap.context(() => {
+  if (!reduce) {
+    gsap.delayedCall(0.8, () => change(1));
+    gsap.delayedCall(1.5, () => change(1));
+  }
+});
+// 自己動手（按滑鼠或鍵盤）就停掉示範，免得和你的操作互搶
+['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.kill(), { once: true }));
 // #endregion demo

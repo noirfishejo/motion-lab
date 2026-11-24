@@ -106,9 +106,9 @@ window.addEventListener('resize', () => {
 setActive(0);
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
-if (!reduce) {
-  const demo = gsap.delayedCall(0.8, () => goTo(1));
-  // 自己動手了就不播示範，免得被它拉走
-  ['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.kill(), { once: true }));
-}
+const demo = gsap.context(() => {
+  if (!reduce) gsap.delayedCall(0.8, () => goTo(1));
+});
+// 自己動手（按滑鼠或鍵盤）就停掉示範，免得和你的操作互搶
+['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.kill(), { once: true }));
 // #endregion demo

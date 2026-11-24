@@ -73,13 +73,17 @@ document.querySelectorAll('.btn-ripple, .btn-magnetic').forEach(btn => {
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // ── 自動示範一次（首頁縮圖也看得到動態） ──
-if (!reduce) {
-  gsap.timeline({ delay: 0.6 })
-    .add(() => pull(60, -30))
-    .add(() => pull(0, 0), 0.9)
-    .add(() => {
-      const btn = document.querySelector('.btn-ripple');
-      ripple(btn, btn.offsetWidth * 0.3, btn.offsetHeight * 0.5);
-    }, 1.2);
-}
+const demo = gsap.context(() => {
+  if (!reduce) {
+    gsap.timeline({ delay: 0.6 })
+      .add(() => pull(60, -30))
+      .add(() => pull(0, 0), 0.9)
+      .add(() => {
+        const btn = document.querySelector('.btn-ripple');
+        ripple(btn, btn.offsetWidth * 0.3, btn.offsetHeight * 0.5);
+      }, 1.2);
+  }
+});
+// 自己動手（按滑鼠或鍵盤）就停掉示範，免得和你的操作互搶
+['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.kill(), { once: true }));
 // #endregion demo

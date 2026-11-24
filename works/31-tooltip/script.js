@@ -61,11 +61,15 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') hide(); });
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // ── 自動示範一次：提示框依序滑過三個按鈕（不移動焦點） ──
-if (!reduce) {
-  const tools = document.querySelectorAll('.tool');
-  gsap.delayedCall(0.8, () => show(tools[0]));
-  gsap.delayedCall(1.5, () => show(tools[1]));
-  gsap.delayedCall(2.2, () => show(tools[2]));
-  gsap.delayedCall(3.2, hide);
-}
+const demo = gsap.context(() => {
+  if (!reduce) {
+    const tools = document.querySelectorAll('.tool');
+    gsap.delayedCall(0.8, () => show(tools[0]));
+    gsap.delayedCall(1.5, () => show(tools[1]));
+    gsap.delayedCall(2.2, () => show(tools[2]));
+    gsap.delayedCall(3.2, hide);
+  }
+});
+// 自己動手（按滑鼠或鍵盤）就停掉示範，免得和你的操作互搶
+['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.kill(), { once: true }));
 // #endregion demo

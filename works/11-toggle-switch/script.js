@@ -44,8 +44,12 @@ document.querySelectorAll('.switch').forEach(sw => {
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // ── 自動示範一次（首頁縮圖也看得到動態） ──
-if (!reduce) {
-  const demo = document.querySelectorAll('.switch')[1];
-  gsap.delayedCall(0.8, () => demo.click());
-}
+const demo = gsap.context(() => {
+  if (!reduce) {
+    const demo = document.querySelectorAll('.switch')[1];
+    gsap.delayedCall(0.8, () => demo.click());
+  }
+});
+// 自己動手（按滑鼠或鍵盤）就停掉示範，免得和你的操作互搶
+['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.kill(), { once: true }));
 // #endregion demo

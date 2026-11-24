@@ -40,10 +40,14 @@ Draggable.create(sheet, {
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // 自動示範一次（首頁縮圖也看得到動態）：從收合滑到半開
-if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  gsap.to(sheet, {
-    y: SNAP.half, duration: 1, ease: 'expo.out', delay: 0.6,
-    onUpdate: () => update(gsap.getProperty(sheet, 'y'))
-  });
-}
+const demo = gsap.context(() => {
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.to(sheet, {
+      y: SNAP.half, duration: 1, ease: 'expo.out', delay: 0.6,
+      onUpdate: () => update(gsap.getProperty(sheet, 'y'))
+    });
+  }
+});
+// 自己動手（按滑鼠或鍵盤）就停掉示範，免得和你的操作互搶
+['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.kill(), { once: true }));
 // #endregion demo

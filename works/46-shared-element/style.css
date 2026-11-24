@@ -64,7 +64,7 @@ body { place-items: start center; }
 /* 詳細頁：蓋住整個畫面（fixed：就算列表已經往下捲，詳細頁也從畫面頂端開始，返回鈕一定看得到）
    左右留白和列表同寬（最寬 720px 置中） */
 .detail { position: fixed; inset: 0; z-index: 10; overflow-y: auto; padding: 32px max(16px, (100% - 720px) / 2 + 16px); display: grid; gap: 20px; align-content: start; background: var(--bg); scrollbar-width: none; }
-.btn.close { justify-self: start; padding-left: 12px; }
+.btn.close { justify-self: start; padding-left: 12px; margin-bottom: 8px; } /* 和大圖之間多留一點距離，不會貼在一起 */
 .close i { font-size: 18px; }
 .hero { aspect-ratio: 16 / 9; display: grid; place-items: center; background: var(--accent); color: #fff; font-size: 88px; }
 .detail-text { display: grid; gap: 10px; max-width: 52ch; }

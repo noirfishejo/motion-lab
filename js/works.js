@@ -2,7 +2,7 @@
 // 作品資料：每個練習的名稱、說明、筆記放在自己資料夾的 meta.json
 // tools/build_works.py 會把它們合成 js/works-data.js（serve.py 自動執行），這裡再轉出去給各頁使用
 // ── 命名與分類規則（新增練習時照這個寫，搜尋才找得到） ──
-// title：看得到的東西（元件或效果）＋情境，用設計師會搜尋的詞，不用 GSAP 名詞開頭。例：「浮動標籤輸入框」
+// title：「元件＋效果（＋情境）」的名詞片語，元件放最前面，不用 GSAP 名詞開頭。例：「輸入框浮動標籤」
 // short：側欄用的名稱，中文 8 個字以內。例：「浮動標籤」
 // topic（分類，依用途）：forms 表單／overlays 導覽與浮層／feedback 回饋與狀態／pointer 拖曳與游標／transitions 進場與轉場／scroll 捲動／graphics 文字與視覺效果
 // tech：主要的 GSAP 功能，例：Tween、Timeline、ScrollTrigger、Flip、Draggable、SplitText

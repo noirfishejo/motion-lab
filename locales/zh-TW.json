@@ -112,5 +112,6 @@
   "costNote.paint": "光澤靠 background-position 移動，每一格都要重畫；骨架塊少時沒問題，整頁很多塊時改成偽元素用 transform 移動。",
   "home.featured.title": "精選",
   "home.filter.clear": "清除篩選",
+  "home.filter.more": "篩選",
   "work.resetHint": "放棄所有修改，回到檔案裡的版本"
 }

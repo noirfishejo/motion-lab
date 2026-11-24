@@ -56,11 +56,15 @@ document.querySelectorAll('.field').forEach(field => {
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // ── 自動示範一次（首頁縮圖也看得到動態）：幫第一個欄位填入假資料，標籤會浮起來 ──
 // （不用 focus()：放在作品頁預覽裡，focus 會讓外面的頁面跟著捲動）
-if (!reduce) {
-  gsap.delayedCall(0.8, () => {
-    const name = document.getElementById('name');
-    name.value = 'Avery Chen';
-    name.dispatchEvent(new Event('input'));
-  });
-}
+const demo = gsap.context(() => {
+  if (!reduce) {
+    gsap.delayedCall(0.8, () => {
+      const name = document.getElementById('name');
+      name.value = 'Avery Chen';
+      name.dispatchEvent(new Event('input'));
+    });
+  }
+});
+// 自己動手（按滑鼠或鍵盤）就停掉示範，免得和你的操作互搶
+['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.kill(), { once: true }));
 // #endregion demo

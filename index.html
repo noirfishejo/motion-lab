@@ -87,10 +87,14 @@
           <i class="ph-light ph-magnifying-glass" aria-hidden="true"></i>
           <input type="search" id="workSearch" autocomplete="off" data-i18n-attr="aria-label:work.search;placeholder:work.search">
         </label>
+        <!-- 手機：GSAP 功能和排序收進這顆「篩選」按鈕（平板、電腦不顯示，直接排在下面一排） -->
+        <button class="refine-toggle" type="button" id="refineToggle" aria-expanded="false" aria-controls="refine">
+          <i class="ph-light ph-sliders-horizontal" aria-hidden="true"></i><span data-i18n="home.filter.more"></span><span class="refine-count" id="refineCount" hidden></span>
+        </button>
       </div>
 
       <!-- 第二排：依 GSAP 功能快速篩選（和分類、搜尋一起作用）＋排序 -->
-      <div class="refine">
+      <div class="refine" id="refine">
         <div class="tech-filter" role="group" data-i18n-attr="aria-label:tech.label">
           <span class="tech-label" data-i18n="tech.label"></span>
           <div class="tech-chips" id="techChips"></div>
@@ -119,6 +123,7 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
   <script type="module" src="js/home.js"></script>
 </body>

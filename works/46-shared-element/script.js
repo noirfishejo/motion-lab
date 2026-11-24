@@ -38,6 +38,22 @@ const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let current = null; // 目前打開的卡片
 
 const grid = document.querySelector('.grid');
+const dur = s => (reduce ? 0 : s);
+const flipEase = gsap.parseEase('expo.inOut');
+// 縮圖上的圖示 ÷ 大圖上的圖示（例如 44px ÷ 88px = 0.5）
+const iconRatio = thumb => parseFloat(getComputedStyle(thumb).fontSize) / parseFloat(getComputedStyle(hero).fontSize);
+// 外框寬高各自縮放時，圖示反向修正：看起來的大小從 from 倍平順變到 1 倍，而且寬高一樣（不變形）
+function keepIcon(box, from) {
+  const icon = box.querySelector('i');
+  return function () {
+    const p = flipEase(this.progress());
+    const size = from + (1 - from) * p;            // 圖示這一格看起來應該是幾倍
+    const sx = gsap.getProperty(box, 'scaleX');     // 外框這一格被縮放了多少
+    const sy = gsap.getProperty(box, 'scaleY');
+    if (this.progress() === 1) gsap.set(icon, { clearProps: 'transform' });
+    else gsap.set(icon, { scaleX: size / sx, scaleY: size / sy });
+  };
+}
 
 function open(card, { focus = true } = {}) {
   if (current) return; // 已經開著一張：不能疊著開（不然前一張的縮圖會一直藏著）
@@ -59,11 +75,14 @@ function open(card, { focus = true } = {}) {
   thumb.style.visibility = 'hidden'; // 縮圖先藏起來：畫面上只有「正在長大」的那一張
   grid.inert = true; // 被詳細頁蓋住的列表：Tab 不會跑過去、讀屏也不會唸
 
-  // ③ 讓大圖從縮圖的位置長出來；scale: true 用縮放做（圖示也會跟著放大，比改寬高順）
+  // ③ 讓大圖從縮圖的位置長出來；scale: true 用縮放做（不會每一格重排版面，比改寬高順）
+  // 縮圖 4:3、大圖 16:9，寬高縮放的比例不同，圖示會被壓扁 → keepIcon 每一格把圖示反向修正成等比例
   gsap.timeline({ defaults: { ease: 'expo.out' } })
-    .add(Flip.from(state, { targets: hero, duration: reduce ? 0 : DURATION, ease: 'expo.inOut', scale: true }))
-    .fromTo(detail, { backgroundColor: 'transparent' }, { backgroundColor: getComputedStyle(document.body).backgroundColor, duration: reduce ? 0 : 0.4 }, 0)
-    .from([closeBtn, ...textEls], { opacity: 0, y: 24, duration: reduce ? 0 : 0.8, stagger: 0.06 }, reduce ? 0 : '-=0.35');
+    .add(Flip.from(state, { targets: hero, duration: dur(DURATION), ease: 'expo.inOut', scale: true, onUpdate: keepIcon(hero, iconRatio(thumb)) }))
+    .fromTo(detail, { backgroundColor: 'transparent' }, { backgroundColor: getComputedStyle(document.body).backgroundColor, duration: dur(0.4) }, 0)
+    // 返回鈕只淡入、往右滑一點（不往上浮：從下面浮上來會壓到大圖），文字再依序浮上來
+    .from(closeBtn, { opacity: 0, x: -12, duration: dur(0.6) }, reduce ? 0 : '-=0.35')
+    .from(textEls, { opacity: 0, y: 24, duration: dur(0.8), stagger: 0.06 }, '<');
 
   // 把焦點移進來（preventScroll：放在作品頁預覽裡時，外面的頁面不會跟著捲）
   // 自動示範不移焦點：不然放在作品頁預覽裡時，會把焦點從外面的頁面搶走
@@ -76,16 +95,24 @@ function close({ focus = true } = {}) {
   const thumb = card.querySelector('.thumb');
   current = null;
 
-  // 文字先淡出，再讓大圖縮回縮圖原本的位置
+  // ① 文字和返回鈕先淡出（由下往上依序），完全消失之後
+  // ② 大圖才縮回縮圖原本的位置，詳細頁的底色同時淡掉，露出後面的列表
   gsap.timeline()
-    .to([closeBtn, ...textEls], { opacity: 0, duration: reduce ? 0 : 0.2 })
+    .to([...textEls].reverse().concat(closeBtn), { opacity: 0, y: 12, duration: dur(0.3), stagger: dur(0.04), ease: 'power2.in' })
     .add(() => {
       const state = Flip.getState(hero);
-      detail.hidden = true;
-      gsap.set([closeBtn, ...textEls, detail], { clearProps: 'all' });
-      grid.inert = false;
+      hero.style.visibility = 'hidden'; // 詳細頁先留著（只剩底色），大圖改由縮圖接手往回縮
       thumb.style.visibility = '';
-      Flip.from(state, { targets: thumb, duration: reduce ? 0 : DURATION * 0.85, ease: 'expo.inOut', scale: true, zIndex: 5 });
+      grid.inert = false;
+      gsap.timeline({
+        onComplete: () => {
+          detail.hidden = true;
+          hero.style.visibility = '';
+          gsap.set([closeBtn, ...textEls, detail], { clearProps: 'all' });
+        }
+      })
+        .add(Flip.from(state, { targets: thumb, duration: dur(DURATION * 0.85), ease: 'expo.inOut', scale: true, zIndex: 20, onUpdate: keepIcon(thumb, 1 / iconRatio(thumb)) }))
+        .to(detail, { backgroundColor: 'transparent', duration: dur(0.35), ease: 'power1.out' }, 0);
       if (focus) card.focus({ preventScroll: true }); // 焦點回到原本的卡片
     });
 }
@@ -95,12 +122,12 @@ closeBtn.addEventListener('click', () => close());
 document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
-if (!reduce) {
-  const demo = [
-    gsap.delayedCall(0.9, () => open(document.querySelectorAll('.card')[1], { focus: false })),
-    gsap.delayedCall(2.8, () => close({ focus: false }))
-  ];
-  // 自己動手了就停掉示範，免得剛打開的詳細頁被它關掉
-  ['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.forEach(d => d.kill()), { once: true }));
-}
+const demo = gsap.context(() => {
+  if (!reduce) {
+    gsap.delayedCall(0.9, () => open(document.querySelectorAll('.card')[1], { focus: false }));
+    gsap.delayedCall(2.8, () => close({ focus: false }));
+  }
+});
+// 自己動手（按滑鼠或鍵盤）就停掉示範，免得和你的操作互搶
+['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.kill(), { once: true }));
 // #endregion demo
