@@ -16,6 +16,11 @@
 /* SplitText 的遮罩會裁掉字母下緣（Stagger 的 g），往下多留一點空間 */
 .work-head h1 > div{padding-bottom:.14em;margin-bottom:-.14em}
 .work-info{display:grid;gap:12px;align-content:start}
+/* 電腦：摘要和標籤放到標題右邊，標題區變矮，預覽提早出現 */
+@media (min-width:1024px){
+  .work-head{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:32px;align-items:start;padding-bottom:20px;margin-bottom:20px}
+  .work-info{padding-top:6px}
+}
 .work-info p{color:var(--muted);max-width:60ch;font-size:var(--fs-small);line-height:1.7}
 .work-facts{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .work-facts .date{font:400 12px/1 var(--font-mono);color:var(--muted)}
@@ -58,7 +63,7 @@
 .toggle-hint{font-size:var(--fs-small);color:var(--muted);flex:1 1 220px}
 .modified-badge{font:400 11px/1 var(--font-mono);color:var(--accent-ink);background:var(--accent);padding:4px 6px}
 .code-bar .modified-badge{align-self:center;margin-right:auto}
-@media (max-width:1023px){.code-bar .modified-badge{display:none}} /* 平板、手機的「已修改」顯示在展開列上 */
+@media (max-width:799px){.code-bar .modified-badge{display:none}} /* 窄平板、手機的「已修改」顯示在展開列上 */
 .code-body{border-top:1px solid var(--line);overflow:hidden}
 
 /* 分頁列：分頁貼齊上下邊，換行時分頁和按鈕各佔一列 */
@@ -130,11 +135,13 @@
 .frame-cover:hover .frame-cover-chip{border-color:var(--text)} /* 外框按鈕的滑過規則 */
 .frame-cover:focus-visible{outline-offset:-4px}
 
-/* ═══ 電腦 ≥1024px：左邊預覽固定在畫面上，右邊依序是程式碼（可收合）→ 重點筆記 ═══
-   讀筆記時預覽一直看得到，可以邊讀邊對照動畫；程式碼高度縮小，筆記不用捲很遠才看到 */
-@media (min-width:1024px){
+/* ═══ 電腦、寬平板 ≥800px：左邊預覽固定在畫面上，右邊依序是程式碼（可收合）→ 重點筆記 ═══
+   讀筆記時預覽一直看得到，可以邊讀邊對照動畫；程式碼高度縮小，筆記不用捲很遠才看到
+   （800px：iPad Air／Pro 直放 820、834 也並排；更窄的平板兩欄各不到 360px，程式碼太擠，維持上下排） */
+@media (min-width:800px){
   :root{--stage-h:max(360px,calc(100svh - var(--header-h) - 32px - 56px))} /* 畫面高 − 頁首 − 上下留白 − 面板標題列 */
-  .work-body{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:16px;row-gap:32px;align-items:start}
+  /* 第一列（程式碼）只佔自己的高度，多出來的高度都給第二列：程式碼收合時筆記緊接在下面，不會被預覽撐出一大段空白 */
+  .work-body{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:16px;row-gap:24px;align-items:start}
   .work-main{display:contents} /* 預覽、程式碼直接放進兩欄的格子裡 */
   .work-main > .panel:first-child{grid-column:1;grid-row:1 / span 2;position:sticky;top:calc(var(--header-h) + 16px);z-index:2}
   .code-panel{grid-column:2;grid-row:1}
@@ -145,7 +152,7 @@
 
 /* ═══ 平板、手機：預覽和程式碼都跟著頁面捲動（不固定），各自不超過一個螢幕高 ═══
    捲到程式碼、預覽看不到時出現「回到預覽」按鈕 */
-@media (max-width:1023px){
+@media (max-width:799px){
   .preview-frame{max-height:calc(100svh - var(--header-h) - 54px - 24px)} /* 螢幕高 − 頁首 − 預覽標題列 − 留白 */
   .editor-wrap .CodeMirror{height:max(240px,min(520px,calc(100svh - var(--header-h) - 190px)))} /* 減掉展開列和分頁列 */
 }

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>48 Draggable: Pull to Refresh</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <span class="tag">pull to refresh</span>
+
+    <!-- 手機 App 的動態列表（假資料）。把列表往下拉：上面露出箭頭；拉過門檻箭頭轉向、放開就更新 -->
+    <section class="app" aria-labelledby="appTitle">
+      <header class="app-bar">
+        <h1 class="app-title" id="appTitle">Activity</h1>
+        <!-- 鍵盤、滑鼠滾輪使用者沒辦法「往下拉」：一定要有一顆按鈕能做同一件事 -->
+        <button type="button" class="icon-btn" id="refreshBtn" aria-label="Refresh"><i class="ph-light ph-arrow-clockwise"></i></button>
+      </header>
+
+      <div class="viewport">
+        <!-- 指示器：藏在列表後面，列表被拉下來才露出 -->
+        <div class="indicator" aria-hidden="true">
+          <span class="spinner"><i class="ph-light ph-arrow-down"></i></span>
+          <span class="hint">Pull to refresh</span>
+        </div>
+
+        <ul class="feed">
+          <li class="item">
+            <span class="avatar">AC</span>
+            <span class="text"><span class="who">Avery Chen</span><span class="what">commented on Onboarding flow</span></span>
+            <span class="time">2m</span>
+          </li>
+          <li class="item">
+            <span class="avatar">MK</span>
+            <span class="text"><span class="who">Mina Kato</span><span class="what">shared Brand deck v3</span></span>
+            <span class="time">18m</span>
+          </li>
+          <li class="item">
+            <span class="avatar">JL</span>
+            <span class="text"><span class="who">Jon Lee</span><span class="what">approved Invoice #2048</span></span>
+            <span class="time">1h</span>
+          </li>
+          <li class="item">
+            <span class="avatar">SR</span>
+            <span class="text"><span class="who">Sara Ruiz</span><span class="what">added 6 photos to Trip</span></span>
+            <span class="time">3h</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 讀屏軟體：更新中、更新完成都要唸出來（畫面上看不到） -->
+    <p class="sr-only" id="status" aria-live="polite"></p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

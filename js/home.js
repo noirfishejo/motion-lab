@@ -15,6 +15,7 @@ let moveFilterLine = () => {}; // 篩選列的滑動底線（renderFilters 建�
 // 篩選與排序的狀態（放在最上面：檔案一載入就會用到）
 let currentTopic = 'all';
 let currentTech = null;   // null = 不限 GSAP 功能
+let chipsReady = false;  // GSAP 功能標籤第一次更新完了沒（第一次不播遞補動畫）
 let currentSort = 'newest';
 const SORTS = ['newest', 'oldest', 'name', 'tech'];
 
@@ -44,7 +45,6 @@ renderFeatured();
 renderCards();
 setupRefine();
 setupRefineToggle();
-updateRefineCount();
 initSmooth();
 initCursor();
 initTooltips();
@@ -124,6 +124,14 @@ function fitThumb(thumb) {
       if (!rc.width || !rc.height) continue;
       l = Math.min(l, rc.left); tp = Math.min(tp, rc.top); r = Math.max(r, rc.right); b = Math.max(b, rc.bottom);
     }
+    // 主要內容超出練習畫面的下緣（例如「功能步驟捲動說明」這類長的捲動練習）：
+    // 先把練習捲到內容開頭再重新量，不然框到的是畫面外、沒有畫出來的部分（和 tools/capture.html 截靜態縮圖的做法相同）
+    if (b > THUMB_VIEW.h && !thumb.dataset.scrolled) {
+      thumb.dataset.scrolled = '1';
+      win.scrollTo(0, win.scrollY + tp - 24);
+      win.ScrollTrigger?.update();
+      return fitThumb(thumb);
+    }
     if (r > l && b > tp) {
       k = Math.min(W * FIT_W / (r - l), H * FIT_H / (b - tp), base * 2); // 最多放大 2 倍，避免小圖示被放得過大
       tx = W / 2 - (l + r) / 2 * k;
@@ -184,6 +192,7 @@ function renderCards() {
   const goLive = thumb => {
     if (thumb.querySelector('iframe')) return;
     const frame = document.createElement('iframe');
+    delete thumb.dataset.scrolled; // 新的 iframe 從頂端開始，要重新判斷要不要捲
     frame.src = `works/${thumb.dataset.id}/index.html`;
     frame.tabIndex = -1;
     frame.title = '';
@@ -243,7 +252,6 @@ function compare(a, b) {
 
 // GSAP 功能 chip 的選取狀態
 function syncChips() {
-  updateRefineCount();
   document.querySelectorAll('#techChips .chip').forEach(c => {
     const on = c.dataset.tech === currentTech;
     c.setAttribute('aria-pressed', on);
@@ -251,34 +259,37 @@ function syncChips() {
   });
 }
 
-// chip 上的數字跟著目前的主題和搜尋重新算；0 個的 chip 藏起來（點下去只會得到空結果），後面的往前遞補
-// 已選中的 chip 就算是 0 也留著，才能取消
+// chip 上的數字跟著目前的分類和搜尋重新算；0 個的 chip 藏起來（點下去只會得到空結果），其他的往前遞補
+// 遞補動畫：① 要藏的先快速淡出 ② 記下留下來的位置、藏起來 ③ 留下來的用 Flip 滑到新位置、新出現的淡入
+// 全部只動 transform 和透明度（不用 absolute 定位），比較順；頁面剛載入的第一次不播動畫
 function updateChipCounts(topic, query) {
   const counts = {};
   document.querySelectorAll('.work-card').forEach(c => {
     if ((topic === 'all' || c.dataset.topic === topic) && matches(c.dataset.search, query)) counts[c.dataset.tech] = (counts[c.dataset.tech] || 0) + 1;
   });
   const chips = [...document.querySelectorAll('#techChips .chip')];
-  const willHide = c => !counts[c.dataset.tech] && c.dataset.tech !== currentTech;
-  if (chips.every(c => c.hidden === willHide(c))) { // 顯示哪些沒變：只更新數字
+  const show = c => !!counts[c.dataset.tech];
+  const animate = chipsReady && window.Flip && !reduceMotion();
+  chipsReady = true;
+  if (window.gsap) { gsap.killTweensOf(chips); gsap.set(chips, { clearProps: 'opacity,transform' }); } // 連續快速切換：上一次的動畫直接結束
+  const leaving = chips.filter(c => !c.hidden && !show(c));
+  const entering = chips.filter(c => c.hidden && show(c));
+  const stay = chips.filter(c => !c.hidden && show(c));
+  // 位置要在「數字改變之前」記下來：數字變短，標籤寬度跟著變，位置會先跳一下
+  const state = animate && (leaving.length || entering.length) ? Flip.getState(stay) : null;
+  const apply = () => {
     chips.forEach(c => { c.querySelector('sup').textContent = counts[c.dataset.tech] || 0; });
-    return;
-  }
-  // Flip：先記下每個 chip 的位置 → 改成新的狀態 → 從舊位置滑到新位置（練習「篩選重新排列」的做法）
-  const state = window.Flip && !reduceMotion() ? Flip.getState(chips) : null;
-  chips.forEach(c => {
-    c.querySelector('sup').textContent = counts[c.dataset.tech] || 0;
-    c.hidden = willHide(c);
-  });
-  if (!state) return;
-  Flip.from(state, {
-    targets: chips, duration: 0.5, ease: 'expo.out', absolute: true,
-    onEnter: els => gsap.fromTo(els, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'expo.out' }),
-    onLeave: els => gsap.to(els, { opacity: 0, scale: 0.8, duration: 0.25, ease: 'power2.in' })
-  });
+    chips.forEach(c => { c.hidden = !show(c); });
+    if (!state) return;
+    Flip.from(state, { targets: stay, duration: 0.4, ease: 'expo.out', simple: true }); // simple：只補位置，不補寬度（數字變了寬度會變，補寬度會讓整排一直重排、看起來卡）
+    gsap.fromTo(entering, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.35, delay: 0.1, ease: 'expo.out', clearProps: 'opacity,transform' });
+  };
+  if (!state) { apply(); return; }
+  if (leaving.length) gsap.to(leaving, { opacity: 0, scale: 0.85, duration: 0.15, ease: 'power1.in', onComplete: apply });
+  else apply();
 }
 
-// 手機的「篩選」按鈕：展開／收起第二排（高度補間），按鈕上顯示正在作用的條件數
+// 手機的「篩選」按鈕：展開／收起第二排（高度補間）
 function setupRefineToggle() {
   const btn = document.getElementById('refineToggle');
   const panel = document.getElementById('refine');
@@ -296,12 +307,6 @@ function setupRefineToggle() {
       : gsap.timeline({ onComplete: () => { panel.classList.remove('is-open'); gsap.set(panel, { clearProps: 'height,paddingTop,paddingBottom,overflow' }); } })
           .to(panel, { height: 0, paddingTop: 0, paddingBottom: 0, overflow: 'hidden', duration: 0.35, ease: 'expo.inOut' });
   });
-}
-function updateRefineCount() {
-  const n = (currentTech ? 1 : 0) + (currentSort !== 'newest' ? 1 : 0);
-  const badge = document.getElementById('refineCount');
-  badge.hidden = !n;
-  badge.textContent = n;
 }
 
 // 一次清掉主題、GSAP 功能和搜尋，回到全部
@@ -322,6 +327,7 @@ function setupRefine() {
   const techs = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b));
   const chips = document.getElementById('techChips');
   chips.innerHTML = techs.map(tech => `<button type="button" class="chip" data-tech="${tech}" aria-pressed="false">${tech}<sup>${counts[tech]}</sup></button>`).join('');
+  updateChipCounts('all', ''); // 先跑一次（全部都有，不會藏任何標籤）：之後的切換才播遞補動畫
   chips.addEventListener('click', e => {
     const chip = e.target.closest('.chip');
     if (!chip) return;
@@ -366,7 +372,6 @@ function setupRefine() {
   const choose = i => {
     currentSort = SORTS[i];
     try { localStorage.setItem('sort', currentSort); } catch {}
-    updateRefineCount();
     opts.forEach((o, n) => o.setAttribute('aria-selected', n === i));
     value.textContent = t(`sort.${currentSort}`);
     close();
@@ -404,6 +409,12 @@ function applyFilter(topic = currentTopic) {
   const query = document.getElementById('workSearch').value;
   const cards = [...document.querySelectorAll('.work-card')];
   const shown = cards.filter(c => c.style.display !== 'none');
+  // 選中的 GSAP 功能在這個分類＋搜尋裡一個都沒有：自動取消選取，直接顯示這個分類的全部結果（不會走進「0 筆」的死路）
+  if (currentTech && !cards.some(c => c.dataset.tech === currentTech && (topic === 'all' || c.dataset.topic === topic) && matches(c.dataset.search, query))) {
+    currentTech = null;
+    syncChips();
+  }
+  updateChipCounts(topic, query); // 標籤馬上更新，不用等卡片淡出
   const next = cards.filter(c => (topic === 'all' || c.dataset.topic === topic)
     && (!currentTech || c.dataset.tech === currentTech)
     && matches(c.dataset.search, query));
@@ -430,7 +441,6 @@ function applyFilter(topic = currentTopic) {
       empty.querySelector('span').textContent = t('home.filter.clear');
       empty.querySelector('button').addEventListener('click', clearFilters);
     }
-    updateChipCounts(topic, query);
     // 讀屏軟體：唸出結果數量（看不到畫面的人也知道篩選有沒有結果）
     document.getElementById('resultStatus').textContent = next.length ? t('home.works.count', { count: next.length }) : t('home.works.empty');
     // 篩選列已經吸附在頁首下方時：捲回作品格開頭，新的一組卡片從第一張開始看
@@ -476,7 +486,7 @@ function initMotion() {
       opacity: 0, y: 40, duration: 1.2, stagger: 0.06, ease: 'expo.out',
       scrollTrigger: { trigger: '.featured', start: 'top bottom', once: true }
     });
-    gsap.from('.works-head, .filters-bar', {
+    gsap.from('.works-head, .filters-bar, .refine', { // GSAP 功能那一排也一起進場（之前沒包含，會先出現再看到上面滑進來）
       opacity: 0, y: 40, duration: 1.2, stagger: 0.08, ease: 'expo.out',
       scrollTrigger: { trigger: '.works', start: 'top bottom', once: true }
     });

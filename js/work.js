@@ -360,8 +360,8 @@ function setupToggle() {
   const workBody = document.querySelector('.work-body');
   const animate = () => !reduceMotion() && window.gsap;
 
-  // 電腦版（≥1024px）：一打開頁面程式碼就是展開的（在預覽右邊），但也可以收合，讓重點筆記往上
-  const desktop = matchMedia('(min-width: 1024px)');
+  // 電腦版、寬平板（≥800px）：一打開頁面程式碼就是展開的（在預覽右邊），但也可以收合，讓重點筆記往上
+  const desktop = matchMedia('(min-width: 800px)');
   if (desktop.matches) {
     btn.setAttribute('aria-expanded', true);
     workBody.classList.add('is-editing');
@@ -589,7 +589,7 @@ function setupToPreview() {
   const panel = document.getElementById('previewWrap').closest('.panel');
   const workBody = document.querySelector('.work-body');
   let offscreen = false;
-  const phone = matchMedia('(max-width: 1023px)'); // 預覽沒有固定在畫面上的尺寸（平板、手機）
+  const phone = matchMedia('(max-width: 799px)'); // 預覽沒有固定在畫面上的尺寸（窄平板、手機）
   phone.addEventListener('change', () => update());
   const update = () => {
     const show = offscreen && workBody.classList.contains('is-editing') && phone.matches;

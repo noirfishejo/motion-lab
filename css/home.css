@@ -52,11 +52,11 @@
 .search::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent-fg);transform:scaleX(0);transform-origin:left;transition:transform var(--dur) var(--ease-out);pointer-events:none}
 .search:focus-within::after{transform:none} /* 聚焦時底部出現強調色底線（輸入框本身沒有焦點框） */
 /* 「篩選」按鈕：只有手機出現 */
-.refine-toggle{display:none;align-items:center;gap:6px;flex:none;padding:0 0 0 14px;border-left:1px solid var(--line);color:var(--muted);font:400 14px/1 var(--font-body);transition:color var(--dur-fast)}
-.refine-toggle i{font-size:18px}
+.refine-toggle{display:none;align-items:center;justify-content:center;flex:none;width:var(--tap);border-left:1px solid var(--line);color:var(--muted);font:400 14px/1 var(--font-body);transition:color var(--dur-fast)}
+.refine-toggle i{font-size:20px}
 .refine-toggle:hover,.refine-toggle[aria-expanded="true"]{color:var(--text)}
+.refine-toggle[aria-expanded="true"]{background:var(--surface-2)} /* 展開中：淺色底，看得出是開著的 */
 .refine-toggle:focus-visible{outline-offset:-2px}
-.refine-count{min-width:18px;height:18px;padding:0 5px;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font:400 11px/1 var(--font-mono)} /* 有幾個篩選條件正在作用 */
 @media (max-width:599px){
   .filters-bar{flex-wrap:wrap}
   .filters-bar .filters{flex:1 1 100%}
@@ -89,7 +89,6 @@
 /* 選中的 GSAP 功能：實心按鈕（再按一次取消） */
 .tech-chips .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .tech-chips .chip[aria-pressed="true"] sup{color:var(--accent-ink)}
-.tech-chips .chip:disabled{opacity:.4;cursor:not-allowed;transform:none} /* 目前的主題／搜尋裡沒有這個功能 */
 .tech-chips .chip[aria-pressed="true"]:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
 
 /* 排序：按鈕＋下拉清單（和搜尋建議欄同一種滑動高亮） */

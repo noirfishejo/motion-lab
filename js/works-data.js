@@ -1643,8 +1643,8 @@ export const WORKS = [
       "en": "Marquee"
     },
     "summary": {
-      "zh-TW": "兩排大字一左一右無限輪播，第二排是空心字。滑鼠移上去會慢慢減速，移開再加速回來。",
-      "en": "Two rows of big type loop forever in opposite directions, the second in outline. Hovering eases it down to a crawl and moving away speeds it back up."
+      "zh-TW": "兩排大字一左一右無限輪播，第二排是空心字。滑鼠移上去會慢慢減速，移開再加速回來；右下角有暫停鈕，可以讓兩排一起慢慢停下。",
+      "en": "Two rows of big type loop forever in opposite directions, the second in outline. Hovering eases it down to a crawl and moving away speeds it back up. A Pause button eases both rows to a stop."
     },
     "topic": "graphics",
     "tech": "Tween",
@@ -1691,6 +1691,13 @@ export const WORKS = [
         "text": {
           "zh-TW": "時間用「寬度 ÷ 速度」算，內容長短不同的兩排，看起來的移動速度才會一樣。",
           "en": "Duration is width ÷ speed, so rows with different lengths move at the same visual speed."
+        }
+      },
+      {
+        "code": "gsap.to(loop, { timeScale: paused ? 0 : 1 })",
+        "text": {
+          "zh-TW": "暫停鈕也用 timeScale：慢慢停下、慢慢開始，不是突然定格。一直在動的內容要能讓人停下來（WCAG 2.2.2：會動超過 5 秒的東西要能暫停），對容易分心或暈眩的人很重要。",
+          "en": "The Pause button also tweens timeScale, so the rows ease to a stop and back instead of freezing. Content that keeps moving needs a way to stop it (WCAG 2.2.2: anything moving longer than 5 seconds must be pausable) — important for people who get distracted or dizzy."
         }
       }
     ]
@@ -2992,6 +2999,13 @@ export const WORKS = [
         }
       },
       {
+        "code": "keepIcon(box, from)",
+        "text": {
+          "zh-TW": "縮圖 4:3、大圖 16:9，Flip 用 scale 放大時寬和高放大的倍數不同，裡面的圖示會被拉扁。每一格把圖示反向修正（scaleX = 想要的大小 ÷ 外框的 scaleX），圖示就會等比例放大。",
+          "en": "The thumbnail is 4:3 and the hero 16:9, so Flip scales width and height by different amounts and would squash the icon. Each frame counter-scales the icon (scaleX = wanted size ÷ the box's scaleX) so it grows evenly."
+        }
+      },
+      {
         "code": "scale: true",
         "text": {
           "zh-TW": "用縮放而不是改寬高：裡面的圖示會跟著一起放大縮小，而且只動 transform，比較順。",
@@ -3064,6 +3078,75 @@ export const WORKS = [
         "text": {
           "zh-TW": "滑動是滑鼠和觸控的捷徑，不是唯一的方法：每列都能用鍵盤選到並按 Delete 刪除，刪除按鈕本身也能用 Tab 選到。",
           "en": "Swiping is a shortcut, not the only way: every row can be focused and deleted with the Delete key, and the delete button is reachable with Tab."
+        }
+      }
+    ]
+  },
+  {
+    "id": "48-pull-to-refresh",
+    "title": {
+      "zh-TW": "列表下拉更新",
+      "en": "List pull to refresh"
+    },
+    "short": {
+      "zh-TW": "下拉更新",
+      "en": "Pull to refresh"
+    },
+    "summary": {
+      "zh-TW": "手機 App 常見的下拉更新：把列表往下拉，越拉越重；拉過門檻箭頭轉向、提示變成「放開就更新」，放開後轉圈圈，資料回來時新的一筆從上面長出來、列表收回去。旁邊也有一顆更新按鈕給鍵盤和滑鼠使用。",
+      "en": "The classic app pull to refresh: drag the list down and it gets heavier the further you go. Past the threshold the arrow flips and the hint says “Release to refresh”; on release a spinner runs, then the new item grows in at the top and the list settles back. A Refresh button does the same for keyboard and mouse users."
+    },
+    "topic": "feedback",
+    "tech": "Draggable",
+    "tags": [
+      "trigger",
+      "proxy",
+      "Math.exp",
+      "repeat: -1"
+    ],
+    "date": "2026-11-25",
+    "thumb": ".app",
+    "useCases": [
+      "app",
+      "content",
+      "saas"
+    ],
+    "cost": "light",
+    "costNote": "drag",
+    "notes": [
+      {
+        "code": "Draggable.create(proxy, { trigger: feed })",
+        "text": {
+          "zh-TW": "拖曳的是一個看不到的代理元素，手指按在列表上（trigger）。拿到拖了多遠之後，再自己換算成列表要移動多少，這樣才能加上「越拉越重」的阻力，而不是列表 1:1 跟著手指走。",
+          "en": "Draggable moves an invisible proxy while the finger presses on the list (trigger). Reading the drag distance and converting it ourselves is what lets us add resistance, instead of the list following the finger 1:1."
+        }
+      },
+      {
+        "code": "MAX * (1 - Math.exp(-y / MAX))",
+        "text": {
+          "zh-TW": "橡皮筋公式：一開始幾乎跟手，越拉越重，永遠拉不到 MAX。iOS 和 Android 的下拉都是這種感覺；改 MAX 就能調整「多重」。",
+          "en": "The rubber-band curve: nearly 1:1 at first, heavier as you go, never reaching MAX. That is the feel of iOS and Android pull to refresh; change MAX to tune how heavy it is."
+        }
+      },
+      {
+        "code": "if (now !== armed)",
+        "text": {
+          "zh-TW": "拉過門檻的那一刻才轉箭頭、換文字，而不是每一格都建新的補間。「放開就會更新」要清楚告訴使用者，不然他不知道要拉多遠。",
+          "en": "The arrow flips and the text changes only at the moment the threshold is crossed, not on every frame. “Release to refresh” has to be explicit, or people don't know how far to pull."
+        }
+      },
+      {
+        "code": "gsap.to(pull, { y: HOLD, onUpdate: render })",
+        "text": {
+          "zh-TW": "拉動距離存在一個物件裡，手指拖曳和程式補間都改同一個值、用同一個 render() 畫出來，所以放開後彈回去、停在轉圈圈的位置、按按鈕更新，看起來都一致。",
+          "en": "The pull distance lives in one object; both the finger and the tweens change it and the same render() draws it, so snapping back, holding at the spinner and the button refresh all look the same."
+        }
+      },
+      {
+        "code": "<button aria-label=\"Refresh\">",
+        "text": {
+          "zh-TW": "下拉是觸控手勢，鍵盤和滑鼠沒辦法「往下拉」，一定要有一顆按鈕做同一件事。更新中、更新完成也寫進 aria-live 讓讀屏軟體唸出來。真實 App 裡，列表要捲到最上面時才啟動下拉。",
+          "en": "Pulling is a touch gesture keyboard and mouse users can't make, so a button must do the same thing. “Refreshing” and “Updated” go into aria-live for screen readers. In a real app, only start the pull when the list is scrolled to the top."
         }
       }
     ]

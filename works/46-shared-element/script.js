@@ -39,6 +39,10 @@ let current = null; // 目前打開的卡片
 
 const grid = document.querySelector('.grid');
 const dur = s => (reduce ? 0 : s);
+// 詳細頁底色的淡入淡出：不要用 'transparent'——GSAP 把它當成「透明的白色」，
+// 從白色漸變到深色，中間會出現一層灰白、看起來像閃一下。改成「同一個底色、透明度 0」
+const bgSolid = () => getComputedStyle(document.body).backgroundColor;           // 例如 rgb(11, 13, 16)
+const bgClear = () => bgSolid().replace(/^rgba?\(([^,]+),([^,]+),([^,)]+).*$/, 'rgba($1,$2,$3, 0)');
 const flipEase = gsap.parseEase('expo.inOut');
 // 縮圖上的圖示 ÷ 大圖上的圖示（例如 44px ÷ 88px = 0.5）
 const iconRatio = thumb => parseFloat(getComputedStyle(thumb).fontSize) / parseFloat(getComputedStyle(hero).fontSize);
@@ -79,9 +83,10 @@ function open(card, { focus = true } = {}) {
   // 縮圖 4:3、大圖 16:9，寬高縮放的比例不同，圖示會被壓扁 → keepIcon 每一格把圖示反向修正成等比例
   gsap.timeline({ defaults: { ease: 'expo.out' } })
     .add(Flip.from(state, { targets: hero, duration: dur(DURATION), ease: 'expo.inOut', scale: true, onUpdate: keepIcon(hero, iconRatio(thumb)) }))
-    .fromTo(detail, { backgroundColor: 'transparent' }, { backgroundColor: getComputedStyle(document.body).backgroundColor, duration: dur(0.4) }, 0)
+    .fromTo(detail, { backgroundColor: bgClear() }, { backgroundColor: bgSolid(), duration: dur(0.4) }, 0)
     // 返回鈕只淡入、往右滑一點（不往上浮：從下面浮上來會壓到大圖），文字再依序浮上來
-    .from(closeBtn, { opacity: 0, x: -12, duration: dur(0.6) }, reduce ? 0 : '-=0.35')
+    // 用 fromTo 寫明終點 x: 0：按鈕的 CSS 有 transform 過渡（按下縮小用），from() 會讀到過渡中的位置，停在歪掉的地方
+    .fromTo(closeBtn, { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: dur(0.6), clearProps: 'transform' }, reduce ? 0 : '-=0.35')
     .from(textEls, { opacity: 0, y: 24, duration: dur(0.8), stagger: 0.06 }, '<');
 
   // 把焦點移進來（preventScroll：放在作品頁預覽裡時，外面的頁面不會跟著捲）
@@ -103,16 +108,18 @@ function close({ focus = true } = {}) {
       const state = Flip.getState(hero);
       hero.style.visibility = 'hidden'; // 詳細頁先留著（只剩底色），大圖改由縮圖接手往回縮
       thumb.style.visibility = '';
+      thumb.style.position = 'relative'; // 有定位，下面的 zIndex 才有效：縮回的縮圖要疊在詳細頁（還在淡出的底色）上面，不然會被蓋住、看起來閃一下
       grid.inert = false;
       gsap.timeline({
         onComplete: () => {
           detail.hidden = true;
           hero.style.visibility = '';
+          thumb.style.position = '';
           gsap.set([closeBtn, ...textEls, detail], { clearProps: 'all' });
         }
       })
         .add(Flip.from(state, { targets: thumb, duration: dur(DURATION * 0.85), ease: 'expo.inOut', scale: true, zIndex: 20, onUpdate: keepIcon(thumb, 1 / iconRatio(thumb)) }))
-        .to(detail, { backgroundColor: 'transparent', duration: dur(0.35), ease: 'power1.out' }, 0);
+        .to(detail, { backgroundColor: bgClear(), duration: dur(0.35), ease: 'power1.out' }, 0);
       if (focus) card.focus({ preventScroll: true }); // 焦點回到原本的卡片
     });
 }
