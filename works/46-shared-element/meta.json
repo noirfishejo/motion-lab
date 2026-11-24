@@ -52,8 +52,8 @@
     {
       "code": "focus({ preventScroll: true })",
       "text": {
-        "zh-TW": "打開時焦點移到關閉按鈕、關閉後回到原本的卡片，鍵盤使用者不會迷路；按 Esc 也能關閉。",
-        "en": "Focus moves to the close button on open and back to the card on close so keyboard users stay oriented; Esc also closes."
+        "zh-TW": "打開時焦點移到返回鈕、返回後回到原本的卡片，鍵盤使用者不會迷路；按 Esc 也能關閉。",
+        "en": "Focus moves to the Back button on open and back to the card on return so keyboard users stay oriented; Esc also closes."
       }
     }
   ],

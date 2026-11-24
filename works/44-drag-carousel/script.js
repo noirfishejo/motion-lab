@@ -15,7 +15,9 @@ const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let stops = [];
 function measure() {
   const end = -(track.scrollWidth - viewport.clientWidth);
-  stops = slides.map(s => Math.max(-s.offsetLeft, end));
+  // offsetLeft 是相對外層容器量的（會包含頁面留白），所以要減掉第一張的位置，第一張才會剛好貼齊左邊
+  const first = slides[0].offsetLeft;
+  stops = slides.map(s => Math.max(-(s.offsetLeft - first), end));
 }
 measure();
 
@@ -28,11 +30,13 @@ const nearest = x => {
 };
 
 let index = 0;
-function setActive(i) {
+let targetX = null; // 按箭頭後 track 正要去的位置（動畫還沒跑完時，連按要從「目的地」算下一張）
+function setActive(i, x = stops[i]) {
   index = i;
   dots.forEach((d, k) => d.setAttribute('aria-current', k === i));
-  prev.disabled = i === 0;
-  next.disabled = i === stops.length - 1;
+  // 箭頭看「實際位置」決定能不能按：已經在最左邊／最右邊才停用
+  prev.disabled = x >= stops[0] - 1;
+  next.disabled = x <= stops[stops.length - 1] + 1;
 }
 
 const drag = Draggable.create(track, {
@@ -42,40 +46,57 @@ const drag = Draggable.create(track, {
   edgeResistance: RESISTANCE,
   // 慣性停下的位置會被吸到最近的一張：甩得快可以一次跳過好幾張
   snap: x => gsap.utils.snap(stops, x),
-  onDrag: () => setActive(nearest(drag.x)),
-  onThrowUpdate: () => setActive(nearest(drag.x)),
+  onPress: () => { targetX = null; },
+  onDrag: () => setActive(nearest(drag.x), drag.x),
+  onThrowUpdate: () => setActive(nearest(drag.x), drag.x),
+  onThrowComplete: () => setActive(nearest(drag.x), drag.x),
   onDragEnd() { if (reduce) goTo(nearest(this.x)); }
 })[0];
 
 function goTo(i) {
   i = gsap.utils.clamp(0, slides.length - 1, i);
-  // 已經捲到盡頭時，往後一張就直接跳到最後一張（中間幾張的位置都是盡頭）
-  if (i > index && stops[i] === stops[stops.length - 1]) i = stops.length - 1;
   setActive(i);
+  targetX = stops[i];
   gsap.to(track, {
     x: stops[i], duration: reduce ? 0 : 0.8, ease: 'expo.out', overwrite: true,
     onUpdate: () => drag.update() // 讓 Draggable 知道 track 被程式移動了（下次拖曳才從正確位置開始）
   });
 }
 
-prev.addEventListener('click', () => goTo(index - 1));
-next.addEventListener('click', () => goTo(index + 1));
+// 箭頭依「現在的位置」找下一個真的會移動的位置
+// 最後幾張可能共用同一個位置（都是盡頭），只用 index ± 1 的話，在盡頭按上一張會停在原地、看起來沒反應
+function step(dir) {
+  // 正在滑動時，用滑動的終點來算（甩出去的慣性用 drag.endX，按箭頭的用 targetX）
+  const x = drag.isThrowing ? drag.endX : targetX ?? gsap.getProperty(track, 'x');
+  const i = dir > 0
+    ? stops.findIndex(s => s < x - 1)                        // 往右：第一個在目前位置右邊的
+    : stops.findLastIndex(s => s > x + 1);                   // 往左：最後一個在目前位置左邊的
+  if (i === -1) return;
+  goTo(dir > 0 && stops[i] === stops[stops.length - 1] ? stops.length - 1 : i);
+}
+prev.addEventListener('click', () => step(-1));
+next.addEventListener('click', () => step(1));
 dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
 viewport.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') { e.preventDefault(); goTo(index + 1); }
-  if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(index - 1); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
 });
 
 // 視窗大小改變：重新量位置、更新拖曳範圍，停在同一張
 window.addEventListener('resize', () => {
   measure();
   drag.applyBounds({ minX: stops[stops.length - 1], maxX: 0 });
-  gsap.set(track, { x: stops[index] });
+  targetX = stops[index];
+  gsap.set(track, { x: targetX });
   drag.update();
 });
 
 setActive(0);
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
-if (!reduce) gsap.delayedCall(0.8, () => goTo(1));
+if (!reduce) {
+  const demo = gsap.delayedCall(0.8, () => goTo(1));
+  // 自己動手了就不播示範，免得被它拉走
+  ['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.kill(), { once: true }));
+}
 // #endregion demo

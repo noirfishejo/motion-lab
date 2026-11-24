@@ -89,7 +89,11 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 if (!reduce) {
-  gsap.delayedCall(0.9, () => open(document.querySelectorAll('.card')[1]));
-  gsap.delayedCall(2.8, close);
+  const demo = [
+    gsap.delayedCall(0.9, () => open(document.querySelectorAll('.card')[1])),
+    gsap.delayedCall(2.8, close)
+  ];
+  // 自己動手了就停掉示範，免得剛打開的詳細頁被它關掉
+  ['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.forEach(d => d.kill()), { once: true }));
 }
 // #endregion demo

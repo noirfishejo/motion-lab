@@ -44,6 +44,20 @@
       }
     },
     {
+      "code": "s.offsetLeft - first",
+      "text": {
+        "zh-TW": "offsetLeft 是相對外層容器量的，會把頁面左右留白也算進去；減掉第一張的位置，每一張才會剛好貼齊左邊，不會被切掉一截。",
+        "en": "offsetLeft is measured from an outer container and includes page padding; subtract the first slide's offset so each slide lines up flush left instead of being clipped."
+      }
+    },
+    {
+      "code": "stops.findLastIndex(s => s > x + 1)",
+      "text": {
+        "zh-TW": "最後幾張可能共用同一個位置（都是盡頭）。箭頭不用 index ± 1，而是從目前位置找「下一個真的會動的位置」，在盡頭按上一張才不會停在原地。",
+        "en": "The last few slides can share one position (the end). Instead of index ± 1, the arrows look for the next position that actually moves, so Previous works from the end."
+      }
+    },
+    {
       "code": "touch-action: pan-y",
       "text": {
         "zh-TW": "手機上「上下滑」仍然交給瀏覽器捲動頁面，只有左右滑才是拖曳輪播，不然輪播會擋住整頁的捲動。",
