@@ -13,11 +13,13 @@ const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // 每一張對齊左邊時，track 要移到的 x；最後幾張不能移超過盡頭（不然右邊會空一塊）
 let stops = [];
+let boxes = []; // 每一張的左邊位置和寬度（量一次存起來，拖曳時每一格都會用到，不要每次重量）
 function measure() {
   const end = -(track.scrollWidth - viewport.clientWidth);
   // offsetLeft 是相對外層容器量的（會包含頁面留白），所以要減掉第一張的位置，第一張才會剛好貼齊左邊
   const first = slides[0].offsetLeft;
   stops = slides.map(s => Math.max(-(s.offsetLeft - first), end));
+  boxes = slides.map(s => ({ left: s.offsetLeft - first, width: s.offsetWidth, view: viewport.clientWidth }));
 }
 measure();
 
@@ -37,6 +39,12 @@ function setActive(i, x = stops[i]) {
   // 箭頭看「實際位置」決定能不能按：已經在最左邊／最右邊才停用
   prev.disabled = x >= stops[0] - 1;
   next.disabled = x <= stops[stops.length - 1] + 1;
+  // 讀屏軟體只唸畫面上看得到的卡片（完全在畫面外的先藏起來）
+  slides.forEach((s, k) => {
+    const { left, width, view } = boxes[k];
+    const hidden = left + x + width <= 1 || left + x >= view - 1;
+    if (s.ariaHidden !== String(hidden)) s.setAttribute('aria-hidden', hidden); // 有變才寫
+  });
 }
 
 const drag = Draggable.create(track, {
@@ -83,7 +91,11 @@ viewport.addEventListener('keydown', e => {
 });
 
 // 視窗大小改變：重新量位置、更新拖曳範圍，停在同一張
+// （只有寬度變了才重算：放在作品頁預覽裡展開程式碼時，iframe 只改高度、每一格都會觸發 resize）
+let lastW = innerWidth;
 window.addEventListener('resize', () => {
+  if (innerWidth === lastW) return;
+  lastW = innerWidth;
   measure();
   drag.applyBounds({ minX: stops[stops.length - 1], maxX: 0 });
   targetX = stops[index];

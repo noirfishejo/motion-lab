@@ -49,6 +49,8 @@
 .search input{flex:1;min-width:0;height:48px;border:0;background:transparent;color:var(--text);font:400 14px/1 var(--font-body);outline:none;border-radius:0}
 .search input::placeholder{color:var(--muted)}
 .search:focus-within i{color:var(--accent-fg)}
+.search::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent-fg);transform:scaleX(0);transform-origin:left;transition:transform var(--dur) var(--ease-out);pointer-events:none}
+.search:focus-within::after{transform:none} /* 聚焦時底部出現強調色底線（輸入框本身沒有焦點框） */
 @media (max-width:599px){
   .filters-bar{flex-wrap:wrap}
   .filters-bar .filters{flex:1 1 100%}
@@ -80,6 +82,7 @@
 /* 選中的 GSAP 功能：實心按鈕（再按一次取消） */
 .tech-chips .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .tech-chips .chip[aria-pressed="true"] sup{color:var(--accent-ink)}
+.tech-chips .chip:disabled{opacity:.4;cursor:not-allowed;transform:none} /* 目前的主題／搜尋裡沒有這個功能 */
 .tech-chips .chip[aria-pressed="true"]:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
 
 /* 排序：按鈕＋下拉清單（和搜尋建議欄同一種滑動高亮） */
@@ -93,7 +96,7 @@
 .sort-list li[role="option"]{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px;height:36px;padding:0 14px;font-size:13px;cursor:pointer}
 .sort-list li[aria-selected="true"]{color:var(--accent-fg)}
 .sort-list li[aria-selected="true"]::after{content:"";width:6px;height:6px;background:var(--accent-fg)}
-.sort-hl{position:absolute;left:0;right:0;top:0;height:36px;background:var(--surface-2);opacity:0;pointer-events:none}
+.sort-hl{position:absolute;left:0;right:0;top:0;height:36px;background:var(--surface-2);box-shadow:inset 2px 0 0 var(--accent-fg);opacity:0;pointer-events:none}
 @media (pointer:coarse){.sort-btn{height:var(--tap)}.tech-chips .chip{height:var(--tap)}}
 @media (max-width:599px){
   .refine{flex-wrap:wrap}
@@ -136,7 +139,7 @@
 .work-meta .tags{grid-column:1/-1;margin-top:6px}
 
 .empty{color:var(--muted);text-align:center;border-bottom:1px solid var(--line)}
-.empty:not(:has(.empty-state)){padding:64px 0}
+.empty:not(:has(.empty-state)){padding:64px 0;display:grid;justify-items:center;gap:16px}
 
 /* ── 精選（練習 50 個以上才出現）：比作品格小一號的三欄，只放縮圖、名稱和 GSAP 功能 ── */
 .featured{position:relative;z-index:1;background:var(--bg);padding-bottom:var(--section-gap)} /* 和作品區一樣不透明、疊在開場上面 */

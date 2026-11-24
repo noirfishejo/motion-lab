@@ -9,7 +9,7 @@
   },
   "summary": {
     "zh-TW": "按下愛心：空心縮掉、實心彈出，外框方塊擴散、十顆小方塊往四周噴開，按讚數往上滾一格。在圖片上點兩下也能按讚，中間會跳出大愛心。取消按讚則安靜地縮回去。",
-    "en": "Tap the heart: the outline shrinks away, the filled heart pops in, a square ring expands and ten tiny squares burst outward while the count rolls up. Double-click the photo to like with a big centre heart. Unliking quietly shrinks back."
+    "en": "Tap the heart: the outline shrinks away, the filled heart pops in, a square ring expands and ten tiny squares burst outward while the count rolls up. Double-tap the photo to like with a big centre heart. Unliking quietly shrinks back."
   },
   "topic": "feedback",
   "tech": "Timeline",

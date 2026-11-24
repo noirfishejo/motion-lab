@@ -23,6 +23,7 @@ const logoChars = splitChars(document.querySelector('.logo-text'));
 // 捲動時再讓它回家。頁首固定在畫面上，所以方塊回家後就不會再跟著頁面跑。
 const mark = document.querySelector('.mark');
 const slot = document.querySelector('.slot');
+const progressEl = document.querySelector('.progress'); // 先存起來：onUpdate 每一格都會用到
 
 // 量出「起點」和「終點」中心點的距離，以及要放大幾倍
 // 寫成函式：視窗大小改變（例如作品頁的全螢幕預覽）時，ScrollTrigger 會重新量一次
@@ -52,7 +53,7 @@ const tl = gsap.timeline({
     invalidateOnRefresh: true, // 視窗大小改變時，重新計算起點
     markers: SHOW_MARKERS,  // 顯示 start／end 標記（教學用，上線前拿掉）
     onUpdate: self => {
-      document.querySelector('.progress').textContent = `progress ${Math.round(self.progress * 100)}%`;
+      progressEl.textContent = `progress ${Math.round(self.progress * 100)}%`;
     }
   }
 });

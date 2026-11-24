@@ -14,6 +14,7 @@ const msg = document.querySelector('.msg');
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const dur = s => (reduce ? 0 : s);
 
+const status = document.getElementById('qtyStatus');
 let qty = 1;
 let shown = win.querySelector('.qty'); // 目前顯示中的數字（連續快點時，舊的可能還在滑出去，不能用 querySelector 找）
 const total = { value: PRICE }; // 小計用一個物件補間，數字才會「跑」過去
@@ -51,6 +52,7 @@ function change(step) {
   }
 
   minus.setAttribute('aria-disabled', qty <= MIN);
+  status.textContent = `Quantity ${qty}, subtotal $${qty * PRICE}`; // 讀屏軟體：數字在畫面上換了，也要唸出來
   msg.textContent = '';
 }
 
@@ -67,7 +69,8 @@ minus.setAttribute('aria-disabled', true);
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 if (!reduce) {
-  gsap.delayedCall(0.8, () => change(1));
-  gsap.delayedCall(1.5, () => change(1));
+  const demo = [gsap.delayedCall(0.8, () => change(1)), gsap.delayedCall(1.5, () => change(1))];
+  // 自己動手了就停掉示範，免得數量被它多加
+  ['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.forEach(d => d.kill()), { once: true }));
 }
 // #endregion demo

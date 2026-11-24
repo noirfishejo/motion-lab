@@ -1313,8 +1313,8 @@ export const WORKS = [
       "app",
       "ecommerce"
     ],
-    "cost": "light",
-    "costNote": "loop",
+    "cost": "medium",
+    "costNote": "paint",
     "notes": [
       {
         "code": {
@@ -1378,7 +1378,7 @@ export const WORKS = [
     },
     "summary": {
       "zh-TW": "按下愛心：空心縮掉、實心彈出，外框方塊擴散、十顆小方塊往四周噴開，按讚數往上滾一格。在圖片上點兩下也能按讚，中間會跳出大愛心。取消按讚則安靜地縮回去。",
-      "en": "Tap the heart: the outline shrinks away, the filled heart pops in, a square ring expands and ten tiny squares burst outward while the count rolls up. Double-click the photo to like with a big centre heart. Unliking quietly shrinks back."
+      "en": "Tap the heart: the outline shrinks away, the filled heart pops in, a square ring expands and ten tiny squares burst outward while the count rolls up. Double-tap the photo to like with a big centre heart. Unliking quietly shrinks back."
     },
     "topic": "feedback",
     "tech": "Timeline",
@@ -1721,7 +1721,7 @@ export const WORKS = [
       "brand",
       "ecommerce"
     ],
-    "cost": "medium",
+    "cost": "light",
     "costNote": "3d",
     "notes": [
       {
@@ -2739,10 +2739,10 @@ export const WORKS = [
         }
       },
       {
-        "code": "stacked(n) = { y: -n × 20, scale: 1 - n × 0.06, filter: brightness(…) }",
+        "code": "stacked(n) = { y: -n × 20, scale: 1 - n × 0.06 }",
         "text": {
-          "zh-TW": "疊起來的樣子寫成一個函式：第幾張就往上錯開多少、縮小多少、暗多少。前面的卡片掉落時，後面的每張都補到「前一格」的位置，看起來就像整疊往前遞補。",
-          "en": "The stacked look is one function: each card sits a bit higher, smaller and darker by its position. When the top card falls, every card behind moves to the slot in front, so the whole pile advances."
+          "zh-TW": "疊起來的樣子寫成一個函式：第幾張就往上錯開多少、縮小多少；變暗則是改卡片裡黑色遮罩（.shade）的透明度，不用 filter: brightness，捲動時才不會每一格重算整張卡片。前面的卡片掉落時，後面的每張都補到「前一格」的位置，看起來就像整疊往前遞補。",
+          "en": "The stacked look is one function: each card sits a bit higher and smaller by its position. Darkening fades a black .shade layer instead of filter: brightness, so scrubbing doesn't re-filter whole cards every frame. When the top card falls, every card behind moves to the slot in front, so the whole pile advances."
         }
       }
     ],
@@ -2857,6 +2857,20 @@ export const WORKS = [
         }
       },
       {
+        "code": "s.offsetLeft - first",
+        "text": {
+          "zh-TW": "offsetLeft 是相對外層容器量的，會把頁面左右留白也算進去；減掉第一張的位置，每一張才會剛好貼齊左邊，不會被切掉一截。",
+          "en": "offsetLeft is measured from an outer container and includes page padding; subtract the first slide's offset so each slide lines up flush left instead of being clipped."
+        }
+      },
+      {
+        "code": "stops.findLastIndex(s => s > x + 1)",
+        "text": {
+          "zh-TW": "最後幾張可能共用同一個位置（都是盡頭）。箭頭不用 index ± 1，而是從目前位置找「下一個真的會動的位置」，在盡頭按上一張才不會停在原地。",
+          "en": "The last few slides can share one position (the end). Instead of index ± 1, the arrows look for the next position that actually moves, so Previous works from the end."
+        }
+      },
+      {
         "code": "touch-action: pan-y",
         "text": {
           "zh-TW": "手機上「上下滑」仍然交給瀏覽器捲動頁面，只有左右滑才是拖曳輪播，不然輪播會擋住整頁的捲動。",
@@ -2966,8 +2980,8 @@ export const WORKS = [
       {
         "code": "data-flip-id",
         "text": {
-          "zh-TW": "縮圖和大圖是兩個不同的元素，但給它們同一個 data-flip-id，Flip 就會把它們當成同一個東西：記下縮圖的位置，讓大圖從那裡長出來。和練習 6（同一張卡片換 class）不同，這裡是「兩個畫面之間」的轉場。",
-          "en": "The thumbnail and the hero are different elements, but sharing a data-flip-id makes Flip treat them as one: it records the thumbnail’s box and grows the hero from there. Unlike practice 6 (one card changing class), this transitions between two views."
+          "zh-TW": "縮圖和大圖是兩個不同的元素，但給它們同一個 data-flip-id，Flip 就會把它們當成同一個東西：記下縮圖的位置，讓大圖從那裡長出來。和「卡片展開」（同一張卡片換 class）不同，這裡是「兩個畫面之間」的轉場。",
+          "en": "The thumbnail and the hero are different elements, but sharing a data-flip-id makes Flip treat them as one: it records the thumbnail’s box and grows the hero from there. Unlike “Card expand” (one card changing class), this transitions between two views."
         }
       },
       {
@@ -2987,8 +3001,8 @@ export const WORKS = [
       {
         "code": "focus({ preventScroll: true })",
         "text": {
-          "zh-TW": "打開時焦點移到關閉按鈕、關閉後回到原本的卡片，鍵盤使用者不會迷路；按 Esc 也能關閉。",
-          "en": "Focus moves to the close button on open and back to the card on close so keyboard users stay oriented; Esc also closes."
+          "zh-TW": "打開時焦點移到返回鈕、返回後回到原本的卡片，鍵盤使用者不會迷路；按 Esc 也能關閉。",
+          "en": "Focus moves to the Back button on open and back to the card on return so keyboard users stay oriented; Esc also closes."
         }
       }
     ],

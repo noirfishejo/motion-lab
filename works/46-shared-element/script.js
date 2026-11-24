@@ -37,7 +37,10 @@ const textEls = detail.querySelectorAll('.detail-meta, h2, .detail-body');
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let current = null; // 目前打開的卡片
 
-function open(card) {
+const grid = document.querySelector('.grid');
+
+function open(card, { focus = true } = {}) {
+  if (current) return; // 已經開著一張：不能疊著開（不然前一張的縮圖會一直藏著）
   const i = Number(card.dataset.index);
   const place = PLACES[i];
   const thumb = card.querySelector('.thumb');
@@ -54,6 +57,7 @@ function open(card) {
   detail.querySelector('.detail-body').textContent = place.body;
   detail.hidden = false;
   thumb.style.visibility = 'hidden'; // 縮圖先藏起來：畫面上只有「正在長大」的那一張
+  grid.inert = true; // 被詳細頁蓋住的列表：Tab 不會跑過去、讀屏也不會唸
 
   // ③ 讓大圖從縮圖的位置長出來；scale: true 用縮放做（圖示也會跟著放大，比改寬高順）
   gsap.timeline({ defaults: { ease: 'expo.out' } })
@@ -61,10 +65,12 @@ function open(card) {
     .fromTo(detail, { backgroundColor: 'transparent' }, { backgroundColor: getComputedStyle(document.body).backgroundColor, duration: reduce ? 0 : 0.4 }, 0)
     .from([closeBtn, ...textEls], { opacity: 0, y: 24, duration: reduce ? 0 : 0.8, stagger: 0.06 }, reduce ? 0 : '-=0.35');
 
-  closeBtn.focus({ preventScroll: true }); // 把焦點移進來（preventScroll：放在作品頁預覽裡時，外面的頁面不會跟著捲）
+  // 把焦點移進來（preventScroll：放在作品頁預覽裡時，外面的頁面不會跟著捲）
+  // 自動示範不移焦點：不然放在作品頁預覽裡時，會把焦點從外面的頁面搶走
+  if (focus) closeBtn.focus({ preventScroll: true });
 }
 
-function close() {
+function close({ focus = true } = {}) {
   if (!current) return;
   const card = current;
   const thumb = card.querySelector('.thumb');
@@ -77,21 +83,22 @@ function close() {
       const state = Flip.getState(hero);
       detail.hidden = true;
       gsap.set([closeBtn, ...textEls, detail], { clearProps: 'all' });
+      grid.inert = false;
       thumb.style.visibility = '';
       Flip.from(state, { targets: thumb, duration: reduce ? 0 : DURATION * 0.85, ease: 'expo.inOut', scale: true, zIndex: 5 });
-      card.focus({ preventScroll: true }); // 焦點回到原本的卡片
+      if (focus) card.focus({ preventScroll: true }); // 焦點回到原本的卡片
     });
 }
 
 document.querySelectorAll('.card').forEach(card => card.addEventListener('click', () => open(card)));
-closeBtn.addEventListener('click', close);
+closeBtn.addEventListener('click', () => close());
 document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 if (!reduce) {
   const demo = [
-    gsap.delayedCall(0.9, () => open(document.querySelectorAll('.card')[1])),
-    gsap.delayedCall(2.8, close)
+    gsap.delayedCall(0.9, () => open(document.querySelectorAll('.card')[1], { focus: false })),
+    gsap.delayedCall(2.8, () => close({ focus: false }))
   ];
   // 自己動手了就停掉示範，免得剛打開的詳細頁被它關掉
   ['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.forEach(d => d.kill()), { once: true }));

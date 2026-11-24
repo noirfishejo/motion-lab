@@ -61,7 +61,8 @@ function renderInfo() {
   document.getElementById('workSummary').textContent = pick(work.summary);
   document.getElementById('workTopic').textContent = t(`topic.${work.topic}`);
   document.getElementById('workDate').textContent = work.date.replaceAll('-', '.');
-  document.getElementById('workTags').innerHTML = [work.tech, ...work.tags].map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
+  // 第一個標籤是主要的 GSAP 功能，用強調色（和首頁卡片右上角一致）
+  document.getElementById('workTags').innerHTML = [work.tech, ...work.tags].map((tag, i) => `<span class="tag${i === 0 ? ' is-accent' : ''}">${escapeHtml(tag)}</span>`).join('');
   document.getElementById('notes').innerHTML = (work.notes || []).map(n =>
     `<li><code>${escapeHtml(pick(n.code))}</code><p>${pick(n.text)}</p></li>`).join('');
   renderMore();
@@ -133,8 +134,21 @@ function setupFullscreen() {
   // 把一個矩形換成 clip-path：只露出畫面上這一塊
   const clipTo = r => `inset(${r.top}px ${innerWidth - r.right}px ${innerHeight - r.bottom}px ${r.left}px)`;
   let busy = false;
+  let inerted = [];
+  // 全螢幕時，畫面上其他東西（頁首、程式碼、側欄…）設成 inert：Tab 不會跑到被蓋住的地方，讀屏也不會唸
+  const setInert = on => {
+    inerted.forEach(el => { el.inert = false; });
+    inerted = [];
+    if (!on) return;
+    for (let el = panel; el && el !== document.body; el = el.parentElement) {
+      [...el.parentElement.children].forEach(sib => {
+        if (sib !== el && sib !== placeholder && !sib.inert && sib.tagName !== 'SCRIPT' && !sib.matches('[aria-live], [role=status], .toast-wrap')) { sib.inert = true; inerted.push(sib); }
+      });
+    }
+  };
 
   const finish = on => {
+    setInert(on);
     full.hidden = on;
     exit.hidden = !on;
     (on ? exit : full).focus();
@@ -175,7 +189,12 @@ function setupFullscreen() {
 
   full.addEventListener('click', open);
   exit.addEventListener('click', close);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('is-full')) close(); });
+  const onEsc = e => { if (e.key === 'Escape' && panel.classList.contains('is-full')) close(); };
+  document.addEventListener('keydown', onEsc);
+  // 焦點在預覽裡面時，按鍵事件發生在 iframe 裡：也要聽（同源才讀得到；每次重新載入都要重新掛上）
+  const hookFrame = () => { try { frame.contentWindow.addEventListener('keydown', onEsc); } catch {} };
+  frame.addEventListener('load', hookFrame);
+  hookFrame();
 }
 
 // ── 作品列表側欄 ─────────────────────────────────
@@ -353,13 +372,15 @@ function setupToggle() {
   desktop.addEventListener('change', e => { if (e.matches) openNow(); else editor?.refresh(); });
 
   const frameWrap = document.getElementById('previewWrap');
+  let bodyTl; // 展開／收合的 timeline：再按一次時先 kill()（不會觸發 onComplete，收合到一半的「藏起來」不會在展開後才執行）
   btn.addEventListener('click', () => {
     const open = btn.getAttribute('aria-expanded') !== 'true';
     btn.setAttribute('aria-expanded', open);
     // 編輯模式：平板的預覽固定在上方、縮成半個畫面；手機捲到程式碼時出現「看預覽」按鈕
     // 切換 class 前後各量一次預覽的高度，再補間過去：預覽會跟著程式碼一起伸縮，不會一下子跳成另一個大小
     const before = frameWrap.getBoundingClientRect().height; // 動畫中途再按：從目前畫面上的高度接著動
-    if (window.gsap) gsap.killTweensOf([frameWrap, body, ...body.children]); // 上一次展開／收合還沒播完就停掉，避免兩段搶同一個高度
+    bodyTl?.kill();
+    if (window.gsap) gsap.killTweensOf(frameWrap); // 上一次預覽高度的補間還沒播完就停掉，避免兩段搶同一個高度
     frameWrap.style.height = '';                              // 拿掉上一段留下的高度，才量得到新的目標高度
     workBody.classList.toggle('is-editing', open);
     const after = frameWrap.offsetHeight;
@@ -367,10 +388,11 @@ function setupToggle() {
       gsap.fromTo(frameWrap, { height: before }, { height: after, duration: 0.6, ease: 'expo.out', clearProps: 'height' });
     }
     if (open) {
+      if (window.gsap) gsap.set([body, ...body.children], { clearProps: 'opacity,transform,height' }); // 收合到一半又展開：先清掉半透明的中間狀態
       body.hidden = false;
       editor?.refresh(); // 隱藏時建立的編輯器，展開後要重新量尺寸
       if (animate()) {
-        gsap.timeline({ onComplete: () => editor?.refresh() })
+        bodyTl = gsap.timeline({ onComplete: () => editor?.refresh() })
           .fromTo(body, { height: 0 }, { height: 'auto', duration: 0.6, ease: 'expo.out', clearProps: 'height' })
           // 分頁列和編輯器跟在後面依序浮上來（和練習 17 手風琴的內容進場相同）
           .from(body.children, { opacity: 0, y: 12, duration: 0.5, stagger: 0.06, ease: 'expo.out', clearProps: 'opacity,transform' }, 0.08);
@@ -379,7 +401,7 @@ function setupToggle() {
       body.hidden = true;
       document.getElementById('saveConfirm').hidden = true;
     } else {
-      gsap.timeline({ onComplete: () => { body.hidden = true; gsap.set([body, ...body.children], { clearProps: 'all' }); } })
+      bodyTl = gsap.timeline({ onComplete: () => { body.hidden = true; gsap.set([body, ...body.children], { clearProps: 'all' }); } })
         .to(body.children, { opacity: 0, duration: 0.15, ease: 'power1.out' })
         .to(body, { height: 0, duration: 0.4, ease: 'expo.inOut' }, 0.05);
     }
@@ -443,7 +465,7 @@ function setupSave() {
     return;
   }
   const box = document.getElementById('saveConfirm');
-  const changedFiles = () => Object.keys(FILES).filter(l => docs[l].getValue() !== original[l]);
+  const changedFiles = () => Object.keys(FILES).filter(isChanged);
 
   btn.addEventListener('click', () => {
     const names = list(changedFiles().map(l => FILES[l]));
@@ -460,7 +482,7 @@ function setupSave() {
     try {
       for (const lang of changed) {
         const value = docs[lang].getValue();
-        const res = await fetch(`works/${work.id}/${FILES[lang]}`, { method: 'PUT', body: value });
+        const res = await fetch(`works/${work.id}/${FILES[lang]}`, { method: 'PUT', body: value, headers: { 'X-Motion-Lab': 'save' } });
         if (!res.ok) throw new Error(res.status);
         original[lang] = value.trimEnd(); // 存好的內容成為新的「原始版本」
       }
@@ -488,7 +510,9 @@ function values() {
   for (const lang of Object.keys(FILES)) v[lang] = docs[lang] ? docs[lang].getValue() : original[lang];
   return v;
 }
-function isModified() { return Object.keys(FILES).some(l => docs[l] && docs[l].getValue() !== original[l]); }
+// 比對時忽略結尾的空白和換行：存檔時伺服器會整理結尾，在檔尾多按一下 Enter 不算修改
+function isChanged(l) { return !!docs[l] && docs[l].getValue().trimEnd() !== original[l]; }
+function isModified() { return Object.keys(FILES).some(isChanged); }
 function resetPreview() { frame.removeAttribute('srcdoc'); frame.src = previewSrc(); }
 function updateModified() {
   const m = isModified();
@@ -527,13 +551,29 @@ function labelCopy() {
 }
 
 // ── 複製（複製的是「目前編輯後」的內容） ─────────
+// 手機用區網網址（http://192.168…）開啟時不是安全環境，沒有 navigator.clipboard，改用舊的 execCommand 方法
+async function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+  const area = Object.assign(document.createElement('textarea'), { value: text, readOnly: true });
+  area.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+  document.body.append(area);
+  area.select();
+  const ok = document.execCommand('copy');
+  area.remove();
+  if (!ok) throw new Error('copy failed');
+}
 function setupCopy() {
   // 結果用 Toast 通知顯示（練習 14），讀屏軟體另外由 #status 唸出
   // 兩顆按鈕的差別寫在按鈕上：「複製 JS」只複製目前分頁；「複製完整頁面」是三個檔案合成一個可以直接打開的 HTML
   const bind = (btn, getText, what) => {
     btn.addEventListener('click', async () => {
       const msg = t('work.copiedStatus', { what: what() });
-      try { await navigator.clipboard.writeText(getText()); toast(msg); announce(msg); }
+      try {
+        const text = getText();
+        if (!text.trim()) throw new Error('empty'); // 程式碼沒讀到時不要假裝複製成功
+        await copyText(text);
+        toast(msg); announce(msg);
+      }
       catch { toast(t('work.copyFailed'), 'error'); announce(t('work.copyFailed')); }
     });
   };
@@ -544,14 +584,16 @@ function setupCopy() {
 }
 
 // ── 手機：展開程式碼後，預覽整個捲出畫面時出現「看預覽」按鈕 ──
-// （平板、電腦的預覽固定在畫面上，永遠看得到，按鈕不會出現）
+// （平板、電腦的預覽固定在畫面上，永遠看得到，按鈕不會出現：用寬度條件確保只在手機出現）
 function setupToPreview() {
   const btn = document.getElementById('toPreview');
   const panel = document.getElementById('previewWrap').closest('.panel');
   const workBody = document.querySelector('.work-body');
   let offscreen = false;
+  const phone = matchMedia('(max-width: 599px), (max-width: 1023px) and (max-height: 699px)'); // 預覽沒有固定在畫面上的尺寸（手機、很矮的平板）
+  phone.addEventListener('change', () => update());
   const update = () => {
-    const show = offscreen && workBody.classList.contains('is-editing');
+    const show = offscreen && workBody.classList.contains('is-editing') && phone.matches;
     btn.classList.toggle('is-shown', show);
     btn.setAttribute('aria-hidden', !show);
     btn.tabIndex = show ? 0 : -1;

@@ -58,10 +58,10 @@
       }
     },
     {
-      "code": "stacked(n) = { y: -n × 20, scale: 1 - n × 0.06, filter: brightness(…) }",
+      "code": "stacked(n) = { y: -n × 20, scale: 1 - n × 0.06 }",
       "text": {
-        "zh-TW": "疊起來的樣子寫成一個函式：第幾張就往上錯開多少、縮小多少、暗多少。前面的卡片掉落時，後面的每張都補到「前一格」的位置，看起來就像整疊往前遞補。",
-        "en": "The stacked look is one function: each card sits a bit higher, smaller and darker by its position. When the top card falls, every card behind moves to the slot in front, so the whole pile advances."
+        "zh-TW": "疊起來的樣子寫成一個函式：第幾張就往上錯開多少、縮小多少；變暗則是改卡片裡黑色遮罩（.shade）的透明度，不用 filter: brightness，捲動時才不會每一格重算整張卡片。前面的卡片掉落時，後面的每張都補到「前一格」的位置，看起來就像整疊往前遞補。",
+        "en": "The stacked look is one function: each card sits a bit higher and smaller by its position. Darkening fades a black .shade layer instead of filter: brightness, so scrubbing doesn't re-filter whole cards every frame. When the top card falls, every card behind moves to the slot in front, so the whole pile advances."
       }
     }
   ],

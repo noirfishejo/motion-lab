@@ -87,7 +87,7 @@
 
 - 圓角一律 0（`--radius: 0`）。
 - 不用陰影；層次靠 `--surface` 色階和 1px 外框。
-- 圖示：Phosphor Icons・Light，不手繪 SVG 圖示。
+- 圖示：Phosphor Icons・Light，不手繪 SVG 圖示。只載入 Light 一套樣式（`@phosphor-icons/web@2.1.1/src/light/style.css`）；不要用整包的 `<script>`，它會一次載入 6 套、約 520KB。
 
 ---
 

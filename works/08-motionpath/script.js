@@ -34,7 +34,9 @@ function drawPath() {
   path.setAttribute('d', MotionPathPlugin.rawPathToString(raw));
 }
 drawPath();
-window.addEventListener('resize', drawPath);
+// 只有「寬度」變了才重算：放在作品頁預覽裡展開程式碼時，iframe 只改高度、每一格都會觸發 resize
+let lastW = innerWidth;
+window.addEventListener('resize', () => { if (innerWidth !== lastW) { lastW = innerWidth; drawPath(); } });
 
 // ── 加入購物車：複製一個方塊，沿著路徑飛到購物車 ──
 function addToCart() {

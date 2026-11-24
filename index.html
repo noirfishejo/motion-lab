@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&family=Noto+Sans+TC:wght@400;500&display=swap">
-  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
 
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
@@ -48,7 +48,7 @@
         <span class="logo-mark" aria-hidden="true"></span><span class="logo-text">Motion Lab</span>
       </a>
       <div class="header-end">
-        <button class="icon-toggle lang-toggle" type="button" id="langToggle" data-i18n="lang.switch" data-i18n-attr="aria-label:lang.switchLabel;data-tip:lang.switchLabel"></button>
+        <button class="icon-toggle lang-toggle" type="button" id="langToggle" data-i18n="lang.switch" data-i18n-attr="aria-label:lang.switchLabel;data-tip:lang.switchTip"></button>
         <button class="icon-toggle" type="button" id="themeToggle"><i class="ph-light ph-sun" aria-hidden="true"></i></button>
       </div>
     </div>
@@ -105,6 +105,7 @@
 
       <div class="work-grid" id="workGrid"></div>
       <div class="empty" id="empty" hidden></div>
+      <p class="visually-hidden" role="status" id="resultStatus"></p>
     </section>
   </main>
 

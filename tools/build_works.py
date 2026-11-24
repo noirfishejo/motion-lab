@@ -25,7 +25,9 @@ def needs_build():
     if not os.path.exists(OUT):
         return True
     built = os.path.getmtime(OUT)
-    return any(os.path.getmtime(p) > built for p in meta_files())
+    files = meta_files()
+    # 刪除或改名練習時 meta.json 不會變新，所以也比對 works 資料夾本身的修改時間
+    return os.path.getmtime(os.path.join(ROOT, 'works')) > built or any(os.path.getmtime(p) > built for p in files)
 
 
 def build():

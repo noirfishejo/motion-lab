@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&family=Noto+Sans+TC:wght@400;500&display=swap">
-  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
 
   <!-- 換頁時側欄不要重新滑入：在畫面出現前就套用上次的開關狀態，並暫停側欄動畫 -->
   <script>
@@ -67,7 +67,7 @@
         </a>
       </div>
       <div class="header-end">
-        <button class="icon-toggle lang-toggle" type="button" id="langToggle" data-i18n="lang.switch" data-i18n-attr="aria-label:lang.switchLabel;data-tip:lang.switchLabel"></button>
+        <button class="icon-toggle lang-toggle" type="button" id="langToggle" data-i18n="lang.switch" data-i18n-attr="aria-label:lang.switchLabel;data-tip:lang.switchTip"></button>
         <button class="icon-toggle" type="button" id="themeToggle"><i class="ph-light ph-sun" aria-hidden="true"></i></button>
       </div>
     </div>
@@ -81,7 +81,7 @@
       <div class="work-info">
         <p id="workSummary"></p>
         <div class="work-facts">
-          <span class="tag is-accent" id="workTopic"></span>
+          <span class="tag" id="workTopic"></span>
           <span class="date" id="workDate"></span>
         </div>
         <div class="tags" id="workTags"></div>
@@ -131,7 +131,7 @@
               </div>
               <span class="modified-badge" data-modified-badge hidden data-i18n="work.modified"></span>
               <div class="panel-actions">
-                <button class="btn btn-ghost btn-sm" type="button" id="resetBtn" disabled><i class="ph-light ph-arrow-u-up-left"></i><span data-i18n="work.reset"></span></button>
+                <button class="btn btn-ghost btn-sm" type="button" id="resetBtn" disabled data-i18n-attr="data-tip:work.resetHint"><i class="ph-light ph-arrow-u-up-left"></i><span data-i18n="work.reset"></span></button>
                 <button class="btn btn-ghost btn-sm" type="button" id="saveBtn" disabled><i class="ph-light ph-floppy-disk"></i><span data-i18n="work.save"></span></button>
                 <button class="btn btn-ghost btn-sm" type="button" id="copyBtn"><i class="ph-light ph-copy"></i><span></span></button>
                 <button class="btn btn-primary btn-sm" type="button" id="copyAllBtn" data-i18n-attr="data-tip:work.copyAllHint"><i class="ph-light ph-file-html"></i><span data-i18n="work.copyAll"></span></button>

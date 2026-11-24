@@ -82,6 +82,8 @@ main, .pile { width: 100%; } /* 撐滿整個寬度：甩出去的卡片才不會
   transform-origin: 50% 0;
   will-change: transform;
 }
+/* 後面的卡片變暗：疊一層黑色、改它的透明度（比補間 filter: brightness 省很多，filter 每一格都要重算整張卡片） */
+.shade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
 .drop-card i { font-size: clamp(56px, 10vw, 88px); }
 .drop-label { font: 400 12px/1 "JetBrains Mono", monospace; letter-spacing: 0.06em; opacity: 0.8; }
 

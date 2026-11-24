@@ -18,7 +18,7 @@
   </script>
   <title>45 Timeline: Quantity Stepper with Cart Badge</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
-  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -47,6 +47,8 @@
       </div>
     </article>
     <p class="msg" role="status"></p>
+    <!-- 讀屏軟體用：數量改變時唸出來（畫面上看不到） -->
+    <p class="sr-only" id="qtyStatus" aria-live="polite"></p>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>

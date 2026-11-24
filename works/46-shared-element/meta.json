@@ -31,8 +31,8 @@
     {
       "code": "data-flip-id",
       "text": {
-        "zh-TW": "縮圖和大圖是兩個不同的元素，但給它們同一個 data-flip-id，Flip 就會把它們當成同一個東西：記下縮圖的位置，讓大圖從那裡長出來。和練習 6（同一張卡片換 class）不同，這裡是「兩個畫面之間」的轉場。",
-        "en": "The thumbnail and the hero are different elements, but sharing a data-flip-id makes Flip treat them as one: it records the thumbnail’s box and grows the hero from there. Unlike practice 6 (one card changing class), this transitions between two views."
+        "zh-TW": "縮圖和大圖是兩個不同的元素，但給它們同一個 data-flip-id，Flip 就會把它們當成同一個東西：記下縮圖的位置，讓大圖從那裡長出來。和「卡片展開」（同一張卡片換 class）不同，這裡是「兩個畫面之間」的轉場。",
+        "en": "The thumbnail and the hero are different elements, but sharing a data-flip-id makes Flip treat them as one: it records the thumbnail’s box and grows the hero from there. Unlike “Card expand” (one card changing class), this transitions between two views."
       }
     },
     {

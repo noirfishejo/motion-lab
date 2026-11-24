@@ -239,6 +239,39 @@ function compare(a, b) {
   return b.date.localeCompare(a.date) || -byId; // newest：日期新的在前，同一天的編號大的在前
 }
 
+// GSAP 功能 chip 的選取狀態
+function syncChips() {
+  document.querySelectorAll('#techChips .chip').forEach(c => {
+    const on = c.dataset.tech === currentTech;
+    c.setAttribute('aria-pressed', on);
+    if (on) c.dataset.tip = t('tech.clear', { tech: c.dataset.tech }); else delete c.dataset.tip;
+  });
+}
+
+// chip 上的數字跟著目前的主題和搜尋重新算；0 個的 chip 停用（不然點下去只會得到空結果）
+// 已選中的 chip 就算是 0 也保留可按，才能取消
+function updateChipCounts(topic, query) {
+  const counts = {};
+  document.querySelectorAll('.work-card').forEach(c => {
+    if ((topic === 'all' || c.dataset.topic === topic) && matches(c.dataset.search, query)) counts[c.dataset.tech] = (counts[c.dataset.tech] || 0) + 1;
+  });
+  document.querySelectorAll('#techChips .chip').forEach(c => {
+    const n = counts[c.dataset.tech] || 0;
+    c.querySelector('sup').textContent = n;
+    c.disabled = n === 0 && c.dataset.tech !== currentTech;
+  });
+}
+
+// 一次清掉主題、GSAP 功能和搜尋，回到全部
+function clearFilters() {
+  currentTech = null;
+  syncChips();
+  const input = document.getElementById('workSearch');
+  if (input.value) { input.value = ''; input.dispatchEvent(new Event('input')); }
+  applyFilter('all');
+  document.querySelector('.filters button[data-topic="all"]')?.focus();
+}
+
 // ── GSAP 功能快速篩選＋排序 ───────────────────────
 function setupRefine() {
   // GSAP 功能：依出現次數排，次數一樣依名稱
@@ -251,11 +284,7 @@ function setupRefine() {
     const chip = e.target.closest('.chip');
     if (!chip) return;
     currentTech = currentTech === chip.dataset.tech ? null : chip.dataset.tech; // 再按一次選中的 = 取消
-    chips.querySelectorAll('.chip').forEach(c => {
-      const on = c.dataset.tech === currentTech;
-      c.setAttribute('aria-pressed', on);
-      if (on) c.dataset.tip = t('tech.clear', { tech: c.dataset.tech }); else delete c.dataset.tip;
-    });
+    syncChips();
     applyFilter();
   });
 
@@ -350,7 +379,17 @@ function applyFilter(topic = currentTopic) {
         input.dispatchEvent(new Event('input'));
         input.focus();
       } });
-    } else empty.textContent = t('home.works.empty');
+    } else {
+      // 不是搜尋造成的 0 筆（主題＋GSAP 功能的組合）：說明原因，給一顆「清除篩選」
+      stopEmpty(empty);
+      empty.innerHTML = `<p></p><button type="button" class="btn btn-ghost btn-sm"><i class="ph-light ph-x"></i><span></span></button>`;
+      empty.querySelector('p').textContent = t('home.works.empty');
+      empty.querySelector('span').textContent = t('home.filter.clear');
+      empty.querySelector('button').addEventListener('click', clearFilters);
+    }
+    updateChipCounts(topic, query);
+    // 讀屏軟體：唸出結果數量（看不到畫面的人也知道篩選有沒有結果）
+    document.getElementById('resultStatus').textContent = next.length ? t('home.works.count', { count: next.length }) : t('home.works.empty');
     // 篩選列已經吸附在頁首下方時：捲回作品格開頭，新的一組卡片從第一張開始看
     const bar = document.querySelector('.filters-bar');
     const headerH = document.querySelector('.site-header').offsetHeight;
@@ -368,7 +407,7 @@ function applyFilter(topic = currentTopic) {
     .add(swap)
     .add(() => {
       const ordered = [...document.querySelectorAll('.work-card')].filter(c => next.includes(c)); // 排序後的順序
-      gsap.fromTo(ordered, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'expo.out' });
+      filterTl.fromTo(ordered, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'expo.out' }); // 放進同一條 timeline：連點時一起被停掉
     });
 }
 

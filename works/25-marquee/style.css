@@ -70,3 +70,4 @@ body { overflow-x: hidden; }
 /* 第二排：空心字 */
 .is-outline .chunk { color: transparent; -webkit-text-stroke: 1px var(--text); }
 .is-outline .dot { background: transparent; border: 1px solid var(--text); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

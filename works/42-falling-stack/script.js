@@ -14,8 +14,11 @@ const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const cards = [...document.querySelectorAll('.drop-card')];
 cards.forEach((card, i) => { card.style.zIndex = cards.length - i; });
 
-// 疊起來的樣子：第 n 張往上錯開 n × 20px、縮小 n × 6%、暗一點（越後面越小、越高、越暗）
-const stacked = n => ({ y: -n * 20, scale: 1 - n * 0.06, filter: `brightness(${1 - n * 0.18})` });
+// 疊起來的樣子：第 n 張往上錯開 n × 20px、縮小 n × 6%（越後面越小、越高）
+const stacked = n => ({ y: -n * 20, scale: 1 - n * 0.06 });
+// 越後面越暗：改的是卡片裡 .shade 黑色遮罩的透明度
+const SHADE = 0.18;
+const shadeOf = card => card.querySelector('.shade');
 
 // 兩種離場方式：回傳「第 i 張卡片」要動到哪裡
 const EXITS = {
@@ -44,7 +47,7 @@ function build(mode) {
   // 換方式時：先把舊的 timeline 和它的 ScrollTrigger（含固定畫面）拆掉，卡片回到疊好的樣子
   if (tl) { tl.scrollTrigger.kill(); tl.kill(); }
   gsap.set(cards, { clearProps: 'x,y,rotation,opacity' });
-  cards.forEach((card, i) => gsap.set(card, stacked(i)));
+  cards.forEach((card, i) => { gsap.set(card, stacked(i)); gsap.set(shadeOf(card), { opacity: i * SHADE }); });
   if (reduce) return; // 減少動態：維持疊好的樣子，不做離場動畫
 
   tl = gsap.timeline({
@@ -67,7 +70,10 @@ function build(mode) {
     tl.to(card, { ...move, duration: 1 }, at);
     if (opacity !== undefined) tl.to(card, { opacity, duration: 0.4 }, at + 0.6);
     // 同一段時間裡，後面的每張卡片都往前遞補一格（變大、往下）
-    cards.slice(i + 1).forEach((rest, j) => tl.to(rest, { ...stacked(j), duration: 1, ease: 'power2.out' }, at));
+    cards.slice(i + 1).forEach((rest, j) => {
+      tl.to(rest, { ...stacked(j), duration: 1, ease: 'power2.out' }, at);
+      tl.to(shadeOf(rest), { opacity: j * SHADE, duration: 1, ease: 'power2.out' }, at);
+    });
   });
 }
 

@@ -52,9 +52,13 @@ function setValue(next, { instant = false } = {}) {
   const digits = columns.map((c, i) => c && { ...c, i, to: Number(text[i]) }).filter(Boolean);
   digits.forEach((c, k) => {
     if (c.to === c.digit) return;
+    // 目前實際停在第幾格（連按時可能還在半路），換到中間那組的同一格：畫面一模一樣，但上下都有空間可以捲
+    const cur = -gsap.getProperty(c.strip, 'yPercent') * CELLS / 100;
+    const from = 10 + (((cur % 10) + 10) % 10);
+    gsap.set(c.strip, at(from));
     let target = 10 + c.to;
-    if (goingUp && c.to < c.digit) target += 10;    // 例如 8 → 2：往上加，要捲過 9、0 到下一組的 2
-    if (!goingUp && c.to > c.digit) target -= 10;   // 往下減就往上一組捲
+    if (goingUp && target < from) target += 10;    // 例如 8 → 2：往上加，要捲過 9、0 到下一組的 2
+    if (!goingUp && target > from) target -= 10;   // 往下減就往上一組捲
     gsap.to(c.strip, {
       ...at(target),
       duration: quick ? 0 : DURATION,
@@ -85,5 +89,9 @@ document.getElementById('minus').addEventListener('click', () => setValue(Math.m
 setValue(128450, { instant: true });
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
-if (!reduce) gsap.delayedCall(0.8, () => setValue(264917));
+if (!reduce) {
+  const demo = gsap.delayedCall(0.8, () => setValue(264917));
+  // 自己動手了就不播示範，免得數字被它改掉
+  ['pointerdown', 'keydown'].forEach(type => addEventListener(type, () => demo.kill(), { once: true }));
+}
 // #endregion demo

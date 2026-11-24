@@ -80,7 +80,9 @@ document.querySelector('.tabs').addEventListener('keydown', e => {
 fillPanel(current);
 moveIndicator(current, false);
 document.fonts.ready.then(() => moveIndicator(current, false));
-window.addEventListener('resize', () => moveIndicator(current, false));
+// 只有「寬度」變了才重算：放在作品頁預覽裡展開程式碼時，iframe 只改高度、每一格都會觸發 resize
+let lastW = innerWidth;
+window.addEventListener('resize', () => { if (innerWidth !== lastW) { lastW = innerWidth; moveIndicator(current, false); } });
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 // ── 自動示範一次（首頁縮圖也看得到動態） ──

@@ -145,7 +145,7 @@
 
 /* ═══ 平板（夠高時）：展開程式碼後，預覽固定在上方約半個畫面 ═══ */
 @media (min-width:600px) and (max-width:1023px) and (min-height:700px){
-  .work-body.is-editing .work-main > .panel:first-child{position:sticky;top:var(--header-h);z-index:2}
+  .work-body.is-editing .work-main > .panel:first-child{position:sticky;top:var(--header-h);z-index:2;box-shadow:0 1px 0 var(--line-strong),0 12px 16px -12px rgb(0 0 0 / .5)} /* 下緣一條線＋淡淡的影子：看得出預覽是疊在程式碼上面、裡面還能捲 */
   .work-body.is-editing .preview-frame{aspect-ratio:auto;height:46svh}
   .work-body.is-editing .editor-wrap .CodeMirror{height:max(240px,calc(54svh - var(--header-h) - 200px))} /* 剩下的高度：減掉預覽、展開列、分頁列和間距 */
 }

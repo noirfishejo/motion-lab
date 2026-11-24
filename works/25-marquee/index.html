@@ -25,13 +25,16 @@
     <span class="tag">marquee</span>
     <!-- 兩排跑馬燈：第一排往左、第二排往右。滑鼠移上去會慢下來 -->
     <!-- 每一排的內容複製兩份放在一起：第一份跑出畫面時，第二份剛好接上，看起來永遠跑不完 -->
-    <div class="marquee" data-direction="left" aria-label="Motion · Interaction · Feedback · Rhythm">
+    <!-- 讀屏軟體：重複的移動文字藏起來，另外放一份看不到的文字讓它唸（div 上的 aria-label 多半會被忽略） -->
+    <div class="marquee" data-direction="left">
+      <p class="sr-only">Motion, Interaction, Feedback, Rhythm</p>
       <div class="track" aria-hidden="true">
         <span class="chunk">Motion <i class="dot"></i> Interaction <i class="dot"></i> Feedback <i class="dot"></i> Rhythm <i class="dot"></i></span>
         <span class="chunk">Motion <i class="dot"></i> Interaction <i class="dot"></i> Feedback <i class="dot"></i> Rhythm <i class="dot"></i></span>
       </div>
     </div>
-    <div class="marquee is-outline" data-direction="right" aria-label="GSAP · Tween · Timeline · ScrollTrigger">
+    <div class="marquee is-outline" data-direction="right">
+      <p class="sr-only">GSAP, Tween, Timeline, ScrollTrigger</p>
       <div class="track" aria-hidden="true">
         <span class="chunk">GSAP <i class="dot"></i> Tween <i class="dot"></i> Timeline <i class="dot"></i> ScrollTrigger <i class="dot"></i></span>
         <span class="chunk">GSAP <i class="dot"></i> Tween <i class="dot"></i> Timeline <i class="dot"></i> ScrollTrigger <i class="dot"></i></span>

@@ -29,8 +29,8 @@
   --syn-fn:#F0F0F0;
   --syn-tag:#FF9EA8;
   --syn-attr:#C9B8FF;
-  --syn-comment:#7D7A73;
-  --syn-linenum:#76736C; /* 對比 4.1:1 */
+  --syn-comment:#88857E; /* 在目前這行（surface）上也有 4.9:1 */
+  --syn-linenum:#85827B; /* 對比 bg 5.1:1、surface 4.7:1 */
   --syn-error:#FF9A9A;
   --selection:rgba(110,131,255,.28); /* 選取文字的底色：accent-fg 半透明 */
   --scrim:rgba(11,13,16,.72);        /* 側欄打開時蓋住後方內容 */
@@ -96,7 +96,7 @@
   --syn-tag:#B4235A;
   --syn-attr:#6A3FC9;
   --syn-comment:#6F6F69;
-  --syn-linenum:#8A8A84;
+  --syn-linenum:#6A6A64; /* 對比 bg 5.0:1 */
   --syn-error:#C0262D;
   --selection:rgba(23,51,229,.16);
   --scrim:rgba(245,245,242,.78);

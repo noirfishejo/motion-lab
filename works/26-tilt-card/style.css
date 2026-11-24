@@ -81,4 +81,5 @@ body {
   background: radial-gradient(circle at center, rgba(255, 255, 255, 0.35), transparent 45%);
   opacity: 0;
   pointer-events: none;
+  will-change: transform; /* 自己一個圖層：光斑移動時不用重畫整張卡片 */
 }

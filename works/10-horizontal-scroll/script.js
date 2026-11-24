@@ -9,6 +9,7 @@ const SHOW_MARKERS = window.SHOW_MARKERS ?? new URLSearchParams(location.search)
 
 const track = document.querySelector('.track');
 const readout = document.querySelector('.readout');
+const bar = document.querySelector('.bar i'); // 先存起來：onUpdate 每一格都會用到
 
 // 軌道要往左移多少：軌道總寬度 − 畫面寬度
 // 寫成函式，視窗大小改變時（invalidateOnRefresh）會重新計算
@@ -28,7 +29,7 @@ const move = gsap.to(track, {
     markers: SHOW_MARKERS,
     onUpdate: self => {
       readout.textContent = `${Math.round(self.progress * 100)}%`;
-      gsap.set('.bar i', { scaleX: self.progress });
+      gsap.set(bar, { scaleX: self.progress });
     }
   }
 });
