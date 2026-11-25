@@ -16,6 +16,8 @@
 .lab-controls{display:grid;gap:24px;padding:20px;border:1px solid var(--line);background:var(--surface)}
 .field{border:0;display:grid;gap:10px;min-width:0}
 .field .label{padding:0}
+.field legend.label{margin-bottom:12px} /* legend 不吃 grid 的 gap，要自己留間距 */
+.range-label{margin-bottom:2px}
 .field.is-off{opacity:.4}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 
@@ -42,7 +44,8 @@
 .range::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;margin-top:-6px;background:var(--accent);border:0;border-radius:0}
 .range::-moz-range-thumb{width:14px;height:14px;background:var(--accent);border:0;border-radius:0}
 .range:focus-visible{outline:2px solid var(--accent-fg);outline-offset:4px}
-#paramFields{display:grid;gap:10px}
+#paramFields{display:grid;gap:20px} /* 參數之間的距離比標題和滑桿之間大，看得出哪個標題配哪條滑桿 */
+.param{display:grid;gap:10px}
 .use-hint{font-size:var(--fs-small);line-height:1.6;color:var(--muted);padding-top:16px;border-top:1px solid var(--line)}
 
 /* ── 右邊的面板 ── */

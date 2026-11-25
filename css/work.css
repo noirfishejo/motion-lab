@@ -225,6 +225,10 @@ html.nav-init body,html.nav-init .works-nav{transition:none!important}
 .notes code::-webkit-scrollbar{display:none}
 .notes code::before{content:counter(note,decimal-leading-zero) "  ";color:var(--muted)}
 .notes p{font-size:14px;color:var(--muted);line-height:1.7}
+/* 筆記裡的 ease 連到 Ease 實驗室：虛線底線，滑過變實線 */
+.ease-link{color:var(--accent-fg);text-decoration:underline dotted;text-decoration-color:var(--accent-fg);text-underline-offset:3px;transition:text-decoration-style var(--dur-fast)}
+.ease-link:hover{text-decoration-style:solid}
+.notes p .ease-link{font:400 .92em var(--font-mono)}
 
 /* ── 適用情境與效能（收合） ── */
 .more{border-bottom:1px solid var(--line)}

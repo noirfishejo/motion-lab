@@ -99,8 +99,8 @@ function renderParams() {
   $('dirField').classList.toggle('is-off', !!fam.noDir);
   $('paramFields').innerHTML = (fam.params || []).map(p => {
     const v = state.params[p.key] ?? p.value;
-    return `<label class="label range-label" for="p-${p.key}"><span>${t(`lab.param.${p.key}`)}</span><output for="p-${p.key}">${v}</output></label>
-      <input class="range" type="range" id="p-${p.key}" data-param="${p.key}" min="${p.min}" max="${p.max}" step="${p.step}" value="${v}">`;
+    return `<div class="param"><label class="label range-label" for="p-${p.key}"><span>${t(`lab.param.${p.key}`)}</span><output for="p-${p.key}">${v}</output></label>
+      <input class="range" type="range" id="p-${p.key}" data-param="${p.key}" min="${p.min}" max="${p.max}" step="${p.step}" value="${v}"></div>`;
   }).join('');
   $('paramFields').hidden = !fam.params;
 }

@@ -71,12 +71,21 @@ function renderInfo() {
   // 第一個標籤是主要的 GSAP 功能，用強調色（和首頁卡片右上角一致）
   document.getElementById('workTags').innerHTML = [work.tech, ...work.tags].map((tag, i) => `<span class="tag${i === 0 ? ' is-accent' : ''}">${escapeHtml(tag)}</span>`).join('');
   document.getElementById('notes').innerHTML = (work.notes || []).map(n =>
-    `<li><code>${escapeHtml(pick(n.code))}</code><p>${pick(n.text)}</p></li>`).join('');
+    `<li><code>${linkEases(escapeHtml(pick(n.code)))}</code><p>${linkEases(pick(n.text))}</p></li>`).join('');
   renderMore();
   // 被截掉的長程式碼：加上提示框顯示完整內容
   document.fonts.ready.then(() => document.querySelectorAll('.notes code').forEach(c => {
     if (c.scrollWidth > c.clientWidth + 1) { c.dataset.tip = c.textContent; c.tabIndex = 0; }
   }));
+}
+
+// 筆記裡提到的 ease（expo.out、elastic.out(1, 0.4)…）變成連結，打開 Ease 實驗室並帶入那條曲線
+// 只認 GSAP 內建、實驗室選得到的種類；不在 HTML 標籤裡面（只比對標籤之間的文字）
+// （規則寫在函式裡：頁面一開始就會呼叫 renderInfo，檔案下面的 const 那時還沒定義）
+function linkEases(html) {
+  const EASE_RE = /\b(?:power[1-4]|expo|sine|circ|back|elastic|bounce)\.(?:inOut|in|out)(?:\([\d.,\s]*\))?/g;
+  return html.replace(/(<[^>]*>)|([^<]+)/g, (m, tag, text) => tag || text.replace(EASE_RE, e =>
+    `<a class="ease-link" href="ease.html?ease=${encodeURIComponent(e)}" data-tip="${escapeHtml(t('guide.openLab'))}">${e}</a>`));
 }
 
 // ── 適用情境與效能成本：非必要資訊，預設收合在重點筆記下面 ──
