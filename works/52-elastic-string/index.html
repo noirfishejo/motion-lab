@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>52 List divider pluck</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <span class="tag">divider pluck</span>
+    <nav class="menu" aria-label="Main">
+      <!-- 分隔線：一張 SVG 蓋在列表上，每條線是一條路徑（script.js 依每一列的位置畫） -->
+      <svg class="lines" aria-hidden="true"></svg>
+      <ul>
+        <li><a href="#"><span class="num">01</span>Index<i class="ph-light ph-arrow-up-right"></i></a></li>
+        <li><a href="#"><span class="num">02</span>Work<i class="ph-light ph-arrow-up-right"></i></a></li>
+        <li><a href="#"><span class="num">03</span>Studio<i class="ph-light ph-arrow-up-right"></i></a></li>
+        <li><a href="#"><span class="num">04</span>Journal<i class="ph-light ph-arrow-up-right"></i></a></li>
+        <li><a href="#"><span class="num">05</span>Contact<i class="ph-light ph-arrow-up-right"></i></a></li>
+      </ul>
+    </nav>
+    <p class="hint">Sweep the cursor up and down across the lines</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

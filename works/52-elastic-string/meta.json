@@ -1,0 +1,69 @@
+{
+  "title": {
+    "zh-TW": "列表分隔線游標撥動回彈",
+    "en": "List divider pluck"
+  },
+  "short": {
+    "zh-TW": "撥動分隔線",
+    "en": "Divider pluck"
+  },
+  "summary": {
+    "zh-TW": "導覽列表的分隔線像弦一樣：游標碰到會勾住線、跟著拉彎，拉太遠或移開就鬆開，用 elastic 晃回直線。滑過的那一列文字往右推、箭頭淡入；鍵盤 Tab 到某一列也會輕輕撥一下。",
+    "en": "The dividers of a navigation list behave like strings: touch one and it hooks onto the cursor and bends, then snaps free and wobbles straight with elastic when pulled too far or left. The hovered row shifts right with an arrow; tabbing to a row plucks it gently too."
+  },
+  "topic": "pointer",
+  "tech": "Tween",
+  "tags": [
+    "elastic.out",
+    "SVG path",
+    "quadratic Bézier",
+    "onUpdate"
+  ],
+  "date": "2026-11-25",
+  "thumbAt": 1.9,
+  "thumb": ".menu",
+  "useCases": [
+    "brand",
+    "content",
+    "launch"
+  ],
+  "cost": "light",
+  "costNote": "svg",
+  "notes": [
+    {
+      "code": "M0 y Q cx (y + bend * 2) w y",
+      "text": {
+        "zh-TW": "每條線是一條二次貝茲曲線：兩端固定，控制點跟著游標。控制點放在偏移量的兩倍，曲線最彎的地方才剛好到游標的位置。",
+        "en": "Each line is a quadratic Bézier with fixed ends and a control point following the cursor. Placing the control point at twice the offset makes the curve's peak land right at the cursor."
+      }
+    },
+    {
+      "code": "gsap.to(line, { bend: 0, ease: 'elastic.out(1.1, 0.18)' })",
+      "text": {
+        "zh-TW": "鬆開時補間的是一個普通數字 bend，onUpdate 再把它畫成路徑。elastic 會衝過頭來回晃幾下，正好是撥弦的感覺；第二個參數越小晃得越快。",
+        "en": "Releasing tweens a plain number, bend, and onUpdate redraws the path. Elastic overshoots and swings back a few times, exactly like a plucked string; a smaller second parameter wobbles faster."
+      }
+    },
+    {
+      "code": "Math.sign(dy) !== Math.sign(prevDy)",
+      "text": {
+        "zh-TW": "游標移動很快時，兩次事件之間會直接跨過線、碰不到勾住的範圍。比對這一次和上一次在線的哪一邊，換邊了就當作撥了一下，往游標來的方向彈。",
+        "en": "A fast cursor can jump over a line between two events without entering the grab range. Comparing which side of the line it was on last time and now catches the crossing and plucks the line toward where the cursor came from."
+      }
+    },
+    {
+      "code": "<svg class=\"lines\" aria-hidden=\"true\">",
+      "text": {
+        "zh-TW": "分隔線是裝飾，畫在一張蓋在列表上的 SVG 裡，pointer-events: none 不擋點擊；SVG 上下多留 48px，線被拉彎時不會被切掉。列表本身還是正常的 nav 和連結。",
+        "en": "The dividers are decoration in an SVG laid over the list with pointer-events: none so clicks pass through; it extends 48px above and below so bent lines are not clipped. The list itself stays a normal nav with links."
+      }
+    },
+    {
+      "code": "a.addEventListener('focus', …)",
+      "text": {
+        "zh-TW": "鍵盤使用者沒有游標：Tab 到某一列時一樣亮起來，並輕輕撥一下它下面的線，讓效果不只給滑鼠。",
+        "en": "Keyboard users have no cursor: tabbing to a row highlights it the same way and gives the line below a gentle pluck, so the effect is not mouse-only."
+      }
+    }
+  ]
+}

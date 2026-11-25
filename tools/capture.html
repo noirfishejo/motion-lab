@@ -59,6 +59,20 @@
     }
 
     frame.addEventListener('load', () => {
+      // meta.json 的 "thumbAt": 秒數 → 停在示範播到這一秒的畫面（游標互動類練習：示範結束後畫面回到靜止，看不出效果）
+      const g = frame.contentWindow.gsap;
+      if (meta.thumbAt && g) {
+        // 背景 Chrome 的虛擬時間裡 requestAnimationFrame 很少觸發，GSAP 幾乎不會前進
+        // → 停掉 GSAP 自己的計時，改用 setTimeout 每 16ms 手動推一格，推到 GSAP 時間 = thumbAt 秒就停（畫面停在那一刻）
+        // 保留預設的 lagSmoothing：載入前累積的一大段時間只算 33ms，示範才會從頭一格一格播，不會第一格就跳到中間
+        g.ticker.sleep();
+        const step = () => {
+          g.ticker.tick();
+          if (g.ticker.time < meta.thumbAt) setTimeout(step, 16);
+          else if (params.has('debug')) document.body.dataset.stopAt = g.ticker.time;
+        };
+        step();
+      }
       // 背景截圖時，捲動類練習有時會在 iframe 尺寸還沒算好時就量位置，進度直接跳到結尾（畫面變空白）
       // → 載入後請 ScrollTrigger 重新量一次，回到「還沒捲動」的起點
       frame.contentWindow.ScrollTrigger?.refresh();

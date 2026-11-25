@@ -1,0 +1,69 @@
+{
+  "title": {
+    "zh-TW": "點陣背景游標推開回彈",
+    "en": "Dot grid cursor repel"
+  },
+  "short": {
+    "zh-TW": "點陣推開",
+    "en": "Dot repel"
+  },
+  "summary": {
+    "zh-TW": "點陣背景被游標推開，越靠近推越遠、點也變大變色；游標離開後每個點像彈簧一樣晃回原位。點一下會從那裡發出一圈震波，把點往外彈。",
+    "en": "A dot grid pushed aside by the cursor: the closer, the further each dot moves, growing and changing colour. When the cursor leaves, every dot springs back with a wobble. Click to send a shockwave rippling out from that point."
+  },
+  "topic": "pointer",
+  "tech": "Ticker",
+  "tags": [
+    "gsap.ticker",
+    "spring",
+    "gsap.quickSetter",
+    "pointerdown"
+  ],
+  "date": "2026-11-25",
+  "thumbAt": 1.5,
+  "thumb": ".field",
+  "useCases": [
+    "brand",
+    "launch",
+    "saas"
+  ],
+  "cost": "medium",
+  "costNote": "ticker",
+  "notes": [
+    {
+      "code": "(1 - dist / RADIUS) ** 2 * FORCE",
+      "text": {
+        "zh-TW": "每個點往遠離游標的方向推，距離越近推越遠。用平方讓範圍邊緣幾乎不動、中心推最多，看起來是一個圓滑的凹洞，不是一圈硬邊。",
+        "en": "Each dot is pushed away from the cursor, more the closer it is. Squaring the falloff keeps the edge nearly still and the centre strongest, so it reads as a smooth dent rather than a hard ring."
+      }
+    },
+    {
+      "code": "v = (v + (target - d) * STIFFNESS) * DAMPING",
+      "text": {
+        "zh-TW": "簡單的彈簧：距離目標越遠拉力越大（STIFFNESS），每一格再保留一部分速度（DAMPING）。所以點回去時會稍微衝過頭再晃回來，比單純補間回原位更有彈性。",
+        "en": "A simple spring: the pull grows with distance to the target (STIFFNESS) and part of the velocity carries over each frame (DAMPING). Dots overshoot slightly and wobble home, livelier than a plain tween back."
+      }
+    },
+    {
+      "code": "Math.abs(dist - wave.r) < WAVE_SPEED / 2",
+      "text": {
+        "zh-TW": "震波是一個每格變大的半徑，經過某個點的那一格才給它往外的速度，剩下交給同一個彈簧晃回來。不用替每個點建補間，也不用算延遲。",
+        "en": "The shockwave is a radius that grows each frame; a dot gets an outward kick only on the frame the ring passes it, and the same spring brings it home. No per-dot tweens or delays needed."
+      }
+    },
+    {
+      "code": "if (hot !== d.hot) classList.toggle",
+      "text": {
+        "zh-TW": "位置每一格都寫（transform 很便宜），顏色只在狀態改變時才切換 class，避免每一格都改 DOM 的 class 造成重新計算樣式。",
+        "en": "Position is written every frame (transform is cheap) but colour only toggles a class when the state changes, avoiding a style recalculation on every frame."
+      }
+    },
+    {
+      "code": "touch-action: none",
+      "text": {
+        "zh-TW": "手指在點陣上滑動時當作游標，不捲動頁面；手指離開就當作游標離開，不然最後的位置會一直推著點。",
+        "en": "On touch, sliding a finger over the grid acts as the cursor instead of scrolling; lifting the finger counts as leaving, or the last position would keep pushing the dots."
+      }
+    }
+  ]
+}

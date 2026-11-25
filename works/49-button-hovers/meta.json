@@ -1,0 +1,77 @@
+{
+  "title": {
+    "zh-TW": "按鈕懸停動效六款",
+    "en": "Button hover effects, six styles"
+  },
+  "short": {
+    "zh-TW": "按鈕動效六款",
+    "en": "Button hovers"
+  },
+  "summary": {
+    "zh-TW": "六種常見的按鈕回饋放在一起比較：從滑鼠進來那一邊填色、文字逐字上捲、外框順時針描一圈、箭頭推出換新、按下壓扁再彈回、光暈跟著游標移動。鍵盤 Tab 到按鈕也會播。",
+    "en": "Six common button responses side by side: a fill that enters from the side the cursor came in, letters rolling up, a border drawn clockwise, an arrow pushed out and replaced, a squash on press with an elastic release, and a glow that follows the cursor. Tabbing to a button plays it too."
+  },
+  "topic": "pointer",
+  "tech": "Tween",
+  "tags": [
+    "pointerenter",
+    "pathLength",
+    "elastic",
+    "gsap.quickTo",
+    "CSS variables"
+  ],
+  "date": "2026-11-25",
+  "thumbAt": 2.5,
+  "useCases": [
+    "brand",
+    "launch",
+    "ecommerce",
+    "saas"
+  ],
+  "cost": "light",
+  "costNote": "transform",
+  "notes": [
+    {
+      "code": "const side = e => …reduce(…)",
+      "text": {
+        "zh-TW": "方向填色：算出滑鼠離按鈕哪一邊最近，填色就從那一邊進來、從離開的那一邊出去。按鈕是扁的，上下邊的距離要乘上寬高比，不然幾乎每次都會判成從上下進來。",
+        "en": "Directional fill: find which edge the cursor is closest to; the fill enters from that side and leaves from the exit side. Buttons are wide, so the top and bottom distances are scaled by the aspect ratio, or almost every entry would count as top or bottom."
+      }
+    },
+    {
+      "code": "gsap.to(rows, { yPercent: -50, stagger })",
+      "text": {
+        "zh-TW": "文字上捲：每個字母是只露出一行高的窗口，裡面疊兩個一樣的字母，整排往上捲半格就換成下面那一份。拆開的字母設 aria-hidden，另外放一份完整的字給讀屏唸，不然會一個字母一個字母唸。",
+        "en": "Text roll: each letter is a one-line window holding two copies; rolling up by half swaps in the lower copy, with a stagger across the word. The split letters get aria-hidden and a full copy is kept for screen readers, which would otherwise spell it out."
+      }
+    },
+    {
+      "code": "<rect pathLength=\"1\">",
+      "text": {
+        "zh-TW": "外框描邊：pathLength=\"1\" 把一整圈的長度當成 1，虛線長度 1、位移從 1 補到 0 就是畫出來，不用量按鈕有多長（核心 GSAP 就做得到，不需要 DrawSVG）。離開時繼續補到 -1，往同一個方向收掉，比倒退回去自然。",
+        "en": "Border draw: pathLength=\"1\" treats the full outline as length 1, so tweening the dash offset from 1 to 0 draws it without measuring the button (core GSAP is enough, no DrawSVG). On leave it continues to -1, retracting in the same direction instead of rewinding."
+      }
+    },
+    {
+      "code": "elastic.out(1, 0.3)",
+      "text": {
+        "zh-TW": "果凍按壓：按下時變寬變矮（像被壓扁），放開用 elastic 彈回。鍵盤的空白鍵和 Enter 也會壓；e.repeat 避免按住不放時一直重來。",
+        "en": "Squash press: on press it gets wider and shorter, then springs back with elastic on release. Space and Enter squash it too; e.repeat stops a held key from restarting it."
+      }
+    },
+    {
+      "code": "gsap.quickTo(btn, '--x')",
+      "text": {
+        "zh-TW": "游標光暈：光暈中心存在 CSS 變數，quickTo 只建一次補間，滑鼠每動一下只更新終點，比每次 gsap.to 省很多。變數是不帶單位的數字，在 CSS 裡用 calc(var(--x) * 1px) 換成 px。",
+        "en": "Cursor glow: the glow centre lives in CSS variables; quickTo creates one tween and only updates its target on each move, far cheaper than a new gsap.to each time. The variables are unitless numbers turned into px with calc(var(--x) * 1px)."
+      }
+    },
+    {
+      "code": "if (e.pointerType === 'mouse')",
+      "text": {
+        "zh-TW": "懸停效果只給滑鼠：手指點一下也會觸發 pointerenter，不擋掉的話按鈕會卡在 hover 狀態。鍵盤用 :focus-visible 判斷，Tab 到按鈕也會播同樣的效果。",
+        "en": "Hover effects are for mice only: a tap also fires pointerenter, which would leave the button stuck in its hover state. Keyboard focus is checked with :focus-visible, so tabbing to a button plays the same effect."
+      }
+    }
+  ]
+}

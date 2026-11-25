@@ -100,6 +100,7 @@
   "costNote.pin": "Pinning wraps the section and changes layout. One or two per page is fine; many add up.",
   "costNote.clip": "clip-path repaints the clipped area each frame — a moderate cost for large or full-screen images.",
   "costNote.pointer": "Updates on every pointer move, but quickTo reuses one tween, so it’s light.",
+  "costNote.ticker": "Every frame measures each element against the cursor (gsap.ticker); fine for a few hundred elements, switch to canvas for thousands. The loop stops when nothing is moving.",
   "costNote.flip": "Flip measures layout once at the start, then only animates transforms; you’d only notice with hundreds of elements.",
   "costNote.svg": "Only stroke-dashoffset changes; light with a few paths.",
   "costNote.loop": "Loops forever; pause it when it scrolls off-screen.",

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>49 Button hover effects</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <!-- 1 方向填色：從滑鼠進來的那一邊填滿，從離開的那一邊退出 -->
+    <div class="cell">
+      <span class="tag">directional fill</span>
+      <button type="button" class="btn btn-fill"><span class="fill" aria-hidden="true"></span><span class="label">Explore work</span></button>
+    </div>
+
+    <!-- 2 文字上捲：每個字母往上換成一模一樣的下一行（script.js 會把文字拆成字母） -->
+    <div class="cell">
+      <span class="tag">text roll</span>
+      <button type="button" class="btn btn-roll"><span class="label">Get started</span></button>
+    </div>
+
+    <!-- 3 外框描邊：沿著外框順時針畫一圈 -->
+    <div class="cell">
+      <span class="tag">border draw</span>
+      <button type="button" class="btn btn-draw">
+        <svg class="draw" aria-hidden="true"><rect width="100%" height="100%" pathLength="1"></rect></svg>
+        <span class="label">View project</span>
+      </button>
+    </div>
+
+    <!-- 4 箭頭推出：箭頭往右滑出去，新的箭頭從左邊接上 -->
+    <div class="cell">
+      <span class="tag">arrow swap</span>
+      <button type="button" class="btn btn-solid btn-arrow">
+        <span class="label">Continue</span>
+        <span class="arrow" aria-hidden="true"><i class="ph-light ph-arrow-right"></i><i class="ph-light ph-arrow-right"></i></span>
+      </button>
+    </div>
+
+    <!-- 5 果凍按壓：按下壓扁、放開彈回 -->
+    <div class="cell">
+      <span class="tag">squash press</span>
+      <button type="button" class="btn btn-solid btn-squash"><span class="label">Add to cart</span></button>
+    </div>
+
+    <!-- 6 游標光暈：一團光跟著滑鼠在按鈕裡移動 -->
+    <div class="cell">
+      <span class="tag">cursor glow</span>
+      <button type="button" class="btn btn-glow"><span class="label">Join the beta</span></button>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -100,6 +100,7 @@
   "costNote.pin": "固定畫面（pin）會在外面包一層並改變版面；一頁用一兩段沒問題，太多段會變重。",
   "costNote.clip": "clip-path 每一格都要重畫裁切範圍，大圖或全螢幕時是中等負擔。",
   "costNote.pointer": "滑鼠每動一次就更新，但 quickTo 只建立一次補間，負擔很小。",
+  "costNote.ticker": "每一格都計算所有點和游標的距離（gsap.ticker）；幾百個元素內很輕，上千個要改用 canvas。沒在動時會停掉計算。",
   "costNote.flip": "Flip 只在開始時量一次版面，之後只動 transform；元素上百個時才會感覺到。",
   "costNote.svg": "描邊只改 stroke-dashoffset，路徑少的時候很輕。",
   "costNote.loop": "無限重複，一直在跑；捲出畫面時記得暫停。",

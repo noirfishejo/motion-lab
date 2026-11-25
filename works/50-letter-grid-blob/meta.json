@@ -1,0 +1,69 @@
+{
+  "title": {
+    "zh-TW": "字母網格游標靠近變方塊",
+    "en": "Letter grid blocks near the cursor"
+  },
+  "short": {
+    "zh-TW": "字母變方塊",
+    "en": "Letter blocks"
+  },
+  "summary": {
+    "zh-TW": "一整片字母格子，游標靠近的字母變成實心方塊，越近越大；方塊沿著游標移動的方向拉長，離開後慢慢縮回字母，留下一條軌跡。適合作品集或品牌首頁的互動背景。",
+    "en": "A field of letters where those near the cursor turn into solid blocks, bigger the closer you are. Blocks stretch along the cursor's direction and shrink back to letters after it passes, leaving a trail. Suits a portfolio or brand home page backdrop."
+  },
+  "topic": "graphics",
+  "tech": "Ticker",
+  "tags": [
+    "gsap.ticker",
+    "gsap.quickSetter",
+    "ResizeObserver",
+    "decay"
+  ],
+  "date": "2026-11-25",
+  "thumbAt": 2.0,
+  "thumb": ".grid",
+  "useCases": [
+    "brand",
+    "launch",
+    "content"
+  ],
+  "cost": "medium",
+  "costNote": "ticker",
+  "notes": [
+    {
+      "code": "gsap.ticker.add(tick)",
+      "text": {
+        "zh-TW": "每一格算一次所有字母和游標的距離，越近 heat 越接近 1。heat 決定方塊大小和字母透明度。只有游標在裡面或還有方塊沒縮完時才跑，全部縮回去就 ticker.remove，不在背景空轉。",
+        "en": "Each frame measures every letter against the cursor; the closer, the nearer heat gets to 1, which drives block size and letter opacity. The loop only runs while the cursor is inside or blocks are still shrinking, then ticker.remove stops it."
+      }
+    },
+    {
+      "code": "c.heat * DECAY",
+      "text": {
+        "zh-TW": "靠近時馬上追上目標，離開時每一格乘上 0.94 慢慢變小。上升快、下降慢，就會在游標後面拖出一條軌跡；改 DECAY 可以調軌跡長度。",
+        "en": "Rising chases the target quickly; falling multiplies by 0.94 each frame. Fast up and slow down is what leaves a trail behind the cursor; change DECAY to tune its length."
+      }
+    },
+    {
+      "code": "scaleX: heat * stretch, scaleY: heat / stretch",
+      "text": {
+        "zh-TW": "游標越快，方塊沿著移動方向越長、另一邊越窄（面積差不多不變），看起來像被拖著走。形狀只在被碰到的那一刻決定，軌跡上的方塊維持原方向縮回去。",
+        "en": "The faster the cursor, the longer the block along its path and the thinner across it, keeping roughly the same area so it looks dragged. The shape is set only while touched; trail blocks keep their direction as they shrink."
+      }
+    },
+    {
+      "code": "gsap.quickSetter(el, 'css')",
+      "text": {
+        "zh-TW": "幾十個元素每一格都要改 transform，quickSetter 先建好直接寫值的函式，比每次 gsap.set 省掉解析的時間。",
+        "en": "Dozens of elements change transform every frame; quickSetter prebuilds a direct writer, skipping the parsing gsap.set does each call."
+      }
+    },
+    {
+      "code": "offsetLeft / offsetTop",
+      "text": {
+        "zh-TW": "格子中心點只在建立和寬度改變時量一次，之後每一格只做數學，不讀版面（每一格讀 getBoundingClientRect 會強迫瀏覽器重算版面）。格子設 aria-hidden，是純裝飾。",
+        "en": "Cell centres are measured once on build and on width change; each frame is pure maths with no layout reads (calling getBoundingClientRect every frame forces layout). The grid is aria-hidden: it is decoration."
+      }
+    }
+  ]
+}

@@ -259,9 +259,9 @@ function syncChips() {
   });
 }
 
-// chip 上的數字跟著目前的分類和搜尋重新算；0 個的 chip 藏起來（點下去只會得到空結果），其他的往前遞補
-// 遞補動畫：① 要藏的先快速淡出 ② 記下留下來的位置、藏起來 ③ 留下來的用 Flip 滑到新位置、新出現的淡入
-// 全部只動 transform 和透明度（不用 absolute 定位），比較順；頁面剛載入的第一次不播動畫
+// chip 上的數字跟著目前的分類和搜尋重新算；0 個的 chip 藏起來（點下去只會得到空結果）
+// 顯示的標籤有變時：全部快速淡出 → 換成新的一組 → 由左至右逐一出現（比各自滑到新位置好懂，不會有某一顆「晚一步彈過去」）
+// 只有數字變、顯示的標籤沒變時不播動畫；頁面剛載入的第一次也不播
 function updateChipCounts(topic, query) {
   const counts = {};
   document.querySelectorAll('.work-card').forEach(c => {
@@ -269,24 +269,28 @@ function updateChipCounts(topic, query) {
   });
   const chips = [...document.querySelectorAll('#techChips .chip')];
   const show = c => !!counts[c.dataset.tech];
-  const animate = chipsReady && window.Flip && !reduceMotion();
+  const changed = chips.some(c => c.hidden === show(c));
+  const animate = chipsReady && changed && window.gsap && !reduceMotion();
   chipsReady = true;
   if (window.gsap) { gsap.killTweensOf(chips); gsap.set(chips, { clearProps: 'opacity,transform' }); } // 連續快速切換：上一次的動畫直接結束
-  const leaving = chips.filter(c => !c.hidden && !show(c));
-  const entering = chips.filter(c => c.hidden && show(c));
-  const stay = chips.filter(c => !c.hidden && show(c));
-  // 位置要在「數字改變之前」記下來：數字變短，標籤寬度跟著變，位置會先跳一下
-  const state = animate && (leaving.length || entering.length) ? Flip.getState(stay) : null;
   const apply = () => {
-    chips.forEach(c => { c.querySelector('sup').textContent = counts[c.dataset.tech] || 0; });
-    chips.forEach(c => { c.hidden = !show(c); });
-    if (!state) return;
-    Flip.from(state, { targets: stay, duration: 0.4, ease: 'expo.out', simple: true }); // simple：只補位置，不補寬度（數字變了寬度會變，補寬度會讓整排一直重排、看起來卡）
-    gsap.fromTo(entering, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.35, delay: 0.1, ease: 'expo.out', clearProps: 'opacity,transform' });
+    chips.forEach(c => {
+      c.querySelector('sup').textContent = counts[c.dataset.tech] || 0;
+      c.hidden = !show(c);
+    });
+    syncChips(); // 記住的 GSAP 功能回到有它的分類：重新顯示成選中
+    if (!animate) return;
+    gsap.fromTo(chips.filter(show), { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.35, stagger: 0.03, ease: 'expo.out', clearProps: 'opacity,transform' });
   };
-  if (!state) { apply(); return; }
-  if (leaving.length) gsap.to(leaving, { opacity: 0, scale: 0.85, duration: 0.15, ease: 'power1.in', onComplete: apply });
+  if (animate) gsap.to(chips.filter(c => !c.hidden), { opacity: 0, duration: 0.12, ease: 'power1.in', onComplete: apply });
   else apply();
+}
+
+// 實際套用的 GSAP 功能：使用者選的那個在目前分類＋搜尋裡有作品才套用，沒有就先不套（但記著，換回有它的分類會恢復）
+function activeTech(topic, query) {
+  if (!currentTech) return null;
+  return [...document.querySelectorAll('.work-card')]
+    .some(c => c.dataset.tech === currentTech && (topic === 'all' || c.dataset.topic === topic) && matches(c.dataset.search, query)) ? currentTech : null;
 }
 
 // 手機的「篩選」按鈕：展開／收起第二排（高度補間）
@@ -409,14 +413,10 @@ function applyFilter(topic = currentTopic) {
   const query = document.getElementById('workSearch').value;
   const cards = [...document.querySelectorAll('.work-card')];
   const shown = cards.filter(c => c.style.display !== 'none');
-  // 選中的 GSAP 功能在這個分類＋搜尋裡一個都沒有：自動取消選取，直接顯示這個分類的全部結果（不會走進「0 筆」的死路）
-  if (currentTech && !cards.some(c => c.dataset.tech === currentTech && (topic === 'all' || c.dataset.topic === topic) && matches(c.dataset.search, query))) {
-    currentTech = null;
-    syncChips();
-  }
+  const tech = activeTech(topic, query); // 選的 GSAP 功能這個分類沒有：先不套用，但不忘記
   updateChipCounts(topic, query); // 標籤馬上更新，不用等卡片淡出
   const next = cards.filter(c => (topic === 'all' || c.dataset.topic === topic)
-    && (!currentTech || c.dataset.tech === currentTech)
+    && (!tech || c.dataset.tech === tech)
     && matches(c.dataset.search, query));
   const empty = document.getElementById('empty');
 

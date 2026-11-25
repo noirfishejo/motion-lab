@@ -3150,5 +3150,293 @@ export const WORKS = [
         }
       }
     ]
+  },
+  {
+    "id": "49-button-hovers",
+    "title": {
+      "zh-TW": "按鈕懸停動效六款",
+      "en": "Button hover effects, six styles"
+    },
+    "short": {
+      "zh-TW": "按鈕動效六款",
+      "en": "Button hovers"
+    },
+    "summary": {
+      "zh-TW": "六種常見的按鈕回饋放在一起比較：從滑鼠進來那一邊填色、文字逐字上捲、外框順時針描一圈、箭頭推出換新、按下壓扁再彈回、光暈跟著游標移動。鍵盤 Tab 到按鈕也會播。",
+      "en": "Six common button responses side by side: a fill that enters from the side the cursor came in, letters rolling up, a border drawn clockwise, an arrow pushed out and replaced, a squash on press with an elastic release, and a glow that follows the cursor. Tabbing to a button plays it too."
+    },
+    "topic": "pointer",
+    "tech": "Tween",
+    "tags": [
+      "pointerenter",
+      "pathLength",
+      "elastic",
+      "gsap.quickTo",
+      "CSS variables"
+    ],
+    "date": "2026-11-25",
+    "thumbAt": 2.5,
+    "useCases": [
+      "brand",
+      "launch",
+      "ecommerce",
+      "saas"
+    ],
+    "cost": "light",
+    "costNote": "transform",
+    "notes": [
+      {
+        "code": "const side = e => …reduce(…)",
+        "text": {
+          "zh-TW": "方向填色：算出滑鼠離按鈕哪一邊最近，填色就從那一邊進來、從離開的那一邊出去。按鈕是扁的，上下邊的距離要乘上寬高比，不然幾乎每次都會判成從上下進來。",
+          "en": "Directional fill: find which edge the cursor is closest to; the fill enters from that side and leaves from the exit side. Buttons are wide, so the top and bottom distances are scaled by the aspect ratio, or almost every entry would count as top or bottom."
+        }
+      },
+      {
+        "code": "gsap.to(rows, { yPercent: -50, stagger })",
+        "text": {
+          "zh-TW": "文字上捲：每個字母是只露出一行高的窗口，裡面疊兩個一樣的字母，整排往上捲半格就換成下面那一份。拆開的字母設 aria-hidden，另外放一份完整的字給讀屏唸，不然會一個字母一個字母唸。",
+          "en": "Text roll: each letter is a one-line window holding two copies; rolling up by half swaps in the lower copy, with a stagger across the word. The split letters get aria-hidden and a full copy is kept for screen readers, which would otherwise spell it out."
+        }
+      },
+      {
+        "code": "<rect pathLength=\"1\">",
+        "text": {
+          "zh-TW": "外框描邊：pathLength=\"1\" 把一整圈的長度當成 1，虛線長度 1、位移從 1 補到 0 就是畫出來，不用量按鈕有多長（核心 GSAP 就做得到，不需要 DrawSVG）。離開時繼續補到 -1，往同一個方向收掉，比倒退回去自然。",
+          "en": "Border draw: pathLength=\"1\" treats the full outline as length 1, so tweening the dash offset from 1 to 0 draws it without measuring the button (core GSAP is enough, no DrawSVG). On leave it continues to -1, retracting in the same direction instead of rewinding."
+        }
+      },
+      {
+        "code": "elastic.out(1, 0.3)",
+        "text": {
+          "zh-TW": "果凍按壓：按下時變寬變矮（像被壓扁），放開用 elastic 彈回。鍵盤的空白鍵和 Enter 也會壓；e.repeat 避免按住不放時一直重來。",
+          "en": "Squash press: on press it gets wider and shorter, then springs back with elastic on release. Space and Enter squash it too; e.repeat stops a held key from restarting it."
+        }
+      },
+      {
+        "code": "gsap.quickTo(btn, '--x')",
+        "text": {
+          "zh-TW": "游標光暈：光暈中心存在 CSS 變數，quickTo 只建一次補間，滑鼠每動一下只更新終點，比每次 gsap.to 省很多。變數是不帶單位的數字，在 CSS 裡用 calc(var(--x) * 1px) 換成 px。",
+          "en": "Cursor glow: the glow centre lives in CSS variables; quickTo creates one tween and only updates its target on each move, far cheaper than a new gsap.to each time. The variables are unitless numbers turned into px with calc(var(--x) * 1px)."
+        }
+      },
+      {
+        "code": "if (e.pointerType === 'mouse')",
+        "text": {
+          "zh-TW": "懸停效果只給滑鼠：手指點一下也會觸發 pointerenter，不擋掉的話按鈕會卡在 hover 狀態。鍵盤用 :focus-visible 判斷，Tab 到按鈕也會播同樣的效果。",
+          "en": "Hover effects are for mice only: a tap also fires pointerenter, which would leave the button stuck in its hover state. Keyboard focus is checked with :focus-visible, so tabbing to a button plays the same effect."
+        }
+      }
+    ]
+  },
+  {
+    "id": "50-letter-grid-blob",
+    "title": {
+      "zh-TW": "字母網格游標靠近變方塊",
+      "en": "Letter grid blocks near the cursor"
+    },
+    "short": {
+      "zh-TW": "字母變方塊",
+      "en": "Letter blocks"
+    },
+    "summary": {
+      "zh-TW": "一整片字母格子，游標靠近的字母變成實心方塊，越近越大；方塊沿著游標移動的方向拉長，離開後慢慢縮回字母，留下一條軌跡。適合作品集或品牌首頁的互動背景。",
+      "en": "A field of letters where those near the cursor turn into solid blocks, bigger the closer you are. Blocks stretch along the cursor's direction and shrink back to letters after it passes, leaving a trail. Suits a portfolio or brand home page backdrop."
+    },
+    "topic": "graphics",
+    "tech": "Ticker",
+    "tags": [
+      "gsap.ticker",
+      "gsap.quickSetter",
+      "ResizeObserver",
+      "decay"
+    ],
+    "date": "2026-11-25",
+    "thumbAt": 2.0,
+    "thumb": ".grid",
+    "useCases": [
+      "brand",
+      "launch",
+      "content"
+    ],
+    "cost": "medium",
+    "costNote": "ticker",
+    "notes": [
+      {
+        "code": "gsap.ticker.add(tick)",
+        "text": {
+          "zh-TW": "每一格算一次所有字母和游標的距離，越近 heat 越接近 1。heat 決定方塊大小和字母透明度。只有游標在裡面或還有方塊沒縮完時才跑，全部縮回去就 ticker.remove，不在背景空轉。",
+          "en": "Each frame measures every letter against the cursor; the closer, the nearer heat gets to 1, which drives block size and letter opacity. The loop only runs while the cursor is inside or blocks are still shrinking, then ticker.remove stops it."
+        }
+      },
+      {
+        "code": "c.heat * DECAY",
+        "text": {
+          "zh-TW": "靠近時馬上追上目標，離開時每一格乘上 0.94 慢慢變小。上升快、下降慢，就會在游標後面拖出一條軌跡；改 DECAY 可以調軌跡長度。",
+          "en": "Rising chases the target quickly; falling multiplies by 0.94 each frame. Fast up and slow down is what leaves a trail behind the cursor; change DECAY to tune its length."
+        }
+      },
+      {
+        "code": "scaleX: heat * stretch, scaleY: heat / stretch",
+        "text": {
+          "zh-TW": "游標越快，方塊沿著移動方向越長、另一邊越窄（面積差不多不變），看起來像被拖著走。形狀只在被碰到的那一刻決定，軌跡上的方塊維持原方向縮回去。",
+          "en": "The faster the cursor, the longer the block along its path and the thinner across it, keeping roughly the same area so it looks dragged. The shape is set only while touched; trail blocks keep their direction as they shrink."
+        }
+      },
+      {
+        "code": "gsap.quickSetter(el, 'css')",
+        "text": {
+          "zh-TW": "幾十個元素每一格都要改 transform，quickSetter 先建好直接寫值的函式，比每次 gsap.set 省掉解析的時間。",
+          "en": "Dozens of elements change transform every frame; quickSetter prebuilds a direct writer, skipping the parsing gsap.set does each call."
+        }
+      },
+      {
+        "code": "offsetLeft / offsetTop",
+        "text": {
+          "zh-TW": "格子中心點只在建立和寬度改變時量一次，之後每一格只做數學，不讀版面（每一格讀 getBoundingClientRect 會強迫瀏覽器重算版面）。格子設 aria-hidden，是純裝飾。",
+          "en": "Cell centres are measured once on build and on width change; each frame is pure maths with no layout reads (calling getBoundingClientRect every frame forces layout). The grid is aria-hidden: it is decoration."
+        }
+      }
+    ]
+  },
+  {
+    "id": "51-dot-grid-repel",
+    "title": {
+      "zh-TW": "點陣背景游標推開回彈",
+      "en": "Dot grid cursor repel"
+    },
+    "short": {
+      "zh-TW": "點陣推開",
+      "en": "Dot repel"
+    },
+    "summary": {
+      "zh-TW": "點陣背景被游標推開，越靠近推越遠、點也變大變色；游標離開後每個點像彈簧一樣晃回原位。點一下會從那裡發出一圈震波，把點往外彈。",
+      "en": "A dot grid pushed aside by the cursor: the closer, the further each dot moves, growing and changing colour. When the cursor leaves, every dot springs back with a wobble. Click to send a shockwave rippling out from that point."
+    },
+    "topic": "pointer",
+    "tech": "Ticker",
+    "tags": [
+      "gsap.ticker",
+      "spring",
+      "gsap.quickSetter",
+      "pointerdown"
+    ],
+    "date": "2026-11-25",
+    "thumbAt": 1.5,
+    "thumb": ".field",
+    "useCases": [
+      "brand",
+      "launch",
+      "saas"
+    ],
+    "cost": "medium",
+    "costNote": "ticker",
+    "notes": [
+      {
+        "code": "(1 - dist / RADIUS) ** 2 * FORCE",
+        "text": {
+          "zh-TW": "每個點往遠離游標的方向推，距離越近推越遠。用平方讓範圍邊緣幾乎不動、中心推最多，看起來是一個圓滑的凹洞，不是一圈硬邊。",
+          "en": "Each dot is pushed away from the cursor, more the closer it is. Squaring the falloff keeps the edge nearly still and the centre strongest, so it reads as a smooth dent rather than a hard ring."
+        }
+      },
+      {
+        "code": "v = (v + (target - d) * STIFFNESS) * DAMPING",
+        "text": {
+          "zh-TW": "簡單的彈簧：距離目標越遠拉力越大（STIFFNESS），每一格再保留一部分速度（DAMPING）。所以點回去時會稍微衝過頭再晃回來，比單純補間回原位更有彈性。",
+          "en": "A simple spring: the pull grows with distance to the target (STIFFNESS) and part of the velocity carries over each frame (DAMPING). Dots overshoot slightly and wobble home, livelier than a plain tween back."
+        }
+      },
+      {
+        "code": "Math.abs(dist - wave.r) < WAVE_SPEED / 2",
+        "text": {
+          "zh-TW": "震波是一個每格變大的半徑，經過某個點的那一格才給它往外的速度，剩下交給同一個彈簧晃回來。不用替每個點建補間，也不用算延遲。",
+          "en": "The shockwave is a radius that grows each frame; a dot gets an outward kick only on the frame the ring passes it, and the same spring brings it home. No per-dot tweens or delays needed."
+        }
+      },
+      {
+        "code": "if (hot !== d.hot) classList.toggle",
+        "text": {
+          "zh-TW": "位置每一格都寫（transform 很便宜），顏色只在狀態改變時才切換 class，避免每一格都改 DOM 的 class 造成重新計算樣式。",
+          "en": "Position is written every frame (transform is cheap) but colour only toggles a class when the state changes, avoiding a style recalculation on every frame."
+        }
+      },
+      {
+        "code": "touch-action: none",
+        "text": {
+          "zh-TW": "手指在點陣上滑動時當作游標，不捲動頁面；手指離開就當作游標離開，不然最後的位置會一直推著點。",
+          "en": "On touch, sliding a finger over the grid acts as the cursor instead of scrolling; lifting the finger counts as leaving, or the last position would keep pushing the dots."
+        }
+      }
+    ]
+  },
+  {
+    "id": "52-elastic-string",
+    "title": {
+      "zh-TW": "列表分隔線游標撥動回彈",
+      "en": "List divider pluck"
+    },
+    "short": {
+      "zh-TW": "撥動分隔線",
+      "en": "Divider pluck"
+    },
+    "summary": {
+      "zh-TW": "導覽列表的分隔線像弦一樣：游標碰到會勾住線、跟著拉彎，拉太遠或移開就鬆開，用 elastic 晃回直線。滑過的那一列文字往右推、箭頭淡入；鍵盤 Tab 到某一列也會輕輕撥一下。",
+      "en": "The dividers of a navigation list behave like strings: touch one and it hooks onto the cursor and bends, then snaps free and wobbles straight with elastic when pulled too far or left. The hovered row shifts right with an arrow; tabbing to a row plucks it gently too."
+    },
+    "topic": "pointer",
+    "tech": "Tween",
+    "tags": [
+      "elastic.out",
+      "SVG path",
+      "quadratic Bézier",
+      "onUpdate"
+    ],
+    "date": "2026-11-25",
+    "thumbAt": 1.9,
+    "thumb": ".menu",
+    "useCases": [
+      "brand",
+      "content",
+      "launch"
+    ],
+    "cost": "light",
+    "costNote": "svg",
+    "notes": [
+      {
+        "code": "M0 y Q cx (y + bend * 2) w y",
+        "text": {
+          "zh-TW": "每條線是一條二次貝茲曲線：兩端固定，控制點跟著游標。控制點放在偏移量的兩倍，曲線最彎的地方才剛好到游標的位置。",
+          "en": "Each line is a quadratic Bézier with fixed ends and a control point following the cursor. Placing the control point at twice the offset makes the curve's peak land right at the cursor."
+        }
+      },
+      {
+        "code": "gsap.to(line, { bend: 0, ease: 'elastic.out(1.1, 0.18)' })",
+        "text": {
+          "zh-TW": "鬆開時補間的是一個普通數字 bend，onUpdate 再把它畫成路徑。elastic 會衝過頭來回晃幾下，正好是撥弦的感覺；第二個參數越小晃得越快。",
+          "en": "Releasing tweens a plain number, bend, and onUpdate redraws the path. Elastic overshoots and swings back a few times, exactly like a plucked string; a smaller second parameter wobbles faster."
+        }
+      },
+      {
+        "code": "Math.sign(dy) !== Math.sign(prevDy)",
+        "text": {
+          "zh-TW": "游標移動很快時，兩次事件之間會直接跨過線、碰不到勾住的範圍。比對這一次和上一次在線的哪一邊，換邊了就當作撥了一下，往游標來的方向彈。",
+          "en": "A fast cursor can jump over a line between two events without entering the grab range. Comparing which side of the line it was on last time and now catches the crossing and plucks the line toward where the cursor came from."
+        }
+      },
+      {
+        "code": "<svg class=\"lines\" aria-hidden=\"true\">",
+        "text": {
+          "zh-TW": "分隔線是裝飾，畫在一張蓋在列表上的 SVG 裡，pointer-events: none 不擋點擊；SVG 上下多留 48px，線被拉彎時不會被切掉。列表本身還是正常的 nav 和連結。",
+          "en": "The dividers are decoration in an SVG laid over the list with pointer-events: none so clicks pass through; it extends 48px above and below so bent lines are not clipped. The list itself stays a normal nav with links."
+        }
+      },
+      {
+        "code": "a.addEventListener('focus', …)",
+        "text": {
+          "zh-TW": "鍵盤使用者沒有游標：Tab 到某一列時一樣亮起來，並輕輕撥一下它下面的線，讓效果不只給滑鼠。",
+          "en": "Keyboard users have no cursor: tabbing to a row highlights it the same way and gives the line below a gentle pluck, so the effect is not mouse-only."
+        }
+      }
+    ]
   }
 ];
