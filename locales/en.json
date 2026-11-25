@@ -163,5 +163,7 @@
   "about.hint": "Keep scrolling: after the last stop it loops back to the start",
   "about.stat.works": "Practices",
   "about.stat.topics": "Topics",
-  "about.stat.tech": "GSAP features"
+  "about.stat.tech": "GSAP features",
+  "nav.menu": "Open menu",
+  "nav.menuClose": "Close menu"
 }

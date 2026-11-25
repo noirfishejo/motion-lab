@@ -34,10 +34,9 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 .site-header{
   position:fixed;inset:0 0 auto 0;z-index:50;height:var(--header-h);
   display:flex;align-items:center;
-  background:var(--bg);border-bottom:1px solid transparent; /* 不透明：捲動時文字不會從頁首底下透出來 */
+  background:var(--bg);border-bottom:0; /* 不透明：捲動時文字不會從頁首底下透出來；底線由選單的尺規（.nav-rail）負責 */
   transition:border-color var(--dur-fast);
 }
-.site-header.is-scrolled{border-bottom-color:transparent} /* 底線改由選單的尺規（.nav-rail）負責 */
 .site-header .container{display:flex;align-items:center;justify-content:space-between;gap:16px}
 .logo{display:flex;align-items:center;gap:10px;min-height:var(--tap);font:600 18px/1 var(--font-display);letter-spacing:-.03em;white-space:nowrap}
 .logo-mark{width:14px;height:14px;background:var(--accent);flex:none}
@@ -52,27 +51,55 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 .icon-toggle:hover{color:var(--text);background:var(--surface-2)}
 .icon-toggle[aria-expanded="true"]{color:var(--text)}
 .lang-toggle{font:400 12px/1 var(--font-mono);letter-spacing:.04em}
-/* 頁首的文字連結（動態規範）：和圖示按鈕同一排、同樣低調；目前所在的頁面變亮並加底線 */
 /* ── 主選單（js/header.js 產生）：參考 santalarch.com 的尺規頁首 ──
-   選單項目平均分佈在 logo 和右邊按鈕之間，每一項下面有一個刻度，刻度就在頁首底線上 */
-.site-nav{flex:1;align-self:stretch;min-width:0}
-.site-nav ol{list-style:none;height:100%;display:flex;gap:16px}
-.site-nav li{position:relative;display:flex;align-items:center}
-.site-nav li::after{content:"";position:absolute;left:0;bottom:0;width:1px;height:6px;background:var(--line-strong);transition:background-color var(--dur-fast),height var(--dur-fast) var(--ease-out)}
-.site-nav a{display:flex;align-items:center;height:100%;min-height:var(--tap);font-size:14px;color:var(--text);white-space:nowrap;opacity:.72;transition:opacity var(--dur-fast)}
-.site-nav a:hover,.site-nav a[aria-current="page"]{opacity:1}
-.site-nav li:hover::after,.site-nav li:has([aria-current])::after{background:var(--text);height:10px}
-/* 底線：整條是淡色，亮的那一段由 header.js 用 scaleX 伸到目前的刻度 */
+   選單項目平均分佈在 logo 和右邊按鈕之間；每一項的左邊是一條刻度，往下接到頁首底線（相接、不留空隙） */
+.site-header .container{align-self:stretch} /* 撐滿頁首的高度：刻度才會一路碰到最底下的線 */
+.site-header .container > *{align-self:center}
+.site-header .container > .site-nav{align-self:stretch}
+.site-nav{flex:1;min-width:0;margin-left:clamp(16px,6vw,96px)}
+.site-nav ol{list-style:none;height:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.site-nav li{position:relative;display:flex}
+/* 刻度：貼著項目左邊，從底線往上長；目前這一頁和滑過時變長、變亮 */
+.site-nav li::after{content:"";position:absolute;left:0;bottom:0;width:1px;height:10px;background:var(--line-strong);transition:height var(--dur) var(--ease-out),background-color var(--dur-fast);z-index:1}
+.site-nav li:hover::after,.site-nav li:has([aria-current])::after,.site-nav li:focus-within::after{height:100%;background:var(--text)}
+.site-nav a{position:relative;display:flex;align-items:center;height:100%;padding:0 14px;font-size:14px;line-height:1;color:var(--text);white-space:nowrap;overflow:hidden;isolation:isolate}
+/* 反白：一塊主文字色的底由下往上長滿這一格，文字換成背景色 */
+.site-nav a::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--text);transform:scaleY(0);transform-origin:50% 100%;transition:transform .5s var(--ease-out)}
+.site-nav a:hover::before,.site-nav a:focus-visible::before{transform:scaleY(1)}
+.site-nav a:hover,.site-nav a:focus-visible{color:var(--bg)}
+.site-nav a:focus-visible{outline-offset:-2px}
+/* 文字上捲：兩份文字疊在一個一行高的窗口裡，滑過時整排往上捲一格 */
+.nav-roll{display:block;height:1.2em;overflow:hidden}
+.nav-roll span{display:block;line-height:1.2em;transition:transform .5s var(--ease-out),opacity .3s}
+.site-nav a:not([aria-current]) .nav-roll span{opacity:.72}
+.site-nav a:hover .nav-roll span,.site-nav a:focus-visible .nav-roll span{transform:translateY(-100%);opacity:1}
+/* 目前這一頁：左上角一個小方塊 */
+.site-nav a[aria-current]::after{content:"";width:5px;height:5px;margin-left:8px;background:var(--accent-fg);flex:none}
+/* 底線：整條是淡色，亮的那一段由 header.js 用 scaleX 伸到目前頁面的刻度 */
 .nav-rail{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line);pointer-events:none}
 .nav-fill{position:absolute;inset:0;background:var(--text);transform-origin:0 50%;transform:scaleX(0)}
+
+/* ── 手機：漢堡選單 ── */
+.menu-toggle{display:none}
+.menu-lines{position:relative;display:grid;gap:4px;width:18px}
+.menu-lines span{display:block;height:1px;background:currentColor;transform-origin:50% 50%}
+.site-menu{position:fixed;left:0;right:0;top:var(--header-h);z-index:49;background:var(--bg);border-bottom:1px solid var(--line)}
+.site-menu ol{list-style:none;padding:8px var(--gutter) 24px}
+.site-menu li + li{border-top:1px solid var(--line)}
+.site-menu a{display:flex;align-items:center;gap:16px;min-height:64px;font:500 26px/1.2 var(--font-display);letter-spacing:-.02em}
+.site-menu .menu-mask{flex:1;overflow:hidden;padding-bottom:.1em}
+.site-menu .menu-text,.site-menu .menu-num,.site-menu i{display:inline-block}
+.site-menu .menu-num{font:400 11px/1 var(--font-mono);color:var(--accent-fg);letter-spacing:.08em}
+.site-menu i{font-size:20px;color:var(--muted)}
+.site-menu a[aria-current] .menu-text::after{content:"";display:inline-block;width:6px;height:6px;margin-left:10px;vertical-align:.4em;background:var(--accent-fg)}
 @media (max-width:599px){
-  .logo-text{display:none} /* 手機：logo 只留方塊，選單才放得下 */
-  .site-nav{display:flex;justify-content:flex-end}
-  .site-nav ol{gap:14px}
+  .logo-text{display:none} /* 手機：logo 只留方塊 */
+  .site-nav{display:none}
+  .menu-toggle{display:grid;color:var(--text)}
 }
-@media (min-width:600px){
-  .site-nav{margin-left:clamp(16px,6vw,96px)}
-  .site-nav ol{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+@media (min-width:600px){.site-menu{display:none}}
+@media (prefers-reduced-motion:reduce){
+  .site-nav a::before,.nav-roll span,.site-nav li::after{transition:none}
 }
 
 /* ── 開關（作品頁的 Markers、動態規範頁的「預覽減少動態」）：滑塊的位置和伸縮交給 GSAP（練習「開關 Switch」的做法） ── */
@@ -226,7 +253,7 @@ html.lenis,html.lenis body{height:auto}
    標題橫跨整頁；電腦版左邊 300px 的側欄面板固定在畫面上，右邊是一個個有框線的面板，撐滿剩下的寬度 */
 .page-grid{padding-top:calc(var(--header-h) + 40px);display:grid;gap:24px}
 .page-head{display:grid;gap:12px}
-.page-head h1{font:500 var(--fs-h1)/1.05 var(--font-display);letter-spacing:-.03em}
+.page-head h1{font:500 var(--fs-h1)/1.1 var(--font-display);letter-spacing:-.03em}
 .page-lead{max-width:44em;color:var(--muted);line-height:1.7}
 .side-panel{display:grid;align-content:start;gap:24px;padding:20px;border:1px solid var(--line);background:var(--surface)}
 .page-main{display:grid;gap:16px;min-width:0}

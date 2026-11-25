@@ -46,9 +46,10 @@
 
   /* 字級（手機基準，平板、電腦在下方覆寫） */
   --fs-hero:clamp(40px,13vw,88px);
-  --fs-h1:36px;
-  --fs-title:26px;      /* 作品頁標題：比 h1 小，留空間給預覽和程式碼 */
-  --fs-h2:28px;
+  /* 字級階層（全站共用，不要在元件裡另外訂標題大小）：
+     h1 每一頁的大標（作品頁、動態規範、Ease 實驗室…都一樣）／h2 區塊標題／h3 卡片、面板標題 */
+  --fs-h1:32px;
+  --fs-h2:26px;
   --fs-h3:19px;
   --fs-body:15px;
   --fs-small:13px;
@@ -108,9 +109,8 @@
 @media (min-width:600px){
   :root{
     --fs-hero:clamp(88px,13vw,140px);
-    --fs-h1:48px;
-    --fs-title:30px;
-    --fs-h2:34px;
+    --fs-h1:40px;
+    --fs-h2:30px;
     --fs-h3:20px;
     --header-h:64px;
     --section-gap:120px;
@@ -122,9 +122,8 @@
 @media (min-width:1024px){
   :root{
     --fs-hero:clamp(140px,13vw,240px);
-    --fs-h1:64px;
-    --fs-title:36px;
-    --fs-h2:44px;
+    --fs-h1:52px;
+    --fs-h2:36px;
     --fs-h3:22px;
     --fs-body:16px;
     --header-h:72px;

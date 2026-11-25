@@ -163,5 +163,7 @@
   "about.hint": "繼續往下滑，最後一站之後會回到起點",
   "about.stat.works": "練習",
   "about.stat.topics": "分類",
-  "about.stat.tech": "GSAP 功能"
+  "about.stat.tech": "GSAP 功能",
+  "nav.menu": "打開選單",
+  "nav.menuClose": "關閉選單"
 }

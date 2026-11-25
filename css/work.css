@@ -12,7 +12,7 @@
   display:grid;grid-template-columns:minmax(0,1fr);gap:16px;
   padding:8px 0 24px;border-bottom:1px solid var(--line);margin-bottom:24px;
 }
-.work-head h1{font:500 var(--fs-title)/1.15 var(--font-display);letter-spacing:-.02em;max-width:28ch;text-wrap:balance}
+.work-head h1{font:500 var(--fs-h1)/1.1 var(--font-display);letter-spacing:-.03em;max-width:28ch;text-wrap:balance}
 /* SplitText 的遮罩會裁掉字母下緣（Stagger 的 g），往下多留一點空間 */
 .work-head h1 > div{padding-bottom:.14em;margin-bottom:-.14em}
 .work-info{display:grid;gap:12px;align-content:start}
