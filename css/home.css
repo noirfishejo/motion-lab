@@ -7,7 +7,7 @@
 /* 有動態時先隱藏，由 home.js 設好初始狀態後再顯示 */
 .intro .hero-pin{visibility:hidden}
 /* 開場播完之前，畫面上只留開場本身：頁首的 logo 和按鈕、作品區、頁尾都先藏起來（播完由 home.js 移除 intro） */
-.intro .site-header .logo,.intro .site-header .header-end,.intro .site-nav,.intro .works,.intro .site-footer{visibility:hidden}
+.intro .site-header .logo,.intro .site-header .header-end,.intro .site-nav,.intro #story,.intro .site-footer{visibility:hidden}
 .hero{position:relative}
 .hero-pin{
   position:relative;min-height:72svh; /* 縮短開場：第一個畫面底部就能看到作品區的開頭 */
@@ -63,130 +63,78 @@
   .hero-pin{height:72svh;min-height:480px} /* 開場佔畫面約 7 成，下方露出作品區，提示「往下還有東西」 */
 }
 
-/* ── 作品區 ── */
+/* ═══ 介紹段落（js/home-story.js）：開場之後，參考 gsap.com 首頁的節奏 ═══ */
 /* 不透明底色＋疊在開場上面：往下捲時像布幕一樣蓋過固定住的開場 */
-.works{position:relative;z-index:1;background:var(--bg)}
-.works{padding-top:0;min-height:100svh} /* 篩選、搜尋後結果很少時，頁面也夠長，不會被拉回開場區 */ /* 開場往上捲時，作品區直接接著出現 */
-.works-head{display:flex;align-items:baseline;gap:16px;margin-bottom:24px}
-.works-head h2{font:500 var(--fs-h1)/1.1 var(--font-display);letter-spacing:-.03em} /* 「作品」是這一區的大標，和其他頁的大標一樣大 */
+#story{position:relative;z-index:1;background:var(--bg)}
+.story-section{padding:var(--section-gap) var(--gutter) 0;display:grid;gap:40px}
+.story-section:first-child{padding-top:48px}
+.story-head{display:grid;gap:12px}
+.story-head h2{font:500 var(--fs-h2)/1.15 var(--font-display);letter-spacing:-.02em}
+.story-head-row{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px}
 
-/* 篩選列（參考 Koleksiyon 的分類列） */
-/* 捲到頂端時吸附在頁首下方，往下看作品時隨時可以切換分類 */
-.filters-bar{
-  position:sticky;top:var(--header-h);z-index:5;background:var(--bg);
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:var(--grid-gap);
-}
-/* 篩選列＋搜尋：電腦、平板同一列（搜尋靠右）；手機搜尋換到下一列 */
-.filters-bar{display:flex;align-items:stretch}
-.filters-bar .filters{flex:1;min-width:0}
-.search{position:relative;display:flex;align-items:center;gap:8px;flex:0 0 260px;padding:0 0 0 16px;border-left:1px solid var(--line);transition:border-color var(--dur-fast)}
-.search i{font-size:16px;color:var(--muted)}
-.search input{flex:1;min-width:0;height:48px;border:0;background:transparent;color:var(--text);font:400 14px/1 var(--font-body);outline:none;border-radius:0}
-.search input::placeholder{color:var(--muted)}
-.search:focus-within i{color:var(--accent-fg)}
-.search::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent-fg);transform:scaleX(0);transform-origin:left;transition:transform var(--dur) var(--ease-out);pointer-events:none}
-.search:focus-within::after{transform:none} /* 聚焦時底部出現強調色底線（輸入框本身沒有焦點框） */
-/* 「篩選」按鈕：只有手機出現 */
-.refine-toggle{display:none;align-items:center;justify-content:center;flex:none;width:var(--tap);border-left:1px solid var(--line);color:var(--muted);font:400 14px/1 var(--font-body);transition:color var(--dur-fast)}
-.refine-toggle i{font-size:20px}
-.refine-toggle:hover,.refine-toggle[aria-expanded="true"]{color:var(--text)}
-.refine-toggle[aria-expanded="true"]{background:var(--surface-2)} /* 展開中：淺色底，看得出是開著的 */
-.refine-toggle:focus-visible{outline-offset:-2px}
+/* 1. 是什麼：大字，捲動時一個詞一個詞亮起來 */
+.statement{max-width:22em;font:500 clamp(26px,3.6vw,52px)/1.3 var(--font-display);letter-spacing:-.02em}
+.stats{display:flex;flex-wrap:wrap;gap:16px 56px;padding-top:24px;border-top:1px solid var(--line)}
+.stats div{display:grid;gap:6px}
+.stats dt{font:400 var(--fs-label)/1 var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.stats dd{font:500 clamp(36px,4.4vw,64px)/1 var(--font-display);font-variant-numeric:tabular-nums}
+
+/* 會動的圖示（js/icons.js）：Phosphor SVG，先描外框再填滿 */
+.anim-icon{display:inline-grid;place-items:center;width:48px;height:48px;font-size:44px;color:var(--text);flex:none}
+.anim-icon svg{width:100%;height:100%;overflow:visible}
+.anim-icon path{stroke:currentColor;stroke-width:3;stroke-dasharray:1;stroke-dashoffset:0;stroke-opacity:0;fill:currentColor}
+
+/* 2. 方法：五步排在一把尺上（和頁首選單同一種尺規：細線＋每一步的刻度，亮線跟著捲動往右走） */
+.method{position:relative}
+.method-rail{position:absolute;left:0;right:0;top:0;height:1px;background:var(--line)}
+.method-fill{position:absolute;inset:0;background:var(--text);transform-origin:0 50%;transform:scaleX(0)}
+.method-steps{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.method-step{position:relative;display:grid;align-content:start;gap:12px;padding:32px 24px 0 20px}
+.method-step::before{content:"";position:absolute;left:0;top:0;width:1px;height:24px;background:var(--line-strong);transition:height var(--dur) var(--ease-out),background-color var(--dur-fast)}
+.method-step.is-on::before{height:100%;background:var(--text)}
+.method-step .anim-icon{margin-bottom:8px}
+.method-num{font:400 var(--fs-label)/1 var(--font-mono);letter-spacing:.12em;color:var(--accent-fg)}
+.method-step h3{font:500 var(--fs-h3)/1.3 var(--font-display)}
+.method-step p{color:var(--muted);line-height:1.7;font-size:var(--fs-small)}
 @media (max-width:599px){
-  .filters-bar{flex-wrap:wrap}
-  .filters-bar .filters{flex:1 1 100%}
-  .search{flex:1 1 0;padding:0;border-left:0;border-top:1px solid var(--line)}
-  .refine-toggle{display:inline-flex;border-top:1px solid var(--line)}
-  .search input{font-size:16px} /* 16px：iPhone 點進去不會放大畫面 */
+  /* 手機：尺改成直的，步驟上下排 */
+  .method-rail{right:auto;bottom:0;width:1px;height:auto}
+  .method-fill{transform-origin:50% 0;transform:scaleY(0)}
+  .method-steps{grid-template-columns:1fr}
+  .method-step{padding:0 0 32px 24px}
 }
-.filters{position:relative;display:flex;gap:0;overflow-x:auto;scrollbar-width:none} /* relative：滑動底線以這裡為基準 */
-.filters::-webkit-scrollbar{display:none}
-.filters button{
-  position:relative;flex:none;height:48px;padding:0 14px;
-  font:400 14px/1 var(--font-body);color:var(--muted);transition:color var(--dur-fast);
-}
-.filters button sup{font:400 10px/1 var(--font-mono);margin-left:3px;color:var(--muted)}
-.filters button:hover,.filters button[aria-pressed="true"]{color:var(--text)}
-.filters button:focus-visible{outline-offset:-2px}
-/* 手機篩選列放不下時：邊緣漸隱，提示「還可以往旁邊滑」（class 由 home.js 依捲動位置切換） */
-.filters.more-end{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 56px),transparent)}
-.filters.more-start{-webkit-mask-image:linear-gradient(90deg,transparent,#000 56px);mask-image:linear-gradient(90deg,transparent,#000 56px)}
-.filters.more-start.more-end{-webkit-mask-image:linear-gradient(90deg,transparent,#000 56px,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(90deg,transparent,#000 56px,#000 calc(100% - 56px),transparent)}
 
-/* ── 第二排：GSAP 功能篩選＋排序 ── */
-.refine{position:relative;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:12px 24px;margin-bottom:var(--grid-gap)}
-.tech-filter{display:flex;align-items:center;gap:12px;min-width:0}
-.tech-label{flex:none;font:400 var(--fs-label)/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.tech-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
-.tech-chips::-webkit-scrollbar{display:none}
-.tech-chips .chip{flex:none}
-.tech-chips .chip sup{margin-left:3px;font-size:9px;color:var(--muted)}
-/* 選中的 GSAP 功能：實心按鈕（再按一次取消） */
-.tech-chips .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.tech-chips .chip[aria-pressed="true"] sup{color:var(--accent-ink)}
-.tech-chips .chip[aria-pressed="true"]:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+/* 3、5. 卡片：和頁首選單一樣，滑過時整張由下往上反白 */
+.topic-grid,.tool-grid{list-style:none;display:grid;gap:var(--grid-gap)}
+.topic-grid{grid-template-columns:1fr} /* 七個分類＋全部作品＝8 張：電腦 4×2、平板 2×4，不會剩一張孤零零的 */
+@media (min-width:600px){.topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1024px){.topic-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.tool-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.story-card{position:relative;isolation:isolate;overflow:hidden;height:100%;display:grid;align-content:start;gap:10px;padding:24px;border:1px solid var(--line);transition:color .4s var(--ease-out),border-color var(--dur-fast)}
+.story-card::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--text);transform:scaleY(0);transform-origin:50% 100%;transition:transform .55s var(--ease-out)}
+.story-card:hover,.story-card:focus-visible{color:var(--bg);border-color:var(--text)}
+.story-card:hover::before,.story-card:focus-visible::before{transform:scaleY(1)}
+.story-card:hover .anim-icon,.story-card:focus-visible .anim-icon{color:var(--bg)}
+.story-card .anim-icon{margin-bottom:12px;transition:color .4s var(--ease-out)}
+.card-title{font:500 var(--fs-h3)/1.3 var(--font-display)}
+.card-title sup{font:400 11px/1 var(--font-mono);margin-left:6px;vertical-align:super;opacity:.6}
+.card-text{font-size:var(--fs-small);line-height:1.7;opacity:.72}
+.card-arrow{position:absolute;right:20px;top:24px;font-size:20px;transition:transform .5s var(--ease-out)}
+.story-card:hover .card-arrow{transform:translateX(4px)}
+.story-card.is-all{border-color:var(--line-strong)}
+.tool-card{padding:32px;min-height:220px}
+.tool-card .anim-icon{width:64px;height:64px;font-size:60px}
+@media (prefers-reduced-motion:reduce){.story-card,.story-card::before,.card-arrow{transition:none}}
 
-/* 排序：按鈕＋下拉清單（和搜尋建議欄同一種滑動高亮） */
-.sort{position:relative;flex:none}
-.sort-btn{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 10px;color:var(--muted);font:400 13px/1 var(--font-body);transition:color var(--dur-fast),background-color var(--dur-fast)}
-.sort-btn:hover,.sort-btn[aria-expanded="true"]{color:var(--text);background:var(--surface-2)}
-.sort-value{color:var(--text)}
-.sort-btn i{font-size:14px;transition:transform var(--dur) var(--ease-out)}
-.sort-btn[aria-expanded="true"] i{transform:rotate(180deg)}
-.sort-list{position:absolute;right:0;top:calc(100% + 4px);z-index:20;min-width:160px;list-style:none;padding:6px 0;background:var(--surface);border:1px solid var(--line-strong);outline:none;overflow:hidden}
-.sort-list li[role="option"]{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px;height:36px;padding:0 14px;font-size:13px;cursor:pointer}
-.sort-list li[aria-selected="true"]{color:var(--accent-fg)}
-.sort-list li[aria-selected="true"]::after{content:"";width:6px;height:6px;background:var(--accent-fg)}
-.sort-hl{position:absolute;left:0;right:0;top:0;height:36px;background:var(--surface-2);box-shadow:inset 2px 0 0 var(--accent-fg);opacity:0;pointer-events:none}
-@media (pointer:coarse){.sort-btn{height:var(--tap)}.tech-chips .chip{height:var(--tap)}}
-/* 手機：第二排收起來，按「篩選」才展開；展開時 GSAP 功能換行排開（不用左右滑），排序在最下面 */
-@media (max-width:599px){
-  .refine{flex-direction:column;align-items:stretch;gap:16px;margin-bottom:0;padding:16px 0 20px;border-bottom:1px solid var(--line)}
-  .refine:not(.is-open){display:none}
-  .tech-filter{flex-direction:column;align-items:flex-start}
-  .tech-chips{flex-wrap:wrap;overflow:visible}
-  .sort{align-self:flex-start}
-  .sort-btn{padding-left:0}
-  .sort-list{left:0;right:auto}
-  .refine.is-open + .work-grid,.refine.is-open ~ .empty{margin-top:var(--grid-gap)}
-}
-/* GSAP 功能 chip：0 個的直接藏起來，其他的往前遞補（home.js 用 Flip 做補位動畫） */
-.tech-chips .chip[hidden]{display:none}
-
-/* 作品格：手機 1 欄、平板以上 2 欄（參考 Koleksiyon 的大圖格） */
-.work-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:calc(var(--grid-gap) * 2.5) var(--grid-gap)}
-@media (min-width:600px){.work-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (min-width:1680px){.work-grid{grid-template-columns:repeat(3,minmax(0,1fr))}} /* 大螢幕：3 欄，卡片不會大到難以一眼掃過 */
-
-.work-card{display:block;position:relative}
-.thumb{
-  position:relative;aspect-ratio:16/10;overflow:hidden;
-  background:var(--stage);border:1px solid var(--line);transition:border-color var(--dur-fast); /* 和作品底色相同，縮小後 iframe 邊緣看不出來 */
-}
-/* 縮圖平常是靜態圖片（tools/make_thumbs.py 產生，構圖規則和下面的 fitThumb 相同） */
-.thumb-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-/* 滑鼠移上去才放進真的練習（iframe）：960×600 渲染，再由 home.js 的 fitThumb() 縮放置中；載入好才淡入 */
-.thumb iframe{
-  position:absolute;top:0;left:0;width:960px;height:600px;max-width:none;border:0;
-  transform-origin:0 0;transform:scale(.4);pointer-events:none;
-  opacity:0;transition:opacity .3s;
-}
-.thumb.is-live iframe{opacity:1}
-.thumb-go{
-  position:absolute;right:0;bottom:0;z-index:1;width:48px;height:48px;display:grid;place-items:center;
-  background:var(--accent);color:var(--accent-ink);font-size:20px;
-  transform:translate(100%,100%);transition:transform var(--dur) var(--ease-out);
-}
-.work-card:hover .thumb,.work-card:focus-visible .thumb{border-color:var(--accent-fg)}
-.work-card:hover .thumb-go,.work-card:focus-visible .thumb-go{transform:none}
-.work-card:focus-visible{outline-offset:6px}
-
-.work-meta{display:grid;grid-template-columns:1fr auto;gap:6px 16px;padding-top:16px}
-.work-meta h3{font:500 var(--fs-h3)/1.35 var(--font-display);letter-spacing:-.01em}
-.work-meta .topic{font:400 12px/1.8 var(--font-mono);color:var(--accent-fg);text-align:right;white-space:nowrap}
-.work-meta p{grid-column:1/-1;color:var(--muted);font-size:var(--fs-small);max-width:52ch}
-.work-meta .tags{grid-column:1/-1;margin-top:6px}
-
-.empty{color:var(--muted);text-align:center;border-bottom:1px solid var(--line)}
-.empty:not(:has(.empty-state)){padding:64px 0;display:grid;justify-items:center;gap:16px}
-
+/* 4. 最新練習：縮圖＋名稱 */
+.latest-grid{list-style:none;display:grid;gap:var(--grid-gap);grid-template-columns:1fr} /* 6 張：電腦 3×2、平板 2×3 */
+@media (min-width:600px){.latest-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1024px){.latest-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.latest-card{display:grid;gap:12px}
+.latest-thumb{aspect-ratio:16/10;overflow:hidden;border:1px solid var(--line);transition:border-color var(--dur-fast)}
+.latest-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease-out)}
+.latest-card:hover .latest-thumb{border-color:var(--accent-fg)}
+.latest-card:hover .latest-thumb img{transform:scale(1.03)}
+.latest-meta{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.latest-name{font:500 15px/1.4 var(--font-display)}
+.latest-tech{font:400 11px/1 var(--font-mono);color:var(--accent-fg);white-space:nowrap}

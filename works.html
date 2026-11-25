@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>作品｜Motion Lab</title>
+  <meta name="description" content="Motion Lab">
+  <!-- 分享預覽：貼網址到 LINE、Facebook、Slack 時顯示的標題、說明和圖片（圖片由 tools/og.html 產生） -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Motion Lab">
+  <meta property="og:title" content="Motion Lab · 介面動態練習庫">
+  <meta property="og:description" content="UIUX 設計師的 GSAP 介面動態練習庫：每個練習都能看預覽、改程式碼、一鍵複製。A GSAP UI motion practice library.">
+  <meta property="og:image" content="https://noirfishejo.github.io/motion-lab/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- 英文版的分享連結請用 …/motion-lab/en/（會顯示英文分享圖 og-en.png，見 en/index.html） -->
+  <link rel="alternate" hreflang="en" href="https://noirfishejo.github.io/motion-lab/en/">
+
+  <!-- 配色：先套用記住的設定（沒有就跟著系統），在畫面出現前完成，避免閃一下 -->
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      var theme = saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&family=Noto+Sans+TC:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/works.css">
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="nav.skip"></a>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html" data-i18n-attr="aria-label:nav.home">
+        <span class="logo-mark" aria-hidden="true"></span><span class="logo-text">Motion Lab</span>
+      </a>
+      <div class="header-end">
+        <button class="icon-toggle lang-toggle" type="button" id="langToggle" data-i18n="lang.switch" data-i18n-attr="aria-label:lang.switchLabel;data-tip:lang.switchTip"></button>
+        <button class="icon-toggle" type="button" id="themeToggle"><i class="ph-light ph-sun" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1" class="works-page">
+    <!-- ── 作品 ── -->
+    <section class="works container" id="works" aria-labelledby="works-title">
+      <div class="works-head">
+        <h1 id="works-title" data-i18n="home.works.title"></h1>
+      </div>
+
+      <!-- 外層負責吸附和不透明底色；內層負責橫向捲動和邊緣漸隱（漸隱才不會透出後面的卡片） -->
+      <div class="filters-bar">
+        <nav class="filters" aria-label="" data-i18n-attr="aria-label:home.filter.label"></nav>
+        <!-- 搜尋：和分類一起篩選（例如「元件」裡搜「按鈕」） -->
+        <label class="search">
+          <i class="ph-light ph-magnifying-glass" aria-hidden="true"></i>
+          <input type="search" id="workSearch" autocomplete="off" data-i18n-attr="aria-label:work.search;placeholder:work.search">
+        </label>
+        <!-- 手機：GSAP 功能和排序收進這顆「篩選」按鈕（平板、電腦不顯示，直接排在下面一排） -->
+        <button class="refine-toggle" type="button" id="refineToggle" aria-expanded="false" aria-controls="refine" data-i18n-attr="aria-label:home.filter.more;data-tip:home.filter.more">
+          <i class="ph-light ph-sliders-horizontal" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- 第二排：依 GSAP 功能快速篩選（和分類、搜尋一起作用）＋排序 -->
+      <div class="refine" id="refine">
+        <div class="tech-filter" role="group" data-i18n-attr="aria-label:tech.label">
+          <span class="tech-label" data-i18n="tech.label"></span>
+          <div class="tech-chips" id="techChips"></div>
+        </div>
+        <div class="sort">
+          <button class="sort-btn" type="button" id="sortBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="sortList">
+            <span data-i18n="sort.label"></span><span class="sort-value" id="sortValue"></span><i class="ph-light ph-caret-down" aria-hidden="true"></i>
+          </button>
+          <ul class="sort-list" id="sortList" role="listbox" tabindex="-1" data-i18n-attr="aria-label:sort.label" hidden></ul>
+        </div>
+      </div>
+
+      <div class="work-grid" id="workGrid"></div>
+      <div class="empty" id="empty" hidden></div>
+      <p class="visually-hidden" role="status" id="resultStatus"></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span data-i18n="footer.left"></span>
+      <a href="#top" data-to-top data-i18n="footer.right"></a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script type="module" src="js/works-page.js"></script>
+</body>
+</html>

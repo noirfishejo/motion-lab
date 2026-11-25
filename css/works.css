@@ -1,0 +1,133 @@
+/* ═══════════════════════════════════════════════
+   作品頁（works.html）：篩選列、GSAP 功能、排序、作品格
+   （2026-11-25 從首頁拆出來；首頁改成介紹網站的長頁面）
+   ═══════════════════════════════════════════════ */
+.works-page{padding-top:calc(var(--header-h) + 40px)}
+
+/* ── 作品區 ── */
+/* 不透明底色＋疊在開場上面：往下捲時像布幕一樣蓋過固定住的開場 */
+.works{position:relative;z-index:1;background:var(--bg)}
+.works{padding-top:0;min-height:100svh} /* 篩選、搜尋後結果很少時，頁面也夠長，不會被拉回開場區 */ /* 開場往上捲時，作品區直接接著出現 */
+.works-head{display:flex;align-items:baseline;gap:16px;margin-bottom:24px}
+.works-head h1,.works-head h2{font:500 var(--fs-h1)/1.1 var(--font-display);letter-spacing:-.03em} /* 「作品」是這一區的大標，和其他頁的大標一樣大 */
+
+/* 篩選列（參考 Koleksiyon 的分類列） */
+/* 捲到頂端時吸附在頁首下方，往下看作品時隨時可以切換分類 */
+.filters-bar{
+  position:sticky;top:var(--header-h);z-index:5;background:var(--bg);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:var(--grid-gap);
+}
+/* 篩選列＋搜尋：電腦、平板同一列（搜尋靠右）；手機搜尋換到下一列 */
+.filters-bar{display:flex;align-items:stretch}
+.filters-bar .filters{flex:1;min-width:0}
+.search{position:relative;display:flex;align-items:center;gap:8px;flex:0 0 260px;padding:0 0 0 16px;border-left:1px solid var(--line);transition:border-color var(--dur-fast)}
+.search i{font-size:16px;color:var(--muted)}
+.search input{flex:1;min-width:0;height:48px;border:0;background:transparent;color:var(--text);font:400 14px/1 var(--font-body);outline:none;border-radius:0}
+.search input::placeholder{color:var(--muted)}
+.search:focus-within i{color:var(--accent-fg)}
+.search::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent-fg);transform:scaleX(0);transform-origin:left;transition:transform var(--dur) var(--ease-out);pointer-events:none}
+.search:focus-within::after{transform:none} /* 聚焦時底部出現強調色底線（輸入框本身沒有焦點框） */
+/* 「篩選」按鈕：只有手機出現 */
+.refine-toggle{display:none;align-items:center;justify-content:center;flex:none;width:var(--tap);border-left:1px solid var(--line);color:var(--muted);font:400 14px/1 var(--font-body);transition:color var(--dur-fast)}
+.refine-toggle i{font-size:20px}
+.refine-toggle:hover,.refine-toggle[aria-expanded="true"]{color:var(--text)}
+.refine-toggle[aria-expanded="true"]{background:var(--surface-2)} /* 展開中：淺色底，看得出是開著的 */
+.refine-toggle:focus-visible{outline-offset:-2px}
+@media (max-width:599px){
+  .filters-bar{flex-wrap:wrap}
+  .filters-bar .filters{flex:1 1 100%}
+  .search{flex:1 1 0;padding:0;border-left:0;border-top:1px solid var(--line)}
+  .refine-toggle{display:inline-flex;border-top:1px solid var(--line)}
+  .search input{font-size:16px} /* 16px：iPhone 點進去不會放大畫面 */
+}
+.filters{position:relative;display:flex;gap:0;overflow-x:auto;scrollbar-width:none} /* relative：滑動底線以這裡為基準 */
+.filters::-webkit-scrollbar{display:none}
+.filters button{
+  position:relative;flex:none;height:48px;padding:0 14px;
+  font:400 14px/1 var(--font-body);color:var(--muted);transition:color var(--dur-fast);
+}
+.filters button sup{font:400 10px/1 var(--font-mono);margin-left:3px;color:var(--muted)}
+.filters button:hover,.filters button[aria-pressed="true"]{color:var(--text)}
+.filters button:focus-visible{outline-offset:-2px}
+/* 手機篩選列放不下時：邊緣漸隱，提示「還可以往旁邊滑」（class 由 home.js 依捲動位置切換） */
+.filters.more-end{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 56px),transparent)}
+.filters.more-start{-webkit-mask-image:linear-gradient(90deg,transparent,#000 56px);mask-image:linear-gradient(90deg,transparent,#000 56px)}
+.filters.more-start.more-end{-webkit-mask-image:linear-gradient(90deg,transparent,#000 56px,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(90deg,transparent,#000 56px,#000 calc(100% - 56px),transparent)}
+
+/* ── 第二排：GSAP 功能篩選＋排序 ── */
+.refine{position:relative;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:12px 24px;margin-bottom:var(--grid-gap)}
+.tech-filter{display:flex;align-items:center;gap:12px;min-width:0}
+.tech-label{flex:none;font:400 var(--fs-label)/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tech-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
+.tech-chips::-webkit-scrollbar{display:none}
+.tech-chips .chip{flex:none}
+.tech-chips .chip sup{margin-left:3px;font-size:9px;color:var(--muted)}
+/* 選中的 GSAP 功能：實心按鈕（再按一次取消） */
+.tech-chips .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.tech-chips .chip[aria-pressed="true"] sup{color:var(--accent-ink)}
+.tech-chips .chip[aria-pressed="true"]:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+
+/* 排序：按鈕＋下拉清單（和搜尋建議欄同一種滑動高亮） */
+.sort{position:relative;flex:none}
+.sort-btn{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 10px;color:var(--muted);font:400 13px/1 var(--font-body);transition:color var(--dur-fast),background-color var(--dur-fast)}
+.sort-btn:hover,.sort-btn[aria-expanded="true"]{color:var(--text);background:var(--surface-2)}
+.sort-value{color:var(--text)}
+.sort-btn i{font-size:14px;transition:transform var(--dur) var(--ease-out)}
+.sort-btn[aria-expanded="true"] i{transform:rotate(180deg)}
+.sort-list{position:absolute;right:0;top:calc(100% + 4px);z-index:20;min-width:160px;list-style:none;padding:6px 0;background:var(--surface);border:1px solid var(--line-strong);outline:none;overflow:hidden}
+.sort-list li[role="option"]{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px;height:36px;padding:0 14px;font-size:13px;cursor:pointer}
+.sort-list li[aria-selected="true"]{color:var(--accent-fg)}
+.sort-list li[aria-selected="true"]::after{content:"";width:6px;height:6px;background:var(--accent-fg)}
+.sort-hl{position:absolute;left:0;right:0;top:0;height:36px;background:var(--surface-2);box-shadow:inset 2px 0 0 var(--accent-fg);opacity:0;pointer-events:none}
+@media (pointer:coarse){.sort-btn{height:var(--tap)}.tech-chips .chip{height:var(--tap)}}
+/* 手機：第二排收起來，按「篩選」才展開；展開時 GSAP 功能換行排開（不用左右滑），排序在最下面 */
+@media (max-width:599px){
+  .refine{flex-direction:column;align-items:stretch;gap:16px;margin-bottom:0;padding:16px 0 20px;border-bottom:1px solid var(--line)}
+  .refine:not(.is-open){display:none}
+  .tech-filter{flex-direction:column;align-items:flex-start}
+  .tech-chips{flex-wrap:wrap;overflow:visible}
+  .sort{align-self:flex-start}
+  .sort-btn{padding-left:0}
+  .sort-list{left:0;right:auto}
+  .refine.is-open + .work-grid,.refine.is-open ~ .empty{margin-top:var(--grid-gap)}
+}
+/* GSAP 功能 chip：0 個的直接藏起來，其他的往前遞補（home.js 用 Flip 做補位動畫） */
+.tech-chips .chip[hidden]{display:none}
+
+/* 作品格：手機 1 欄、平板以上 2 欄（參考 Koleksiyon 的大圖格） */
+.work-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:calc(var(--grid-gap) * 2.5) var(--grid-gap)}
+@media (min-width:600px){.work-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1680px){.work-grid{grid-template-columns:repeat(3,minmax(0,1fr))}} /* 大螢幕：3 欄，卡片不會大到難以一眼掃過 */
+
+.work-card{display:block;position:relative}
+.thumb{
+  position:relative;aspect-ratio:16/10;overflow:hidden;
+  background:var(--stage);border:1px solid var(--line);transition:border-color var(--dur-fast); /* 和作品底色相同，縮小後 iframe 邊緣看不出來 */
+}
+/* 縮圖平常是靜態圖片（tools/make_thumbs.py 產生，構圖規則和下面的 fitThumb 相同） */
+.thumb-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* 滑鼠移上去才放進真的練習（iframe）：960×600 渲染，再由 home.js 的 fitThumb() 縮放置中；載入好才淡入 */
+.thumb iframe{
+  position:absolute;top:0;left:0;width:960px;height:600px;max-width:none;border:0;
+  transform-origin:0 0;transform:scale(.4);pointer-events:none;
+  opacity:0;transition:opacity .3s;
+}
+.thumb.is-live iframe{opacity:1}
+.thumb-go{
+  position:absolute;right:0;bottom:0;z-index:1;width:48px;height:48px;display:grid;place-items:center;
+  background:var(--accent);color:var(--accent-ink);font-size:20px;
+  transform:translate(100%,100%);transition:transform var(--dur) var(--ease-out);
+}
+.work-card:hover .thumb,.work-card:focus-visible .thumb{border-color:var(--accent-fg)}
+.work-card:hover .thumb-go,.work-card:focus-visible .thumb-go{transform:none}
+.work-card:focus-visible{outline-offset:6px}
+
+.work-meta{display:grid;grid-template-columns:1fr auto;gap:6px 16px;padding-top:16px}
+.work-meta h3{font:500 var(--fs-h3)/1.35 var(--font-display);letter-spacing:-.01em}
+.work-meta .topic{font:400 12px/1.8 var(--font-mono);color:var(--accent-fg);text-align:right;white-space:nowrap}
+.work-meta p{grid-column:1/-1;color:var(--muted);font-size:var(--fs-small);max-width:52ch}
+.work-meta .tags{grid-column:1/-1;margin-top:6px}
+
+.empty{color:var(--muted);text-align:center;border-bottom:1px solid var(--line)}
+.empty:not(:has(.empty-state)){padding:64px 0;display:grid;justify-items:center;gap:16px}
+

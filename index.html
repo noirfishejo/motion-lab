@@ -90,44 +90,8 @@
     </section>
 
 
-    <!-- ── 作品 ── -->
-    <section class="works container" id="works" aria-labelledby="works-title">
-      <div class="works-head">
-        <h2 id="works-title" data-i18n="home.works.title"></h2>
-      </div>
-
-      <!-- 外層負責吸附和不透明底色；內層負責橫向捲動和邊緣漸隱（漸隱才不會透出後面的卡片） -->
-      <div class="filters-bar">
-        <nav class="filters" aria-label="" data-i18n-attr="aria-label:home.filter.label"></nav>
-        <!-- 搜尋：和分類一起篩選（例如「元件」裡搜「按鈕」） -->
-        <label class="search">
-          <i class="ph-light ph-magnifying-glass" aria-hidden="true"></i>
-          <input type="search" id="workSearch" autocomplete="off" data-i18n-attr="aria-label:work.search;placeholder:work.search">
-        </label>
-        <!-- 手機：GSAP 功能和排序收進這顆「篩選」按鈕（平板、電腦不顯示，直接排在下面一排） -->
-        <button class="refine-toggle" type="button" id="refineToggle" aria-expanded="false" aria-controls="refine" data-i18n-attr="aria-label:home.filter.more;data-tip:home.filter.more">
-          <i class="ph-light ph-sliders-horizontal" aria-hidden="true"></i>
-        </button>
-      </div>
-
-      <!-- 第二排：依 GSAP 功能快速篩選（和分類、搜尋一起作用）＋排序 -->
-      <div class="refine" id="refine">
-        <div class="tech-filter" role="group" data-i18n-attr="aria-label:tech.label">
-          <span class="tech-label" data-i18n="tech.label"></span>
-          <div class="tech-chips" id="techChips"></div>
-        </div>
-        <div class="sort">
-          <button class="sort-btn" type="button" id="sortBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="sortList">
-            <span data-i18n="sort.label"></span><span class="sort-value" id="sortValue"></span><i class="ph-light ph-caret-down" aria-hidden="true"></i>
-          </button>
-          <ul class="sort-list" id="sortList" role="listbox" tabindex="-1" data-i18n-attr="aria-label:sort.label" hidden></ul>
-        </div>
-      </div>
-
-      <div class="work-grid" id="workGrid"></div>
-      <div class="empty" id="empty" hidden></div>
-      <p class="visually-hidden" role="status" id="resultStatus"></p>
-    </section>
+    <!-- 介紹網站的段落（js/home.js 依 js/home-data.js 產生） -->
+    <div id="story"></div>
   </main>
 
   <footer class="site-footer">

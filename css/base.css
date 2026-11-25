@@ -64,7 +64,7 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 .site-header .container > *{align-self:center}
 .site-header .container > .site-nav,.site-header .container > .header-end{align-self:stretch}
 .site-nav{flex:1;min-width:0;margin-left:clamp(16px,6vw,96px)}
-.site-nav ol{list-style:none;height:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.site-nav ol{list-style:none;height:100%;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)} /* 有幾項就分成幾格 */
 .site-nav li{position:relative;display:flex}
 /* 連結撐滿整格（從這一格的刻度到下一格的刻度）：點擊範圍大，反白也是整格 */
 /* 刻度：貼著項目左邊，從底線往上長；目前這一頁和滑過時變長、變亮 */

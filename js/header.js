@@ -11,10 +11,9 @@ import { scrollToY } from './smooth.js';
 // · 滑過項目：整格由下往上反白，文字往上捲成另一份（同練習「按鈕動效八款」的文字上捲）；亮線也滑過去預覽
 // · 手機（< 600px）：收進漢堡選單，點開後從頁首下方展開（同練習「漢堡選單」：三條線變 ×、選項從遮罩下方依序升起）
 const NAV = [
-  { key: 'works', href: 'index.html#works', page: 'index' },
+  { key: 'works', href: 'works.html', page: 'works' },
   { key: 'guide', href: 'guide.html', page: 'guide' },
-  { key: 'lab', href: 'ease.html', page: 'ease' },
-  { key: 'about', href: 'about.html', page: 'about' }
+  { key: 'lab', href: 'ease.html', page: 'ease' }
 ];
 const FILL_KEY = 'navFill'; // 上一頁亮線停在哪裡（佔頁首寬度的比例）
 
