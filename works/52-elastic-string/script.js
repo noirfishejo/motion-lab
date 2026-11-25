@@ -92,10 +92,13 @@ rows.forEach((li, i) => {
 const size = () => `${menu.clientWidth}x${menu.clientHeight}`;
 let lastSize = size();
 build(); // 先建一次（不等 ResizeObserver 的第一次通知）
+// 拖動視窗時每一格都會通知：等尺寸停下 120ms 再重畫一次（debounce）
+let resizeTimer;
 new ResizeObserver(() => {
   if (size() === lastSize) return;
   lastSize = size();
-  build();
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(build, 120);
 }).observe(menu);
 document.fonts.ready.then(() => { lastSize = size(); build(); });
 

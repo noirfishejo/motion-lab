@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>56 Cursor trail</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <span class="tag">cursor trail</span>
+    <!-- 拖尾範圍：一串方塊跟著游標，越後面的跟得越慢、越小，連成一條會甩動的尾巴；按住時尾巴收緊 -->
+    <div class="area" id="area">
+      <p class="area-text" aria-hidden="true">Move here</p>
+    </div>
+    <p class="hint">Move the cursor around · hold the button down to tighten the trail</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

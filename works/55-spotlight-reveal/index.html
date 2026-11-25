@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>55 Spotlight reveal</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <span class="tag">spotlight reveal</span>
+
+    <!-- 兩層一模一樣的版面疊在一起：下層是完成的標題，上層多了設計標註（間距、字級）
+         上層用遮罩只露出游標周圍的一圈，像拿手電筒照出藏在畫面下的規格 -->
+    <div class="spot" id="spot">
+      <div class="layer base">
+        <p class="kicker">Case study</p>
+        <h1 class="title">Good design<br>is invisible.</h1>
+        <p class="body">Every gap, size and line has a reason. Shine the light to see them.</p>
+      </div>
+      <div class="layer specs" aria-hidden="true">
+        <p class="kicker">Case study</p>
+        <p class="title">Good design<br>is invisible.</p>
+        <p class="body">Every gap, size and line has a reason. Shine the light to see them.</p>
+        <!-- 標註（假資料）：位置用百分比，跟著版面縮放 -->
+        <span class="mark m-font">Poppins 500 · 56/60</span>
+        <span class="mark m-body">Inter Tight 400 · 16/24</span>
+        <span class="mark m-grid"></span>
+      </div>
+    </div>
+
+    <!-- 鍵盤和觸控沒有「游標停在上面」：一顆按鈕直接把標註全部打開 -->
+    <button type="button" class="toggle" id="toggle" aria-pressed="false"><i class="ph-light ph-flashlight"></i><span>Show all specs</span></button>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

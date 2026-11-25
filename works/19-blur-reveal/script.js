@@ -28,6 +28,9 @@ if (!reduce) {
               start: 'top 85%',       // 這段文字的頂端到畫面 85% 的位置時開始
               end: 'bottom 55%',      // 底端到畫面 55% 時全部清楚
               scrub: SCRUB,
+              // 在範圍內：will-change 讓模糊交給顯示卡處理，不用每一格重新點陣化文字；整段清楚後拿掉 filter（blur(0px) 仍然算一個濾鏡）
+              onToggle: st => gsap.set(self.lines, { willChange: st.isActive ? 'filter' : 'auto' }),
+              onLeave: () => gsap.set(self.lines, { filter: 'none' }),
               markers: SHOW_MARKERS && i === 0  // 只標第一段，畫面比較乾淨
             }
           })

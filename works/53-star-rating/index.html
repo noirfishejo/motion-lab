@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>53 Star rating</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+  <!-- 實心星星（選中的狀態）需要 Fill 粗細；全站其他圖示仍然只用 Light -->
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <span class="tag">star rating</span>
+
+    <!-- 星等評分：本質是 5 個單選按鈕（radio），鍵盤方向鍵、讀屏都能直接用；星星只是外觀 -->
+    <form class="rating" onsubmit="return false">
+      <fieldset>
+        <legend class="question">How was your stay?</legend>
+        <div class="stars">
+          <input type="radio" name="rate" id="r1" value="1" class="sr-only"><label for="r1" class="star"><i class="ph-light ph-star"></i><i class="ph-fill ph-star fill"></i><span class="sr-only">1 star, Poor</span></label>
+          <input type="radio" name="rate" id="r2" value="2" class="sr-only"><label for="r2" class="star"><i class="ph-light ph-star"></i><i class="ph-fill ph-star fill"></i><span class="sr-only">2 stars, Fair</span></label>
+          <input type="radio" name="rate" id="r3" value="3" class="sr-only"><label for="r3" class="star"><i class="ph-light ph-star"></i><i class="ph-fill ph-star fill"></i><span class="sr-only">3 stars, Good</span></label>
+          <input type="radio" name="rate" id="r4" value="4" class="sr-only"><label for="r4" class="star"><i class="ph-light ph-star"></i><i class="ph-fill ph-star fill"></i><span class="sr-only">4 stars, Great</span></label>
+          <input type="radio" name="rate" id="r5" value="5" class="sr-only"><label for="r5" class="star"><i class="ph-light ph-star"></i><i class="ph-fill ph-star fill"></i><span class="sr-only">5 stars, Loved it</span></label>
+        </div>
+      </fieldset>
+      <!-- 文字回饋：滑過時預覽、選定後固定；只有選定才唸給讀屏聽 -->
+      <p class="word" aria-hidden="true"><span class="word-in">Tap a star</span></p>
+      <p class="sr-only" id="status" aria-live="polite"></p>
+    </form>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+{
+  "title": {
+    "zh-TW": "游標拖尾方塊串",
+    "en": "Cursor trail of squares"
+  },
+  "short": {
+    "zh-TW": "游標拖尾",
+    "en": "Cursor trail"
+  },
+  "summary": {
+    "zh-TW": "一串方塊跟著游標，越後面的跟得越慢、越小越淡，連成一條會甩動的尾巴；按住滑鼠時尾巴收緊、方塊轉 45°，停下一下就淡出。",
+    "en": "A chain of squares follows the cursor, each one slower, smaller and fainter than the last, forming a tail that swings. Holding the button tightens the tail and turns the squares 45°; pause and it fades out."
+  },
+  "topic": "pointer",
+  "tech": "quickTo",
+  "tags": [
+    "gsap.quickTo",
+    "timeScale",
+    "delayedCall",
+    "autoAlpha"
+  ],
+  "date": "2026-11-25",
+  "thumbAt": 1.6,
+  "thumb": ".area",
+  "useCases": [
+    "brand",
+    "launch",
+    "content"
+  ],
+  "cost": "light",
+  "costNote": "pointer",
+  "notes": [
+    {
+      "code": "duration: 0.08 + i * LAG",
+      "text": {
+        "zh-TW": "每一節各自一組 quickTo，只差在跟上的秒數：第一節幾乎黏著游標，越後面越慢。不用計算物理，快慢差就自然甩出一條尾巴。",
+        "en": "Each segment has its own quickTo, differing only in how long it takes to catch up: the first nearly sticks to the cursor, later ones lag more. No physics needed, the timing difference alone swings out a tail."
+      }
+    },
+    {
+      "code": "d.x.tween.timeScale(3)",
+      "text": {
+        "zh-TW": "quickTo 回傳的函式身上有 .tween，按住時直接把速度調成 3 倍、放開調回 1，不用重建補間。",
+        "en": "The function quickTo returns carries .tween; holding the button sets its timeScale to 3 and releasing sets it back to 1, with no tweens rebuilt."
+      }
+    },
+    {
+      "code": "gsap.delayedCall(IDLE, hide)",
+      "text": {
+        "zh-TW": "每次移動都重新計時，停下 1.2 秒才淡出；尾巴不會在游標停下時一直掛在畫面上。",
+        "en": "Every move restarts the timer and the tail fades after 1.2 s of stillness, so it doesn't linger when the cursor stops."
+      }
+    },
+    {
+      "code": "xPercent: -50, yPercent: -50",
+      "text": {
+        "zh-TW": "方塊的 left、top 都是 0，只用 x、y 移動，再用 -50% 讓中心對準游標；全部是 transform，不會重排版面。",
+        "en": "Squares sit at left/top 0 and move only with x/y, with -50% centring them on the cursor; all transform, no layout."
+      }
+    },
+    {
+      "code": "cursor: none",
+      "text": {
+        "zh-TW": "範圍裡把系統游標藏起來，第一節方塊就是游標。拖尾是純裝飾，不影響點擊；在網站上使用時，觸控和「減少動態」都應該關掉。",
+        "en": "The system cursor is hidden inside the area and the first square becomes the cursor. The trail is pure decoration and doesn't affect clicks; on a real site turn it off for touch and reduced motion."
+      }
+    }
+  ]
+}

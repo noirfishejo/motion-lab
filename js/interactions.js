@@ -136,10 +136,16 @@ export function magnetic(selector) {
   document.querySelectorAll(selector).forEach(btn => {
     const mx = gsap.quickTo(btn, 'x', { duration: 0.5, ease: 'expo.out' });
     const my = gsap.quickTo(btn, 'y', { duration: 0.5, ease: 'expo.out' });
-    btn.addEventListener('pointermove', e => {
+    // 中心點在進來時量一次（扣掉按鈕目前被吸走的位移）：移動時不再每次讀版面，也不會因為按鈕自己在動而越吸越偏
+    let cx = 0, cy = 0;
+    btn.addEventListener('pointerenter', () => {
       const r = btn.getBoundingClientRect();
-      mx((e.clientX - (r.left + r.width / 2)) * STRENGTH);
-      my((e.clientY - (r.top + r.height / 2)) * STRENGTH);
+      cx = r.left + r.width / 2 - gsap.getProperty(btn, 'x');
+      cy = r.top + r.height / 2 - gsap.getProperty(btn, 'y');
+    });
+    btn.addEventListener('pointermove', e => {
+      mx((e.clientX - cx) * STRENGTH);
+      my((e.clientY - cy) * STRENGTH);
     });
     btn.addEventListener('pointerleave', () => gsap.to(btn, { x: 0, y: 0, duration: 0.8, ease: 'elastic.out(1, 0.45)' }));
   });

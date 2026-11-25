@@ -101,6 +101,8 @@
   "costNote.clip": "clip-path repaints the clipped area each frame — a moderate cost for large or full-screen images.",
   "costNote.pointer": "Updates on every pointer move, but quickTo reuses one tween, so it’s light.",
   "costNote.ticker": "Every frame measures each element against the cursor (gsap.ticker); fine for a few hundred elements, switch to canvas for thousands. The loop stops when nothing is moving.",
+  "costNote.mask": "The mask (a mask-image gradient) repaints every frame as the cursor moves; smooth over a modest area, a medium cost full-screen.",
+  "costNote.flip3d": "3D flips only touch transform, but with many two-sided tiles flipping at once, watch it past a hundred or so.",
   "costNote.flip": "Flip measures layout once at the start, then only animates transforms; you’d only notice with hundreds of elements.",
   "costNote.svg": "Only stroke-dashoffset changes; light with a few paths.",
   "costNote.loop": "Loops forever; pause it when it scrolls off-screen.",

@@ -1,0 +1,69 @@
+{
+  "title": {
+    "zh-TW": "聚光燈游標揭露隱藏標註",
+    "en": "Spotlight cursor reveals hidden specs"
+  },
+  "short": {
+    "zh-TW": "聚光燈揭露",
+    "en": "Spotlight reveal"
+  },
+  "summary": {
+    "zh-TW": "游標像手電筒：照到的地方露出藏在版面下面的設計標註（格線、字級、間距），移開就收起來。上下兩層版面完全相同，上層用遮罩只露出游標周圍一圈。鍵盤和觸控可以用按鈕一次打開全部。",
+    "en": "The cursor works like a flashlight: wherever it shines, the design specs hidden under the layout appear (grid, type sizes, spacing), and they close again when it leaves. Two identical layers are stacked and the top one is masked to a circle around the cursor. A button opens everything for keyboard and touch users."
+  },
+  "topic": "pointer",
+  "tech": "quickTo",
+  "tags": [
+    "mask-image",
+    "CSS variables",
+    "radial-gradient",
+    "aria-pressed"
+  ],
+  "date": "2026-11-25",
+  "thumbAt": 1.6,
+  "thumb": ".spot",
+  "useCases": [
+    "brand",
+    "content",
+    "launch"
+  ],
+  "cost": "medium",
+  "costNote": "mask",
+  "notes": [
+    {
+      "code": "mask-image: radial-gradient(circle … at var(--x) var(--y))",
+      "text": {
+        "zh-TW": "上層用 radial-gradient 當遮罩：圓圈裡是黑色（顯示）、外面透明（隱藏）。邊緣從 70% 開始漸層，光圈才是柔和的，不是硬邊。",
+        "en": "The top layer is masked by a radial gradient: black inside the circle shows, transparent outside hides. Fading from 70% gives a soft edge rather than a hard ring."
+      }
+    },
+    {
+      "code": "gsap.quickTo(specs, '--x')",
+      "text": {
+        "zh-TW": "光圈中心存在 CSS 變數，quickTo 只建一次補間，每次移動只更新終點；稍微落後游標一點，比硬黏著游標更像手電筒。",
+        "en": "The centre lives in CSS variables; quickTo makes one tween and only updates its target, trailing the cursor slightly, which feels more like a flashlight than sticking to it."
+      }
+    },
+    {
+      "code": "gsap.to(specs, { '--r': RADIUS })",
+      "text": {
+        "zh-TW": "進來時半徑從 0 打開、離開時收回 0；進來的那一格先把中心直接放在游標上，不然光圈會從上次離開的地方滑過來。",
+        "en": "On enter the radius opens from 0 and closes on leave; the centre is placed on the cursor first, or the light would slide over from where it last left."
+      }
+    },
+    {
+      "code": "<button aria-pressed>",
+      "text": {
+        "zh-TW": "鍵盤和觸控沒有「游標停在上面」：按鈕把半徑放大到畫面對角線，一次露出全部標註。被遮住的上層設 aria-hidden，讀屏只唸下層的正文。",
+        "en": "Keyboard and touch have no hover: the button grows the radius to the diagonal and reveals everything. The masked layer is aria-hidden, so screen readers read only the real content."
+      }
+    },
+    {
+      "code": "cost: medium",
+      "text": {
+        "zh-TW": "遮罩每一格都要重畫，範圍不大時很順；拿去做全螢幕背景時，低階手機可能掉格，可以把半徑或範圍縮小。",
+        "en": "The mask repaints every frame: smooth over a modest area, but as a full-screen background low-end phones may drop frames, so shrink the radius or the area."
+      }
+    }
+  ]
+}

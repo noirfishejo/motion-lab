@@ -1,0 +1,116 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --surface-2: #1C1F24;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-ink: #FFFFFF;
+  --accent-fg: #6E83FF;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --surface-2: #EDEDE8;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage {
+  width: min(760px, 100%);
+  padding: 32px 16px;
+  display: grid;
+  gap: 24px;
+}
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+.hint { font: 400 12px/1.4 "JetBrains Mono", monospace; color: var(--muted); text-align: center; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.compare {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  cursor: col-resize;
+  touch-action: pan-y; /* 手機：上下滑還是捲動頁面，左右拖才是拖分隔線 */
+  user-select: none;
+}
+.shot { position: absolute; inset: 0; padding: 6%; }
+.before { background: var(--surface); }
+.after { background: var(--bg); }
+.after-clip { position: absolute; inset: 0; overflow: hidden; will-change: transform; }
+.after-clip .shot { will-change: transform; }
+
+/* 假畫面：Before 是灰色線框，After 是上了顏色的完成稿 */
+.mock { height: 100%; display: grid; grid-template-rows: 8% 34% 5% 5% 9% 1fr; gap: 4%; }
+.mock > span, .m-cards span { display: block; }
+.before .mock span, .before .m-cards span { border: 1px dashed var(--line-strong); }
+.m-line.w70 { width: 70%; } .m-line.w50 { width: 50%; }
+.m-btn { width: 26%; }
+.m-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4%; }
+.after .m-nav { border-bottom: 1px solid var(--line); }
+.after .m-hero { display: grid; place-items: center; background: var(--accent); color: var(--accent-ink); font-size: clamp(28px, 6vw, 56px); }
+.after .m-line { background: var(--text); opacity: 0.85; }
+.after .m-line.w50 { opacity: 0.4; }
+.after .m-btn { display: grid; place-items: center; background: var(--accent-fg); color: var(--bg); font-size: clamp(9px, 1.6vw, 13px); }
+.after .m-cards span { background: var(--surface-2); border-top: 2px solid var(--accent-fg); }
+
+.label {
+  position: absolute;
+  top: 12px;
+  padding: 4px 8px;
+  font: 400 11px/1 "JetBrains Mono", monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--bg);
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+.label-before { left: 12px; }
+.label-after { right: 12px; color: var(--accent-fg); }
+
+/* 分隔線：寬 0，用 x 移動；中間的方形把手 */
+.handle { position: absolute; top: 0; bottom: 0; left: 0; width: 0; will-change: transform; outline: none; }
+.handle::before { content: ""; position: absolute; top: 0; bottom: 0; left: -1px; width: 2px; background: var(--accent-fg); }
+.knob {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  display: grid;
+  grid-auto-flow: column;
+  place-content: center;
+  font-size: 14px;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.handle:focus-visible .knob { outline: 2px solid var(--accent-fg); outline-offset: 3px; }

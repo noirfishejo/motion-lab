@@ -1,0 +1,77 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --surface-2: #1C1F24;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-ink: #FFFFFF;
+  --accent-fg: #6E83FF;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --surface-2: #EDEDE8;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage {
+  width: min(760px, 100%);
+  padding: 32px 16px;
+  display: grid;
+  gap: 24px;
+}
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+.hint { font: 400 12px/1.4 "JetBrains Mono", monospace; color: var(--muted); text-align: center; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.area {
+  position: relative;
+  height: 360px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: none;          /* 拖尾的第一個方塊就是游標 */
+  touch-action: none;    /* 手指在範圍裡滑動是畫拖尾，不是捲動頁面 */
+  display: grid;
+  place-items: center;
+}
+.area-text { font: 500 clamp(32px, 8vw, 64px)/1 "Poppins", sans-serif; color: var(--line-strong); user-select: none; }
+/* 每個方塊：left/top 都是 0，位置只用 x、y（transform）移動；中心對準游標 */
+.dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: var(--accent);
+  pointer-events: none;
+  will-change: transform;
+}
+.dot:first-child { background: var(--accent-fg); }

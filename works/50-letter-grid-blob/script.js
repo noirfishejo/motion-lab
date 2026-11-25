@@ -66,7 +66,9 @@ function tick(time, deltaTime) {
     }
     if (c.heat === 0 && c.stretch !== 1) { c.stretch = 1; c.rot = 0; }
     c.setBlock({ scaleX: c.heat * c.stretch, scaleY: c.heat / c.stretch, rotation: c.rot });
-    c.setGlyph({ opacity: 1 - Math.min(c.heat * 3, 1) }); // 字母比方塊早消失：小方塊上不會壓著半透明的字
+    // 方塊一出現，字母就縮小消失（heat 到 0.08 時已經完全看不到）：畫面上同一格只會有字母「或」方塊，不會疊在一起
+    const g = Math.max(0, 1 - c.heat * 12);
+    c.setGlyph({ opacity: g, scale: 0.6 + g * 0.4 });
   });
 
   // 全部縮回去、游標也不在裡面：停掉每一格的計算（不在背景空轉）
@@ -91,10 +93,13 @@ grid.addEventListener('pointerleave', () => { pointer.inside = false; });
 // 寬度變了才重排（作品頁展開程式碼時只會改高度）
 let lastWidth = grid.clientWidth;
 build(); // 先建一次（不等 ResizeObserver 的第一次通知）
+// 拖動視窗時每一格都會通知：等寬度停下 120ms 再重建一次（debounce）
+let resizeTimer;
 new ResizeObserver(() => {
   if (grid.clientWidth === lastWidth) return;
   lastWidth = grid.clientWidth;
-  build();
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(build, 120);
 }).observe(grid);
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）

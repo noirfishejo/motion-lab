@@ -1,0 +1,69 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --surface-2: #1C1F24;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-ink: #FFFFFF;
+  --accent-fg: #6E83FF;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --surface-2: #EDEDE8;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage {
+  width: min(760px, 100%);
+  padding: 32px 16px;
+  display: grid;
+  gap: 24px;
+}
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+.hint { font: 400 12px/1.4 "JetBrains Mono", monospace; color: var(--muted); text-align: center; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* 磚塊牆：perspective 放在外層，所有磚塊共用同一個視點，翻轉才有立體感 */
+.wall {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 10), 1fr);
+  gap: 4px;
+  perspective: 900px;
+  touch-action: none; /* 手指在磚塊上滑動是翻磚，不是捲動頁面 */
+}
+.tile { position: relative; aspect-ratio: 1; transform-style: preserve-3d; will-change: transform; }
+/* 正面和背面疊在一起，背面先轉 180°；背對我們的那一面藏起來（backface-visibility） */
+.face { position: absolute; inset: 0; display: grid; place-items: center; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.front { background: var(--surface); border: 1px solid var(--line); }
+.front::after { content: ""; width: 3px; height: 3px; background: var(--line-strong); }
+.back { transform: rotateY(180deg); background: var(--accent); color: var(--accent-ink); font: 500 clamp(14px, 3vw, 24px)/1 "Poppins", sans-serif; }

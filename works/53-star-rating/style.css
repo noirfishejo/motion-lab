@@ -1,0 +1,88 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --surface-2: #1C1F24;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-ink: #FFFFFF;
+  --accent-fg: #6E83FF;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --surface-2: #EDEDE8;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage {
+  width: min(760px, 100%);
+  padding: 32px 16px;
+  display: grid;
+  gap: 24px;
+}
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+.hint { font: 400 12px/1.4 "JetBrains Mono", monospace; color: var(--muted); text-align: center; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.rating {
+  justify-self: center;
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  padding: 40px 48px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+fieldset { border: 0; display: grid; justify-items: center; gap: 20px; }
+.question { font: 500 24px/1.2 "Poppins", sans-serif; }
+
+.stars { display: flex; gap: 4px; }
+/* 每顆星：外框星星在下、實心星星疊在上面（平常縮到 0，script.js 放大） */
+.star {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  font-size: 40px;
+  color: var(--line-strong);
+  cursor: pointer;
+}
+.star i { grid-area: 1 / 1; }
+.star .fill { color: var(--accent-fg); transform: scale(0); }
+/* 鍵盤焦點在隱藏的 radio 上：外框畫在它後面那顆星 */
+.stars input:focus-visible + .star { outline: 2px solid var(--accent-fg); outline-offset: -2px; }
+
+/* 文字回饋：一行高的窗口，換字時舊字往上、新字從下面進來 */
+.word { height: 20px; overflow: hidden; font-size: 15px; color: var(--muted); }
+.word-in { display: block; line-height: 20px; }
+.word.is-set { color: var(--text); }

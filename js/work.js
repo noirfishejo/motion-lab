@@ -257,7 +257,7 @@ function setupWorksNav() {
     if (open && !init) nav.querySelector('[aria-current]')?.scrollIntoView({ block: 'nearest' });
     if (focus && !open) toggle.focus();
     if (focus && open && overlay) search.focus(); // 手機、平板打開側欄時，直接可以打字搜尋
-    if (!init) setTimeout(() => editor?.refresh(), 650); // 內容變寬變窄後，編輯器重新量尺寸
+    if (!init) requestAnimationFrame(() => editor?.refresh()); // 內容寬度直接改變（不補間），下一格就重新量編輯器尺寸
     // 打開時：分組標題和連結依序浮出（GSAP）；背景遮罩淡入
     if (open && !init && window.gsap && !reduceMotion()) {
       gsap.fromTo(nav.querySelectorAll('.works-nav-search, .works-nav-group h3, .works-nav-group li'),

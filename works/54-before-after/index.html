@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 跟著作品集的亮／暗模式（單獨打開這個檔案時維持深色） -->
+  <script>try { document.documentElement.dataset.theme = parent.document.documentElement.dataset.theme || ''; } catch (e) {}</script>
+  <!-- 載入完成前先藏起來：GSAP 把元素放到動畫「起點」之前，瀏覽器會先畫出最終畫面，看起來就像閃一下
+       等頁面和字體都載入、起點設好之後（再等兩格畫面），才顯示；3 秒後無論如何都顯示 -->
+  <script>
+    (function () {
+      var root = document.documentElement, show = function () { root.classList.remove('is-loading'); };
+      root.classList.add('is-loading');
+      Promise.all([new Promise(function (r) { addEventListener('load', r); }), document.fonts.ready])
+        .then(function () { requestAnimationFrame(function () { requestAnimationFrame(show); }); });
+      setTimeout(show, 3000);
+    })();
+  </script>
+  <title>54 Before and after slider</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <span class="tag">before / after</span>
+
+    <!-- 前後對比：兩張畫面疊在一起，After 只露出分隔線右邊；拖曳分隔線（或點畫面、用方向鍵）比較 -->
+    <div class="compare">
+      <!-- Before：線框稿（假畫面，用色塊排出來） -->
+      <div class="shot before" aria-hidden="true">
+        <div class="mock">
+          <span class="m-nav"></span>
+          <span class="m-hero"></span>
+          <span class="m-line w70"></span>
+          <span class="m-line w50"></span>
+          <span class="m-btn"></span>
+          <div class="m-cards"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <!-- After：完成稿。外層往右推 p、內層往左推 p → 內容不動，只有左邊被裁掉（只用 transform，不改寬度） -->
+      <div class="after-clip" aria-hidden="true">
+        <div class="shot after">
+          <div class="mock">
+            <span class="m-nav"></span>
+            <span class="m-hero"><i class="ph-light ph-sparkle"></i></span>
+            <span class="m-line w70"></span>
+            <span class="m-line w50"></span>
+            <span class="m-btn">Get started</span>
+            <div class="m-cards"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+      <span class="label label-before" aria-hidden="true">Before</span>
+      <span class="label label-after" aria-hidden="true">After</span>
+      <!-- 分隔線＋把手：role="slider" 讓鍵盤和讀屏都能操作 -->
+      <div class="handle" role="slider" tabindex="0" aria-label="Before and after divider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% before, 50% after">
+        <span class="knob"><i class="ph-light ph-caret-left"></i><i class="ph-light ph-caret-right"></i></span>
+      </div>
+    </div>
+    <p class="hint">Drag the divider, click anywhere, or use the arrow keys</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

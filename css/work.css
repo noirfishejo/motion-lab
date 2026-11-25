@@ -214,7 +214,7 @@ html.nav-init body,html.nav-init .works-nav{transition:none!important}
 /* 寬螢幕：側欄固定在左側，內容往右讓位（不蓋住內容） */
 @media (min-width:1280px){
   .works-nav-scrim{display:none!important}
-  body{transition:padding-left var(--dur) var(--ease-out)}
+  /* 內容直接讓位、不補間 padding：補間 padding 會讓整頁（含預覽 iframe）每一格重新排版 0.6 秒；側欄本身仍用 transform 滑入 */
   body.nav-docked,html.nav-preload body{padding-left:var(--side-w)}
   html.nav-preload .works-nav{transform:none;visibility:visible}
 }

@@ -63,7 +63,7 @@ body {
   height: 4px;
   margin: -2px 0 0 -2px; /* 讓 x、y 對準點的中心 */
   background: var(--dot);
-  will-change: transform;
+  /* 不加 will-change：幾百個小點各自升成圖層反而吃記憶體；4px 的點重畫很便宜 */
 }
 /* 被推得比較遠的點換成強調色（script.js 切換 class，只在狀態改變時寫入） */
 .dot.is-hot { background: var(--accent-fg); }

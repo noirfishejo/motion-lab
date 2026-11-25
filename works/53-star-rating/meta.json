@@ -1,0 +1,70 @@
+{
+  "title": {
+    "zh-TW": "星等評分滑過預覽與選定",
+    "en": "Star rating hover preview and select"
+  },
+  "short": {
+    "zh-TW": "星等評分",
+    "en": "Star rating"
+  },
+  "summary": {
+    "zh-TW": "五顆星的評分：滑鼠滑過時星星由左到右依序亮起、下方文字跟著換（Poor → Loved it），離開回到已選的分數；點下去那顆星彈一下，前面的星星跟著小跳。本質是五個單選按鈕，鍵盤方向鍵、讀屏都能用。",
+    "en": "A five-star rating: on hover the stars light up left to right and the word below changes (Poor → Loved it), returning to the chosen score on leave. Clicking pops the chosen star and gives the ones before it a little hop. Underneath it is five radio buttons, so arrow keys and screen readers just work."
+  },
+  "topic": "forms",
+  "tech": "Tween",
+  "tags": [
+    "stagger",
+    "back.out",
+    "elastic.out",
+    "keyframes",
+    "radio"
+  ],
+  "date": "2026-11-25",
+  "thumbAt": 2.6,
+  "thumb": ".rating",
+  "useCases": [
+    "ecommerce",
+    "app",
+    "content"
+  ],
+  "cost": "light",
+  "costNote": "transform",
+  "notes": [
+    {
+      "code": "<input type=\"radio\" class=\"sr-only\">",
+      "text": {
+        "zh-TW": "評分其實就是「五選一」：用五個隱藏的 radio 加 label，鍵盤方向鍵切換、讀屏唸「3 stars, Good」都是瀏覽器內建的，星星只是外觀。焦點框畫在 radio 後面那顆星上。",
+        "en": "A rating is really a choice of one in five: five hidden radios with labels give arrow-key switching and screen reader labels like “3 stars, Good” for free; the stars are only the look. The focus ring is drawn on the star after the radio."
+      }
+    },
+    {
+      "code": "stagger: { each, from: 'end' }",
+      "text": {
+        "zh-TW": "亮起來時從左到右依序放大，熄掉時從右到左依序縮小，方向跟著手移動的方向，看起來像星星被手「掃」過。",
+        "en": "Lighting up staggers left to right and switching off staggers right to left, following the hand so the stars feel swept."
+      }
+    },
+    {
+      "code": "gsap.fromTo(star, { scale: 1.35, rotation: -18 }, { ease: 'elastic.out' })",
+      "text": {
+        "zh-TW": "選定的那顆從大一點、歪一點彈回原位，讓「我選好了」和「只是滑過」有明顯差別。前面亮著的星星用 keyframes 往上跳一下再 bounce 落下。",
+        "en": "The chosen star springs back from slightly larger and tilted, so choosing feels clearly different from hovering. The lit stars before it hop up and bounce down with keyframes."
+      }
+    },
+    {
+      "code": "yPercent: -100 → 100 → 0",
+      "text": {
+        "zh-TW": "下方文字在一行高的窗口裡換：舊字往上滑出、新字從下面滑進來。文字只在選定時寫進 aria-live，滑過的預覽不唸，免得讀屏一直講話。",
+        "en": "The word swaps inside a one-line window: the old one slides up and out, the new one slides in from below. Only the chosen score is written to aria-live; hover previews stay silent so screen readers aren't chatty."
+      }
+    },
+    {
+      "code": "if (e.pointerType === 'mouse')",
+      "text": {
+        "zh-TW": "觸控沒有「滑過」，只有滑鼠才預覽；手指直接點就是選定。這一頁額外載入 Phosphor 的 Fill 粗細，只用在實心星星。",
+        "en": "Touch has no hover, so only the mouse previews; a tap simply chooses. This page also loads Phosphor's Fill weight, used only for the filled star."
+      }
+    }
+  ]
+}

@@ -456,11 +456,12 @@ function applyFilter(topic = currentTopic) {
   if (reduceMotion()) { swap(); gsap.set(next, { opacity: 1, y: 0 }); return; }
 
   filterTl = gsap.timeline()
-    .to(shown, { opacity: 0, y: -16, duration: 0.25, stagger: 0.03, ease: 'power2.in' })
+    // stagger 用 amount（整排總共花多久）而不是 each：卡片 52 張時，each 0.03 要等 1.8 秒新結果才出現
+    .to(shown, { opacity: 0, y: -16, duration: 0.25, stagger: { amount: 0.2 }, ease: 'power2.in' })
     .add(swap)
     .add(() => {
       const ordered = [...document.querySelectorAll('.work-card')].filter(c => next.includes(c)); // 排序後的順序
-      filterTl.fromTo(ordered, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'expo.out' }); // 放進同一條 timeline：連點時一起被停掉
+      filterTl.fromTo(ordered, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, stagger: Math.min(0.08, 0.6 / ordered.length), ease: 'expo.out' }); // 張數少時每張差 0.08 秒，很多張時整排最多 0.6 秒；放進同一條 timeline：連點時一起被停掉
     });
 }
 

@@ -1,0 +1,114 @@
+:root {
+  color-scheme: dark;   /* 告訴瀏覽器這是深色頁面：載入中的空白也會是深色，不會閃白 */
+  --bg: #0B0D10;
+  --surface: #14161A;
+  --surface-2: #1C1F24;
+  --line: #23262B;
+  --line-strong: #3B3E44;
+  --text: #F0F0F0;
+  --muted: #8F8C85;
+  --accent: #1733E5;
+  --accent-ink: #FFFFFF;
+  --accent-fg: #6E83FF;
+}
+
+/* 亮色模式：作品集切換成亮色時，<html> 會加上 data-theme="light"（見 index.html 開頭） */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F5F5F2;
+  --surface: #FFFFFF;
+  --surface-2: #EDEDE8;
+  --line: #E0E0DB;
+  --line-strong: #C4C4BE;
+  --text: #141518;
+  --muted: #62625D;
+  --accent-fg: #1733E5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+.is-loading body { visibility: hidden; } /* 見 index.html 開頭：載入完成、動畫起點設好才顯示 */
+
+/* 隱藏捲軸（仍可捲動），放進作品頁預覽時比較乾淨 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter Tight", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage {
+  width: min(760px, 100%);
+  padding: 32px 16px;
+  display: grid;
+  gap: 24px;
+}
+.tag { font: 400 12px/1 "JetBrains Mono", monospace; color: var(--accent-fg); }
+.hint { font: 400 12px/1.4 "JetBrains Mono", monospace; color: var(--muted); text-align: center; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.spot {
+  position: relative;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+.layer { padding: clamp(28px, 6vw, 56px); display: grid; gap: 24px; }
+.kicker { font: 400 12px/1 "JetBrains Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.title { font: 500 clamp(36px, 7vw, 56px)/1.07 "Poppins", sans-serif; letter-spacing: -0.01em; }
+.body { max-width: 34ch; font-size: 16px; line-height: 1.5; color: var(--muted); }
+
+/* 上層：疊在下層正上方，背景是藍圖般的格線；遮罩只露出 --x、--y 周圍半徑 --r 的圓 */
+.specs {
+  --x: 0; --y: 0; --r: 0;
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 24px 24px;
+  -webkit-mask-image: radial-gradient(circle calc(var(--r) * 1px) at calc(var(--x) * 1px) calc(var(--y) * 1px), #000 70%, transparent 100%);
+  mask-image: radial-gradient(circle calc(var(--r) * 1px) at calc(var(--x) * 1px) calc(var(--y) * 1px), #000 70%, transparent 100%);
+  pointer-events: none;
+}
+.specs .title { color: var(--accent-fg); outline: 1px dashed var(--accent-fg); outline-offset: 4px; }
+.specs .body { color: var(--text); outline: 1px dashed var(--line-strong); outline-offset: 4px; }
+.specs .kicker { color: var(--accent-fg); }
+
+/* 標註 */
+.mark {
+  position: absolute;
+  font: 400 11px/1 "JetBrains Mono", monospace;
+  color: var(--accent-ink);
+  background: var(--accent);
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+.m-font { right: clamp(12px, 4vw, 40px); top: 34%; }
+.m-body { right: clamp(12px, 4vw, 40px); bottom: 14%; }
+.m-grid { left: 0; right: 0; top: clamp(28px, 6vw, 56px); height: 0; border-top: 1px solid var(--accent-fg); padding: 0; opacity: 0.6; }
+
+.toggle {
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text);
+  font: 400 14px/1 "Inter Tight", sans-serif;
+  cursor: pointer;
+}
+.toggle i { font-size: 18px; }
+.toggle[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.toggle:focus-visible { outline: 2px solid var(--accent-fg); outline-offset: 3px; }

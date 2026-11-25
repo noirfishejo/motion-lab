@@ -23,7 +23,7 @@
 | 字體 | Poppins（標題）／Inter Tight（內文）／JetBrains Mono（程式碼、標籤）／Noto Sans TC（中文備援） |
 | 字重 | 中文大標 500；按鈕和 20px 以下的文字 ≤ 400～500；全站開啟 `-webkit-font-smoothing: antialiased`。深色底上的淺色字看起來會比實際更粗，所以字重要偏輕。 |
 | 形狀 | 直角，所有圓角都是 0 |
-| 圖示 | Phosphor Icons・Light |
+| 圖示 | Phosphor Icons・Light（唯一例外：「選中」需要實心圖示時可加載 Fill，例如星等評分的實心星星） |
 | 動態節奏 | expo 快出：GSAP 用 `expo.out`，CSS 用 `cubic-bezier(.16,1,.3,1)` |
 
 所有數值都定義在 `css/tokens.css`，元件裡不寫死數值。完整的設計規範（顏色、字體、按鈕狀態、動態規則）見 **DESIGN.md**，改設計時兩邊一起更新。

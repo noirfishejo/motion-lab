@@ -10,27 +10,29 @@ const field = document.querySelector('.field');
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let dots = [];
+let grid = '';
 function build() {
   const w = field.clientWidth, h = field.clientHeight;
   const cols = Math.floor(w / GAP), rows = Math.floor(h / GAP);
   const ox = (w - (cols - 1) * GAP) / 2, oy = (h - (rows - 1) * GAP) / 2; // 置中
-  field.innerHTML = '';
-  dots = [];
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
+  // 欄數、列數都沒變（例如只寬了幾 px）：沿用原本的點，只重算位置，不重建幾百個元素
+  if (grid !== `${cols}x${rows}`) {
+    grid = `${cols}x${rows}`;
+    field.innerHTML = '';
+    dots = [];
+    for (let i = 0; i < cols * rows; i++) {
       const el = document.createElement('span');
       el.className = 'dot';
       field.append(el);
-      const d = {
-        el, hot: false,
-        hx: ox + c * GAP, hy: oy + r * GAP, // 原本的位置（home）
-        dx: 0, dy: 0, vx: 0, vy: 0,         // 偏移和速度
-        set: gsap.quickSetter(el, 'css')    // 每一格寫 transform，用 quickSetter 最快
-      };
-      d.set({ x: d.hx, y: d.hy });
-      dots.push(d);
+      dots.push({ el, hot: false, rest: false, dx: 0, dy: 0, vx: 0, vy: 0, set: gsap.quickSetter(el, 'css') }); // quickSetter：每一格寫 transform 最快
     }
   }
+  dots.forEach((d, i) => {
+    d.hx = ox + (i % cols) * GAP; // 原本的位置（home）
+    d.hy = oy + Math.floor(i / cols) * GAP;
+    d.rest = false;
+    d.set({ x: d.hx + d.dx, y: d.hy + d.dy });
+  });
 }
 
 const pointer = { x: -9999, y: -9999, inside: false };
@@ -75,8 +77,13 @@ function tick(time, deltaTime) {
     }
 
     const off = Math.hypot(d.dx, d.dy);
-    if (off > 0.05 || Math.abs(d.vx) + Math.abs(d.vy) > 0.05) moving = true;
-    else if (d.dx || d.dy) { d.dx = d.dy = d.vx = d.vy = 0; }
+    if (off > 0.05 || Math.abs(d.vx) + Math.abs(d.vy) > 0.05) { moving = true; d.rest = false; }
+    else {
+      // 停在原位：上一格已經畫在原位就跳過，不再寫 DOM（幾百個點裡通常只有游標附近幾十個在動）
+      if (d.rest) return;
+      d.dx = d.dy = d.vx = d.vy = 0;
+      d.rest = true;
+    }
     // 推得越遠放越大；只有狀態改變時才切換 class（不要每一格都改 DOM）
     d.set({ x: d.hx + d.dx, y: d.hy + d.dy, scale: 1 + Math.min(off / FORCE, 1) * 1.2 });
     const hot = off > FORCE * 0.35;
@@ -114,10 +121,13 @@ field.addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') pointe
 // 寬度變了才重排（作品頁展開程式碼時只會改高度）
 let lastWidth = field.clientWidth;
 build(); // 先建一次（不等 ResizeObserver 的第一次通知）
+// 拖動視窗時每一格都會通知：等寬度停下 120ms 再重建一次（debounce）
+let resizeTimer;
 new ResizeObserver(() => {
   if (field.clientWidth === lastWidth) return;
   lastWidth = field.clientWidth;
-  build();
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(build, 120);
 }).observe(field);
 
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
