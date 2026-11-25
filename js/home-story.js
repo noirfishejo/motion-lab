@@ -285,20 +285,31 @@ function initLatestCarousel(box) {
 
   // 固定的長度＝橫向推進（每張 0.8 個螢幕高）＋再多一個螢幕高給下一段蓋上來；
   // 下一段往上拉一個螢幕高（負的 margin），橫向推完的那一刻剛好從畫面底部出現，固定結束時剛好蓋滿
-  const slide = () => innerHeight * (N - 1) * 0.8;
+  // 每一張都要停一下才換：捲動進度先換算成「第幾張」，每兩張之間前後各有 HOLD 是停著的；
+  // 第一張和最後一張前後再多留半段，一進來不會馬上被推走（之前第一張「磚塊翻面」來不及看到）
+  const PER = 0.9;   // 每一張分到幾個螢幕高的捲動距離
+  const HOLD = 0.5;  // 每兩張之間，停著的比例（越大停越久、換得越快）
+  const slide = () => innerHeight * N * PER;
+  const step = r => {
+    const i = Math.floor(r), t = r - i;
+    const e = Math.max(0, Math.min(1, (t - HOLD / 2) / (1 - HOLD)));
+    return i + e * e * (3 - 2 * e); // smoothstep：起步和停下都柔一點
+  };
+  const toIndex = q => step(Math.max(0, Math.min(N - 1, q * N - 0.5)));
   const next = sec.nextElementSibling;
-  const pull = () => { if (next) next.style.marginTop = `${-innerHeight}px`; };
+  // 下一段往上拉一個螢幕高，而且至少一個螢幕高：蓋上來之後繼續往下捲時，才不會露出底下這段的下半部
+  const pull = () => { if (next) { next.style.marginTop = `${-innerHeight}px`; next.style.minHeight = `${innerHeight}px`; } };
   pull();
   ScrollTrigger.addEventListener('refreshInit', pull);
   const st = ScrollTrigger.create({
     trigger: sec, start: 'top top', end: () => `+=${slide() + innerHeight}`,
     pin: true, scrub: 0.6, invalidateOnRefresh: true,
     onRefresh: () => { measure(); },
-    onUpdate: self => render(Math.min(1, self.progress * (slide() + innerHeight) / slide()) * (N - 1))
+    onUpdate: self => render(toIndex(Math.min(1, self.progress * (slide() + innerHeight) / slide())))
   });
   // 鍵盤：Tab 到（畫面上藏起來的）卡片連結時，輪播捲到那一張
   grid.addEventListener('focusin', e => {
     const i = [...grid.querySelectorAll('.latest-card')].indexOf(e.target.closest('.latest-card'));
-    if (i >= 0) window.scrollTo(0, st.start + slide() * i / (N - 1));
+    if (i >= 0) window.scrollTo(0, st.start + slide() * (i + 0.5) / N);
   });
 }

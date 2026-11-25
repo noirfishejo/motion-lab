@@ -1,2 +1,4 @@
 .DS_Store
-.claude/
+# Claude 的個人設定不存進版本（可能有本機權限設定）；但專案的 skill 要存
+.claude/*
+!.claude/skills/
