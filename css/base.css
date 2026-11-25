@@ -52,6 +52,19 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 .icon-toggle:hover{color:var(--text);background:var(--surface-2)}
 .icon-toggle[aria-expanded="true"]{color:var(--text)}
 .lang-toggle{font:400 12px/1 var(--font-mono);letter-spacing:.04em}
+/* 頁首的文字連結（動態規範）：和圖示按鈕同一排、同樣低調；目前所在的頁面變亮並加底線 */
+.nav-link{display:inline-flex;align-items:center;min-height:32px;padding:0 8px;margin-right:4px;font:400 12px/1 var(--font-mono);letter-spacing:.04em;color:var(--muted);transition:color var(--dur-fast)}
+.nav-link:hover,.nav-link[aria-current="page"]{color:var(--text)}
+.nav-link[aria-current="page"]{text-decoration:underline;text-decoration-color:var(--accent-fg);text-underline-offset:6px}
+
+/* ── 開關（作品頁的 Markers、動態規範頁的「預覽減少動態」）：滑塊的位置和伸縮交給 GSAP（練習「開關 Switch」的做法） ── */
+.switch{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 10px;font:400 13px/1 var(--font-mono);color:var(--muted)}
+.switch:hover{color:var(--text)}
+.switch-track{position:relative;width:32px;height:18px;border:1px solid var(--line-strong);background:var(--bg);transition:background-color var(--dur-fast),border-color var(--dur-fast)}
+.switch-thumb{position:absolute;top:2px;left:2px;width:12px;height:12px;background:var(--muted);transition:background-color var(--dur-fast)} /* 位置和伸縮交給 GSAP（練習 11 的做法） */
+.switch[aria-checked="true"]{color:var(--text)}
+.switch[aria-checked="true"] .switch-track{background:var(--accent);border-color:var(--accent)}
+.switch[aria-checked="true"] .switch-thumb{background:var(--accent-ink)}
 
 /* ── 按鈕（狀態規則見 DESIGN.md「按鈕」）──
    三種外觀，狀態變化統一：

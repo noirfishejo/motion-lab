@@ -117,5 +117,17 @@
   "costNote.paint": "光澤靠 background-position 移動，每一格都要重畫；骨架塊少時沒問題，整頁很多塊時改成偽元素用 transform 移動。",
   "home.filter.clear": "清除篩選",
   "home.filter.more": "篩選",
-  "work.resetHint": "放棄所有修改，回到檔案裡的版本"
+  "work.resetHint": "放棄所有修改，回到檔案裡的版本",
+  "nav.guide": "規範",
+  "guide.kicker": "Motion guidelines",
+  "guide.title": "動態規範",
+  "guide.lead": "做練習時累積下來的判斷：用哪種 ease、多長、什麼時候該用 GSAP、怎麼做才不吃效能。每條規則都附上實際用到它的練習。",
+  "guide.basis": "依據 {count} 個練習整理",
+  "guide.reduce": "預覽減少動態",
+  "guide.toc": "目錄",
+  "guide.play": "播放",
+  "guide.playAll": "全部播放",
+  "guide.examples": "練習",
+  "guide.total": "總共 {s} 秒",
+  "guide.durNote": "離開比進入快：同一個元件，離場大約用進場的六到七成時間。"
 }

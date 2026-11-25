@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>動態規範｜Motion Lab</title>
+  <meta name="description" content="Motion Lab">
+  <!-- 配色：先套用記住的設定（沒有就跟著系統），在畫面出現前完成，避免閃一下 -->
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      var theme = saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&family=Noto+Sans+TC:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/guide.css">
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="nav.skip"></a>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html" data-i18n-attr="aria-label:nav.home">
+        <span class="logo-mark" aria-hidden="true"></span><span class="logo-text">Motion Lab</span>
+      </a>
+      <div class="header-end">
+        <a class="nav-link" href="guide.html" aria-current="page" data-i18n="nav.guide"></a>
+        <button class="icon-toggle lang-toggle" type="button" id="langToggle" data-i18n="lang.switch" data-i18n-attr="aria-label:lang.switchLabel;data-tip:lang.switchTip"></button>
+        <button class="icon-toggle" type="button" id="themeToggle"><i class="ph-light ph-sun" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- ── 頁首：標題、說明、依據幾個練習、預覽減少動態的開關 ── -->
+    <section class="guide-head container" id="top">
+      <p class="label" data-i18n="guide.kicker"></p>
+      <h1 data-i18n="guide.title"></h1>
+      <p class="guide-lead" data-i18n="guide.lead"></p>
+      <div class="guide-meta">
+        <span id="guideBasis"></span>
+        <!-- 只影響這一頁的示範：示範改成直接切換，讓人看看「減少動態」時是什麼樣子 -->
+        <button class="switch" type="button" role="switch" aria-checked="false" id="reduceToggle">
+          <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+          <span data-i18n="guide.reduce"></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ── 內容：電腦版左邊是目錄（固定在畫面上），右邊是各節（js/guide.js 依 js/guide-data.js 產生） ── -->
+    <div class="guide-layout container">
+      <nav class="guide-toc" aria-labelledby="toc-title">
+        <p class="label" id="toc-title" data-i18n="guide.toc"></p>
+        <ol id="guideToc"></ol>
+      </nav>
+      <div class="guide-body" id="guideBody"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span data-i18n="footer.left"></span>
+      <a href="#top" data-to-top data-i18n="footer.right"></a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script type="module" src="js/guide.js"></script>
+</body>
+</html>

@@ -117,5 +117,17 @@
   "costNote.paint": "The shine moves via background-position, which repaints every frame; fine for a few blocks, but for a whole page move a pseudo-element with transform instead.",
   "home.filter.clear": "Clear filters",
   "home.filter.more": "Filters",
-  "work.resetHint": "Discard all edits and go back to the saved files"
+  "work.resetHint": "Discard all edits and go back to the saved files",
+  "nav.guide": "Guide",
+  "guide.kicker": "Motion guidelines",
+  "guide.title": "Motion guidelines",
+  "guide.lead": "The judgement built up while making these practices: which ease, how long, when GSAP is worth it and how to keep it cheap. Every rule links to the practices that use it.",
+  "guide.basis": "Drawn from {count} practices",
+  "guide.reduce": "Preview reduced motion",
+  "guide.toc": "Contents",
+  "guide.play": "Play",
+  "guide.playAll": "Play all",
+  "guide.examples": "See",
+  "guide.total": "{s}s total",
+  "guide.durNote": "Exits are quicker than entrances: the same component leaves in roughly 60–70% of its entrance time."
 }
