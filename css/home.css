@@ -68,6 +68,7 @@
 #story{position:relative;z-index:1;background:var(--bg)}
 .story-section{position:relative;padding:var(--section-gap) var(--gutter);display:grid;gap:40px;background:var(--bg);border-top:1px solid var(--line)} /* 不透明＋上緣一條線：下一段蓋上來時看得出是一層一層疊上去 */
 .story-section:first-child{border-top:0}
+.latest-wrap{position:relative;background:var(--bg)} /* 最新練習的外層（固定住的是它，見 home-story.js） */
 /* 被下一段蓋住時慢慢變暗（js/home-story.js 補間透明度） */
 .story-dim{position:absolute;inset:0;z-index:5;background:var(--bg);opacity:0;pointer-events:none}
 /* 數字的遮罩：數字從下緣升上來 */

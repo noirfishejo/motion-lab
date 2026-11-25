@@ -7,7 +7,7 @@
 import { initI18n, t, pick } from './i18n.js';
 import { initHeader } from './header.js';
 import { initSmooth } from './smooth.js';
-import { initCursor, initTooltips, magnetic, toast, copyText } from './interactions.js';
+import { initCursor, initTooltips, magnetic, toast, copyText, pageReveal } from './interactions.js';
 import { EASES as GUIDE_EASES } from './guide-data.js';
 
 const L = (zh, en) => ({ 'zh-TW': zh, en });
@@ -270,3 +270,4 @@ function update(fromInput = false) {
 renderParams();
 update();
 new ResizeObserver(() => { if (!player?.isActive()) draw(1); }).observe($('lanes'));
+pageReveal(); // 進場：和作品頁相同（標題、側欄浮上來，面板捲到時一批一批浮出）

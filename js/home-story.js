@@ -192,13 +192,17 @@ export async function initStoryMotion() {
 
   // ── 向上覆蓋：一段捲完先停住，下一段從下面蓋上來（被蓋住的慢慢變暗） ──
   // 每一段都要有不透明的底色、後面的疊在前面上面（z-index，見 home.css）
-  // 最新練習本身會固定住橫向推進，所以覆蓋只做到它之前
+  // 最新練習本身已經固定住橫向推進：外面再包一層（latest-wrap），橫向推完之後固定的是外層，下一段一樣蓋上來
   const layers = [...box.querySelectorAll('.story-section')];
-  layers.forEach((sec, i) => { sec.style.zIndex = i + 1; }); // 後面的段落疊在前面上面
+  const layerOf = sec => sec.closest('.latest-wrap') || sec; // 固定住之後中間會多一層 pin-spacer，所以用 closest 找外層
+  layers.forEach((sec, i) => { layerOf(sec).style.zIndex = i + 1; }); // 後面的段落疊在前面上面
   layers.forEach((sec, i) => {
     const next = layers[i + 1];
-    if (!next || sec.classList.contains('story-latest')) return;
-    ScrollTrigger.create({
+    if (!next) return;
+    if (sec.classList.contains('story-latest')) {
+      // 橫向推完的那一刻，外層的底部剛好在畫面底部：從這裡開始固定外層，讓下一段蓋上來
+      ScrollTrigger.create({ trigger: layerOf(sec), start: 'bottom bottom', end: () => `+=${innerHeight}`, pin: true, pinSpacing: false, invalidateOnRefresh: true });
+    } else ScrollTrigger.create({
       trigger: sec,
       // 比畫面矮的段落：頂端到畫面頂端就停住；比畫面高的：讀到底才停住
       start: () => (sec.offsetHeight <= innerHeight ? 'top top' : 'bottom bottom'),
@@ -236,6 +240,11 @@ function initLatestCarousel(box) {
       <a class="carousel-stage" href="" tabindex="-1" aria-hidden="true">${list.map((w, i) => `<img src="${w.img}" data-id="${w.id}" alt="" width="1200" height="750" style="z-index:${i}">`).join('')}</a>
       <p class="carousel-count"><span class="carousel-index">01</span> / ${String(N).padStart(2, '0')}</p>
     </div>`;
+  // 外面包一層：橫向推完之後要固定的是這一層（見 initStoryMotion 的「向上覆蓋」）
+  const wrap = document.createElement('div');
+  wrap.className = 'latest-wrap';
+  sec.before(wrap);
+  wrap.append(sec);
   grid.hidden = true; // 原本的卡片格留著給讀屏和鍵盤（連結都在），畫面上換成輪播
   grid.classList.add('visually-hidden');
   grid.hidden = false;

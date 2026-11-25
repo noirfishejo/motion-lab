@@ -232,3 +232,20 @@ export async function copyText(text) {
   area.remove();
   if (!ok) throw new Error('copy failed');
 }
+
+// ── 頁面進場（動態規範、Ease 實驗室）：和作品頁相同的做法 ─────────
+// 標題、左側欄先從下面浮上來（依序）；右邊的面板捲進畫面時一批一批浮出來
+// 播完清掉 transform：側欄是 sticky，留著 transform 會影響定位
+export function pageReveal() {
+  if (!window.gsap || reduce()) return;
+  const done = { clearProps: 'transform,opacity' };
+  gsap.from('.page-head, .side-panel', { opacity: 0, y: 32, duration: 1, stagger: 0.08, ease: 'expo.out', ...done });
+  const panels = [...document.querySelectorAll('.page-main > .panel')];
+  if (!window.ScrollTrigger) { gsap.from(panels, { opacity: 0, y: 56, duration: 1.2, stagger: 0.08, ease: 'expo.out', ...done }); return; }
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.set(panels, { opacity: 0, y: 56 });
+  ScrollTrigger.batch(panels, {
+    start: 'top 92%', once: true,
+    onEnter: batch => gsap.to(batch, { opacity: 1, y: 0, duration: 1.2, stagger: 0.08, ease: 'expo.out', ...done })
+  });
+}
