@@ -75,6 +75,10 @@ function setupNav(header) {
     if (revealed) return;
     revealed = true;
     const intro = header.classList.contains('nav-hidden');
+    if (intro) {
+      header.classList.add('nav-entering'); // 只有這一次用 transition（見 base.css）；播完拿掉，磁吸和滑過才不會被延遲
+      setTimeout(() => header.classList.remove('nav-entering'), 2000);
+    }
     header.classList.remove('nav-hidden'); // 底線、刻度、文字依序出現（CSS transition，見 base.css）
     if (window.gsap && !reduce()) gsap.fromTo(fill, { scaleX: from }, { scaleX: target(home), duration: from ? 0.9 : 1.2, ease: 'expo.out', delay: intro ? 0.6 : 0.05 });
     else go(home, false);

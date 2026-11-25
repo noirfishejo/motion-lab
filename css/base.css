@@ -48,7 +48,7 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 .site-header .header-end{align-self:stretch;gap:0;margin-right:calc(var(--gutter) * -1)}
 .site-header .header-end .icon-toggle{width:var(--header-h);height:100%;margin:0;border-left:1px solid var(--line);color:var(--text);background:transparent;transition:background-color var(--dur-fast)}
 .site-header .header-end .icon-toggle:hover{background:var(--surface-2)}
-.site-header .header-end .icon-toggle > *{display:inline-block;opacity:.72;transition:opacity var(--dur-fast)}
+.site-header .header-end .icon-toggle > *{display:inline-block;opacity:.72;transition:opacity var(--dur-fast)} /* 只過渡透明度；位移交給磁吸（GSAP） */
 .site-header .header-end .icon-toggle:hover > *{opacity:1}
 /* 頁首的小圖示按鈕（作品列表開關）：平常低調，滑過才變亮 */
 .icon-toggle{
@@ -86,9 +86,10 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 .nav-rail{transform-origin:0 50%;transition:transform 1s var(--ease-out)}
 .nav-hidden .site-nav li::after{transform:scaleY(0)}
 .nav-hidden .nav-roll span:first-child{transform:translateY(110%)}
-.nav-roll span:first-child{transition:transform .9s var(--ease-out) calc(var(--i, 0) * 70ms + .25s),opacity .3s}
+.nav-entering .nav-roll span:first-child{transition:transform .9s var(--ease-out) calc(var(--i, 0) * 70ms + .25s),opacity .3s}
 .nav-hidden .header-end .icon-toggle > *{opacity:0;transform:translateY(60%)}
-.site-header .header-end .icon-toggle > *{transition:opacity .6s var(--ease-out) .5s,transform .9s var(--ease-out) .5s}
+/* 只在開場後出現的那一次用 transition（nav-entering），平常不加：transform 有 transition 的話，磁吸每一格的位移都會被延遲，看起來就沒反應 */
+.nav-entering .header-end .icon-toggle > *{transition:opacity .6s var(--ease-out) .5s,transform .9s var(--ease-out) .5s}
 .nav-hidden .header-end .icon-toggle{border-left-color:transparent}
 /* 底線：整條是淡色，亮的那一段由 header.js 用 scaleX 伸到目前頁面的刻度 */
 .nav-rail{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line);pointer-events:none}

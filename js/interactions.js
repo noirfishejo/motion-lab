@@ -232,17 +232,3 @@ export async function copyText(text) {
   area.remove();
   if (!ok) throw new Error('copy failed');
 }
-
-// ── 頁面進場（動態規範、Ease 實驗室共用的 page-grid 版面） ─────────
-// 標題從遮罩下方升起 → 說明淡入 → 左邊側欄從左滑進來 → 右邊的面板從稍微往後倒的角度「立起來」（3D），一個接一個
-// 只做第一個畫面看得到的面板，下面的不動（捲到時本來就在位置上）；播完清掉 transform，不影響 sticky 和之後的動畫
-export function pageEnter() {
-  if (!window.gsap || reduce()) return;
-  const panels = [...document.querySelectorAll('.page-main > .panel')].filter(p => p.getBoundingClientRect().top < innerHeight);
-  const clear = { clearProps: 'transform,opacity,clipPath' };
-  gsap.timeline({ defaults: { ease: 'expo.out' } })
-    .from('.page-head h1', { yPercent: 50, opacity: 0, clipPath: 'inset(0 0 100% 0)', duration: 1.1, ...clear })
-    .from('.page-lead', { y: 20, opacity: 0, duration: 0.9, ...clear }, 0.15)
-    .from('.side-panel', { x: -40, opacity: 0, duration: 1.1, ...clear }, 0.25)
-    .from(panels, { y: 80, rotationX: -16, transformPerspective: 1400, transformOrigin: '50% 0%', opacity: 0, duration: 1.2, stagger: 0.1, ...clear }, 0.3);
-}

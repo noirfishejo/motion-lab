@@ -66,7 +66,13 @@
 /* ═══ 介紹段落（js/home-story.js）：開場之後，參考 gsap.com 首頁的節奏 ═══ */
 /* 不透明底色＋疊在開場上面：往下捲時像布幕一樣蓋過固定住的開場 */
 #story{position:relative;z-index:1;background:var(--bg)}
-.story-section{padding:var(--section-gap) var(--gutter) 0;display:grid;gap:40px}
+.story-section{position:relative;padding:var(--section-gap) var(--gutter);display:grid;gap:40px;background:var(--bg);border-top:1px solid var(--line)} /* 不透明＋上緣一條線：下一段蓋上來時看得出是一層一層疊上去 */
+.story-section:first-child{border-top:0}
+/* 被下一段蓋住時慢慢變暗（js/home-story.js 補間透明度） */
+.story-dim{position:absolute;inset:0;z-index:5;background:var(--bg);opacity:0;pointer-events:none}
+/* 數字的遮罩：數字從下緣升上來 */
+.mask-line{display:block;overflow:hidden;padding-bottom:.08em}
+.mask-line > span{display:block}
 .story-section:first-child{padding-top:48px}
 .story-head{display:grid;gap:12px}
 .story-head h2{font:500 var(--fs-h2)/1.15 var(--font-display);letter-spacing:-.02em}
