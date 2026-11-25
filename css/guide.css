@@ -4,20 +4,10 @@
    示範只在「說明 ease、時長、stagger」的地方出現，其他區塊不加進場動畫
    ═══════════════════════════════════════════════ */
 
-/* ── 頁首 ── */
-.guide-head{padding-top:calc(var(--header-h) + 48px);padding-bottom:48px;display:grid;gap:16px;max-width:none}
-.guide-head h1{font:500 var(--fs-h1)/1.05 var(--font-display);letter-spacing:-.03em}
-.guide-lead{max-width:40em;color:var(--muted);font-size:clamp(15px,1.4vw,18px);line-height:1.7}
-.guide-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:8px;font:400 12px/1.4 var(--font-mono);color:var(--muted)}
-.guide-meta .switch{margin-left:-10px}
-
-/* ── 版面：手機、平板一欄；電腦左邊目錄＋右邊內容 ── */
-.guide-layout{display:block}
-.guide-toc{display:none}
-@media (min-width:1024px){
-  .guide-layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:64px;align-items:start}
-  .guide-toc{display:block;position:sticky;top:calc(var(--header-h) + 32px)}
-}
+/* ── 左側欄：目錄＋減少動態開關（面板外框、固定位置由 base.css 的 side-panel 負責） ── */
+.guide-side{gap:20px}
+.guide-meta{display:grid;gap:8px;padding-top:16px;border-top:1px solid var(--line);font:400 12px/1.4 var(--font-mono);color:var(--muted)}
+.guide-meta .switch{justify-self:start;margin-left:-10px}
 .guide-toc .label{margin-bottom:12px}
 .guide-toc ol{position:relative;list-style:none;border-left:1px solid var(--line)}
 .guide-toc a{display:flex;gap:10px;padding:7px 0 7px 14px;font-size:var(--fs-small);color:var(--muted);transition:color var(--dur-fast)}
@@ -25,18 +15,30 @@
 .guide-toc .num{font:400 11px/1.8 var(--font-mono);color:var(--muted)}
 /* 指示條：本身高 100px，guide.js 用 y 和 scaleY 對準目前那一項 */
 .toc-bar{position:absolute;left:-1px;top:0;width:2px;height:100px;background:var(--accent-fg);transform-origin:0 0;pointer-events:none}
+/* 手機、平板：目錄改成兩欄的清單，放在標題下面 */
+@media (max-width:1023px){
+  .guide-toc ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-left:0}
+  .guide-toc a{padding-left:0}
+  .toc-bar{display:none}
+}
 
-/* ── 各節 ── */
-.guide-body{max-width:880px}
-.guide-section{padding:48px 0;border-top:1px solid var(--line);scroll-margin-top:calc(var(--header-h) + 8px)}
-.guide-section h2{display:flex;align-items:baseline;gap:14px;font:500 var(--fs-h2)/1.15 var(--font-display);letter-spacing:-.02em;margin-bottom:28px}
+/* ── 各節：每節一個面板 ── */
+.guide-section{gap:24px;scroll-margin-top:calc(var(--header-h) + 16px)}
+.guide-section h2{display:flex;align-items:baseline;gap:14px;font:500 var(--fs-h2)/1.15 var(--font-display);letter-spacing:-.02em;padding-right:120px}
 .guide-section h2 .num{font:400 var(--fs-label)/1 var(--font-mono);color:var(--accent-fg);letter-spacing:.08em}
+.guide-section{position:relative}
 .guide-section h3{font:500 var(--fs-h3)/1.35 var(--font-display);letter-spacing:-.01em}
 .guide-section p,.guide-section li{color:var(--muted);line-height:1.7}
+.row-text p{max-width:62ch}
 code{font:400 .9em/1 var(--font-mono);color:var(--accent-fg)}
 h3 code{font-size:.82em;line-height:1.4}
-.note{margin-top:20px;font-size:var(--fs-small)}
-.section-tools{display:flex;justify-content:flex-end;margin:-8px 0 12px}
+.note{font-size:var(--fs-small)}
+/* 「全部播放」放在節標題的同一列右邊 */
+.section-tools{position:absolute;top:20px;right:20px}
+@media (min-width:1024px){.section-tools{top:28px;right:32px}}
+/* 左右兩欄（依序出現、減少動態）：寬的時候說明在左、示範在右 */
+.split{display:grid;gap:24px;align-items:start}
+@media (min-width:1200px){.split{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}}
 
 /* 相關練習 */
 .ex{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;margin-top:10px;font-size:var(--fs-small)}
@@ -48,7 +50,8 @@ h3 code{font-size:.82em;line-height:1.4}
 /* 原則：兩欄卡片 */
 .principles{list-style:none;display:grid;gap:var(--grid-gap)}
 @media (min-width:600px){.principles{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.principles li{display:grid;align-content:start;gap:8px;padding:24px;border:1px solid var(--line);background:var(--surface)}
+@media (min-width:1280px){.principles{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.principles li{display:grid;align-content:start;gap:8px;padding:20px;border:1px solid var(--line);background:var(--surface)}
 
 /* 規則清單：方塊項目符號 */
 .rules{list-style:none;display:grid;gap:10px}
@@ -65,8 +68,8 @@ h3 code{font-size:.82em;line-height:1.4}
 .dur-row .dur-demo{grid-column:1}
 .play{justify-self:end;align-self:center}
 @media (min-width:834px){
-  .ease-row{grid-template-columns:64px minmax(0,1fr) minmax(200px,280px) auto}
-  .dur-row{grid-template-columns:minmax(0,1fr) minmax(200px,280px) auto}
+  .ease-row{grid-template-columns:64px minmax(0,1.1fr) minmax(200px,1fr) auto;gap:24px}
+  .dur-row{grid-template-columns:minmax(0,1.1fr) minmax(200px,1fr) auto;gap:24px}
   .ease-row .track,.dur-row .dur-demo{grid-column:auto}
 }
 .range{font:400 12px/1 var(--font-mono);color:var(--muted);letter-spacing:0;margin-left:6px;white-space:nowrap}
@@ -89,7 +92,7 @@ h3 code{font-size:.82em;line-height:1.4}
 .scale-1{position:absolute;right:0;top:0}
 
 /* ── 依序出現 ── */
-.stagger-demo{margin:24px 0 8px;padding:24px;border:1px solid var(--line);background:var(--surface);display:grid;gap:20px}
+.stagger-demo{padding:24px;border:1px solid var(--line);background:var(--surface);display:grid;gap:20px}
 /* 方塊小一點：強調色不要大面積（DESIGN.md 不要清單） */
 .stagger-row{display:flex;flex-wrap:wrap;gap:8px;overflow:hidden;padding-top:4px}
 .stagger-row span{width:20px;height:20px;background:var(--accent)}
@@ -112,15 +115,16 @@ h3 code{font-size:.82em;line-height:1.4}
 /* ── CSS 還是 GSAP：兩欄比較 ── */
 .compare{display:grid;gap:var(--grid-gap)}
 @media (min-width:834px){.compare{grid-template-columns:1fr 1.4fr}}
-.compare-col{padding:24px;border:1px solid var(--line);display:grid;align-content:start;gap:14px}
+.compare-col{padding:20px;border:1px solid var(--line);background:var(--surface);display:grid;align-content:start;gap:14px}
 
 /* ── 實作檢查 ── */
-.checklist{list-style:none;border-top:1px solid var(--line)}
+.checklist{list-style:none;border-top:1px solid var(--line);display:grid}
+@media (min-width:1200px){.checklist{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:40px}}
 .checklist > li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
 .checklist i{font-size:22px;color:var(--accent-fg);margin-top:2px}
 
 /* ── 減少動態：程式碼範例 ── */
-.code-block{margin:24px 0 8px;padding:20px;border:1px solid var(--line);background:var(--surface);overflow-x:auto;font:400 13px/1.7 var(--font-mono);color:var(--text)}
+.code-block{margin:0;padding:20px;border:1px solid var(--line);background:var(--surface);overflow-x:auto;font:400 13px/1.7 var(--font-mono);color:var(--text)}
 .code-block code{color:inherit;font:inherit}
 .code-block{scrollbar-width:none}
 .code-block::-webkit-scrollbar{display:none} /* 窄螢幕可以左右滑，但不顯示捲軸 */

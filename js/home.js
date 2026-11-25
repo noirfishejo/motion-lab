@@ -54,6 +54,7 @@ if (hasGsap) {
   initMotion();
 } else {
   document.documentElement.classList.remove('intro'); // 沒有動畫：直接顯示開場
+  document.querySelector('.site-header').revealNav?.();
 }
 scrollToHash();
 if (resumeY !== null) {
@@ -474,7 +475,8 @@ function initMotion() {
       once: true,
       onEnter: batch => gsap.to(batch, { opacity: 1, y: 0, duration: 1.2, stagger: 0.08, ease: 'expo.out' })
     });
-    gsap.from('.site-header .header-end', { opacity: 0, duration: 0.6, ease: 'power1.out' });
+    gsap.from('.site-header .header-end, .site-nav', { opacity: 0, duration: 0.6, ease: 'power1.out' });
+    document.querySelector('.site-header').revealNav?.(); // 頁首尺規的亮線從左邊長到「作品」
     if (innerWidth < 600) gsap.from('.site-header .logo', { opacity: 0, duration: 0.6, ease: 'power1.out' });
     document.documentElement.classList.remove('intro');
     if (!location.hash && resumeY === null) heroSpec?.sweep(); // 開場播完：光圈掃過標題一次，提示這裡藏了東西

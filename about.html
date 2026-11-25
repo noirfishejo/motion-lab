@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>關於｜Motion Lab</title>
+  <meta name="description" content="Motion Lab">
+  <!-- 配色：先套用記住的設定（沒有就跟著系統），在畫面出現前完成，避免閃一下 -->
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      var theme = saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&family=Noto+Sans+TC:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/about.css">
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="nav.skip"></a>
+
+  <header class="site-header is-scrolled">
+    <div class="container">
+      <a class="logo" href="index.html" data-i18n-attr="aria-label:nav.home">
+        <span class="logo-mark" aria-hidden="true"></span><span class="logo-text">Motion Lab</span>
+      </a>
+      <div class="header-end">
+        <button class="icon-toggle lang-toggle" type="button" id="langToggle" data-i18n="lang.switch" data-i18n-attr="aria-label:lang.switchLabel;data-tip:lang.switchTip"></button>
+        <button class="icon-toggle" type="button" id="themeToggle"><i class="ph-light ph-sun" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 「關於／方法」：參考 santalarch.com 的無限捲動與視角移動（不用 WebGL，CSS 3D＋GSAP）
+       · 有動態時：畫面固定成一個 3D 空間，捲動＝鏡頭往前飛；停在每一站讀完再飛向下一站，最後一站之後回到第一站
+       · 減少動態、沒有 JS 時：六站照順序排成一般的頁面（about.js 加上 is-3d 才進入 3D） -->
+  <main id="main" tabindex="-1" class="about">
+    <h1 class="visually-hidden" data-i18n="about.title"></h1>
+    <div class="about-stage">
+      <div class="about-camera">
+        <div class="about-words" aria-hidden="true"></div>
+        <div class="about-stations" id="stations"></div>
+      </div>
+    </div>
+    <!-- 捲動的長度（3D 模式才有）：捲動條只是用來推動鏡頭 -->
+    <div class="about-track" aria-hidden="true"></div>
+    <!-- 目前在第幾站＋提示 -->
+    <div class="about-hud" aria-hidden="true">
+      <span class="hud-count"><span id="hudIndex">01</span> / <span id="hudTotal">06</span></span>
+      <span class="hud-name" id="hudName"></span>
+      <span class="hud-hint" data-i18n="about.hint"></span>
+    </div>
+  </main>
+
+  <footer class="site-footer about-footer">
+    <div class="container">
+      <span data-i18n="footer.left"></span>
+      <a href="#main" data-to-top data-i18n="footer.right"></a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script type="module" src="js/about.js"></script>
+</body>
+</html>

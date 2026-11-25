@@ -156,5 +156,12 @@
   "lab.copyFailed": "Couldn’t copy. Select the text and copy it manually.",
   "lab.cssBezier": "The CSS is an approximate cubic-bezier: very close to GSAP’s curve, but not identical.",
   "lab.cssLinear": "This curve can’t be a cubic-bezier, so it’s sampled with CSS linear(); older browsers don’t support it.",
-  "guide.openLab": "Open in the Ease lab"
+  "guide.openLab": "Open in the Ease lab",
+  "nav.works": "Works",
+  "nav.about": "About",
+  "about.title": "About / Method",
+  "about.hint": "Keep scrolling: after the last stop it loops back to the start",
+  "about.stat.works": "Practices",
+  "about.stat.topics": "Topics",
+  "about.stat.tech": "GSAP features"
 }

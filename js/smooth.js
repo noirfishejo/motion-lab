@@ -6,13 +6,15 @@
 // ═══════════════════════════════════════════════
 const LERP = 0.085; // 每一格畫面追上目標的比例：越小飄得越久（0.05～0.15 之間調）
 
-export function initSmooth() {
+// options：額外的 Lenis 設定，例如「關於」頁的無限循環 { infinite: true, syncTouch: true }
+export function initSmooth(options = {}) {
   if (!window.Lenis || matchMedia('(prefers-reduced-motion: reduce)').matches) return null;
 
   const lenis = new Lenis({
     lerp: LERP,
     smoothWheel: true,
-    prevent: node => !!node.closest?.('.CodeMirror, .works-nav-list, .filters, [data-lenis-prevent]')
+    prevent: node => !!node.closest?.('.CodeMirror, .works-nav-list, .filters, [data-lenis-prevent]'),
+    ...options
   });
 
   // 用 GSAP 的計時器驅動，和 ScrollTrigger 同步（首頁的開場、作品進場都靠它）

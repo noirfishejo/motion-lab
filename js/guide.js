@@ -41,7 +41,7 @@ const rich = s => esc(s).replace(/(gsap\.[\w.]+\(\)|stagger: \{ amount: [\d.]+ \
 const playBtn = (attr, label = t('guide.play')) =>
   `<button class="btn btn-ghost btn-sm play" type="button" ${attr}><i class="ph-light ph-play" aria-hidden="true"></i><span>${label}</span></button>`;
 const section = (s, i, inner) => `
-  <section class="guide-section" id="${s.id}" aria-labelledby="${s.id}-title">
+  <section class="panel guide-section" id="${s.id}" aria-labelledby="${s.id}-title">
     <h2 id="${s.id}-title"><span class="num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>${esc(pick(s.title))}</h2>
     ${inner}
   </section>`;
@@ -78,6 +78,7 @@ const RENDER = {
     <p class="note">${esc(t('guide.durNote'))}</p>`,
 
   stagger: () => `
+    <div class="split">
     <ul class="rules">${STAGGER.rules.map(r => `<li>${rich(pick(r))}</li>`).join('')}</ul>
     <div class="stagger-demo">
       <div class="stagger-row" aria-hidden="true">${'<span></span>'.repeat(STAGGER.count)}</div>
@@ -85,6 +86,7 @@ const RENDER = {
         ${STAGGER.options.map((o, i) => `<button class="chip" type="button" data-play="stagger" data-i="${i}" aria-pressed="${i === 0}"><code>${o.label}</code></button>`).join('')}
         <span class="stagger-total" role="status"></span>
       </div>
+    </div>
     </div>
     ${examples(STAGGER.ex)}`,
 
@@ -106,8 +108,10 @@ const RENDER = {
       <div class="row-text"><h3><code>${esc(c.code)}</code></h3><p>${rich(pick(c.text))}</p>${examples(c.ex)}</div></li>`).join('')}</ul>`,
 
   reduced: () => `
-    <ul class="rules">${REDUCED.rules.map(r => `<li>${rich(pick(r))}</li>`).join('')}</ul>
-    <pre class="code-block"><code>${esc(REDUCED.code)}</code></pre>
+    <div class="split">
+      <ul class="rules">${REDUCED.rules.map(r => `<li>${rich(pick(r))}</li>`).join('')}</ul>
+      <pre class="code-block"><code>${esc(REDUCED.code)}</code></pre>
+    </div>
     ${examples(REDUCED.ex)}`
 };
 

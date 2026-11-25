@@ -156,5 +156,12 @@
   "lab.copyFailed": "複製失敗，請手動選取文字複製",
   "lab.cssBezier": "CSS 是近似的 cubic-bezier，和 GSAP 的曲線很接近但不完全一樣。",
   "lab.cssLinear": "這條曲線沒辦法用 cubic-bezier 表示，改用 CSS linear() 取樣；舊版瀏覽器不支援。",
-  "guide.openLab": "在 Ease 實驗室打開"
+  "guide.openLab": "在 Ease 實驗室打開",
+  "nav.works": "作品",
+  "nav.about": "關於",
+  "about.title": "關於／方法",
+  "about.hint": "繼續往下滑，最後一站之後會回到起點",
+  "about.stat.works": "練習",
+  "about.stat.topics": "分類",
+  "about.stat.tech": "GSAP 功能"
 }
