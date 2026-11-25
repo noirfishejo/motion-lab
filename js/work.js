@@ -7,7 +7,7 @@ import { initI18n, t, pick, list } from './i18n.js';
 import { WORKS, TOPICS, searchText, matches } from './works.js';
 import { initHeader } from './header.js';
 import { initSmooth } from './smooth.js';
-import { initCursor, initTooltips, magnetic, slidingIndicator, toast } from './interactions.js';
+import { initCursor, initTooltips, magnetic, slidingIndicator, toast, copyText } from './interactions.js';
 import { addClearButton, renderEmpty, stopEmpty } from './search.js';
 
 // 三個程式碼檔案（放在最前面：下方的流程一開始就會用到）
@@ -557,17 +557,6 @@ function labelCopy() {
 }
 
 // ── 複製（複製的是「目前編輯後」的內容） ─────────
-// 手機用區網網址（http://192.168…）開啟時不是安全環境，沒有 navigator.clipboard，改用舊的 execCommand 方法
-async function copyText(text) {
-  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
-  const area = Object.assign(document.createElement('textarea'), { value: text, readOnly: true });
-  area.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
-  document.body.append(area);
-  area.select();
-  const ok = document.execCommand('copy');
-  area.remove();
-  if (!ok) throw new Error('copy failed');
-}
 function setupCopy() {
   // 結果用 Toast 通知顯示（練習 14），讀屏軟體另外由 #status 唸出
   // 兩顆按鈕的差別寫在按鈕上：「複製 JS」只複製目前分頁；「複製完整頁面」是三個檔案合成一個可以直接打開的 HTML

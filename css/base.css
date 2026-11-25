@@ -53,7 +53,7 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 .icon-toggle[aria-expanded="true"]{color:var(--text)}
 .lang-toggle{font:400 12px/1 var(--font-mono);letter-spacing:.04em}
 /* 頁首的文字連結（動態規範）：和圖示按鈕同一排、同樣低調；目前所在的頁面變亮並加底線 */
-.nav-link{display:inline-flex;align-items:center;min-height:32px;padding:0 8px;margin-right:4px;font:400 12px/1 var(--font-mono);letter-spacing:.04em;color:var(--muted);transition:color var(--dur-fast)}
+.nav-link{display:inline-flex;align-items:center;min-height:32px;padding:0 8px;white-space:nowrap;font:400 12px/1 var(--font-mono);letter-spacing:.04em;color:var(--muted);transition:color var(--dur-fast)}
 .nav-link:hover,.nav-link[aria-current="page"]{color:var(--text)}
 .nav-link[aria-current="page"]{text-decoration:underline;text-decoration-color:var(--accent-fg);text-underline-offset:6px}
 

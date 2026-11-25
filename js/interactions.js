@@ -213,3 +213,19 @@ export function toast(message, type = 'success') {
     setTimeout(remove, LIFETIME * 1000);
   }
 }
+
+// ── 複製文字（作品頁、Ease 實驗室共用） ─────────────
+// 手機用區網網址（http://192.168…）開啟時不是安全環境，沒有 navigator.clipboard，改用舊的 execCommand 方法
+export async function copyText(text) {
+  // 有新的剪貼簿 API 先用它；權限被擋（例如嵌在其他程式裡的瀏覽器）時改用下面的舊方法
+  if (navigator.clipboard && window.isSecureContext) {
+    try { await navigator.clipboard.writeText(text); return; } catch {}
+  }
+  const area = Object.assign(document.createElement('textarea'), { value: text, readOnly: true });
+  area.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+  document.body.append(area);
+  area.select();
+  const ok = document.execCommand('copy');
+  area.remove();
+  if (!ok) throw new Error('copy failed');
+}

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ease 實驗室｜Motion Lab</title>
+  <meta name="description" content="Motion Lab">
+  <!-- 配色：先套用記住的設定（沒有就跟著系統），在畫面出現前完成，避免閃一下 -->
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      var theme = saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&family=Noto+Sans+TC:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/ease.css">
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="nav.skip"></a>
+
+  <header class="site-header is-scrolled">
+    <div class="container">
+      <a class="logo" href="index.html" data-i18n-attr="aria-label:nav.home">
+        <span class="logo-mark" aria-hidden="true"></span><span class="logo-text">Motion Lab</span>
+      </a>
+      <div class="header-end">
+        <a class="nav-link" href="guide.html" data-i18n="nav.guide"></a>
+        <a class="nav-link" href="ease.html" aria-current="page" data-i18n="nav.lab" data-i18n-attr="data-tip:lab.title"></a>
+        <button class="icon-toggle lang-toggle" type="button" id="langToggle" data-i18n="lang.switch" data-i18n-attr="aria-label:lang.switchLabel;data-tip:lang.switchTip"></button>
+        <button class="icon-toggle" type="button" id="themeToggle"><i class="ph-light ph-sun" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1" class="lab container">
+    <div class="lab-head">
+      <h1 data-i18n="lab.title"></h1>
+      <p class="lab-lead" data-i18n="lab.lead"></p>
+    </div>
+
+    <!-- ── 左：設定（ease 種類、方向、參數、秒數）；電腦版固定在畫面上 ── -->
+    <form class="lab-controls" id="controls" aria-labelledby="controls-title" onsubmit="return false">
+      <h2 class="visually-hidden" id="controls-title" data-i18n="lab.settings"></h2>
+
+      <fieldset class="field">
+        <legend class="label" data-i18n="lab.family"></legend>
+        <div class="chips" id="families"></div>
+      </fieldset>
+
+      <fieldset class="field" id="dirField">
+        <legend class="label" data-i18n="lab.direction"></legend>
+        <div class="segmented" id="directions"></div>
+      </fieldset>
+
+      <!-- 參數：只有 back（超出多少）、elastic（彈幅、週期）有，其他種類藏起來 -->
+      <div class="field" id="paramFields"></div>
+
+      <div class="field">
+        <label class="label range-label" for="duration"><span data-i18n="lab.duration"></span><output id="durationOut" for="duration"></output></label>
+        <input class="range" type="range" id="duration" min="0.1" max="2" step="0.05" value="0.6">
+      </div>
+
+      <p class="use-hint" id="useHint" aria-live="polite"></p>
+    </form>
+
+    <!-- ── 右：曲線、示範、比較、程式碼 ── -->
+    <div class="lab-stage">
+      <section class="panel graph-panel" aria-labelledby="ease-name">
+        <div class="panel-head">
+          <h2 class="ease-name" id="ease-name"><code id="easeName">expo.out</code></h2>
+          <div class="panel-tools">
+            <button class="switch" type="button" role="switch" aria-checked="false" id="loopToggle">
+              <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+              <span data-i18n="lab.loop"></span>
+            </button>
+            <button class="btn btn-primary btn-sm" type="button" id="playBtn"><i class="ph-light ph-play" aria-hidden="true"></i><span data-i18n="lab.play"></span></button>
+          </div>
+        </div>
+        <div class="graph-wrap">
+          <!-- 曲線圖：橫軸是時間、縱軸是進度；上下多留空間給 back、elastic 超出去的部分 -->
+          <svg class="graph" id="graph" viewBox="0 0 240 240" role="img" data-i18n-attr="aria-label:lab.graphLabel">
+            <g class="graph-grid" id="graphGrid"></g>
+            <g id="compareCurves"></g>
+            <path class="graph-curve" id="curve"></path>
+            <line class="graph-time" id="timeLine" x1="20" x2="20" y1="8" y2="196"></line>
+            <rect class="graph-dot" id="dot" width="8" height="8" x="-4" y="-4"></rect>
+          </svg>
+          <!-- 同一個 ease 套在四種屬性上：位移、縮放、旋轉、透明度 -->
+          <ul class="lanes" id="lanes" aria-hidden="true">
+            <li class="lane"><span class="lane-label">x</span><div class="lane-track"><span class="lane-block" data-prop="x"></span></div></li>
+            <li class="lane lane-row">
+              <div class="lane-cell"><span class="lane-label">scale</span><span class="lane-box"><span class="lane-block" data-prop="scale"></span></span></div>
+              <div class="lane-cell"><span class="lane-label">rotation</span><span class="lane-box"><span class="lane-block" data-prop="rotation"></span></span></div>
+              <div class="lane-cell"><span class="lane-label">opacity</span><span class="lane-box"><span class="lane-block" data-prop="opacity"></span></span></div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 比較：把目前的 ease 加進來，按播放時一起跑 -->
+      <section class="panel" aria-labelledby="compare-title">
+        <div class="panel-head">
+          <h2 class="panel-title" id="compare-title" data-i18n="lab.compare"></h2>
+          <button class="btn btn-ghost btn-sm" type="button" id="addCompare"><i class="ph-light ph-plus" aria-hidden="true"></i><span data-i18n="lab.addCompare"></span></button>
+        </div>
+        <ol class="race" id="race"></ol>
+        <p class="empty-note" id="compareEmpty" data-i18n="lab.compareEmpty"></p>
+      </section>
+
+      <!-- 程式碼：GSAP 和 CSS 兩種寫法 -->
+      <section class="panel" aria-labelledby="code-title">
+        <div class="panel-head">
+          <h2 class="panel-title" id="code-title" data-i18n="lab.code"></h2>
+        </div>
+        <div class="code-rows">
+          <div class="code-row">
+            <span class="label">GSAP</span>
+            <pre class="code" id="codeGsap"></pre>
+            <button class="btn btn-ghost btn-sm" type="button" data-copy="codeGsap"><i class="ph-light ph-copy" aria-hidden="true"></i><span data-i18n="lab.copy"></span></button>
+          </div>
+          <div class="code-row">
+            <span class="label">CSS</span>
+            <pre class="code" id="codeCss"></pre>
+            <button class="btn btn-ghost btn-sm" type="button" data-copy="codeCss"><i class="ph-light ph-copy" aria-hidden="true"></i><span data-i18n="lab.copy"></span></button>
+          </div>
+        </div>
+        <p class="note" id="cssNote"></p>
+      </section>
+      <p class="visually-hidden" id="status" role="status" aria-live="polite"></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span data-i18n="footer.left"></span>
+      <a href="#main" data-to-top data-i18n="footer.right"></a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script type="module" src="js/ease-lab.js"></script>
+</body>
+</html>

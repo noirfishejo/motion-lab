@@ -56,7 +56,7 @@ const RENDER = {
     <ul class="demo-list">${EASES.map((e, i) => `
       <li class="ease-row" data-ease="${i}">
         <svg class="curve" viewBox="0 0 64 64" aria-hidden="true"><path class="curve-axis" d="M0 64H64M0 64V0"></path><path class="curve-line"></path><rect class="curve-dot" width="5" height="5" x="-2.5" y="-2.5"></rect></svg>
-        <div class="row-text"><h3><code>${esc(e.ease)}</code></h3><p>${rich(pick(e.use))}</p>${examples(e.ex)}</div>
+        <div class="row-text"><h3><a class="lab-link" href="ease.html?ease=${encodeURIComponent(e.ease)}" data-tip="${esc(t('guide.openLab'))}"><code>${esc(e.ease)}</code><i class="ph-light ph-arrow-up-right" aria-hidden="true"></i></a></h3><p>${rich(pick(e.use))}</p>${examples(e.ex)}</div>
         <div class="track" aria-hidden="true"><span class="block"></span></div>
         ${playBtn(`data-play="ease" data-i="${i}" aria-label="${esc(t('guide.play'))} ${esc(e.ease)}"`)}
       </li>`).join('')}</ul>`,
