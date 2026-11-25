@@ -192,17 +192,14 @@ export async function initStoryMotion() {
 
   // ── 向上覆蓋：一段捲完先停住，下一段從下面蓋上來（被蓋住的慢慢變暗） ──
   // 每一段都要有不透明的底色、後面的疊在前面上面（z-index，見 home.css）
-  // 最新練習本身已經固定住橫向推進：外面再包一層（latest-wrap），橫向推完之後固定的是外層，下一段一樣蓋上來
+  // 最新練習本身的固定時間多延長一個螢幕高，下一段往上拉一個螢幕高（見 initLatestCarousel），所以這裡不用另外固定
+  // （不能在外面再包一層固定：ScrollTrigger 固定外層時會給它 transform，裡面固定住的區塊就會跑掉，變成一片空白）
   const layers = [...box.querySelectorAll('.story-section')];
-  const layerOf = sec => sec.closest('.latest-wrap') || sec; // 固定住之後中間會多一層 pin-spacer，所以用 closest 找外層
-  layers.forEach((sec, i) => { layerOf(sec).style.zIndex = i + 1; }); // 後面的段落疊在前面上面
+  layers.forEach((sec, i) => { sec.style.zIndex = i + 1; }); // 後面的段落疊在前面上面
   layers.forEach((sec, i) => {
     const next = layers[i + 1];
     if (!next) return;
-    if (sec.classList.contains('story-latest')) {
-      // 橫向推完的那一刻，外層的底部剛好在畫面底部：從這裡開始固定外層，讓下一段蓋上來
-      ScrollTrigger.create({ trigger: layerOf(sec), start: 'bottom bottom', end: () => `+=${innerHeight}`, pin: true, pinSpacing: false, invalidateOnRefresh: true });
-    } else ScrollTrigger.create({
+    if (!sec.classList.contains('story-latest')) ScrollTrigger.create({
       trigger: sec,
       // 比畫面矮的段落：頂端到畫面頂端就停住；比畫面高的：讀到底才停住
       start: () => (sec.offsetHeight <= innerHeight ? 'top top' : 'bottom bottom'),
@@ -240,11 +237,6 @@ function initLatestCarousel(box) {
       <a class="carousel-stage" href="" tabindex="-1" aria-hidden="true">${list.map((w, i) => `<img src="${w.img}" data-id="${w.id}" alt="" width="1200" height="750" style="z-index:${i}">`).join('')}</a>
       <p class="carousel-count"><span class="carousel-index">01</span> / ${String(N).padStart(2, '0')}</p>
     </div>`;
-  // 外面包一層：橫向推完之後要固定的是這一層（見 initStoryMotion 的「向上覆蓋」）
-  const wrap = document.createElement('div');
-  wrap.className = 'latest-wrap';
-  sec.before(wrap);
-  wrap.append(sec);
   grid.hidden = true; // 原本的卡片格留著給讀屏和鍵盤（連結都在），畫面上換成輪播
   grid.classList.add('visually-hidden');
   grid.hidden = false;
@@ -291,15 +283,22 @@ function initLatestCarousel(box) {
   };
   render(0);
 
+  // 固定的長度＝橫向推進（每張 0.8 個螢幕高）＋再多一個螢幕高給下一段蓋上來；
+  // 下一段往上拉一個螢幕高（負的 margin），橫向推完的那一刻剛好從畫面底部出現，固定結束時剛好蓋滿
+  const slide = () => innerHeight * (N - 1) * 0.8;
+  const next = sec.nextElementSibling;
+  const pull = () => { if (next) next.style.marginTop = `${-innerHeight}px`; };
+  pull();
+  ScrollTrigger.addEventListener('refreshInit', pull);
   const st = ScrollTrigger.create({
-    trigger: sec, start: 'top top', end: () => `+=${innerHeight * (N - 1) * 0.8}`,
+    trigger: sec, start: 'top top', end: () => `+=${slide() + innerHeight}`,
     pin: true, scrub: 0.6, invalidateOnRefresh: true,
     onRefresh: () => { measure(); },
-    onUpdate: self => render(self.progress * (N - 1))
+    onUpdate: self => render(Math.min(1, self.progress * (slide() + innerHeight) / slide()) * (N - 1))
   });
   // 鍵盤：Tab 到（畫面上藏起來的）卡片連結時，輪播捲到那一張
   grid.addEventListener('focusin', e => {
     const i = [...grid.querySelectorAll('.latest-card')].indexOf(e.target.closest('.latest-card'));
-    if (i >= 0) window.scrollTo(0, st.start + (st.end - st.start) * i / (N - 1));
+    if (i >= 0) window.scrollTo(0, st.start + slide() * i / (N - 1));
   });
 }
