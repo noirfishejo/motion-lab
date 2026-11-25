@@ -1,6 +1,9 @@
 // ── 試著改這幾個數字 ──
 const SPEED = 0.45;     // 大部分滑入／滑出動畫的秒數
 const ROLL_STAGGER = 0.02; // 文字上捲：每個字母之間差幾秒
+const STRENGTH = 0.4;   // 磁吸力道：按鈕跟著滑鼠移動的比例（0 不動，1 完全貼著滑鼠；0.3～0.5 最自然）
+const LABEL_EXTRA = 0.5; // 磁吸：文字比按鈕再多移多少，做出前後層次
+const RIPPLE_DURATION = 0.7; // 波紋擴散要幾秒
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const dur = s => (reduce ? 0 : s);
@@ -89,18 +92,38 @@ const effects = {};
   onHover(btn, effects.arrow.enter, effects.arrow.leave);
 }
 
-// ── 5 果凍按壓：按下時壓扁（變寬變矮），放開用 elastic 彈回 ──
+// ── 5 磁吸：游標在格子裡時，按鈕往游標方向移動一部分距離，文字再多移一點 ──
 {
-  const btn = document.querySelector('.btn-squash');
-  const press = () => gsap.to(btn, { scaleX: 1.06, scaleY: 0.88, duration: dur(0.12), ease: 'power2.out', overwrite: true });
-  const release = () => gsap.to(btn, { scaleX: 1, scaleY: 1, duration: dur(0.9), ease: 'elastic.out(1, 0.3)', overwrite: true });
-  btn.addEventListener('pointerdown', press);
-  btn.addEventListener('pointerup', release);
-  btn.addEventListener('pointerleave', release);
-  // 鍵盤：空白鍵／Enter 按下也壓扁（e.repeat：按住不放時不要一直重來）
-  btn.addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) press(); });
-  btn.addEventListener('keyup', e => { if (e.key === ' ' || e.key === 'Enter') release(); });
-  effects.squash = { enter: press, leave: release };
+  const zone = document.querySelector('.magnet-zone');
+  const btn = zone.querySelector('.btn-magnetic');
+  const label = btn.querySelector('.label');
+  // quickTo：x、y 各建一次補間，滑鼠每動一下只丟新的終點進去
+  const ease = { duration: dur(0.6), ease: 'expo.out' };
+  const bx = gsap.quickTo(btn, 'x', ease), by = gsap.quickTo(btn, 'y', ease);
+  const lx = gsap.quickTo(label, 'x', ease), ly = gsap.quickTo(label, 'y', ease);
+  let cx = 0, cy = 0; // 按鈕「原位」的中心點：進入格子時量一次，移動時不再讀版面
+  const measure = () => {
+    const r = btn.getBoundingClientRect();
+    cx = r.left + r.width / 2 - gsap.getProperty(btn, 'x');
+    cy = r.top + r.height / 2 - gsap.getProperty(btn, 'y');
+  };
+  let back = null; // 離開時的彈回補間
+  const pull = (dx, dy) => {
+    back?.kill(); // 彈回途中又靠近：先停掉彈回，交給 quickTo（不能用 overwrite，會把 quickTo 的補間一起殺掉）
+    bx(dx * STRENGTH); by(dy * STRENGTH); lx(dx * STRENGTH * LABEL_EXTRA); ly(dy * STRENGTH * LABEL_EXTRA);
+  };
+  effects.magnet = {
+    enter(e) { measure(); if (e) pull(e.clientX - cx, e.clientY - cy); },
+    move(e) { pull(e.clientX - cx, e.clientY - cy); },
+    // 離開：用有彈性的 ease 回到原位，像被橡皮筋拉回來
+    leave() { back = gsap.to([btn, label], { x: 0, y: 0, duration: dur(1), ease: 'elastic.out(1, 0.4)' }); }
+  };
+  // 只給滑鼠（手機沒有「靠近」這件事），減少動態時不吸
+  if (!reduce) {
+    zone.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') effects.magnet.enter(e); });
+    zone.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') effects.magnet.move(e); });
+    zone.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') effects.magnet.leave(); });
+  }
 }
 
 // ── 6 游標光暈：quickTo 只建一次補間，滑鼠每動一下只更新終點（CSS 變數 --x、--y） ──
@@ -126,17 +149,65 @@ const effects = {};
   onHover(btn, effects.glow.enter, effects.glow.leave);
 }
 
+// ── 7 果凍按壓：按下時壓扁（變寬變矮），放開用 elastic 彈回 ──
+{
+  const btn = document.querySelector('.btn-squash');
+  const press = () => gsap.to(btn, { scaleX: 1.06, scaleY: 0.88, duration: dur(0.12), ease: 'power2.out', overwrite: true });
+  const release = () => gsap.to(btn, { scaleX: 1, scaleY: 1, duration: dur(0.9), ease: 'elastic.out(1, 0.3)', overwrite: true });
+  btn.addEventListener('pointerdown', press);
+  btn.addEventListener('pointerup', release);
+  btn.addEventListener('pointerleave', release);
+  // 鍵盤：空白鍵／Enter 按下也壓扁（e.repeat：按住不放時不要一直重來）
+  btn.addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) press(); });
+  btn.addEventListener('keyup', e => { if (e.key === ' ' || e.key === 'Enter') release(); });
+  effects.squash = { enter: press, leave: release };
+}
+
+// ── 8 波紋：在按下的位置放一個方塊，放大到蓋住整顆按鈕再淡掉 ──
+{
+  const btn = document.querySelector('.btn-ripple');
+  effects.ripple = {
+    enter(x = btn.offsetWidth / 2, y = btn.offsetHeight / 2) {
+      if (reduce) return;
+      const w = btn.offsetWidth, h = btn.offsetHeight;
+      // 要大到能蓋住整顆按鈕：用「按下的位置到最遠角落」的距離當半徑
+      const size = Math.hypot(Math.max(x, w - x), Math.max(y, h - y)) * 2;
+      const dot = document.createElement('span');
+      dot.className = 'ripple';
+      Object.assign(dot.style, { width: `${size}px`, height: `${size}px`, left: `${x - size / 2}px`, top: `${y - size / 2}px` });
+      btn.prepend(dot); // 放在文字前面，文字才會疊在波紋上
+      gsap.timeline({ onComplete: () => dot.remove() })
+        .fromTo(dot, { scale: 0, opacity: 0.35 }, { scale: 1, duration: RIPPLE_DURATION, ease: 'expo.out' })
+        .to(dot, { opacity: 0, duration: RIPPLE_DURATION * 0.6, ease: 'power1.out' }, '-=0.35');
+    }
+  };
+  btn.addEventListener('pointerdown', e => {
+    const r = btn.getBoundingClientRect();
+    effects.ripple.enter(e.clientX - r.left, e.clientY - r.top);
+  });
+  // 鍵盤按 Enter／空白鍵：從按鈕中心擴散
+  btn.addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) effects.ripple.enter(); });
+}
+
 // #region demo（複製時會自動拿掉這一段：只是載入後自己播一次給你看）
 const demo = gsap.context(() => {
   if (reduce) return;
   // 假的滑鼠位置：從按鈕左邊中間進來、從右邊出去
   const at = (sel, x) => { const r = document.querySelector(sel).getBoundingClientRect(); return { clientX: r.left + r.width * x, clientY: r.top + r.height / 2 }; };
-  const order = [['fill', '.btn-fill'], ['roll', '.btn-roll'], ['draw', '.btn-draw'], ['arrow', '.btn-arrow'], ['squash', '.btn-squash'], ['glow', '.btn-glow']];
+  const order = [['fill', '.btn-fill'], ['roll', '.btn-roll'], ['draw', '.btn-draw'], ['arrow', '.btn-arrow'], ['magnet', '.btn-magnetic'], ['glow', '.btn-glow'], ['squash', '.btn-squash'], ['ripple', '.btn-ripple']];
   const tl = gsap.timeline({ delay: 0.6 });
   order.forEach(([key, sel], i) => {
-    const t = i * 0.55;
+    const t = i * 0.5;
+    const el = document.querySelector(sel);
+    if (key === 'ripple') { tl.add(() => effects.ripple.enter(el.offsetWidth * 0.3, el.offsetHeight * 0.5), t); return; }
+    if (key === 'magnet') {
+      // 假的游標從按鈕右上方靠近，按鈕被吸過去
+      tl.add(() => { const r = el.getBoundingClientRect(); effects.magnet.enter({ clientX: r.right, clientY: r.top - 10 }); }, t);
+      tl.add(() => effects.magnet.leave(), t + 0.7);
+      return;
+    }
     tl.add(() => effects[key].enter(at(sel, 0.02)), t);
-    if (key === 'glow') tl.to(document.querySelector(sel), { '--x': () => at(sel, 0.9).clientX - document.querySelector(sel).getBoundingClientRect().left, duration: 0.8, ease: 'power2.inOut' }, t + 0.1);
+    if (key === 'glow') tl.to(el, { '--x': () => at(sel, 0.9).clientX - el.getBoundingClientRect().left, duration: 0.8, ease: 'power2.inOut' }, t + 0.1);
     tl.add(() => effects[key].leave(at(sel, 0.98)), t + (key === 'squash' ? 0.2 : key === 'glow' ? 1 : 0.9));
   });
 });

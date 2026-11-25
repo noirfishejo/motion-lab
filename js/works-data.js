@@ -535,79 +535,6 @@ export const WORKS = [
     ]
   },
   {
-    "id": "09-micro-interactions",
-    "title": {
-      "zh-TW": "按鈕磁吸與波紋",
-      "en": "Button magnetic pull and ripple"
-    },
-    "short": {
-      "zh-TW": "按鈕磁吸＋波紋",
-      "en": "Button feedback"
-    },
-    "summary": {
-      "zh-TW": "兩種常見的按鈕回饋：滑鼠靠近時按鈕被吸過去的磁吸效果，以及從點擊位置擴散的波紋。按下時按鈕會稍微縮小，給手指「壓下去」的感覺。",
-      "en": "Two common button feedbacks: a magnetic pull toward the cursor, and a ripple spreading from where you click. Pressing shrinks the button slightly so it feels pushed in."
-    },
-    "topic": "pointer",
-    "tech": "quickTo",
-    "tags": [
-      "gsap.quickTo",
-      "pointer events",
-      "elastic"
-    ],
-    "date": "2026-11-20",
-    "useCases": [
-      "brand",
-      "launch"
-    ],
-    "cost": "light",
-    "costNote": "pointer",
-    "notes": [
-      {
-        "code": "gsap.quickTo(el, 'x')",
-        "text": {
-          "zh-TW": "先建立好一個只改 x 的補間，之後每次滑鼠移動只丟新數值進去。比每次呼叫 gsap.to() 省效能，跟著滑鼠的動態都用它。",
-          "en": "Creates a tween that only changes x, then feeds it new values on every mouse move. Cheaper than calling gsap.to() each time — use it for anything that follows the cursor."
-        }
-      },
-      {
-        "code": "STRENGTH = 0.4",
-        "text": {
-          "zh-TW": "按鈕跟著滑鼠移動的比例。0.3～0.5 最自然；太大會像按鈕在逃跑。文字再多移一點（LABEL_EXTRA），做出前後層次。",
-          "en": "How much the button follows the cursor. 0.3–0.5 feels natural; more and the button seems to run away. The label moves a bit further (LABEL_EXTRA) for depth."
-        }
-      },
-      {
-        "code": "ease: 'elastic.out(1, 0.4)'",
-        "text": {
-          "zh-TW": "滑鼠離開時用有彈性的 ease 回到原位，像被橡皮筋拉回來。第二個數字越小，彈得越多下。",
-          "en": "On leave it springs back with an elastic ease, like a rubber band. The smaller the second number, the more it wobbles."
-        }
-      },
-      {
-        "code": "matchMedia('(hover: hover)')",
-        "text": {
-          "zh-TW": "只在有滑鼠的裝置啟用磁吸。手機沒有「靠近」這件事，手指一碰就是點擊。",
-          "en": "The magnetic effect only runs on devices with a mouse. Phones have no “approach” — a touch is already a tap."
-        }
-      },
-      {
-        "code": "Math.hypot(...) * 2",
-        "text": {
-          "zh-TW": "波紋要大到蓋住整個按鈕：用點擊位置到最遠角落的距離當半徑。本站全部直角，所以波紋用方塊擴散；加上 border-radius: 50% 就是傳統的圓形波紋。",
-          "en": "The ripple must cover the whole button, so its radius is the distance from the click to the farthest corner. This site is square-cornered, so the ripple is a square; add border-radius: 50% for the classic round ripple."
-        }
-      },
-      {
-        "code": "scale: 0.96",
-        "text": {
-          "zh-TW": "按下時縮小 4%，放開用 expo.out 彈回。縮太多（< 0.9）會顯得誇張。",
-          "en": "Shrinks 4% on press and springs back with expo.out on release. Shrinking much more (< 0.9) feels exaggerated."
-        }
-      }
-    ]
-  },
-  {
     "id": "10-horizontal-scroll",
     "title": {
       "zh-TW": "區塊固定後橫向捲動",
@@ -3154,16 +3081,16 @@ export const WORKS = [
   {
     "id": "49-button-hovers",
     "title": {
-      "zh-TW": "按鈕懸停動效六款",
-      "en": "Button hover effects, six styles"
+      "zh-TW": "按鈕懸停與按壓動效八款",
+      "en": "Button hover and press effects, eight styles"
     },
     "short": {
-      "zh-TW": "按鈕動效六款",
-      "en": "Button hovers"
+      "zh-TW": "按鈕動效八款",
+      "en": "Button effects"
     },
     "summary": {
-      "zh-TW": "六種常見的按鈕回饋放在一起比較：從滑鼠進來那一邊填色、文字逐字上捲、外框順時針描一圈、箭頭推出換新、按下壓扁再彈回、光暈跟著游標移動。鍵盤 Tab 到按鈕也會播。",
-      "en": "Six common button responses side by side: a fill that enters from the side the cursor came in, letters rolling up, a border drawn clockwise, an arrow pushed out and replaced, a squash on press with an elastic release, and a glow that follows the cursor. Tabbing to a button plays it too."
+      "zh-TW": "八種常見的按鈕回饋放在一起比較：從滑鼠進來那一邊填色、文字逐字上捲、外框順時針描一圈、箭頭推出換新、游標靠近時被吸過去、光暈跟著游標移動、按下壓扁再彈回、從按下的位置擴散波紋。鍵盤 Tab 到按鈕或按 Enter 也會播。",
+      "en": "Eight common button responses side by side: a fill that enters from the side the cursor came in, letters rolling up, a border drawn clockwise, an arrow pushed out and replaced, a magnetic pull toward the cursor, a glow that follows the cursor, a squash on press with an elastic release, and a ripple spreading from where you press. Tabbing to a button or pressing Enter plays it too."
     },
     "topic": "pointer",
     "tech": "Tween",
@@ -3172,10 +3099,11 @@ export const WORKS = [
       "pathLength",
       "elastic",
       "gsap.quickTo",
-      "CSS variables"
+      "CSS variables",
+      "ripple"
     ],
     "date": "2026-11-25",
-    "thumbAt": 2.5,
+    "thumbAt": 2.9,
     "useCases": [
       "brand",
       "launch",
@@ -3207,10 +3135,10 @@ export const WORKS = [
         }
       },
       {
-        "code": "elastic.out(1, 0.3)",
+        "code": "STRENGTH = 0.4",
         "text": {
-          "zh-TW": "果凍按壓：按下時變寬變矮（像被壓扁），放開用 elastic 彈回。鍵盤的空白鍵和 Enter 也會壓；e.repeat 避免按住不放時一直重來。",
-          "en": "Squash press: on press it gets wider and shorter, then springs back with elastic on release. Space and Enter squash it too; e.repeat stops a held key from restarting it."
+          "zh-TW": "磁吸：按鈕跟著游標移動的比例，0.3～0.5 最自然，太大會像按鈕在逃跑；文字再多移一點（LABEL_EXTRA）做出前後層次。按鈕原位的中心點在游標進入格子時量一次，移動時不再讀版面。離開時用 elastic.out(1, 0.4) 彈回，像被橡皮筋拉回來。",
+          "en": "Magnetic: how much the button follows the cursor. 0.3–0.5 feels natural; more and the button seems to run away. The label moves a bit further (LABEL_EXTRA) for depth. The button's resting centre is measured once when the cursor enters, so moving never reads layout. On leave it springs back with elastic.out(1, 0.4), like a rubber band."
         }
       },
       {
@@ -3218,6 +3146,20 @@ export const WORKS = [
         "text": {
           "zh-TW": "游標光暈：光暈中心存在 CSS 變數，quickTo 只建一次補間，滑鼠每動一下只更新終點，比每次 gsap.to 省很多。變數是不帶單位的數字，在 CSS 裡用 calc(var(--x) * 1px) 換成 px。",
           "en": "Cursor glow: the glow centre lives in CSS variables; quickTo creates one tween and only updates its target on each move, far cheaper than a new gsap.to each time. The variables are unitless numbers turned into px with calc(var(--x) * 1px)."
+        }
+      },
+      {
+        "code": "elastic.out(1, 0.3)",
+        "text": {
+          "zh-TW": "果凍按壓：按下時變寬變矮（像被壓扁），放開用 elastic 彈回。鍵盤的空白鍵和 Enter 也會壓；e.repeat 避免按住不放時一直重來。",
+          "en": "Squash press: on press it gets wider and shorter, then springs back with elastic on release. Space and Enter squash it too; e.repeat stops a held key from restarting it."
+        }
+      },
+      {
+        "code": "Math.hypot(...) * 2",
+        "text": {
+          "zh-TW": "波紋：要大到蓋住整顆按鈕，用按下的位置到最遠角落的距離當半徑。本站全部直角，所以波紋用方塊擴散；加上 border-radius: 50% 就是傳統的圓形波紋。鍵盤按 Enter 或空白鍵時從中心擴散。",
+          "en": "Ripple: it must cover the whole button, so its radius is the distance from the press to the farthest corner. This site is square-cornered, so the ripple is a square; add border-radius: 50% for the classic round ripple. Enter or Space starts it from the centre."
         }
       },
       {
@@ -3435,6 +3377,357 @@ export const WORKS = [
         "text": {
           "zh-TW": "鍵盤使用者沒有游標：Tab 到某一列時一樣亮起來，並輕輕撥一下它下面的線，讓效果不只給滑鼠。",
           "en": "Keyboard users have no cursor: tabbing to a row highlights it the same way and gives the line below a gentle pluck, so the effect is not mouse-only."
+        }
+      }
+    ]
+  },
+  {
+    "id": "53-star-rating",
+    "title": {
+      "zh-TW": "星等評分滑過預覽與選定",
+      "en": "Star rating hover preview and select"
+    },
+    "short": {
+      "zh-TW": "星等評分",
+      "en": "Star rating"
+    },
+    "summary": {
+      "zh-TW": "五顆星的評分：滑鼠滑過時星星由左到右依序亮起、下方文字跟著換（Poor → Loved it），離開回到已選的分數；點下去那顆星彈一下，前面的星星跟著小跳。本質是五個單選按鈕，鍵盤方向鍵、讀屏都能用。",
+      "en": "A five-star rating: on hover the stars light up left to right and the word below changes (Poor → Loved it), returning to the chosen score on leave. Clicking pops the chosen star and gives the ones before it a little hop. Underneath it is five radio buttons, so arrow keys and screen readers just work."
+    },
+    "topic": "forms",
+    "tech": "Tween",
+    "tags": [
+      "stagger",
+      "back.out",
+      "elastic.out",
+      "keyframes",
+      "radio"
+    ],
+    "date": "2026-11-25",
+    "thumbAt": 2.6,
+    "thumb": ".rating",
+    "useCases": [
+      "ecommerce",
+      "app",
+      "content"
+    ],
+    "cost": "light",
+    "costNote": "transform",
+    "notes": [
+      {
+        "code": "<input type=\"radio\" class=\"sr-only\">",
+        "text": {
+          "zh-TW": "評分其實就是「五選一」：用五個隱藏的 radio 加 label，鍵盤方向鍵切換、讀屏唸「3 stars, Good」都是瀏覽器內建的，星星只是外觀。焦點框畫在 radio 後面那顆星上。",
+          "en": "A rating is really a choice of one in five: five hidden radios with labels give arrow-key switching and screen reader labels like “3 stars, Good” for free; the stars are only the look. The focus ring is drawn on the star after the radio."
+        }
+      },
+      {
+        "code": "stagger: { each, from: 'end' }",
+        "text": {
+          "zh-TW": "亮起來時從左到右依序放大，熄掉時從右到左依序縮小，方向跟著手移動的方向，看起來像星星被手「掃」過。",
+          "en": "Lighting up staggers left to right and switching off staggers right to left, following the hand so the stars feel swept."
+        }
+      },
+      {
+        "code": "gsap.fromTo(star, { scale: 1.35, rotation: -18 }, { ease: 'elastic.out' })",
+        "text": {
+          "zh-TW": "選定的那顆從大一點、歪一點彈回原位，讓「我選好了」和「只是滑過」有明顯差別。前面亮著的星星用 keyframes 往上跳一下再 bounce 落下。",
+          "en": "The chosen star springs back from slightly larger and tilted, so choosing feels clearly different from hovering. The lit stars before it hop up and bounce down with keyframes."
+        }
+      },
+      {
+        "code": "yPercent: -100 → 100 → 0",
+        "text": {
+          "zh-TW": "下方文字在一行高的窗口裡換：舊字往上滑出、新字從下面滑進來。文字只在選定時寫進 aria-live，滑過的預覽不唸，免得讀屏一直講話。",
+          "en": "The word swaps inside a one-line window: the old one slides up and out, the new one slides in from below. Only the chosen score is written to aria-live; hover previews stay silent so screen readers aren't chatty."
+        }
+      },
+      {
+        "code": "if (e.pointerType === 'mouse')",
+        "text": {
+          "zh-TW": "觸控沒有「滑過」，只有滑鼠才預覽；手指直接點就是選定。這一頁額外載入 Phosphor 的 Fill 粗細，只用在實心星星。",
+          "en": "Touch has no hover, so only the mouse previews; a tap simply chooses. This page also loads Phosphor's Fill weight, used only for the filled star."
+        }
+      }
+    ]
+  },
+  {
+    "id": "54-before-after",
+    "title": {
+      "zh-TW": "前後對比滑桿拖曳比較",
+      "en": "Before and after comparison slider"
+    },
+    "short": {
+      "zh-TW": "前後對比",
+      "en": "Before / after"
+    },
+    "summary": {
+      "zh-TW": "兩張畫面疊在一起（線框稿和完成稿），拖曳中間的分隔線比較前後差異；點畫面任何地方，分隔線會滑過去；鍵盤方向鍵、Home／End 也能移動。整個效果只用 transform，不改寬度也不用 clip-path。",
+      "en": "Two screens stacked (wireframe and final), compared by dragging the divider. Clicking anywhere slides it there; arrow keys and Home / End move it too. The whole effect uses transform only, no width changes or clip-path."
+    },
+    "topic": "pointer",
+    "tech": "Draggable",
+    "tags": [
+      "trigger",
+      "bounds",
+      "role=\"slider\"",
+      "ResizeObserver"
+    ],
+    "date": "2026-11-25",
+    "thumbAt": 1.4,
+    "thumb": ".compare",
+    "useCases": [
+      "brand",
+      "content",
+      "launch"
+    ],
+    "cost": "light",
+    "costNote": "drag",
+    "notes": [
+      {
+        "code": "gsap.set(clip, { x: px }); gsap.set(inner, { x: -px })",
+        "text": {
+          "zh-TW": "裁切的做法：After 的外層往右推 p、裡面的內容往左推一樣多，內容看起來不動，只有左邊被外層的 overflow: hidden 切掉。比改寬度（每格重排版面）或 clip-path（每格重畫裁切）都輕。",
+          "en": "The clipping trick: the After wrapper moves right by p and its content moves left by the same amount, so the content stays put while overflow: hidden cuts off the left. Lighter than changing width (layout every frame) or clip-path (repainting the clip)."
+        }
+      },
+      {
+        "code": "Draggable.create(handle, { trigger: compare })",
+        "text": {
+          "zh-TW": "拖的是分隔線本身，但 trigger 設成整個畫面：按在任何地方都能直接開始拖，不必精準抓到把手。",
+          "en": "The divider is what moves, but trigger is the whole picture: you can start dragging from anywhere instead of hunting for the handle."
+        }
+      },
+      {
+        "code": "onPress → slideTo(r, 0.35)",
+        "text": {
+          "zh-TW": "按下的那一刻，分隔線先用補間滑到手指的位置；真的開始拖時（onDragStart）停掉補間、this.update() 讓 Draggable 從目前位置接著算，兩邊才不會互搶。",
+          "en": "On press the divider tweens to the pointer; once a real drag starts (onDragStart) the tween is killed and this.update() lets Draggable continue from the current spot, so they don't fight."
+        }
+      },
+      {
+        "code": "role=\"slider\" aria-valuetext",
+        "text": {
+          "zh-TW": "分隔線是一個滑桿：可以 Tab 到、方向鍵移動、Home／End 到兩端，讀屏唸「30% before, 70% after」。",
+          "en": "The divider is a slider: tabbable, moved with arrow keys, Home / End jump to the ends, and screen readers hear “30% before, 70% after”."
+        }
+      },
+      {
+        "code": "touch-action: pan-y",
+        "text": {
+          "zh-TW": "手機上上下滑仍然是捲動頁面，只有左右拖才是拖分隔線；寬度改變時用比例重新換算位置，並更新拖曳範圍。",
+          "en": "On phones a vertical swipe still scrolls the page and only a horizontal drag moves the divider. When the width changes the position is recomputed from the ratio and the drag bounds updated."
+        }
+      }
+    ]
+  },
+  {
+    "id": "55-spotlight-reveal",
+    "title": {
+      "zh-TW": "聚光燈游標揭露隱藏標註",
+      "en": "Spotlight cursor reveals hidden specs"
+    },
+    "short": {
+      "zh-TW": "聚光燈揭露",
+      "en": "Spotlight reveal"
+    },
+    "summary": {
+      "zh-TW": "游標像手電筒：照到的地方露出藏在版面下面的設計標註（格線、字級、間距），移開就收起來。上下兩層版面完全相同，上層用遮罩只露出游標周圍一圈。鍵盤和觸控可以用按鈕一次打開全部。",
+      "en": "The cursor works like a flashlight: wherever it shines, the design specs hidden under the layout appear (grid, type sizes, spacing), and they close again when it leaves. Two identical layers are stacked and the top one is masked to a circle around the cursor. A button opens everything for keyboard and touch users."
+    },
+    "topic": "pointer",
+    "tech": "quickTo",
+    "tags": [
+      "mask-image",
+      "CSS variables",
+      "radial-gradient",
+      "aria-pressed"
+    ],
+    "date": "2026-11-25",
+    "thumbAt": 1.6,
+    "thumb": ".spot",
+    "useCases": [
+      "brand",
+      "content",
+      "launch"
+    ],
+    "cost": "medium",
+    "costNote": "mask",
+    "notes": [
+      {
+        "code": "mask-image: radial-gradient(circle … at var(--x) var(--y))",
+        "text": {
+          "zh-TW": "上層用 radial-gradient 當遮罩：圓圈裡是黑色（顯示）、外面透明（隱藏）。邊緣從 70% 開始漸層，光圈才是柔和的，不是硬邊。",
+          "en": "The top layer is masked by a radial gradient: black inside the circle shows, transparent outside hides. Fading from 70% gives a soft edge rather than a hard ring."
+        }
+      },
+      {
+        "code": "gsap.quickTo(specs, '--x')",
+        "text": {
+          "zh-TW": "光圈中心存在 CSS 變數，quickTo 只建一次補間，每次移動只更新終點；稍微落後游標一點，比硬黏著游標更像手電筒。",
+          "en": "The centre lives in CSS variables; quickTo makes one tween and only updates its target, trailing the cursor slightly, which feels more like a flashlight than sticking to it."
+        }
+      },
+      {
+        "code": "gsap.to(specs, { '--r': RADIUS })",
+        "text": {
+          "zh-TW": "進來時半徑從 0 打開、離開時收回 0；進來的那一格先把中心直接放在游標上，不然光圈會從上次離開的地方滑過來。",
+          "en": "On enter the radius opens from 0 and closes on leave; the centre is placed on the cursor first, or the light would slide over from where it last left."
+        }
+      },
+      {
+        "code": "<button aria-pressed>",
+        "text": {
+          "zh-TW": "鍵盤和觸控沒有「游標停在上面」：按鈕把半徑放大到畫面對角線，一次露出全部標註。被遮住的上層設 aria-hidden，讀屏只唸下層的正文。",
+          "en": "Keyboard and touch have no hover: the button grows the radius to the diagonal and reveals everything. The masked layer is aria-hidden, so screen readers read only the real content."
+        }
+      },
+      {
+        "code": "cost: medium",
+        "text": {
+          "zh-TW": "遮罩每一格都要重畫，範圍不大時很順；拿去做全螢幕背景時，低階手機可能掉格，可以把半徑或範圍縮小。",
+          "en": "The mask repaints every frame: smooth over a modest area, but as a full-screen background low-end phones may drop frames, so shrink the radius or the area."
+        }
+      }
+    ]
+  },
+  {
+    "id": "56-cursor-trail",
+    "title": {
+      "zh-TW": "游標拖尾方塊串",
+      "en": "Cursor trail of squares"
+    },
+    "short": {
+      "zh-TW": "游標拖尾",
+      "en": "Cursor trail"
+    },
+    "summary": {
+      "zh-TW": "一串方塊跟著游標，越後面的跟得越慢、越小越淡，連成一條會甩動的尾巴；按住滑鼠時尾巴收緊、方塊轉 45°，停下一下就淡出。",
+      "en": "A chain of squares follows the cursor, each one slower, smaller and fainter than the last, forming a tail that swings. Holding the button tightens the tail and turns the squares 45°; pause and it fades out."
+    },
+    "topic": "pointer",
+    "tech": "quickTo",
+    "tags": [
+      "gsap.quickTo",
+      "timeScale",
+      "delayedCall",
+      "autoAlpha"
+    ],
+    "date": "2026-11-25",
+    "thumbAt": 1.6,
+    "thumb": ".area",
+    "useCases": [
+      "brand",
+      "launch",
+      "content"
+    ],
+    "cost": "light",
+    "costNote": "pointer",
+    "notes": [
+      {
+        "code": "duration: 0.08 + i * LAG",
+        "text": {
+          "zh-TW": "每一節各自一組 quickTo，只差在跟上的秒數：第一節幾乎黏著游標，越後面越慢。不用計算物理，快慢差就自然甩出一條尾巴。",
+          "en": "Each segment has its own quickTo, differing only in how long it takes to catch up: the first nearly sticks to the cursor, later ones lag more. No physics needed, the timing difference alone swings out a tail."
+        }
+      },
+      {
+        "code": "d.x.tween.timeScale(3)",
+        "text": {
+          "zh-TW": "quickTo 回傳的函式身上有 .tween，按住時直接把速度調成 3 倍、放開調回 1，不用重建補間。",
+          "en": "The function quickTo returns carries .tween; holding the button sets its timeScale to 3 and releasing sets it back to 1, with no tweens rebuilt."
+        }
+      },
+      {
+        "code": "gsap.delayedCall(IDLE, hide)",
+        "text": {
+          "zh-TW": "每次移動都重新計時，停下 1.2 秒才淡出；尾巴不會在游標停下時一直掛在畫面上。",
+          "en": "Every move restarts the timer and the tail fades after 1.2 s of stillness, so it doesn't linger when the cursor stops."
+        }
+      },
+      {
+        "code": "xPercent: -50, yPercent: -50",
+        "text": {
+          "zh-TW": "方塊的 left、top 都是 0，只用 x、y 移動，再用 -50% 讓中心對準游標；全部是 transform，不會重排版面。",
+          "en": "Squares sit at left/top 0 and move only with x/y, with -50% centring them on the cursor; all transform, no layout."
+        }
+      },
+      {
+        "code": "cursor: none",
+        "text": {
+          "zh-TW": "範圍裡把系統游標藏起來，第一節方塊就是游標。拖尾是純裝飾，不影響點擊；在網站上使用時，觸控和「減少動態」都應該關掉。",
+          "en": "The system cursor is hidden inside the area and the first square becomes the cursor. The trail is pure decoration and doesn't affect clicks; on a real site turn it off for touch and reduced motion."
+        }
+      }
+    ]
+  },
+  {
+    "id": "57-tile-flip",
+    "title": {
+      "zh-TW": "磚塊牆游標滑過翻面",
+      "en": "Tile wall flips on hover"
+    },
+    "short": {
+      "zh-TW": "磚塊翻面",
+      "en": "Tile flip"
+    },
+    "summary": {
+      "zh-TW": "一整面磚塊，游標滑過的磚塊翻到背面、露出藏在後面的字母，過一下再自己翻回來；掃過一排就像拼出一段訊息。載入時會從左上角斜著翻一波示範。",
+      "en": "A wall of tiles where each tile the cursor crosses flips to reveal a letter on its back, then flips home after a moment; sweeping a row spells out a message. On load a diagonal wave flips across from the top left."
+    },
+    "topic": "pointer",
+    "tech": "Tween",
+    "tags": [
+      "rotationY",
+      "perspective",
+      "backface-visibility",
+      "elementFromPoint"
+    ],
+    "date": "2026-11-25",
+    "thumbAt": 1.3,
+    "thumb": ".wall",
+    "useCases": [
+      "brand",
+      "launch",
+      "content"
+    ],
+    "cost": "light",
+    "costNote": "flip3d",
+    "notes": [
+      {
+        "code": "perspective: 900px",
+        "text": {
+          "zh-TW": "perspective 放在外層的牆上，所有磚塊共用同一個視點，翻轉時左右兩邊的磚塊角度不同，才有一整面牆的立體感。",
+          "en": "Perspective sits on the wall so every tile shares one viewpoint; tiles on either side tilt differently as they flip, which makes it read as one wall."
+        }
+      },
+      {
+        "code": "backface-visibility: hidden",
+        "text": {
+          "zh-TW": "每塊磚有正反兩面疊在一起，背面先轉 180°；背對我們的那一面藏起來，轉到 90° 以後自然換成另一面。",
+          "en": "Each tile stacks a front and a back rotated 180°; the face turned away is hidden, so past 90° the other face takes over."
+        }
+      },
+      {
+        "code": "document.elementFromPoint()",
+        "text": {
+          "zh-TW": "整面牆只綁一個 pointermove，找出游標底下是哪一塊，不必替幾十塊磚各綁事件；手指拖過去時 pointerenter 不會觸發，但這個方法可以。",
+          "en": "One pointermove on the wall finds the tile under the pointer instead of binding dozens of handlers; it also works for a finger dragging across, where pointerenter wouldn't fire."
+        }
+      },
+      {
+        "code": "t.back?.kill(); t.back = gsap.delayedCall(HOLD, …)",
+        "text": {
+          "zh-TW": "翻回來之前又被碰到，只重新計時、不重播翻轉；游標在同一區來回晃時，磚塊會一直停在背面。",
+          "en": "If a tile is touched again before flipping back, only the timer restarts; hovering around one area keeps those tiles on their back."
+        }
+      },
+      {
+        "code": "delay = (row + col) × 0.06",
+        "text": {
+          "zh-TW": "示範的斜向波浪：延遲等於「列＋欄」，同一條斜線上的磚塊一起翻，看起來像從角落掃過去。",
+          "en": "The demo's diagonal wave: delay equals row + column, so tiles on the same diagonal flip together, sweeping from the corner."
         }
       }
     ]

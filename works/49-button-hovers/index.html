@@ -16,7 +16,7 @@
       setTimeout(show, 3000);
     })();
   </script>
-  <title>49 Button hover effects</title>
+  <title>49 Button hover and press effects</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono&display=swap">
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
   <link rel="stylesheet" href="style.css">
@@ -53,16 +53,28 @@
       </button>
     </div>
 
-    <!-- 5 果凍按壓：按下壓扁、放開彈回 -->
-    <div class="cell">
-      <span class="tag">squash press</span>
-      <button type="button" class="btn btn-solid btn-squash"><span class="label">Add to cart</span></button>
+    <!-- 5 磁吸：游標靠近時按鈕被吸過去，文字再多移一點；離開時像橡皮筋彈回 -->
+    <div class="cell magnet-zone">
+      <span class="tag">magnetic</span>
+      <button type="button" class="btn btn-magnetic"><span class="label">Say hello <i class="ph-light ph-arrow-up-right"></i></span></button>
     </div>
 
     <!-- 6 游標光暈：一團光跟著滑鼠在按鈕裡移動 -->
     <div class="cell">
       <span class="tag">cursor glow</span>
       <button type="button" class="btn btn-glow"><span class="label">Join the beta</span></button>
+    </div>
+
+    <!-- 7 果凍按壓：按下壓扁、放開彈回 -->
+    <div class="cell">
+      <span class="tag">squash press</span>
+      <button type="button" class="btn btn-solid btn-squash"><span class="label">Add to cart</span></button>
+    </div>
+
+    <!-- 8 波紋：從按下的位置擴散出一塊方形波紋（script.js 產生） -->
+    <div class="cell">
+      <span class="tag">ripple</span>
+      <button type="button" class="btn btn-solid btn-ripple"><span class="label">Subscribe</span></button>
     </div>
   </main>
 

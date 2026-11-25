@@ -25,7 +25,14 @@ initHeader();
 // 只有在自己電腦上開（localhost）才能「存回檔案」；用手機或分享網址開時只能試改
 const CAN_SAVE = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
 
-const id = new URLSearchParams(location.search).get('id');
+// 已合併掉的練習：舊網址轉到合併後的練習（保留 ?lang= 等其他參數）
+const MOVED = { '09-micro-interactions': '49-button-hovers' };
+const params = new URLSearchParams(location.search);
+if (MOVED[params.get('id')]) {
+  params.set('id', MOVED[params.get('id')]);
+  location.replace(`work.html?${params}${location.hash}`);
+}
+const id = params.get('id');
 const index = WORKS.findIndex(w => w.id === id);
 const work = WORKS[index];
 const frame = document.getElementById('previewFrame');

@@ -1,15 +1,15 @@
 {
   "title": {
-    "zh-TW": "按鈕懸停動效六款",
-    "en": "Button hover effects, six styles"
+    "zh-TW": "按鈕懸停與按壓動效八款",
+    "en": "Button hover and press effects, eight styles"
   },
   "short": {
-    "zh-TW": "按鈕動效六款",
-    "en": "Button hovers"
+    "zh-TW": "按鈕動效八款",
+    "en": "Button effects"
   },
   "summary": {
-    "zh-TW": "六種常見的按鈕回饋放在一起比較：從滑鼠進來那一邊填色、文字逐字上捲、外框順時針描一圈、箭頭推出換新、按下壓扁再彈回、光暈跟著游標移動。鍵盤 Tab 到按鈕也會播。",
-    "en": "Six common button responses side by side: a fill that enters from the side the cursor came in, letters rolling up, a border drawn clockwise, an arrow pushed out and replaced, a squash on press with an elastic release, and a glow that follows the cursor. Tabbing to a button plays it too."
+    "zh-TW": "八種常見的按鈕回饋放在一起比較：從滑鼠進來那一邊填色、文字逐字上捲、外框順時針描一圈、箭頭推出換新、游標靠近時被吸過去、光暈跟著游標移動、按下壓扁再彈回、從按下的位置擴散波紋。鍵盤 Tab 到按鈕或按 Enter 也會播。",
+    "en": "Eight common button responses side by side: a fill that enters from the side the cursor came in, letters rolling up, a border drawn clockwise, an arrow pushed out and replaced, a magnetic pull toward the cursor, a glow that follows the cursor, a squash on press with an elastic release, and a ripple spreading from where you press. Tabbing to a button or pressing Enter plays it too."
   },
   "topic": "pointer",
   "tech": "Tween",
@@ -18,10 +18,11 @@
     "pathLength",
     "elastic",
     "gsap.quickTo",
-    "CSS variables"
+    "CSS variables",
+    "ripple"
   ],
   "date": "2026-11-25",
-  "thumbAt": 2.5,
+  "thumbAt": 2.9,
   "useCases": [
     "brand",
     "launch",
@@ -53,10 +54,10 @@
       }
     },
     {
-      "code": "elastic.out(1, 0.3)",
+      "code": "STRENGTH = 0.4",
       "text": {
-        "zh-TW": "果凍按壓：按下時變寬變矮（像被壓扁），放開用 elastic 彈回。鍵盤的空白鍵和 Enter 也會壓；e.repeat 避免按住不放時一直重來。",
-        "en": "Squash press: on press it gets wider and shorter, then springs back with elastic on release. Space and Enter squash it too; e.repeat stops a held key from restarting it."
+        "zh-TW": "磁吸：按鈕跟著游標移動的比例，0.3～0.5 最自然，太大會像按鈕在逃跑；文字再多移一點（LABEL_EXTRA）做出前後層次。按鈕原位的中心點在游標進入格子時量一次，移動時不再讀版面。離開時用 elastic.out(1, 0.4) 彈回，像被橡皮筋拉回來。",
+        "en": "Magnetic: how much the button follows the cursor. 0.3–0.5 feels natural; more and the button seems to run away. The label moves a bit further (LABEL_EXTRA) for depth. The button's resting centre is measured once when the cursor enters, so moving never reads layout. On leave it springs back with elastic.out(1, 0.4), like a rubber band."
       }
     },
     {
@@ -64,6 +65,20 @@
       "text": {
         "zh-TW": "游標光暈：光暈中心存在 CSS 變數，quickTo 只建一次補間，滑鼠每動一下只更新終點，比每次 gsap.to 省很多。變數是不帶單位的數字，在 CSS 裡用 calc(var(--x) * 1px) 換成 px。",
         "en": "Cursor glow: the glow centre lives in CSS variables; quickTo creates one tween and only updates its target on each move, far cheaper than a new gsap.to each time. The variables are unitless numbers turned into px with calc(var(--x) * 1px)."
+      }
+    },
+    {
+      "code": "elastic.out(1, 0.3)",
+      "text": {
+        "zh-TW": "果凍按壓：按下時變寬變矮（像被壓扁），放開用 elastic 彈回。鍵盤的空白鍵和 Enter 也會壓；e.repeat 避免按住不放時一直重來。",
+        "en": "Squash press: on press it gets wider and shorter, then springs back with elastic on release. Space and Enter squash it too; e.repeat stops a held key from restarting it."
+      }
+    },
+    {
+      "code": "Math.hypot(...) * 2",
+      "text": {
+        "zh-TW": "波紋：要大到蓋住整顆按鈕，用按下的位置到最遠角落的距離當半徑。本站全部直角，所以波紋用方塊擴散；加上 border-radius: 50% 就是傳統的圓形波紋。鍵盤按 Enter 或空白鍵時從中心擴散。",
+        "en": "Ripple: it must cover the whole button, so its radius is the distance from the press to the farthest corner. This site is square-cornered, so the ripple is a square; add border-radius: 50% for the classic round ripple. Enter or Space starts it from the centre."
       }
     },
     {

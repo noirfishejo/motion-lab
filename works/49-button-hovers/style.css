@@ -44,10 +44,10 @@ body {
 }
 
 .stage {
-  width: min(840px, 100%);
+  width: min(960px, 100%);
   padding: 32px 16px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 寬的時候 4 欄 × 2 列 */
   gap: 12px;
 }
 
@@ -102,8 +102,10 @@ body {
 .arrow { position: relative; z-index: 1; width: 18px; height: 18px; overflow: hidden; }
 .arrow i { position: absolute; inset: 0; font-size: 18px; }
 
-/* 5 果凍按壓：從中心縮放 */
-.btn-squash { transform-origin: 50% 50%; }
+/* 5 磁吸：按鈕會被拉出格子外一點，所以不裁切；文字和圖示一起移動 */
+.btn-magnetic { overflow: visible; padding: 0 32px; }
+.btn-magnetic .label { display: inline-flex; align-items: center; gap: 8px; }
+.btn-magnetic:hover, .btn-magnetic:focus-visible { border-color: var(--accent-fg); }
 
 /* 6 游標光暈：--x、--y 是光暈中心（單位 px，由 script.js 更新），--on 控制亮度 */
 .btn-glow { --x: 0; --y: 0; --on: 0; }
@@ -115,6 +117,13 @@ body {
   opacity: var(--on);
 }
 .btn-glow:hover, .btn-glow:focus-visible { border-color: var(--accent-fg); }
+
+/* 7 果凍按壓：從中心縮放 */
+.btn-squash { transform-origin: 50% 50%; }
+
+/* 8 波紋：script.js 在按下的位置放一個方塊，從 0 放大到蓋住整顆按鈕再淡掉。
+   本站全部直角，所以是方塊；加上 border-radius: 50% 就是傳統的圓形波紋 */
+.ripple { position: absolute; background: var(--accent-ink); pointer-events: none; }
 
 /* 減少動態：保留顏色變化，拿掉位移 */
 @media (prefers-reduced-motion: reduce) {
