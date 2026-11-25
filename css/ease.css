@@ -78,4 +78,5 @@
 .code-row{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:12px;align-items:start}
 .code{margin:0;padding:14px 16px;border:1px solid var(--line);background:var(--surface);font:400 13px/1.7 var(--font-mono);color:var(--text);white-space:pre-wrap;overflow-wrap:anywhere}
 .code-row .label{padding-top:16px}
-@media (max-width:599px){.code-row{grid-template-columns:minmax(0,1fr) auto}.code-row .label{grid-column:1/-1;padding:0}}
+/* 手機：標籤和複製鈕在同一列，程式碼撐滿整個寬度 */
+@media (max-width:599px){.code-row{grid-template-columns:minmax(0,1fr) auto;align-items:center}.code-row .label{padding:0}.code-row .code{grid-column:1/-1;grid-row:2}}

@@ -9,7 +9,7 @@ import { initI18n, t, pick } from './i18n.js';
 import { WORKS } from './works.js';
 import { initHeader } from './header.js';
 import { initSmooth } from './smooth.js';
-import { initCursor, initTooltips, magnetic } from './interactions.js';
+import { initCursor, initTooltips, magnetic, pageEnter } from './interactions.js';
 import { SECTIONS, PRINCIPLES, EASES, DURATIONS, STAGGER, COSTS, CSS_OR_GSAP, CHECKLIST, REDUCED } from './guide-data.js';
 
 await initI18n();
@@ -118,6 +118,7 @@ const RENDER = {
 document.getElementById('guideBody').innerHTML = SECTIONS.map((s, i) => section(s, i, RENDER[s.id]())).join('');
 document.getElementById('guideToc').innerHTML = SECTIONS.map((s, i) =>
   `<li><a href="#${s.id}"><span class="num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>${esc(pick(s.title))}</a></li>`).join('');
+pageEnter(); // 進場：標題升起、側欄滑進來、面板從往後倒的角度立起來
 
 // ── Ease 曲線：直接取樣 GSAP 的 ease 畫出來（elastic、back 會超出方框，所以 y 不裁切） ──
 const curvePoint = (fn, p) => [p * 64, 64 - fn(p) * 64];

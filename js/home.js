@@ -82,8 +82,7 @@ function initMotion() {
     if (restShown) return;
     restShown = true;
     // 先把要進場的元素設成起點，再拿掉 intro class，才不會閃一下
-    gsap.from('.site-header .header-end, .site-nav', { opacity: 0, duration: 0.6, ease: 'power1.out' });
-    document.querySelector('.site-header').revealNav?.(); // 頁首尺規的亮線從左邊長到「作品」
+    document.querySelector('.site-header').revealNav?.(); // 頁首選單：底線畫出來 → 刻度長出來 → 文字捲上來
     if (innerWidth < 600) gsap.from('.site-header .logo', { opacity: 0, duration: 0.6, ease: 'power1.out' });
     document.documentElement.classList.remove('intro');
     if (!location.hash && resumeY === null) heroSpec?.sweep(); // 開場播完：光圈掃過標題一次，提示這裡藏了東西

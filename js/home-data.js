@@ -47,7 +47,8 @@ export const LATEST = {
   kicker: L('最新', 'Latest'),
   title: L('最近做的練習', 'Latest practices'),
   count: 6,
-  cta: L('看全部作品', 'See all works')
+  cta: L('看全部作品', 'See all works'),
+  open: L('查看練習', 'Open practice')
 };
 
 export const TOOLS = {

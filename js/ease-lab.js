@@ -7,7 +7,7 @@
 import { initI18n, t, pick } from './i18n.js';
 import { initHeader } from './header.js';
 import { initSmooth } from './smooth.js';
-import { initCursor, initTooltips, magnetic, toast, copyText } from './interactions.js';
+import { initCursor, initTooltips, magnetic, toast, copyText, pageEnter } from './interactions.js';
 import { EASES as GUIDE_EASES } from './guide-data.js';
 
 const L = (zh, en) => ({ 'zh-TW': zh, en });
@@ -270,3 +270,4 @@ function update(fromInput = false) {
 renderParams();
 update();
 new ResizeObserver(() => { if (!player?.isActive()) draw(1); }).observe($('lanes'));
+pageEnter(); // 進場：標題升起、設定面板滑進來、右邊的面板從往後倒的角度立起來
