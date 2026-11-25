@@ -64,14 +64,31 @@
           <span class="hero-title" aria-hidden="true">Motion Lab</span>
         </h1>
         <p class="hero-sub" data-i18n="home.hero.sub"></p>
+        <p class="hero-hint" data-i18n="home.hero.hint"></p>
+        <!-- 隱藏的規格層：游標像手電筒，照到的地方露出這個開場「背後的數值」（尺寸、格線、ease、程式碼）
+             只給有滑鼠的電腦和平板；位置由 js/hero-spec.js 依標題的實際大小擺放 -->
+        <div class="hero-spec" aria-hidden="true">
+          <span class="spec-axis"></span>
+          <span class="spec-guide spec-cap"></span>
+          <span class="spec-guide spec-base"></span>
+          <span class="spec-box"></span>
+          <span class="spec-tag spec-size"></span>
+          <span class="spec-tag spec-chars">SplitText · chars · stagger 0.035s</span>
+          <span class="spec-tag spec-square">0.62em · rotate −180° → 0°</span>
+          <span class="spec-corner spec-meta"></span>
+          <span class="spec-corner spec-xy">x 0 · y 0</span>
+          <pre class="spec-corner spec-code">intro
+  .to(square, { scale: 1.8, rotation: 0 })
+  .to(square, { x: 0, ease: "expo.inOut" })
+  .to(chars,  { yPercent: 0, stagger: 0.035 })</pre>
+          <figure class="spec-corner spec-ease">
+            <svg viewBox="0 0 120 72" preserveAspectRatio="none"><path class="ease-axis" d="M0 72H120M0 72V0"></path><path class="ease-curve"></path></svg>
+            <figcaption>expo.out · 1.2s</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
-    <!-- ── 精選：練習數量到 FEATURED_MIN（50）個才出現，挑 meta.json 有 "featured": true 的練習（見 home.js） ── -->
-    <section class="featured container" id="featured" aria-labelledby="featured-title" hidden>
-      <h2 id="featured-title" data-i18n="home.featured.title"></h2>
-      <ul class="featured-list" id="featuredList"></ul>
-    </section>
 
     <!-- ── 作品 ── -->
     <section class="works container" id="works" aria-labelledby="works-title">

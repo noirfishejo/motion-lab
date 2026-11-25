@@ -62,6 +62,5 @@
         "en": "Every stroke has a label (bookmark) before it. Clicking a step calls tl.play(label): earlier strokes show as finished and later ones are cleared and redrawn."
       }
     }
-  ],
-  "featured": true
+  ]
 }

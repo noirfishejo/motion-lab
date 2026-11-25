@@ -4,6 +4,8 @@
   "nav.home": "Motion Lab 首頁",
   "footer.left": "© 2026 Motion Lab・用 GSAP 練習動態設計",
   "footer.right": "回到頂部 ↑",
+  "home.hero.hint": "移動游標，照出這段開場背後的數值",
+  "home.spec.meta": "{works} 個練習 · {topics} 個分類 · GSAP 3.13",
   "home.hero.sub": "介面動態練習庫",
   "home.works.title": "作品",
   "home.works.empty": "沒有符合目前篩選的練習。",
@@ -113,7 +115,6 @@
   "costNote.path": "沿著路徑算位置，只有一個元素在動，很輕。",
   "costNote.number": "只更新文字內容，很輕。",
   "costNote.paint": "光澤靠 background-position 移動，每一格都要重畫；骨架塊少時沒問題，整頁很多塊時改成偽元素用 transform 移動。",
-  "home.featured.title": "精選",
   "home.filter.clear": "清除篩選",
   "home.filter.more": "篩選",
   "work.resetHint": "放棄所有修改，回到檔案裡的版本"

@@ -55,6 +55,5 @@
         "en": "Cards are temporarily absolutely positioned during the animation so they don’t push each other while moving in the grid."
       }
     }
-  ],
-  "featured": true
+  ]
 }

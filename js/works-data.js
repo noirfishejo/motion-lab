@@ -266,8 +266,7 @@ export const WORKS = [
           "en": "Every stroke has a label (bookmark) before it. Clicking a step calls tl.play(label): earlier strokes show as finished and later ones are cleared and redrawn."
         }
       }
-    ],
-    "featured": true
+    ]
   },
   {
     "id": "05-splittext",
@@ -600,8 +599,7 @@ export const WORKS = [
           "en": "Panels enter sideways, which a normal ScrollTrigger can’t see. containerAnimation tells it to follow the progress of the move animation; start/end use left and right instead."
         }
       }
-    ],
-    "featured": true
+    ]
   },
   {
     "id": "11-toggle-switch",
@@ -1689,8 +1687,7 @@ export const WORKS = [
           "en": "Only enabled with a mouse. Phones have no “cursor over the card”, so forcing it feels odd."
         }
       }
-    ],
-    "featured": true
+    ]
   },
   {
     "id": "27-checkbox",
@@ -2426,8 +2423,7 @@ export const WORKS = [
           "en": "Cards are temporarily absolutely positioned during the animation so they don’t push each other while moving in the grid."
         }
       }
-    ],
-    "featured": true
+    ]
   },
   {
     "id": "39-range-slider",
@@ -2679,8 +2675,7 @@ export const WORKS = [
           "en": "The stacked look is one function: each card sits a bit higher and smaller by its position. Darkening fades a black .shade layer instead of filter: brightness, so scrubbing doesn't re-filter whole cards every frame. When the top card falls, every card behind moves to the slot in front, so the whole pile advances."
         }
       }
-    ],
-    "featured": true
+    ]
   },
   {
     "id": "43-odometer",
@@ -2946,8 +2941,7 @@ export const WORKS = [
           "en": "Focus moves to the Back button on open and back to the card on return so keyboard users stay oriented; Esc also closes."
         }
       }
-    ],
-    "featured": true
+    ]
   },
   {
     "id": "47-swipe-delete",

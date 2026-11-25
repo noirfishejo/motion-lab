@@ -63,6 +63,5 @@
         "en": "Panels enter sideways, which a normal ScrollTrigger can’t see. containerAnimation tells it to follow the progress of the move animation; start/end use left and right instead."
       }
     }
-  ],
-  "featured": true
+  ]
 }

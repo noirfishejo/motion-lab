@@ -4,6 +4,8 @@
   "nav.home": "Motion Lab home",
   "footer.left": "© 2026 Motion Lab · Practising motion design with GSAP",
   "footer.right": "Back to top ↑",
+  "home.hero.hint": "Move your cursor to reveal the numbers behind this intro",
+  "home.spec.meta": "{works} practices · {topics} topics · GSAP 3.13",
   "home.hero.sub": "UI motion practice library",
   "home.works.title": "Works",
   "home.works.empty": "No practices match these filters.",
@@ -113,7 +115,6 @@
   "costNote.path": "Computes positions along a path for a single element — light.",
   "costNote.number": "Only updates text content — light.",
   "costNote.paint": "The shine moves via background-position, which repaints every frame; fine for a few blocks, but for a whole page move a pseudo-element with transform instead.",
-  "home.featured.title": "Featured",
   "home.filter.clear": "Clear filters",
   "home.filter.more": "Filters",
   "work.resetHint": "Discard all edits and go back to the saved files"

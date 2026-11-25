@@ -6,6 +6,7 @@ import { WORKS, TOPICS, searchText, matches } from './works.js';
 import { initHeader } from './header.js';
 import { initSmooth, scrollToY } from './smooth.js';
 import { initCursor, initTooltips, magnetic, slidingIndicator } from './interactions.js';
+import { initHeroSpec } from './hero-spec.js';
 import { addClearButton, addSuggestions, renderEmpty, stopEmpty } from './search.js';
 
 // 縮圖構圖用的常數（見下方 fitThumb）。要放在所有 await 之前，否則縮圖載入時還讀不到
@@ -18,12 +19,11 @@ let currentTech = null;   // null = 不限 GSAP 功能
 let chipsReady = false;  // GSAP 功能標籤第一次更新完了沒（第一次不播遞補動畫）
 let currentSort = 'newest';
 const SORTS = ['newest', 'oldest', 'name', 'tech'];
+let heroSpec = null; // 開場的聚光燈（js/hero-spec.js）
 
 // GSAP 從 CDN 載入；載入失敗時內容照樣顯示，只是沒有動畫
 const hasGsap = !!(window.gsap && window.ScrollTrigger && window.SplitText);
 if (hasGsap) gsap.registerPlugin(ScrollTrigger, SplitText);
-
-const FEATURED_MIN = 50; // 練習滿這個數量，首頁才出現「精選」（見 renderFeatured）
 
 // 重新整理時不要停在上次的捲動位置，開場才會從頭播放
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -41,7 +41,6 @@ const resumeY = (() => {
 await initI18n();
 initHeader();
 renderFilters();
-renderFeatured();
 renderCards();
 setupRefine();
 setupRefineToggle();
@@ -51,6 +50,7 @@ initTooltips();
 magnetic('.site-header .icon-toggle');
 if (hasGsap) {
   await document.fonts.ready; // 字體載入後再拆字，位置才會準
+  heroSpec = initHeroSpec();   // 開場的聚光燈規格層（字體載入後才量得準標題大小）
   initMotion();
 } else {
   document.documentElement.classList.remove('intro'); // 沒有動畫：直接顯示開場
@@ -146,25 +146,6 @@ function fitThumb(thumb) {
 function thumbSrc(id) {
   const theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
   return `works/${id}/thumb-${theme}.jpg`;
-}
-
-// ── 精選 ───────────────────────────────────────
-// 練習少的時候直接看全部就好；到 FEATURED_MIN 個以上，新訪客才需要先看幾個代表作
-// 要放哪幾個：在練習的 meta.json 加 "featured": true（建議 6 個，最多顯示 6 個）
-// 門檻 FEATURED_MIN 定義在檔案最上面（模組裡的 const 要在使用前宣告）
-function renderFeatured() {
-  const picks = WORKS.filter(w => w.featured).slice(0, 6);
-  const section = document.getElementById('featured');
-  const forced = new URLSearchParams(location.search).has('featured'); // ?featured：練習還不到 50 個時先預覽版面
-  if ((WORKS.length < FEATURED_MIN && !forced) || !picks.length) return;
-  section.hidden = false;
-  document.getElementById('featuredList').innerHTML = picks.map(w => `
-    <li><a class="featured-card" href="work.html?id=${w.id}">
-      <span class="thumb"><img class="thumb-img" src="${thumbSrc(w.id)}" alt="" width="1200" height="750" loading="lazy" decoding="async"></span>
-      <span class="featured-name">${pick(w.title)}</span>
-      <span class="topic">${w.tech}</span>
-    </a></li>`).join('');
-  document.addEventListener('themechange', () => section.querySelectorAll('.thumb-img').forEach((img, i) => { img.src = thumbSrc(picks[i].id); }));
 }
 
 function renderCards() {
@@ -483,10 +464,6 @@ function initMotion() {
     if (restShown) return;
     restShown = true;
     // 先把要進場的元素設成起點，再拿掉 intro class，才不會閃一下
-    if (!document.getElementById('featured').hidden) gsap.from('.featured h2, .featured li', {
-      opacity: 0, y: 40, duration: 1.2, stagger: 0.06, ease: 'expo.out',
-      scrollTrigger: { trigger: '.featured', start: 'top bottom', once: true }
-    });
     gsap.from('.works-head, .filters-bar, .refine', { // GSAP 功能那一排也一起進場（之前沒包含，會先出現再看到上面滑進來）
       opacity: 0, y: 40, duration: 1.2, stagger: 0.08, ease: 'expo.out',
       scrollTrigger: { trigger: '.works', start: 'top bottom', once: true }
@@ -500,6 +477,7 @@ function initMotion() {
     gsap.from('.site-header .header-end', { opacity: 0, duration: 0.6, ease: 'power1.out' });
     if (innerWidth < 600) gsap.from('.site-header .logo', { opacity: 0, duration: 0.6, ease: 'power1.out' });
     document.documentElement.classList.remove('intro');
+    if (!location.hash && resumeY === null) heroSpec?.sweep(); // 開場播完：光圈掃過標題一次，提示這裡藏了東西
   };
 
   // ① 所有尺寸：開場（自動播放，約 2.5 秒）
@@ -519,7 +497,7 @@ function initMotion() {
       .to(square, { scale: 1.8, rotation: 0, duration: 1.1 })                 // 在中央旋轉放大
       .to(square, { scale: 1, x: 0, duration: 1.1, ease: 'expo.inOut' })      // 滑回標題左邊
       .to(split.chars, { yPercent: 0, duration: 1.2, stagger: 0.035 }, '-=0.45') // 把字一個一個「拉」出來
-      .from('.hero-sub', { opacity: 0, y: 16, duration: 0.8 }, '-=0.6')            // 副標題在字快拉完時出現
+      .from('.hero-sub, .hero-hint', { opacity: 0, y: 16, duration: 0.8, stagger: 0.1 }, '-=0.6')            // 副標題在字快拉完時出現
       .add(showRest, '-=0.3');                                                   // 開場收尾時，其他內容才出現
 
     // 從作品頁回到 #works：不等開場，直接顯示
@@ -577,7 +555,7 @@ function initMotion() {
       }, { x: 0, y: 0, scale: 1, rotation: 180, duration: 1, ease: 'expo.inOut', immediateRender: false }, 0)
       // 標題字母依序往上移出
       .fromTo(titleChars, { yPercent: 0 }, { yPercent: -110, duration: 0.25, stagger: 0.03, ease: 'power2.in', immediateRender: false }, 0.02)
-      .to('.hero-sub', { opacity: 0, duration: 0.3 }, 0);
+      .to('.hero-sub, .hero-hint, .hero-spec', { opacity: 0, duration: 0.3 }, 0);
 
     return () => logoText.revert();
   });
