@@ -131,23 +131,26 @@ function hideTip() {
 // ── 磁吸按鈕 ─────────────────────────────────────
 const STRENGTH = 0.3; // 按鈕跟著游標移動的比例（練習 09 用 0.4，網站上收斂一點）
 
+// 按鈕本身（格子）不動，被吸過去的是裡面的圖示或文字：頁首的按鈕是一格一格的，格子跟著跑會破壞尺規
 export function magnetic(selector) {
   if (!window.gsap || reduce() || !finePointer()) return;
   document.querySelectorAll(selector).forEach(btn => {
-    const mx = gsap.quickTo(btn, 'x', { duration: 0.5, ease: 'expo.out' });
-    const my = gsap.quickTo(btn, 'y', { duration: 0.5, ease: 'expo.out' });
+    if (!btn.firstElementChild) btn.innerHTML = `<span>${btn.textContent}</span>`; // 只有文字的按鈕（中／EN）：包一層才有東西可以移動
+    const inner = btn.firstElementChild;
+    const mx = gsap.quickTo(inner, 'x', { duration: 0.5, ease: 'expo.out' });
+    const my = gsap.quickTo(inner, 'y', { duration: 0.5, ease: 'expo.out' });
     // 中心點在進來時量一次（扣掉按鈕目前被吸走的位移）：移動時不再每次讀版面，也不會因為按鈕自己在動而越吸越偏
     let cx = 0, cy = 0;
     btn.addEventListener('pointerenter', () => {
       const r = btn.getBoundingClientRect();
-      cx = r.left + r.width / 2 - gsap.getProperty(btn, 'x');
-      cy = r.top + r.height / 2 - gsap.getProperty(btn, 'y');
+      cx = r.left + r.width / 2;
+      cy = r.top + r.height / 2;
     });
     btn.addEventListener('pointermove', e => {
       mx((e.clientX - cx) * STRENGTH);
       my((e.clientY - cy) * STRENGTH);
     });
-    btn.addEventListener('pointerleave', () => gsap.to(btn, { x: 0, y: 0, duration: 0.8, ease: 'elastic.out(1, 0.45)' }));
+    btn.addEventListener('pointerleave', () => gsap.to(inner, { x: 0, y: 0, duration: 0.8, ease: 'elastic.out(1, 0.45)' }));
   });
 }
 

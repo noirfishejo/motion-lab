@@ -43,6 +43,13 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 .logo-text{display:inline-block}
 .header-start,.header-end{display:flex;align-items:center;gap:8px}
 .header-end{margin-right:-7px}
+/* 右邊的語言、配色（手機還有選單）按鈕：做成和選單一樣的格子，左邊一條撐滿高度的刻度接到底線；
+   滑過底色提亮，裡面的圖示被磁吸（js/interactions.js 只移動裡面的圖示，格子不動） */
+.site-header .header-end{align-self:stretch;gap:0;margin-right:calc(var(--gutter) * -1)}
+.site-header .header-end .icon-toggle{width:var(--header-h);height:100%;margin:0;border-left:1px solid var(--line);color:var(--text);background:transparent;transition:background-color var(--dur-fast)}
+.site-header .header-end .icon-toggle:hover{background:var(--surface-2)}
+.site-header .header-end .icon-toggle > *{display:inline-block;opacity:.72;transition:opacity var(--dur-fast)}
+.site-header .header-end .icon-toggle:hover > *{opacity:1}
 /* 頁首的小圖示按鈕（作品列表開關）：平常低調，滑過才變亮 */
 .icon-toggle{
   display:grid;place-items:center;width:32px;height:32px;margin-left:-7px; /* 圖示本身對齊 gutter：(32 − 18) ÷ 2 = 7 */
@@ -55,14 +62,15 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
    選單項目平均分佈在 logo 和右邊按鈕之間；每一項的左邊是一條刻度，往下接到頁首底線（相接、不留空隙） */
 .site-header .container{align-self:stretch} /* 撐滿頁首的高度：刻度才會一路碰到最底下的線 */
 .site-header .container > *{align-self:center}
-.site-header .container > .site-nav{align-self:stretch}
+.site-header .container > .site-nav,.site-header .container > .header-end{align-self:stretch}
 .site-nav{flex:1;min-width:0;margin-left:clamp(16px,6vw,96px)}
 .site-nav ol{list-style:none;height:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
 .site-nav li{position:relative;display:flex}
+/* 連結撐滿整格（從這一格的刻度到下一格的刻度）：點擊範圍大，反白也是整格 */
 /* 刻度：貼著項目左邊，從底線往上長；目前這一頁和滑過時變長、變亮 */
 .site-nav li::after{content:"";position:absolute;left:0;bottom:0;width:1px;height:10px;background:var(--line-strong);transition:height var(--dur) var(--ease-out),background-color var(--dur-fast);z-index:1}
 .site-nav li:hover::after,.site-nav li:has([aria-current])::after,.site-nav li:focus-within::after{height:100%;background:var(--text)}
-.site-nav a{position:relative;display:flex;align-items:center;height:100%;padding:0 14px;font-size:14px;line-height:1;color:var(--text);white-space:nowrap;overflow:hidden;isolation:isolate}
+.site-nav a{position:relative;flex:1;display:flex;align-items:center;height:100%;padding:0 16px;font-size:14px;line-height:1;color:var(--text);white-space:nowrap;overflow:hidden;isolation:isolate}
 /* 反白：一塊主文字色的底由下往上長滿這一格，文字換成背景色 */
 .site-nav a::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--text);transform:scaleY(0);transform-origin:50% 100%;transition:transform .5s var(--ease-out)}
 .site-nav a:hover::before,.site-nav a:focus-visible::before{transform:scaleY(1)}
@@ -73,27 +81,37 @@ main:focus{outline:none} /* 「跳到主要內容」把焦點移到 main，不�
 .nav-roll span{display:block;line-height:1.2em;transition:transform .5s var(--ease-out),opacity .3s}
 .site-nav a:not([aria-current]) .nav-roll span{opacity:.72}
 .site-nav a:hover .nav-roll span,.site-nav a:focus-visible .nav-roll span{transform:translateY(-100%);opacity:1}
-/* 目前這一頁：左上角一個小方塊 */
-.site-nav a[aria-current]::after{content:"";width:5px;height:5px;margin-left:8px;background:var(--accent-fg);flex:none}
+/* 目前這一頁：這一格的底線加粗成強調色（像尺規上「你在這一段」），底色微微提亮；
+   進頁面時由 header.js 從刻度往右畫出來 */
+.site-nav a[aria-current]{background:var(--surface)}
+.nav-here{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--accent-fg);transform-origin:0 50%;z-index:2;pointer-events:none}
 /* 底線：整條是淡色，亮的那一段由 header.js 用 scaleX 伸到目前頁面的刻度 */
 .nav-rail{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line);pointer-events:none}
 .nav-fill{position:absolute;inset:0;background:var(--text);transform-origin:0 50%;transform:scaleX(0)}
 
 /* ── 手機：漢堡選單 ── */
 .menu-toggle{display:none}
-.menu-lines{position:relative;display:grid;gap:4px;width:18px}
-.menu-lines span{display:block;height:1px;background:currentColor;transform-origin:50% 50%}
+/* 三條線相隔 5px（中心在 0、5、10）：變成 × 時上下兩條各移動 5px 到中間，交叉點才會在正中央 */
+.menu-lines{position:relative;display:block;width:18px;height:11px}
+.menu-lines span{position:absolute;left:0;width:100%;height:1px;background:currentColor;transform-origin:50% 50%}
+.menu-lines span:nth-child(1){top:0}
+.menu-lines span:nth-child(2){top:5px}
+.menu-lines span:nth-child(3){top:10px}
 .site-menu{position:fixed;left:0;right:0;top:var(--header-h);z-index:49;background:var(--bg);border-bottom:1px solid var(--line)}
 .site-menu ol{list-style:none;padding:8px var(--gutter) 24px}
 .site-menu li + li{border-top:1px solid var(--line)}
-.site-menu a{display:flex;align-items:center;gap:16px;min-height:64px;font:500 26px/1.2 var(--font-display);letter-spacing:-.02em}
-.site-menu .menu-mask{flex:1;overflow:hidden;padding-bottom:.1em}
-.site-menu .menu-text,.site-menu .menu-num,.site-menu i{display:inline-block}
-.site-menu .menu-num{font:400 11px/1 var(--font-mono);color:var(--accent-fg);letter-spacing:.08em}
+.site-menu a{position:relative;display:flex;align-items:center;gap:16px;min-height:64px;font:500 26px/1.2 var(--font-display);letter-spacing:-.02em}
+.site-menu .menu-mask{overflow:hidden;padding-bottom:.1em}
+.site-menu .menu-mask:first-child{flex:1} /* 名稱撐開，右邊的箭頭或「目前所在」靠右 */
+.site-menu .menu-text,.site-menu .menu-side{display:inline-block}
 .site-menu i{font-size:20px;color:var(--muted)}
-.site-menu a[aria-current] .menu-text::after{content:"";display:inline-block;width:6px;height:6px;margin-left:10px;vertical-align:.4em;background:var(--accent-fg)}
+/* 目前這一頁：左邊一條強調色的刻度、文字往右讓一點，右邊寫「目前所在」取代箭頭 */
+.site-menu a[aria-current]{padding-left:16px}
+.site-menu a[aria-current]::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:3px;background:var(--accent-fg)}
+.site-menu .menu-here{font:400 11px/1 var(--font-mono);letter-spacing:.08em;color:var(--accent-fg)}
 @media (max-width:599px){
   .logo-text{display:none} /* 手機：logo 只留方塊 */
+  .site-header .header-end .icon-toggle{width:48px}
   .site-nav{display:none}
   .menu-toggle{display:grid;color:var(--text)}
 }

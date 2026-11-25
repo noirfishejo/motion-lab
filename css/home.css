@@ -68,7 +68,7 @@
 .works{position:relative;z-index:1;background:var(--bg)}
 .works{padding-top:0;min-height:100svh} /* 篩選、搜尋後結果很少時，頁面也夠長，不會被拉回開場區 */ /* 開場往上捲時，作品區直接接著出現 */
 .works-head{display:flex;align-items:baseline;gap:16px;margin-bottom:24px}
-.works-head h2{font:500 var(--fs-h2)/1.1 var(--font-display);letter-spacing:-.03em}
+.works-head h2{font:500 var(--fs-h1)/1.1 var(--font-display);letter-spacing:-.03em} /* 「作品」是這一區的大標，和其他頁的大標一樣大 */
 
 /* 篩選列（參考 Koleksiyon 的分類列） */
 /* 捲到頂端時吸附在頁首下方，往下看作品時隨時可以切換分類 */

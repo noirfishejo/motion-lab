@@ -47,6 +47,11 @@ function setupNav(header) {
 
   const items = [...nav.querySelectorAll('li')];
   const current = items.find(li => li.querySelector('[aria-current]'));
+  // 目前這一頁：這一格的底線加粗成強調色，進頁面時從刻度往右畫出來
+  const here = document.createElement('span');
+  here.className = 'nav-here';
+  here.setAttribute('aria-hidden', 'true');
+  current?.querySelector('a').append(here);
   // 亮線的長度＝從頁首最左邊到某個刻度（不在選單裡的頁面，例如作品頁，就停在作品那一格）
   const home = current || (page === 'work' ? items[0] : null);
   const target = li => (li ? li.getBoundingClientRect().left / header.clientWidth : 0);
@@ -74,10 +79,12 @@ function setupNav(header) {
   const reveal = () => {
     if (revealed) return;
     revealed = true;
-    if (window.gsap && !reduce()) gsap.fromTo(fill, { scaleX: from }, { scaleX: target(home), duration: from ? 0.9 : 1.2, ease: 'expo.out', delay: 0.05 });
-    else go(home, false);
+    if (window.gsap && !reduce()) {
+      gsap.fromTo(fill, { scaleX: from }, { scaleX: target(home), duration: from ? 0.9 : 1.2, ease: 'expo.out', delay: 0.05 });
+      if (current) gsap.fromTo(here, { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'expo.out', delay: from ? 0.5 : 0.8 }); // 亮線到了才畫
+    } else go(home, false);
   };
-  if (window.gsap) gsap.set(fill, { scaleX: from, transformOrigin: '0 50%' });
+  if (window.gsap) { gsap.set(fill, { scaleX: from, transformOrigin: '0 50%' }); if (!reduce()) gsap.set(here, { scaleX: 0 }); }
   else fill.style.transform = `scaleX(${from})`;
   if (document.documentElement.classList.contains('intro')) { header.revealNav = reveal; setTimeout(reveal, 6500); } // 保險：開場沒播完也會長出來
   else document.fonts.ready.then(reveal);
@@ -101,17 +108,17 @@ function setupMenu(header, label, cur, reduce) {
   panel.id = 'siteMenu';
   panel.hidden = true;
   panel.setAttribute('aria-label', t('nav.label'));
-  panel.innerHTML = `<ol>${NAV.map((n, i) => `
-    <li><a href="${n.href}"${cur(n)}><span class="menu-num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><span class="menu-mask"><span class="menu-text">${label(n)}</span></span><i class="ph-light ph-arrow-up-right" aria-hidden="true"></i></a></li>`).join('')}</ol>`;
+  panel.innerHTML = `<ol>${NAV.map(n => `
+    <li><a href="${n.href}"${cur(n)}><span class="menu-mask"><span class="menu-text">${label(n)}</span></span><span class="menu-mask"><span class="menu-side">${n.page === currentPage() ? `<span class="menu-here">${t('nav.current')}</span>` : '<i class="ph-light ph-arrow-up-right" aria-hidden="true"></i>'}</span></span></a></li>`).join('')}</ol>`;
   header.after(panel);
 
   const [l1, l2, l3] = btn.querySelectorAll('.menu-lines span');
-  const texts = panel.querySelectorAll('.menu-text, .menu-num, .site-menu i');
+  const texts = panel.querySelectorAll('.menu-text, .menu-side');
   // 一條暫停的時間軸：打開 play、關閉 reverse（中途再按會從目前的位置倒回去）
   const tl = window.gsap ? gsap.timeline({ paused: true, defaults: { ease: 'expo.out' },
     onReverseComplete: () => { panel.hidden = true; } })
-    .to(l1, { y: 6, rotation: 45, duration: 0.4 }, 0)
-    .to(l3, { y: -6, rotation: -45, duration: 0.4 }, 0)
+    .to(l1, { y: 5, rotation: 45, duration: 0.4 }, 0)   // 三條線相隔 5px：上下兩條各移 5px 到中間再轉，× 才會對稱
+    .to(l3, { y: -5, rotation: -45, duration: 0.4 }, 0)
     .to(l2, { scaleX: 0, duration: 0.2 }, 0)
     .fromTo(panel, { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.6 }, 0)
     .fromTo(texts, { yPercent: 110 }, { yPercent: 0, duration: 0.6, stagger: 0.04 }, 0.1) : null;
